@@ -1,0 +1,12 @@
+<div ng-switch="calendarMode">
+    <div class="row calendar-navbar" ng-swipe-left="move(1)" ng-swipe-right="move(-1)">
+        <div class="nav-left col-xs-2">
+        </div>
+        <div class="calendar-header col-xs-8"><strong>{{title}}</strong></div>
+        <div class="nav-right col-xs-2">
+        </div>
+    </div>
+    <dayview2 ng-switch-when="day" ng-swipe-left="move(1)" ng-swipe-right="move(-1)"></dayview2>
+    <monthview2 ng-switch-when="month" ng-swipe-left="move(1)" ng-swipe-right="move(-1)"></monthview2>
+    <weekview2 ng-switch-when="week" ng-swipe-left="move(1)" ng-swipe-right="move(-1)"></weekview2>
+</div>

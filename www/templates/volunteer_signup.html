@@ -1,0 +1,18 @@
+<label class="item item-input item-select" style="margin-top: 10px">
+  <div class="input-label">
+      Filter by Volunteer Role
+  </div>
+  <select>
+      <option style="display:none" value=""></option>
+      <option value="" selected="selected">All</option>
+      <option value="">Food Server 1</option>
+      <option value="">Food Server 2</option>
+      <option value="">Cashier</option>
+      <option value="">Game Station 1</option>
+      <option value="">Game Station 2</option>
+  </select>
+</label>
+
+<div class="well well-sm">
+  <calendar ng-model="currentDate" calendar-mode="mode" event-source="eventSource2" range-changed="reloadSource(startTime, endTime)" event-selected="onEventSelected(event)"></calendar>
+</div>

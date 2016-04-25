@@ -1,0 +1,395 @@
+/*
+To customize the look and feel of Ionic, you can override the variables
+in ionic's _variables.scss file.
+
+For example, you might change some of the default colors:
+
+$light:                           #fff !default;
+$stable:                          #f8f8f8 !default;
+$positive:                        #387ef5 !default;
+$calm:                            #11c1f3 !default;
+$balanced:                        #33cd5f !default;
+$energized:                       #ffc900 !default;
+$assertive:                       #ef473a !default;
+$royal:                           #886aea !default;
+$dark:                            #444 !default;
+*/
+
+$positive: #B71C1C !default;
+$tagMdRed: #E53935 !default;
+$tagLtRed: #E57373 !default;
+$tagBlue: #010032 !default;
+
+// The path for our ionicons font files, relative to the built CSS in www/css
+$ionicons-font-path: "../lib/ionic/fonts" !default;
+
+// Include all of Ionic
+@import "www/lib/ionic/scss/ionic";
+
+//Volunteer icon
+@font-face {
+    font-family: 'volunteer';
+    src:    url('../fonts/volunteer/volunteer.eot?qnydk3');
+    src:    url('../fonts/volunteer/volunteer.eot?qnydk3#iefix') format('embedded-opentype'),
+        url('../fonts/volunteer/volunteer.ttf?qnydk3') format('truetype'),
+        url('../fonts/volunteer/volunteer.woff?qnydk3') format('woff'),
+        url('../fonts/volunteer/volunteer.svg?qnydk3#volunteer') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+i.volunteer {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'volunteer' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.volunteer:before {
+    content: "\e902";
+}
+
+//note icon
+@font-face {
+    font-family: 'note';
+    src:    url('../fonts/note/note.eot?8zx5r');
+    src:    url('../fonts/note/note.eot?8zx5r#iefix') format('embedded-opentype'),
+        url('../fonts/note/note.ttf?8zx5r') format('truetype'),
+        url('../fonts/note/note.woff?8zx5r') format('woff'),
+        url('../fonts/note/note.svg?8zx5r#note') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+i.icon-note {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'note' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-note:before {
+    content: "\e903";
+}
+
+
+
+//Google Drive icon
+@font-face {
+    font-family: 'drive';
+    src:    url('../fonts/googledrive/drive.eot?olgtto');
+    src:    url('../fonts/googledrive/drive.eot?olgtto#iefix') format('embedded-opentype'),
+        url('../fonts/googledrive/drive.ttf?olgtto') format('truetype'),
+        url('../fonts/googledrive/drive.woff?olgtto') format('woff'),
+        url('../fonts/googledrive/drive.svg?olgtto#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'drive' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-google-drive2:before {
+    content: "\e900";
+}
+.icon-google-drive:before {
+    content: "\e901";
+}
+
+
+.modal-backdrop-bg {
+  transition: opacity 300ms ease-in-out;
+  -webkit-transition: opacity 300ms ease-in-out;
+  background-color: #000;
+  opacity: 0;
+}
+
+.active .modal-backdrop-bg {
+  opacity: 0;
+}
+
+.modal-wrapper{
+  background-color: white;
+}
+
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
+
+div.btn-toolbar{
+  width: 340px;
+  margin: 8px auto 0;
+  height: 42px;
+  button.cal_view_btn {
+    height: 42px;
+    margin-left: 7px;
+    border-radius: 2px;
+    font-weight: bold;
+    border: none;
+    width: 61px;
+    padding: 0;
+    line-height: 15px;
+    float: left;
+  }
+}
+
+body.md-dialog-is-showing{
+ pointer-events: auto !important;
+}
+
+.menu{
+  color: #FFF;
+}
+
+.dtp {
+  .dtp-date-view{
+    .dtp-header{
+      background-color: $positive !important; 
+    }
+    .dtp-date{
+      background-color: $tagMdRed !important;
+      .layout-row span, .dtp-actual-year{
+        color: $tagLtRed !important;
+      }
+    }
+    table.dtp-picker-days a.selected{
+      background-color: $tagMdRed !important;
+    }
+  }
+  div.dtp-time{
+    background-color: $positive !important;
+    color: $tagLtRed !important;
+    .dtp-actual-maxtime, .dtp-actual-day{
+      display: inline-block;
+    }
+    .selected{
+      color: #FFF;
+    }
+  }
+  .dtp-actual-meridien a.selected, 
+  .dtp-picker-time a.selected, 
+  .dtp-hand.dtp-hour-hand.on,
+  .dtp-hand.dtp-minute-hand.on{
+    background-color: $tagMdRed !important;
+  }
+}
+
+ion-header-bar.calendar-form{
+  height: 60px;
+  input{
+    margin: 35px 0 0 30px;
+    height: 18px;
+    color: #FFF;
+    background-color: $positive;
+    &::-webkit-input-placeholder{
+      color: #FFF;
+    }
+  }
+  button.button.button-clear.button-positive{
+    color: #FFF;
+    font-weight: 600;
+    font-size: 16px;
+    position: absolute;
+    right: 10px;
+    top: 0px;
+    &.close-calendar{
+      padding-left: 5px;
+      width: 50px;
+      left: 0;
+      text-align: left;
+      i.icon.ion-close::before{
+        font-size: 18px;
+      }
+    } 
+  }
+}
+
+.add_event{
+  margin-top: 10px;
+  i{
+    font-size: 20px;
+    color: dimgrey;
+    margin: 0 11px 0 11px;
+  }
+  .ion-location{
+    margin-left: 14px;
+  }
+  .ion-android-time{
+    margin-right: 5px;
+  }
+  a.add-attachment{
+    text-decoration: none;
+    color: darkgray;
+    font-size: 12px;
+    margin-left: -8px;
+  }
+  .drive_hr{
+    margin-bottom: 14px;
+  }
+  .drive_wrapper{
+    height: 34px;
+    i.icon-google-drive2{
+      margin: 0 11px 0 9px;
+    }
+  }
+  .post_drive_hr{
+    margin-top: 2px;
+  }
+  input{
+    display: inline-block;
+    width: calc(100% - 45px);
+    font-size: 12px;
+    border: none;
+    padding: 0;
+  }
+  .selector-container{ height: 33px;}
+  md-input-container{
+    &:not(.md-input-invalid).md-input-focused label{
+      color: dimgrey;
+    }
+    label:not(.md-no-float):not(.md-container-ignore){
+      padding-left: 0;
+    }
+    label{
+      margin: 0;
+      padding: 0;
+    }
+  }
+  span{
+    display: inline-block;
+    md-input-container{
+      padding: 0;
+      width: 130px;
+      margin: 7px 18px 8px 0px;
+      .md-input{
+        padding: 0;
+        border: none;
+        width: initial;
+      }
+      .md-errors-spacer {
+          min-height: 0;
+      }
+    }
+  }
+  div.volunteers {
+    max-width: 360px;
+    min-width: 288px;
+    width: 100%;
+    .volunteer_count{
+      width: 65px;
+      margin-right: calc(100% - 279px)
+    }
+    md-input-container {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      label{
+        margin-left: 0;
+      }
+    }   
+    label{
+      margin-left: 36px; 
+      // input{
+      //   margin-right: calc(100% - 295px);
+      // }
+    }
+    .event_dates{
+      width: 230px;
+      label{
+        margin-left: 0;
+        // input{
+        //   width: 100px;
+
+        // }
+      }
+      i.volunteer{
+        margin: 0 2px 0 8px;
+      }
+      md-input-container{
+        margin-left: 36px;
+        .end_date{
+          margin-left: 0;
+        }
+      }
+    }
+    .event_times {
+      md-input-container{
+        width: 65px;
+        input{
+          width: 54px;
+        }
+      }
+    }
+  }
+  
+  .event_dates{
+    width: 230px;
+    .end_date{
+      margin-left: 38px;
+    }
+  }
+  .event_times{
+    width: 100px;
+  }
+  .icon-note{
+    font-size: 11px;
+    margin: 0 7px 0 8px;
+  }
+  textarea{
+    display: inline-block;
+    width: calc(100% - 45px);
+    font-size: 12px;
+  }
+}
+
+.events{
+  img.event_img{
+    float: left;
+    width: 100px;
+    margin-right: 10px;
+  }
+  p{
+    white-space: normal;
+    overflow: initial;
+  }
+  h4{
+    font-weight: bold;
+    display: inline-block;
+  }
+  button {
+    float: right;
+  }
+}

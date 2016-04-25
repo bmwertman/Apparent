@@ -1,0 +1,35 @@
+.calendar-event-inner-view {
+    overflow: hidden;
+    background-color: #3a87ad;
+    color: white;
+    height: 100%;
+    width: 100%;
+    padding: 2px;
+    line-height: 15px;
+    white-space: pre-wrap;
+}
+
+.weekview-allday-table-view, .dayview-allday-table-view {
+    height: 50px;
+}
+
+@media (max-width: 750px) {
+    .weekview-allday-label-view, .dayview-allday-label-view, .calendar-hour-column-view, .calendar-week-column-view {
+        width: 32px;
+        border-width: 0px;
+    }
+
+    .table > tbody > tr > td.calendar-hour-column-view, .table > thead > tr > th.weekview-header-label-view {
+        padding-left: 0px;
+        padding-right: 0px;
+        font-size: 12px;
+    }
+
+    .weekview-allday-content-wrapper-view, .dayview-allday-content-wrapper-view {
+        margin-left: 32px;
+    }
+
+    .calendar-event-inner-view {
+        font-size: 12px;
+    }
+}

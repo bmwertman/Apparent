@@ -1,0 +1,27 @@
+<div class="selector-container" ng-attr-dir="{{rtl ? rtl : ltr}}" 
+     ng-class="{open: isOpen, empty: !filteredOptions.length && (!create || !search), multiple: multiple, hasvalue: hasValue(), rtl: rtl, loading: loading, removebutton: removeButton, disabled: disabled}">
+    <select name="{{name}}" ng-hide="true" ng-model="selectedValues" multiple ng-options="option as option[labelAttr] for option in selectedValues" ng-hide="true">
+    </select>
+    <label class="selector-input">
+        <ul class="selector-values">
+            <li ng-repeat="(index, option) in selectedValues track by index">
+                <div ng-include="viewItemTemplate"></div>
+                <div ng-if="multiple" class="selector-helper" ng-click="!disabled && unset(index)">
+                    <span class="selector-icon"></span>
+                </div>
+            </li>
+        </ul>
+        <input id="contactsInput" ng-keyup="searchContacts()" ng-model="search" placeholder="{{placeholder}}" ng-disabled="disabled" ng-required="required && !hasValue()">
+        <div ng-if="!multiple || loading" class="selector-helper selector-global-helper" ng-click="!disabled && removeButton && unset()">
+            <span class="selector-icon"></span>
+        </div>
+    </label>
+    <ul class="selector-dropdown" ng-show="filteredOptions.length > 0 || (create && search)">
+        <li class="selector-option create" ng-if="create && search" ng-include="dropdownCreateTemplate" ng-click="createOption(search)">
+        </li>
+        <li ng-repeat-start="(index, option) in filteredOptions track by index" class="selector-optgroup" ng-include="dropdownGroupTemplate" ng-show="option[groupAttr] && index == 0 || filteredOptions[index-1][groupAttr] != option[groupAttr]">
+        </li>
+        <li ng-repeat-end ng-class="{grouped: option[groupAttr]}" class="selector-option" ng-include="dropdownItemTemplate" ng-click="set()">
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,28 @@
+<ion-header-bar align-title="left" class="bar-positive">
+  <h1 class="title">Calendar</h1>
+  <!-- <a class="button button-icon icon ion-home" ng-click="shop()"></a> -->
+</ion-header-bar>
+<ion-view title="Calendar">
+  <ion-content ng-controller="CalendarCtrl" ng-init="getSchedule()" class="has-header">
+    <div class="btn-toolbar" style="margin-top: 10px">
+      <button type="button" class="btn btn-default cal_view_btn" ng-class="{active:mode==='month'}" ng-click="changeMode('month')">
+          Month
+      </button>
+      <button type="button" class="btn btn-default cal_view_btn" ng-class="{active:mode==='week'}" ng-click="changeMode('week')">
+          Week
+      </button>
+      <button type="button" class="btn btn-default cal_view_btn" ng-class="{active:mode==='day'}" ng-click="changeMode('day')">
+          Day
+      </button>
+      <button type="button" class="btn btn-default cal_view_btn" ng-disabled="isToday()" ng-click="today()">
+          Today
+      </button>
+    </div>
+    <div class="alert alert-success" ng-show="event">
+      Event selected:{{event.startTime|date:'MMM/dd,yyyy,HH:mm'}} - {{event.endTime|date:'MMM/dd,yyyy,HH:mm'}}, {{event.title}}
+    </div>
+    <div class="well well-sm">
+      <calendar ng-model="currentDate" calendar-mode="mode" event-source="eventSource2" range-changed="reloadSource(startTime, endTime)" event-selected="onEventSelected(event)"></calendar>
+    </div>
+  </ion-content>
+</ion-view>
