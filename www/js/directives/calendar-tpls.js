@@ -85,10 +85,10 @@ Pta.constant('calendar2Config', {
                 $scope.selectedHour.el.firstElementChild.style.display = "none";
                 $scope.selectedHour.hashKey = null; 
                 var start = $scope.selectedHour.el.lastElementChild.innerHTML;
-                $scope.event.startDate = new Date($scope.title);
-                $scope.event.endDate = new Date($scope.title);
-                $scope.event.startTime = new Date($scope.title + " " + start);
-                $scope.event.endTime = new Date($scope.title + " " + $scope.endHour(start));
+                $scope.eventStartDate = new Date($scope.title);
+                $scope.eventEndDate = new Date($scope.title);
+                $scope.eventStartTime = new Date($scope.title + " " + start);
+                $scope.eventEndTime = new Date($scope.title + " " + $scope.endHour(start));
                 $scope.addEventModal();
             } else {//first hour selection made
                 $event.currentTarget.firstElementChild.style.display = "inherit"; 
@@ -97,28 +97,41 @@ Pta.constant('calendar2Config', {
             }
         }
         $scope.hasSetup = function(){
-            if($scope.event.setup.volunteers && $scope.event.setup.volunteers != 0){
-                $scope.event.setup.startTime = moment($scope.event.startTime).subtract(2, 'hours')._d;
-                $scope.event.setup.endTime = $scope.event.startTime;
-                $scope.event.setup.startDate = $scope.event.startDate;
-                $scope.event.setup.endDate = $scope.event.startDate;
+            if($scope.event.setup_volunteers_needed && $scope.event.setup_volunteers_needed != 0){
+                $scope.setupStartTime = moment($scope.eventStartTime).subtract(2, 'hours')._d;
+                $scope.setupEndTime = $scope.eventStartTime;
+                $scope.setupStartDate = $scope.eventStartDate;
+                $scope.setupEndDate = $scope.eventStartDate;
             }
         }
 
         $scope.hasCleanup = function(){
-            if($scope.event.cleanup.volunteers && $scope.event.setup.volunteers != 0){
-                $scope.event.cleanup.endTime = moment($scope.event.startTime).add(2, 'hours')._d;
-                $scope.event.cleanup.startTime = $scope.event.endTime;
-                $scope.event.cleanup.startDate = $scope.event.startDate;
-                $scope.event.cleanup.endDate = $scope.event.startDate;
+            if($scope.event.cleanup_volunteers_needed && $scope.event.setup_volunteers_needed != 0){
+                $scope.cleanupEndTime = moment($scope.eventStartTime).add(2, 'hours')._d;
+                $scope.cleanupStartTime = $scope.eventSndTime;
+                $scope.cleanupStartDate = $scope.eventStartDate;
+                $scope.cleanupEndDate = $scope.eventStartDate;
             }
         }
 
         $ionicPlatform.onHardwareBackButton(function(){
-            $scope.event.setup.volunteers = null;
-            $scope.event.volunteers = null;
-            $scope.event.cleanup.volunteers = null;
+            $scope.event.setup_volunteers_needed = null;
+            $scope.event.volunteers_needed = null;
+            $scope.event.cleanup_volunteers_needed = null;
         });
+        $scope.$on('selectedLocation', function(e){
+            $scope.event.location = e.targetScope.location.formatted_address;
+        });
+        $scope.saveEvent = function(event){
+            $scope.event.event_start = moment(moment($scope.eventStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.eventStartTime).format('hh:mm a'))._d;
+            $scope.event.event_end = moment(moment($scope.eventStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.eventStartTime).format('hh:mm a'))._d;
+            $scope.event.setup_start = moment(moment($scope.setupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.setupStartTime).format('hh:mm a'))._d;
+            $scope.event.setup_end = moment(moment($scope.setupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.setupStartTime).format('hh:mm a'))._d; 
+            $scope.event.cleanup_start = moment(moment($scope.cleanupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.cleanupStartTime).format('hh:mm a'))._d;
+            $scope.event.cleanup_end = moment(moment($scope.cleanupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.cleanupStartTime).format('hh:mm a'))._d;
+            console.log(event);
+            debugger;
+        }
         
 
         var self = this,

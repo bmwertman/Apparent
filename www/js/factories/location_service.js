@@ -66,6 +66,7 @@ Pta.controller('LocationCtrl', function($scope){
         $scope.choosePlace = function(place) {
           LocationService.getDetails(place.place_id).then(function(location) {
             $scope.location = location;
+            $scope.$emit('selectedLocation', location);
             $scope.close();
           });
         };

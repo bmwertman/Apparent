@@ -5,13 +5,14 @@
     </button>
     <input type="text"
            placeholder="Enter title"
-           ng-model="event.title"
+           ng-model="event.event_title"
            autofocus="true">
-    <button class="button button-clear button-positive" ng-click="saveEvent()">SAVE</button>
+    <button class="button button-clear button-positive" form="eventForm" type="submit" >SAVE</button>
   </ion-header-bar>
   <ion-content>
     <form class="col-md-6 add_event" 
-          ng-submit="addEvent(event)">
+          id="eventForm"
+          ng-submit="saveEvent(event)">
       <span class="event_dates">
         <i class="icon ion-android-time"></i>
         <md-input-container>
@@ -22,7 +23,7 @@
                    class="start_date"
                    min-date="minDate"
                    format="ddd, MMM DD, YYYY"
-                   ng-model="event.startDate"
+                   ng-model="eventStartDate"
                    aria-label="Start date">
         </md-input-container>
         <md-input-container>
@@ -33,7 +34,7 @@
                    class="end_date"
                    min-date="minDate"
                    format="ddd, MMM DD, YYYY"
-                   ng-model="event.endDate"
+                   ng-model="eventEndDate"
                    aria-label="End Date">
         </md-input-container>
       </span>
@@ -46,7 +47,7 @@
                    short-time="true"
                    min-date="minDate"
                    format="hh:mm a"
-                   ng-model="event.startTime"
+                   ng-model="eventStartTime"
                    aria-label="Start time">
         </md-input-container>
         <md-input-container>
@@ -57,7 +58,7 @@
                    short-time="true"
                    min-date="minDate"
                    format="hh:mm a" 
-                   ng-model="event.endTime"
+                   ng-model="eventEndTime"
                    aria-label="Start time">
         </md-input-container>
       </span>
@@ -99,10 +100,10 @@
                    type="number"
                    name="setup-volunteers"
                    ng-keyup="hasSetup()"
-                   ng-model="event.setup.volunteers"
+                   ng-model="event.setup_volunteers_needed"
                    placeholder="How many?">
           </label>
-          <md-input-container ng-if="event.setup.volunteers">
+          <md-input-container ng-if="event.setup_volunteers_needed">
               <input mdc-datetime-picker
                      date="true"
                      time="false"
@@ -111,10 +112,10 @@
                      min-date="minDate"
                      format="ddd, MMM DD, YYYY"
                      placeholder="Start date" 
-                     ng-model="event.setup.startDate"
+                     ng-model="setupStartDate"
                      aria-label="Set up start date">
           </md-input-container>
-          <md-input-container ng-if="event.setup.volunteers">
+          <md-input-container ng-if="event.setup_volunteers_needed">
               <input mdc-datetime-picker
                      date="true"
                      time="false"
@@ -123,12 +124,12 @@
                      min-date="minDate"
                      format="ddd, MMM DD, YYYY"
                      placeholder="End date" 
-                     ng-model="event.setup.endDate"
+                     ng-model="setupEndDate"
                      aria-label="Setup end date">
           </md-input-container>
         </span>
         <span class="event_times">
-          <md-input-container ng-if="event.setup.volunteers">
+          <md-input-container ng-if="event.setup_volunteers_needed">
               <input mdc-datetime-picker
                      date="false"
                      time="true"
@@ -137,10 +138,10 @@
                      min-date="minDate"
                      format="hh:mm a"
                      placeholder="Start time" 
-                     ng-model="event.setup.startTime"
+                     ng-model="setupStartTime"
                      aria-label="Set up start time">
           </md-input-container>
-          <md-input-container ng-if="event.setup.volunteers">
+          <md-input-container ng-if="event.setup_volunteers_needed">
               <input mdc-datetime-picker
                      date="false"
                      time="true"
@@ -149,7 +150,7 @@
                      min-date="minDate"
                      format="hh:mm a"
                      placeholder="End time" 
-                     ng-model="event.setup.endTime"
+                     ng-model="setupEndTime"
                      aria-label="Setup end time">
           </md-input-container>
         </span>
@@ -157,7 +158,7 @@
           <input class="volunteer_count" 
                  type="number"
                  name="op-volunteers"
-                 ng-model="event.volunteers"
+                 ng-model="event.volunteers_needed"
                  placeholder="How many?">
         </label>
         <label for="cleanup-volunteers">Clean up volunteers:</label>
@@ -165,9 +166,9 @@
                type="number"
                name="cleanup-volunteers"
                ng-keyup="hasCleanup()"
-               ng-model="event.cleanup.volunteers"
+               ng-model="event.cleanup_volunteers_needed"
                placeholder="How many?">
-        <span class="event_dates" ng-if="event.cleanup.volunteers">
+        <span class="event_dates" ng-if="event.cleanup_volunteers_needed">
           <md-input-container>
               <input mdc-datetime-picker
                      date="true"
@@ -177,7 +178,7 @@
                      min-date="minDate"
                      format="ddd, MMM DD, YYYY"
                      placeholder="Start date" 
-                     ng-model="event.cleanup.startDate"
+                     ng-model="cleanupStartDate"
                      aria-label="Cleanup start date">
           </md-input-container>
           <md-input-container>
@@ -189,11 +190,11 @@
                      min-date="minDate"
                      format="ddd, MMM DD, YYYY"
                      placeholder="End date" 
-                     ng-model="event.cleanup.endDate"
+                     ng-model="cleanupEndDate"
                      aria-label="Cleanup end date">
           </md-input-container>
         </span>
-        <span class="event_times" ng-if="event.cleanup.volunteers">
+        <span class="event_times" ng-if="event.cleanup_volunteers_needed">
           <md-input-container>
               <input mdc-datetime-picker
                      date="false"
@@ -203,7 +204,7 @@
                      min-date="minDate"
                      format="hh:mm a"
                      placeholder="Start time" 
-                     ng-model="event.cleanup.startTime"
+                     ng-model="cleanupStartTime"
                      aria-label="Cleanup start time">
           </md-input-container>
           <md-input-container>
@@ -215,7 +216,7 @@
                      min-date="minDate"
                      format="hh:mm a"
                      placeholder="End time"  
-                     ng-model="event.cleanup.endTime"
+                     ng-model="cleanupEndTime"
                      aria-label="Cleanup end time">
           </md-input-container>
         </span>
