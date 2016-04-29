@@ -11,7 +11,8 @@ var Pta = angular.module('pta', [
   'ngAria', 
   'ngMaterial', 
   'ngMaterialDatePicker',
-  'lk-google-picker'
+  'lk-google-picker',
+  'sails.io'
   ])
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {

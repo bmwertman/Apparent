@@ -25,12 +25,13 @@ Pta.constant('calendar2Config', {
         '$ionicModal',
         'LocationService',
         '$ionicPlatform',
-        function ($rootScope, $scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $localstorage, $ionicModal, LocationService, $ionicPlatform) {
+        '$sailsSocket',
+        '$location',
+        '$ionicLoading',
+        function ($rootScope, $scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $localstorage, $ionicModal, LocationService, $ionicPlatform, $sailsSocket, $location, $ionicLoading) {
         'use strict';
 
         $scope.event = {};
-        $scope.event.setup = {};
-        $scope.event.cleanup = {};
 
         $scope.addEventModal = function() {
             $scope.modal.show();
@@ -44,6 +45,22 @@ Pta.constant('calendar2Config', {
             $scope.modal.hide();
             $scope.event = {};
         };
+
+        //save confirmation post submit
+        $scope.saved = function(data, cb) {
+          $ionicLoading.show({
+            template: data + ' has been saved.',
+            duration: 2300
+          });
+        }
+
+        //error message display
+        $scope.err = function(err, lineNumber) {
+          $ionicLoading.show({
+            template: 'The save failed with error ' + err.status + '.Line ' + lineNumber + ', CheckinCtrl.',
+            duration: 4000
+          });
+        }
         
         $ionicModal.fromTemplateUrl('templates/add_event.html', {
           scope: $scope,
@@ -130,7 +147,14 @@ Pta.constant('calendar2Config', {
             $scope.event.cleanup_start = moment(moment($scope.cleanupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.cleanupStartTime).format('hh:mm a'))._d;
             $scope.event.cleanup_end = moment(moment($scope.cleanupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.cleanupStartTime).format('hh:mm a'))._d;
             console.log(event);
-            debugger;
+            $sailsSocket.post('/event', event)
+            .then(function (response){
+              $scope.saved(event.title);
+              $location.path('/volunteer');
+            })
+            .catch(function (err){
+              $scope.err(err, 156);
+            });
         }
         
 
