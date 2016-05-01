@@ -12,7 +12,7 @@ var Pta = angular.module('pta', [
   'ngMaterial', 
   'ngMaterialDatePicker',
   'lk-google-picker',
-  'sails.io'
+  'angular-meteor'
   ])
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
