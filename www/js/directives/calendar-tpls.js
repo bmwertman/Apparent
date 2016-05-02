@@ -25,13 +25,18 @@ Pta.constant('calendar2Config', {
         '$ionicModal',
         'LocationService',
         '$ionicPlatform',
-        '$sailsSocket',
         '$location',
         '$ionicLoading',
-        function ($rootScope, $scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $localstorage, $ionicModal, LocationService, $ionicPlatform, $sailsSocket, $location, $ionicLoading) {
+        function ($rootScope, $scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $localstorage, $ionicModal, LocationService, $ionicPlatform, $location, $ionicLoading) {
         'use strict';
 
         $scope.event = {};
+
+        // $scope.helpers({
+        //     events: function(){
+        //         return Events.findOne($stateParams.eventId);
+        //     }
+        // });
 
         $scope.addEventModal = function() {
             $scope.modal.show();
