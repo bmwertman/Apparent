@@ -2,10 +2,9 @@
   <ion-content>
     <ion-list class="events">
       <ion-item ng-repeat="event in events">
-        <h2 class="event_title">My Event</h2>
-        <img class="event_img" ng-src="{{event.image}}" ng-show="event.image"></img>
-        <p class="event_description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        <h4 class="needed">Uncovered Volunteer Hours: {{event.needed}}</h4>
+        <h2 class="event_title">{{ event.event_title }}</h2>
+        <img class="event_img" src="http://placekitten.com/200" ng-show="event.image"></img>
+        <p class="event_description">{{ event.description }}</h4>
         <button class="button button-small button-balanced" ng-click="openModal()">Help Out</button>
       </ion-item>
     </ion-list>

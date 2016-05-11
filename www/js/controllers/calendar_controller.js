@@ -7,6 +7,8 @@ Pta.controller('CalendarCtrl', [
   '$ionicModal',
   '$ionicPopup',
   '$ionicSideMenuDelegate',
+  'FIREBASE_URL',
+  '$firebaseArray',
   // '$cordovaSocialSharing',
   // 'eventService',// formerly repair service 
   // 'jwtHelper',
@@ -14,10 +16,19 @@ Pta.controller('CalendarCtrl', [
   // 'signinService',
   // '$ionicPlatform',
   // '$cordovaPrinter',
-  function ($scope, $ionicLoading, $location, $timeout, $state, $ionicModal, $ionicPopup, $ionicSideMenuDelegate) {
+  function ($scope, $ionicLoading, $location, $timeout, $state, $ionicModal, $ionicPopup, $ionicSideMenuDelegate, FIREBASE_URL, $firebaseArray) {
   'use strict';
 
   $ionicSideMenuDelegate.canDragContent(false)
+
+  // Get the event data from firebase as an array
+  var ref = new Firebase(FIREBASE_URL);
+  var eventsRef = ref.child('events');
+  $scope.events = $firebaseArray(eventsRef);
+
+  $scope.events.$loaded(function(data){
+    // This is where you have access to the data after it has loaded!!!
+  });
 
   // $scope.$on('signedin', function(){
   //   Idle.watch();

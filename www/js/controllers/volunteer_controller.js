@@ -1,18 +1,27 @@
-Pta.controller('VolunteerCtrl', function($scope, $ionicSideMenuDelegate, $ionicModal) {
+Pta.controller('VolunteerCtrl', function($scope, $ionicSideMenuDelegate, $ionicModal, FIREBASE_URL, $firebaseArray) {
 
   $ionicSideMenuDelegate.canDragContent(true);
 
-  $scope.events = [
-    {image:"http://placekitten.com/200", needed: 20},
-    {image:"http://placekitten.com/200", needed: 20},
-    {image:"http://placekitten.com/200", needed: 20},
-    {image:"http://placekitten.com/200", needed: 20},
-    {image:"http://placekitten.com/200", needed: 20},
-    {image:"http://placekitten.com/200", needed: 20},
-    {image:"http://placekitten.com/200", needed: 20},
-    {image:"http://placekitten.com/200", needed: 20},
-    {image:"http://placekitten.com/200", needed: 20}
-  ];
+  // Get the event data from firebase as an array
+  var ref = new Firebase(FIREBASE_URL);
+  var eventsRef = ref.child('events');
+  $scope.events = $firebaseArray(eventsRef);
+
+  $scope.events.$loaded(function(data){
+    // This is where you have access to the data after it has loaded!!!
+  });
+  
+  // $scope.events = [
+  //   {image:"http://placekitten.com/200", needed: 20},
+  //   {image:"http://placekitten.com/200", needed: 20},
+  //   {image:"http://placekitten.com/200", needed: 20},
+  //   {image:"http://placekitten.com/200", needed: 20},
+  //   {image:"http://placekitten.com/200", needed: 20},
+  //   {image:"http://placekitten.com/200", needed: 20},
+  //   {image:"http://placekitten.com/200", needed: 20},
+  //   {image:"http://placekitten.com/200", needed: 20},
+  //   {image:"http://placekitten.com/200", needed: 20}
+  // ];
 
   $ionicModal.fromTemplateUrl('templates/volunteer_signup.html', {
     scope: $scope,
