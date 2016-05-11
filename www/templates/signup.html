@@ -1,0 +1,20 @@
+<ion-view title="The PTA App">
+  <ion-content class="padding signup">
+    <h2>Where parents connect to make better schools</h2>
+    <form ng-submit="signup_submit">
+      <input type="text" ng-model="user.school" placeholder="Child's school name" required="true">
+      <select type="number" ng-model="user.child_count" ng-options="value for number in numbers" placeholder="Number of attending children" ng-change="childInputs()" required>
+        <option value="" disabled selected>How many of your children attend {{parent.school.name}}</option>
+      </select>
+      <div class="children">
+        <input type="text" ng-repeat="child in parent.child_count" ng-model="child_name" placeholder="Child's full name" required>
+        <select type="number" ng-model="user.child.grade" ng-options="value for grade in grades" placeholder="Number of" required>
+          <option value="" disabled selected>Grade level September this year</option>
+        </select>
+      </div>
+      <input type="email" ng-model="user.email" placeholder="Enter your email" required>
+      <input type="password" ng-model="user.password" placeholder="Password" required>
+      <input type="password" ng-model="confirm_password" placeholder="Confirm password" required>
+    </form>
+  </ion-content>
+</ion-view>

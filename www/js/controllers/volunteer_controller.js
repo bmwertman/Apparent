@@ -1,18 +1,22 @@
-Pta.controller('VolunteerCtrl', function($scope, $ionicSideMenuDelegate, $ionicModal) {
+Pta.controller('VolunteerCtrl', [
+  '$scope',
+  '$ionicSideMenuDelegate',
+  '$ionicModal',
+  function($scope, $ionicSideMenuDelegate, $ionicModal) {
 
   $ionicSideMenuDelegate.canDragContent(true);
 
-  $scope.events = [
-    {image:"http://placekitten.com/200", needed: 20},
-    {image:"http://placekitten.com/200", needed: 20},
-    {image:"http://placekitten.com/200", needed: 20},
-    {image:"http://placekitten.com/200", needed: 20},
-    {image:"http://placekitten.com/200", needed: 20},
-    {image:"http://placekitten.com/200", needed: 20},
-    {image:"http://placekitten.com/200", needed: 20},
-    {image:"http://placekitten.com/200", needed: 20},
-    {image:"http://placekitten.com/200", needed: 20}
-  ];
+  // $scope.events = [
+  //   {image:"http://placekitten.com/200", needed: 20},
+  //   {image:"http://placekitten.com/200", needed: 20},
+  //   {image:"http://placekitten.com/200", needed: 20},
+  //   {image:"http://placekitten.com/200", needed: 20},
+  //   {image:"http://placekitten.com/200", needed: 20},
+  //   {image:"http://placekitten.com/200", needed: 20},
+  //   {image:"http://placekitten.com/200", needed: 20},
+  //   {image:"http://placekitten.com/200", needed: 20},
+  //   {image:"http://placekitten.com/200", needed: 20}
+  // ];
 
   $ionicModal.fromTemplateUrl('templates/volunteer_signup.html', {
     scope: $scope,
@@ -42,6 +46,6 @@ Pta.controller('VolunteerCtrl', function($scope, $ionicSideMenuDelegate, $ionicM
   $scope.volunteersNeeded.unshift({name: 'All'});
   
 
-});
+}]);
 
 

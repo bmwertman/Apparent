@@ -27,16 +27,22 @@ Pta.constant('calendar2Config', {
         '$ionicPlatform',
         '$location',
         '$ionicLoading',
-        function ($rootScope, $scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $localstorage, $ionicModal, LocationService, $ionicPlatform, $location, $ionicLoading) {
+        '$meteor',
+        function ($rootScope, $scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $localstorage, $ionicModal, LocationService, $ionicPlatform, $location, $ionicLoading, $meteor) {
         'use strict';
+        
+        if(Meteor.isServer) {
+            BrowserPolicy.content.allowOriginForAll("http://meteor.local");
+        }
+
+        $scope.subscribe('calevents')
+        $scope.helpers({
+            calEvents() {
+                return Calevents.find({});
+            }
+        });
 
         $scope.event = {};
-
-        // $scope.helpers({
-        //     events: function(){
-        //         return Events.findOne($stateParams.eventId);
-        //     }
-        // });
 
         $scope.addEventModal = function() {
             $scope.modal.show();
@@ -151,18 +157,12 @@ Pta.constant('calendar2Config', {
             $scope.event.setup_end = moment(moment($scope.setupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.setupStartTime).format('hh:mm a'))._d; 
             $scope.event.cleanup_start = moment(moment($scope.cleanupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.cleanupStartTime).format('hh:mm a'))._d;
             $scope.event.cleanup_end = moment(moment($scope.cleanupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.cleanupStartTime).format('hh:mm a'))._d;
-            console.log(event);
-            $sailsSocket.post('/event', event)
-            .then(function (response){
-              $scope.saved(event.title);
-              $location.path('/volunteer');
-            })
-            .catch(function (err){
-              $scope.err(err, 156);
-            });
+            Calevents.insert(event);
+            $scope.saved(event.title, function(){
+                $location.path('/volunteer');
+            }); 
         }
         
-
         var self = this,
             ngModelCtrl = {$setViewValue: angular.noop}; // nullModelCtrl;
 
