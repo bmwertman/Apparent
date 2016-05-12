@@ -1,4 +1,10 @@
-Pta.controller('VolunteerCtrl', function($scope, $ionicSideMenuDelegate, $ionicModal, FIREBASE_URL, $firebaseArray) {
+Pta.controller('VolunteerCtrl', [
+  '$scope', 
+  '$ionicSideMenuDelegate', 
+  '$ionicModal', 
+  'FIREBASE_URL',
+  '$firebaseArray', 
+  function($scope, $ionicSideMenuDelegate, $ionicModal, FIREBASE_URL, $firebaseArray) {
 
   $ionicSideMenuDelegate.canDragContent(true);
 

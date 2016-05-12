@@ -1,37 +1,71 @@
-Pta.controller('LoginCtrl', function($scope, $state, $meteor) {
+Pta.controller('LoginCtrl', [
+  '$scope',
+  '$ionicModal',
+  '$timeout',
+  'FIREBASE_URL',
+  '$ionicLoading',
+  'Auth',
+  '$localstorage',
+  function($scope, $ionicModal, $timeout, FIREBASE_URL, $ionicLoading, Auth, $localstorage) {
 
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
+  // Form data for the login modal
+  $scope.loginData = {};
 
-  $scope.doLoginAction = function($scope) {
-     alert("in doLoginAction");
-     setTimeout(function() {
-       $state.go('home');
-     }, 1000);
-   }
+  // Look in Local Cache to see if user/password is stored
+  var loginUsername = $localstorage.get('username');
+  var loginPassword = $localstorage.get('password');
+  if (loginUsername && loginPassword) {
+    // $ionicLoading.show({ template: '<ion-spinner></ion-spinner>', duration: 3000 });
+    loginPasswordCache(loginUsername, loginPassword);
+  }
 
-   $scope.doCreateAccountAction = function() {
-     alert("in doCreateAccountAction");
-     $meteor.createUser({
-       username: $scope.credentials.username,
-       email: $scope.credentials.username,
-       password: $scope.credentials.password,
-       profile: {
-         createdOn: new Date()
-       }
-     }).then(function(_response) {
-       console.log('doCreateAccountAction success');
-       alert("user created: " + $scope.credentials.username );
-       $state.go('home');
-     }, function(_error) {
-       console.log('Login error - ', _error);
-       alert("Error: " + _error.reason);
-     });
-     return false;
-   }
+  // If username and password are found in local storage, then log in
+  function loginPasswordCache(loginUsername, loginPassword) {
+    var ref = new Firebase(FIREBASE_URL);
+    ref.authWithPassword({
+      email    : loginUsername,
+      password : loginPassword
+    }, function(error, authData) {
+      if (error) {
+        console.log("Login Failed!", error);
+      }
+    });
+  };
 
-});
+  // Log in using firebase's login API
+  $scope.doLogin = function () {
+    $scope.errorMessage = null;
+    $ionicLoading.show({ template: '<ion-spinner></ion-spinner>'});
+    var ref = new Firebase(FIREBASE_URL);
+    ref.authWithPassword({
+      email    : $scope.loginData.username,
+      password : $scope.loginData.password
+    }, function(error, authData) {
+      // $ionicLoading.hide();
+      if (error) {
+        $ionicLoading.hide();
+        console.log("Login Failed!", error);
+        $scope.errorMessage = error.message;
+        $scope.$apply();
+      } else {
+        $ionicLoading.hide();
+        // loginPopup.close();
+        // cordova.plugins.Keyboard.close();
+        // Save off login info into local storage
+        $localstorage.set('username', $scope.loginData.username);
+        $localstorage.set('password', $scope.loginData.password);
+        console.log("Authenticated successfully with payload:", authData);
+      }
+    });
+  };
+
+  // Logs a user out
+  $scope.logout = Auth.logout;
+
+  // Detect changes in authentication state
+  // when a user logs in, set them to $scope
+  Auth.onAuth(function(authData) {
+    $scope.user = authData;
+  });
+
+}]);
