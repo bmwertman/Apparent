@@ -10,7 +10,7 @@ Pta.controller('VolunteerCtrl', [
 
   // Get the event data from firebase as an array
   var ref = new Firebase(FIREBASE_URL);
-  var eventsRef = ref.child('events');
+  var eventsRef = ref.child('events').orderByChild('date');
   $scope.events = $firebaseArray(eventsRef);
 
   $scope.events.$loaded(function(data){
