@@ -12,10 +12,9 @@ var Pta = angular.module('pta', [
   'ngMaterial', 
   'ngMaterialDatePicker',
   'lk-google-picker',
-  'firebase',
-  'sails.io'
+  'firebase'
   ])
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -29,6 +28,16 @@ var Pta = angular.module('pta', [
       StatusBar.styleDefault();
     }
   });
+
+  // checking for errors in state change
+  $rootScope.$on('$stateChangeError',
+    function(event, toState, toParams, fromState, fromParams, error) {
+      // We can catch when the $requireUser promise is rejected and redirect to login state
+      if (error === 'AUTH_REQUIRED') {
+        event.preventDefault();
+        $state.go('login');
+      }
+    });
 })
 
 // URL of the firebase database to be used in controllers and factories
@@ -79,12 +88,27 @@ var Pta = angular.module('pta', [
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
   $stateProvider
+  .state('login', {
+     url: '/login',
+     templateUrl: 'templates/login.html',
+     controller : 'LoginCtrl'
+   })
+   .state('home', {
+     url: '/home',
+     templateUrl: 'templates/home.html',
+     controller: 'HomeCtrl',
+     resolve: {
+      "currentUser": function($meteor) {
+        return $meteor.requireUser();
+      }
+     }
+   })
 
   .state('app', {
     url: '/app',
     abstract: true,
-    templateUrl: 'templates/menu.html',
-    controller: 'AppCtrl'
+    templateUrl: 'templates/menu.html'
+    // controller:'AppCtrl'
   })
 
   .state('login', {

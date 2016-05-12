@@ -11,18 +11,6 @@ Pta.controller('VolunteerCtrl', function($scope, $ionicSideMenuDelegate, $ionicM
     // This is where you have access to the data after it has loaded!!!
   });
   
-  // $scope.events = [
-  //   {image:"http://placekitten.com/200", needed: 20},
-  //   {image:"http://placekitten.com/200", needed: 20},
-  //   {image:"http://placekitten.com/200", needed: 20},
-  //   {image:"http://placekitten.com/200", needed: 20},
-  //   {image:"http://placekitten.com/200", needed: 20},
-  //   {image:"http://placekitten.com/200", needed: 20},
-  //   {image:"http://placekitten.com/200", needed: 20},
-  //   {image:"http://placekitten.com/200", needed: 20},
-  //   {image:"http://placekitten.com/200", needed: 20}
-  // ];
-
   $ionicModal.fromTemplateUrl('templates/volunteer_signup.html', {
     scope: $scope,
     animation: 'slide-in-up'
@@ -50,7 +38,6 @@ Pta.controller('VolunteerCtrl', function($scope, $ionicSideMenuDelegate, $ionicM
   };
   $scope.volunteersNeeded.unshift({name: 'All'});
   
-
-});
+}]);
 
 

@@ -92,5 +92,3 @@ Pta.controller('AppCtrl', function($scope, $ionicModal, $timeout, FIREBASE_URL, 
   //   }, 1000);
   // };
 });
-
-

@@ -24,12 +24,16 @@
 
     <!-- your app's js -->
     <script src="js/app.js"></script>
-
+    <script src="lib/meteor-client-side/dist/meteor-client-side.bundle.min.js"></script>
+    <script src="lib/meteor-client-side/meteor-runtime-config.js"></script>
+    <script src="lib/angular-meteor/dist/angular-meteor.bundle.min.js"></script>
+    <script src="lib/accounts-base-client-side/dist/accounts-base-client-side.bundle.js"></script>
+    <script src="lib/accounts-password-client-side/dist/accounts-password-client-side.bundle.min.js"></script>
     <script src="lib/angular-swipe/dist/angular-swipe.js"></script>
     <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyB8pW24K8TWAKiP5XQHDlTNyBjjfR11wM0&libraries=places"></script>
     <script src="https://apis.google.com/js/client.js"></script>
     <script src="http://apis.google.com/js/api.js"></script>
-    <script src="lib/moment/min/moment-with-locales.min.js"></script>
+    <script src="lib/momentjs/min/moment-with-locales.min.js"></script>
     <script src="lib/ngCordova/ng-cordova.js"></script>
     <script src="lib/angular-aria/angular-aria.js"></script>
     <script src="lib/angular-material/angular-material.js"></script>
@@ -37,6 +41,8 @@
     <script src="lib/angular-google-picker/dist/google-picker.js"></script>
     
     <script src="js/controllers/controllers.js"></script>
+    <script src="js/controllers/login_controller.js"></script>
+    <script src="js/controllers/home_controller.js"></script>
 
     <script src="js/controllers/volunteer_controller.js"></script>
 
@@ -46,12 +52,6 @@
     <script src="js/factories/location_service.js"></script>
     
     <script src="js/factories/localStorage_factory.js"></script>
-    <script src="lib/socket.io-client/socket.io.js"></script>
-    <script src="lib/sails.io.js/dist/sails.io.js"></script>
-    
-    <script type="text/javascript">io.sails.url = 'http://localhost:1337'</script>
-
-    <script src="lib/angularSails/dist/ngsails.io.js"></script>
 
     <!-- Firebase -->
     <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
