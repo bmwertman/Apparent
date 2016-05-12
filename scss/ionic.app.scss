@@ -208,33 +208,69 @@ body.md-dialog-is-showing{
   }
 }
 
-ion-header-bar.calendar-form{
-  height: 60px;
-  input{
-    margin: 35px 0 0 30px;
-    height: 18px;
-    color: #FFF;
-    background-color: $positive;
-    &::-webkit-input-placeholder{
+ion-header-bar{
+  p.tag_line{
+    position: absolute;
+    right: 7px;
+    top: 15px;
+    width: 219px;
+  }
+  .title.title-left{
+    right: 0;
+    margin: 0 0 0 10px;
+  }
+  .calendar-form{
+    height: 60px;
+    input{
+      margin: 35px 0 0 30px;
+      height: 18px;
       color: #FFF;
+      background-color: $positive;
+      &::-webkit-input-placeholder{
+        color: #FFF;
+      }
+    }
+    button.button.button-clear.button-positive{
+      color: #FFF;
+      font-weight: 600;
+      font-size: 16px;
+      position: absolute;
+      right: 10px;
+      top: 0px;
+      &.close-calendar{
+        padding-left: 5px;
+        width: 50px;
+        left: 0;
+        text-align: left;
+        i.icon.ion-close::before{
+          font-size: 18px;
+        }
+      } 
     }
   }
-  button.button.button-clear.button-positive{
-    color: #FFF;
-    font-weight: 600;
-    font-size: 16px;
-    position: absolute;
-    right: 10px;
-    top: 0px;
-    &.close-calendar{
-      padding-left: 5px;
-      width: 50px;
-      left: 0;
-      text-align: left;
-      i.icon.ion-close::before{
-        font-size: 18px;
+}
+  
+.signup{
+  form{
+    border: 1px solid;
+    border-color: gainsboro;
+    padding: 10px;
+    border-radius: 1px;
+    box-shadow: 0px 0px 1px 0px;
+    .children{
+      margin-bottom: 20px;
+      input{
+        width: 200px;
+        display: inline-block;
       }
-    } 
+      select{
+        margin-right: calc(100% - 141px);
+      }
+    }
+    label input{
+      width: 100%;
+      margin-bottom: 15px;
+    }
   }
 }
 

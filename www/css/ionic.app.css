@@ -9871,29 +9871,56 @@ body.md-dialog-is-showing {
 .dtp .dtp-hand.dtp-minute-hand.on {
   background-color: #E53935 !important; }
 
-ion-header-bar.calendar-form {
+ion-header-bar p.tag_line {
+  position: absolute;
+  right: 7px;
+  top: 15px;
+  width: 219px; }
+
+ion-header-bar .title.title-left {
+  right: 0;
+  margin: 0 0 0 10px; }
+
+ion-header-bar .calendar-form {
   height: 60px; }
-  ion-header-bar.calendar-form input {
+  ion-header-bar .calendar-form input {
     margin: 35px 0 0 30px;
     height: 18px;
     color: #FFF;
     background-color: #B71C1C; }
-    ion-header-bar.calendar-form input::-webkit-input-placeholder {
+    ion-header-bar .calendar-form input::-webkit-input-placeholder {
       color: #FFF; }
-  ion-header-bar.calendar-form button.button.button-clear.button-positive {
+  ion-header-bar .calendar-form button.button.button-clear.button-positive {
     color: #FFF;
     font-weight: 600;
     font-size: 16px;
     position: absolute;
     right: 10px;
     top: 0px; }
-    ion-header-bar.calendar-form button.button.button-clear.button-positive.close-calendar {
+    ion-header-bar .calendar-form button.button.button-clear.button-positive.close-calendar {
       padding-left: 5px;
       width: 50px;
       left: 0;
       text-align: left; }
-      ion-header-bar.calendar-form button.button.button-clear.button-positive.close-calendar i.icon.ion-close::before {
+      ion-header-bar .calendar-form button.button.button-clear.button-positive.close-calendar i.icon.ion-close::before {
         font-size: 18px; }
+
+.signup form {
+  border: 1px solid;
+  border-color: gainsboro;
+  padding: 10px;
+  border-radius: 1px;
+  box-shadow: 0px 0px 1px 0px; }
+  .signup form .children {
+    margin-bottom: 20px; }
+    .signup form .children input {
+      width: 200px;
+      display: inline-block; }
+    .signup form .children select {
+      margin-right: calc(100% - 141px); }
+  .signup form label input {
+    width: 100%;
+    margin-bottom: 15px; }
 
 .add_event {
   margin-top: 10px; }

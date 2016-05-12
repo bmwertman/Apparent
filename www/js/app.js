@@ -12,7 +12,8 @@ var Pta = angular.module('pta', [
   'ngMaterial', 
   'ngMaterialDatePicker',
   'lk-google-picker',
-  'firebase'
+  'firebase',
+  'validation.match',
   ])
 .run(function($ionicPlatform, $rootScope) {
   $ionicPlatform.ready(function() {
@@ -88,33 +89,17 @@ var Pta = angular.module('pta', [
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
   $stateProvider
+
   .state('login', {
      url: '/login',
      templateUrl: 'templates/login.html',
      controller : 'LoginCtrl'
-   })
-   .state('home', {
-     url: '/home',
-     templateUrl: 'templates/home.html',
-     controller: 'HomeCtrl',
-     resolve: {
-      "currentUser": function($meteor) {
-        return $meteor.requireUser();
-      }
-     }
    })
 
   .state('app', {
     url: '/app',
     abstract: true,
     templateUrl: 'templates/menu.html'
-    // controller:'AppCtrl'
-  })
-
-  .state('login', {
-    url: '/login',
-    templateUrl: 'templates/login.html',
-    controller: 'AppCtrl'
   })
 
   .state('app.calendar', {

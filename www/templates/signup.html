@@ -1,20 +1,34 @@
-<ion-view title="The PTA App">
+<ion-modal-view title="The PTA App">
+  <ion-header-bar align-title="left" class="white-font bar bar-header bar-positive">
+    <h3 class="title title-left">The PTA App</h3>
+    <p class="tag_line">Connected parents. Better schools.</p>
+  </ion-header-bar>
   <ion-content class="padding signup">
-    <h2>Where parents connect to make better schools</h2>
-    <form ng-submit="signup_submit">
-      <input type="text" ng-model="user.school" placeholder="Child's school name" required="true">
-      <select type="number" ng-model="user.child_count" ng-options="value for number in numbers" placeholder="Number of attending children" ng-change="childInputs()" required>
-        <option value="" disabled selected>How many of your children attend {{parent.school.name}}</option>
-      </select>
-      <div class="children">
-        <input type="text" ng-repeat="child in parent.child_count" ng-model="child_name" placeholder="Child's full name" required>
-        <select type="number" ng-model="user.child.grade" ng-options="value for grade in grades" placeholder="Number of" required>
-          <option value="" disabled selected>Grade level September this year</option>
+    <form name="signupForm" ng-submit="signup_submit">
+      <label for="school-name">School name
+        <input type="text" name="school-name" ng-model="user.school" placeholder="Child's school name" required="true">
+      </label>
+      <label for="child-count" ng-if="user.school">Children attending {{ user.school}}
+        <input type="number" ng-keyup="childInfoInputs(user.child_count)" name="child-count" ng-model="user.child_count" ng-change="childInputs()" placeholder="How many?" class="number_input" required>
+      </label>
+      <div class="children" ng-if="childCntRcvd">
+        <label for="child-name" ng-repeat-start="child in childArr">Child's name</label>
+        <input type="text" name="child-name" ng-model="child_name[$index+1]" placeholder="Child's full name" required>
+        <select type="number" name="grade-level" ng-repeat-end ng-model="childgrade[$index+1]" ng-options="key for (key,value) in grades"required>
+          <option value="" disabled selected>Current grade level</option>
         </select>
       </div>
-      <input type="email" ng-model="user.email" placeholder="Enter your email" required>
-      <input type="password" ng-model="user.password" placeholder="Password" required>
-      <input type="password" ng-model="confirm_password" placeholder="Confirm password" required>
+      <label for="email">Email
+        <input type="email" name="email" ng-model="user.email" placeholder="Email" required>
+      </label>
+      <label for="password">Password
+        <input type="password" name="password" ng-model="user.password" placeholder="Password" required>
+      </label>
+      <label for="confirm">Confirm password
+        <input type="password" name="confirm" ng-model="confirm_password" placeholder="Confirm password" name"confirmField" match="user.password" match-ignore-empty="true" required>
+      </label>  
+      <div ng-show="signupForm.confirmField.$error.match">Passwords do not match</div>
+      <button type="submit" class="button button-block button-balanced">Signup</button>
     </form>
   </ion-content>
-</ion-view>
+</ion-modal-view>

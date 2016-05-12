@@ -5,11 +5,46 @@ Pta.controller('SignupCtrl', [
   function($scope, $ionicSideMenuDelegate, $ionicModal) {
 
   $ionicSideMenuDelegate.canDragContent(true);
+  $scope.childCntRcvd = false;
+  $scope.user = {};
+  $scope.user.children = [];
+  $scope.grades = {
+    'K': 0,
+    '1st': 1,
+    '2nd': 2,
+    '3rd': 3,
+    '4th': 4,
+    '5th': 5,
+    '6th': 6,
+    '7th': 7,
+    '8th': 8,
+    '9th': 9,
+    '10th': 10,
+    '11th': 11,
+    '12th': 12
+  };
 
-  $scope.parent = {};
-  $scope.parent.children = [];
-  $scope.numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  $scope.grades = ['K', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th', '12th'];
+  $scope.childInfoInputs = function(num){
+    $scope.childArr = [];
+    for (var i = 0; i < num; i++) {
+      $scope.childArr.push(i);
+    }
+    $scope.childCntRcvd = true;
+  }
+
+  $ionicModal.fromTemplateUrl('templates/signup.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal){
+    $scope.modal = modal;
+  });
+
+  $scope.openModal = function() {
+    $scope.modal.show();
+  };
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
 
 }]);
 
