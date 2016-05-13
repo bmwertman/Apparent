@@ -4,7 +4,7 @@
     <p class="tag_line">Connected parents. Better schools.</p>
   </ion-header-bar>
   <ion-content class="padding signup">
-    <form name="signupForm" ng-submit="signup_submit">
+    <form name="signupForm" ng-submit="signupSubmit()">
       <label for="school-name">School name
         <input type="text" name="school-name" ng-model="user.school" placeholder="Child's school name" required="true">
       </label>
@@ -14,7 +14,7 @@
       <div class="children" ng-if="childCntRcvd">
         <label for="child-name" ng-repeat-start="child in childArr">Child's name</label>
         <input type="text" name="child-name" ng-model="child_name[$index+1]" placeholder="Child's full name" required>
-        <select type="number" name="grade-level" ng-repeat-end ng-model="childgrade[$index+1]" ng-options="key for (key,value) in grades"required>
+        <select type="number" name="grade-level" ng-repeat-end ng-model="child_grade[$index+1]" ng-options="key for (key,value) in grades"required>
           <option value="" disabled selected>Current grade level</option>
         </select>
       </div>
@@ -30,5 +30,7 @@
       <div ng-show="signupForm.confirmField.$error.match">Passwords do not match</div>
       <button type="submit" class="button button-block button-balanced">Signup</button>
     </form>
+    <!-- This displays user error messages (automatically generated from firebase) for login (like "The specified password is incorrect") -->
+    <p ng-if="errorMessage">{{ errorMessage }}</p>
   </ion-content>
 </ion-modal-view>

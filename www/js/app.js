@@ -15,7 +15,7 @@ var Pta = angular.module('pta', [
   'firebase',
   'validation.match',
   ])
-.run(function($ionicPlatform, $rootScope) {
+.run(function($ionicPlatform, $rootScope, Auth, FIREBASE_URL) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -29,6 +29,10 @@ var Pta = angular.module('pta', [
       StatusBar.styleDefault();
     }
   });
+
+  $rootScope.logout = function() {
+    Auth.logout(); 
+  }; 
 
   // checking for errors in state change
   $rootScope.$on('$stateChangeError',
