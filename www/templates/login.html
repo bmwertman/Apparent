@@ -14,6 +14,8 @@
         <button class="button button-block" ng-click="doLoginAction()">Login</button>
         <button class="button button-block" ng-controller="SignupCtrl" ng-click="openModal()">Create Account</button>
       </div>
+      <!-- This displays user error messages (automatically generated from firebase) for login (like "The specified password is incorrect") -->
+      <p ng-if="errorMessage">{{ errorMessage }}</p>
     </ion-item>
   </ion-content>
 </ion-view>

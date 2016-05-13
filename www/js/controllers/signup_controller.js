@@ -12,6 +12,8 @@ Pta.controller('SignupCtrl', [
   $scope.childCntRcvd = false;
   $scope.user = {};
   $scope.user.children = [];
+  $scope.child_name = [];
+  $scope.child_grade = [];
   $scope.grades = {
     'K': 0,
     '1st': 1,
@@ -27,8 +29,6 @@ Pta.controller('SignupCtrl', [
     '11th': 11,
     '12th': 12
   };
-
-
   var ref = new Firebase(FIREBASE_URL);
   $scope.authObj = $firebaseAuth(ref);
 
@@ -50,6 +50,7 @@ Pta.controller('SignupCtrl', [
   $scope.openModal = function() {
     $scope.modal.show();
   };
+
   $scope.closeModal = function() {
     $scope.modal.hide();
   };
@@ -90,7 +91,6 @@ Pta.controller('SignupCtrl', [
         $scope.errorMessage = error.message;
       });
     };
-  
 }]);
 
 
