@@ -4,17 +4,18 @@
     <p class="tag_line">Connected parents. Better schools.</p>
   </ion-header-bar>
   <ion-content class="padding signup">
-    <form name="signupForm" ng-submit="signup_submit">
+    <form name="signupForm" ng-submit="signupSubmit()">
       <label for="school-name">School name
         <input type="text" name="school-name" ng-model="user.school" placeholder="Child's school name" required="true">
       </label>
       <label for="child-count" ng-if="user.school">Children attending {{ user.school}}
-        <input type="number" ng-keyup="childInfoInputs(user.child_count)" name="child-count" ng-model="user.child_count" ng-change="childInputs()" placeholder="How many?" class="number_input" required>
+        <input type="number" ng-keyup="childInfoInputs(child_count)" name="child-count" ng-model="child_count" ng-change="childInputs()" placeholder="How many?" class="number_input" required>
       </label>
-      <div class="children" ng-if="childCntRcvd">
-        <label for="child-name" ng-repeat-start="child in childArr">Child's name</label>
-        <input type="text" name="child-name" ng-model="child_name[$index+1]" placeholder="Child's full name" required>
-        <select type="number" name="grade-level" ng-repeat-end ng-model="childgrade[$index+1]" ng-options="key for (key,value) in grades"required>
+      <div class="children" ng-if="childCntRcvd" ng-repeat="childcount in childArr track by $index">
+        <label for="child-name">Child's name:
+          <input type="text" name="child-name" ng-model="user.children[$index].name" placeholder="Child's full name" required>
+        </label>
+        <select type="number" name="grade-level" ng-model="user.children[$index].grade" ng-options="key for (key,value) in grades"required>
           <option value="" disabled selected>Current grade level</option>
         </select>
       </div>
@@ -28,7 +29,7 @@
         <input type="password" name="confirm" ng-model="confirm_password" placeholder="Confirm password" name"confirmField" match="user.password" match-ignore-empty="true" required>
       </label>  
       <div ng-show="signupForm.confirmField.$error.match">Passwords do not match</div>
-      <button type="submit" class="button button-block button-balanced">Signup</button>
+      <button type="submit" class="button button-block button-balanced">Create Account</button>
     </form>
   </ion-content>
 </ion-modal-view>

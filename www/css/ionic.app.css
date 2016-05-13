@@ -9912,15 +9912,14 @@ ion-header-bar .calendar-form {
   border-radius: 1px;
   box-shadow: 0px 0px 1px 0px; }
   .signup form .children {
-    margin-bottom: 20px; }
+    margin-bottom: 15px; }
     .signup form .children input {
       width: 200px;
       display: inline-block; }
     .signup form .children select {
       margin-right: calc(100% - 141px); }
   .signup form label input {
-    width: 100%;
-    margin-bottom: 15px; }
+    width: 100%; }
 
 .add_event {
   margin-top: 10px; }

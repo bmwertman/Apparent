@@ -2,7 +2,11 @@ Pta.controller('SignupCtrl', [
   '$scope',
   '$ionicSideMenuDelegate',
   '$ionicModal',
-  function($scope, $ionicSideMenuDelegate, $ionicModal) {
+  'FIREBASE_URL',
+  '$firebaseAuth',
+  '$ionicLoading',
+  '$firebaseArray',
+  function($scope, $ionicSideMenuDelegate, $ionicModal, FIREBASE_URL, $firebaseAuth, $ionicLoading, $firebaseArray) {
 
   $ionicSideMenuDelegate.canDragContent(true);
   $scope.childCntRcvd = false;
@@ -23,6 +27,10 @@ Pta.controller('SignupCtrl', [
     '11th': 11,
     '12th': 12
   };
+
+
+  var ref = new Firebase(FIREBASE_URL);
+  $scope.authObj = $firebaseAuth(ref);
 
   $scope.childInfoInputs = function(num){
     $scope.childArr = [];
@@ -45,7 +53,44 @@ Pta.controller('SignupCtrl', [
   $scope.closeModal = function() {
     $scope.modal.hide();
   };
-
+  
+  $scope.signupSubmit = function() {
+      $ionicLoading.show({ template: '<ion-spinner></ion-spinner>', duration: 2000});
+      // Create new user in firebase
+      $scope.authObj.$createUser({
+        email: $scope.user.email,
+        password: $scope.user.password
+      }).then(function(userData) {
+          // Log in this newly created user
+          return $scope.authObj.$authWithPassword({
+            email: $scope.user.email,
+            password: $scope.user.password
+          });
+      }).then(function(authData) {
+        // If the user is now created and logged in, then add the user's
+        // info into firebase
+        // Add the unique ID firebase assigns to the user (this will be helpful 
+        // as you build out more features)
+        var userProfile = { school: $scope.user.school,
+                            child_count: $scope.user.child_count,
+                            child_name: $scope.child_name,
+                            child_grade: $scope.child_grade,
+                            user_email: $scope.user.email,
+                            user_id: authData.uid,
+                            isAdmin: false 
+                          };
+        var usersRef = ref.child('users').child(authData.uid);
+        // Write the signup data in firebase under "users" with the key being
+        // the unique ID firebase assigned this user
+        usersRef.update(userProfile);
+        $ionicLoading.hide();
+        $scope.closeModal();
+      }).catch(function(error) {
+        console.error("Error: ", error);
+        $scope.errorMessage = error.message;
+      });
+    };
+  
 }]);
 
 
