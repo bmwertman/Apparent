@@ -30,18 +30,7 @@ Pta.constant('calendar2Config', {
         'FIREBASE_URL',
         function ($rootScope, $scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $localstorage, $ionicModal, LocationService, $ionicPlatform, $sailsSocket, $location, $ionicLoading, FIREBASE_URL) {
         'use strict';
-        
-        if(Meteor.isServer) {
-            BrowserPolicy.content.allowOriginForAll("http://meteor.local");
-        }
-
-        $scope.subscribe('calevents')
-        $scope.helpers({
-            calEvents() {
-                return Calevents.find({});
-            }
-        });
-
+    
         $scope.event = {};
 
         $scope.addEventModal = function() {
