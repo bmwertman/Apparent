@@ -9846,6 +9846,12 @@ body.md-dialog-is-showing {
 .menu {
   color: #FFF; }
 
+.tall {
+  height: 180px; }
+
+ion-content.has-tall-header {
+  top: 180px; }
+
 .dtp .dtp-date-view .dtp-header {
   background-color: #B71C1C !important; }
 
@@ -9870,6 +9876,12 @@ body.md-dialog-is-showing {
 .dtp .dtp-hand.dtp-hour-hand.on,
 .dtp .dtp-hand.dtp-minute-hand.on {
   background-color: #E53935 !important; }
+
+.bar-header {
+  border: 0px !important;
+  border-bottom-color: transparent !important;
+  background-image: none !important;
+  border-bottom: none !important; }
 
 ion-header-bar p.tag_line {
   position: absolute;
@@ -9920,6 +9932,54 @@ ion-header-bar .calendar-form {
       margin-right: calc(100% - 141px); }
   .signup form label input {
     width: 100%; }
+
+.profile div.icon_wrapper {
+  position: absolute;
+  right: calc((100% - 86px)/2);
+  top: 44px;
+  border: 2px solid white;
+  border-radius: 50%;
+  width: 86px;
+  height: 99px;
+  padding: 0px 7px; }
+  .profile div.icon_wrapper .ion-person {
+    font-size: 90px; }
+
+.profile #name {
+  margin-top: 138px; }
+  .profile #name h3 {
+    color: white;
+    margin: 7px 0;
+    display: inline-block; }
+
+.profile .profile-pic {
+  width: 100px;
+  height: 136px;
+  position: absolute;
+  right: calc((100% - 100px)/2); }
+
+.profile .tall .editable-wrap {
+  margin-top: 138px;
+  margin-left: calc((100% - 120px)/2); }
+  .profile .tall .editable-wrap .user-name {
+    width: 130px;
+    font-size: 19px;
+    color: white;
+    background-color: #B71C1C;
+    font-weight: bold; }
+  .profile .tall .editable-wrap .xeditable-submit {
+    color: white; }
+
+.profile p {
+  margin: 0; }
+
+.editable-group {
+  margin-bottom: 30px; }
+
+.xeditable-submit.fa.fa-pencil-square-o {
+  font-size: 28px;
+  border: none;
+  background-color: transparent; }
 
 .add_event {
   margin-top: 10px; }

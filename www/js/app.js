@@ -14,8 +14,17 @@ var Pta = angular.module('pta', [
   'lk-google-picker',
   'firebase',
   'validation.match',
+  'offClick',
+  'xeditable',
+  'jrCrop',
+  'naif.base64'
   ])
-.run(function($ionicPlatform, $rootScope, Auth, FIREBASE_URL) {
+.run(function($ionicPlatform, $rootScope, Auth, FIREBASE_URL, editableThemes, editableOptions) {
+  
+  // hide xeditable cancel button
+  editableThemes['default'].cancelTpl = '<button type="button" class="btn btn-default" style="display:none">';
+  editableThemes['default'].submitTpl = '<button type="submit" class="xeditable-submit fa fa-pencil-square-o"></button>';
+
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -49,7 +58,7 @@ var Pta = angular.module('pta', [
 .constant('FIREBASE_URL', 'https://sizzling-fire-7440.firebaseio.com')
 
 // Watches for authentication event. If login occurs, then get the user's profile info and go to calender or volunteer page
-.factory('Auth', function($firebaseAuth, $timeout, $rootScope, FIREBASE_URL, $firebaseObject, $location){
+.factory('Auth', function($firebaseAuth, $timeout, $rootScope, FIREBASE_URL, $firebaseObject, $location, userService){
   var ref = new Firebase(FIREBASE_URL);
   var auth = $firebaseAuth(ref);
   return {
@@ -70,6 +79,7 @@ var Pta = angular.module('pta', [
           var userID = authData.uid;
           var profileObjectRef = ref.child('users').child(userID);
           $rootScope.profile = $firebaseObject(profileObjectRef);
+          userService.setUser($firebaseObject(profileObjectRef));
           $rootScope.profile.$loaded(
             function(data) {
               // After user's profile data is loaded, go to calender or volunteer page
@@ -112,6 +122,15 @@ var Pta = angular.module('pta', [
       'menuContent': {
         templateUrl: 'templates/rcalendar.html',
         controller: 'CalendarCtrl'
+      }
+    }
+  })
+  .state('app.profile', {
+    url: '/profile',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/user_profile.html',
+        controller: 'UserCtrl'
       }
     }
   })

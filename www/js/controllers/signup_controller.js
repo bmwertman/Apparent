@@ -77,12 +77,15 @@ Pta.controller('SignupCtrl', [
       // Add the unique ID firebase assigns to the user (this will be helpful 
       // as you build out more features)
       var userProfile = { school: $scope.user.school,
-                          children: $scope.user.children,
+                          children: $scope.user.children,//an object with enumerable properties 
+                                                         //representing the # of children a user 
+                                                         //has at the school.
+                          full_name: $scope.user.full_name,
                           user_email: $scope.user.email,
                           user_id: authData.uid,
                           isAdmin: false 
-                        };
-      var usersRef = ref.child('users').child(authData.uid);
+                        },
+          usersRef = ref.child('users').child(authData.uid);
       // Write the signup data in firebase under "users" with the key being
       // the unique ID firebase assigned this user
       usersRef.update(userProfile);

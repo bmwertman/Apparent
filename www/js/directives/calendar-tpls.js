@@ -148,7 +148,6 @@ Pta.constant('calendar2Config', {
             $scope.event.cleanup_end = moment(moment($scope.cleanupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.cleanupStartTime).format('hh:mm a'))._d.toString();
             // This is needed to order the events chronologically in the view
             $scope.event.date = $scope.eventStartDate.getTime();
-            console.log(event);
             var ref = new Firebase(FIREBASE_URL);
             var eventsRef = ref.child('events');
             eventsRef.push($scope.event);
