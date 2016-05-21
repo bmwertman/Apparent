@@ -6,7 +6,8 @@ Pta.controller('SignupCtrl', [
   '$firebaseAuth',
   '$ionicLoading',
   '$firebaseArray',
-  function($scope, $ionicSideMenuDelegate, $ionicModal, FIREBASE_URL, $firebaseAuth, $ionicLoading, $firebaseArray) {
+  '$http',
+  function($scope, $ionicSideMenuDelegate, $ionicModal, FIREBASE_URL, $firebaseAuth, $ionicLoading, $firebaseArray, $http) {
 
   $ionicSideMenuDelegate.canDragContent(true);
   $scope.childCntRcvd = false;
@@ -39,7 +40,7 @@ Pta.controller('SignupCtrl', [
     }
     $scope.childCntRcvd = true;
   }
-
+  
   $ionicModal.fromTemplateUrl('templates/signup.html', {
     scope: $scope,
     animation: 'slide-in-up'
@@ -80,7 +81,6 @@ Pta.controller('SignupCtrl', [
                           children: $scope.user.children,//an object with enumerable properties 
                                                          //representing the # of children a user 
                                                          //has at the school.
-                          full_name: $scope.user.full_name,
                           user_email: $scope.user.email,
                           user_id: authData.uid,
                           isAdmin: false 

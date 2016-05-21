@@ -49,7 +49,7 @@ Pta.controller('UserCtrl', [
       $scope.user.phone_type = 0;
       $scope.type = angular.element(document.getElementById('phone-type'));
       $scope.type.attr("style", "margin-bottom:20px;color:red;" );
-    } 
+    }
     $scope.phoneTypeStyle = function(){
       if($scope.type) {
         $scope.type.removeAttr('style');

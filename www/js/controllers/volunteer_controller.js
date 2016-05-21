@@ -14,6 +14,7 @@ Pta.controller('VolunteerCtrl', [
   $scope.events = $firebaseArray(eventsRef);
 
   $scope.events.$loaded(function(data){
+    // debugger;
     // This is where you have access to the data after it has loaded!!!
   });
   
@@ -30,13 +31,13 @@ Pta.controller('VolunteerCtrl', [
   $scope.closeModal = function() {
     $scope.modal.hide();
   };
-  //Cleanup the modal when we're done with it!
+  
   $scope.$on('$destroy', function() {
     $scope.modal.remove();
   });
 
   $scope.volunteersNeeded = [];
-  $scope.roles = [ "Food Server 1", "Food Server 2", "Cashier", "Game Table 1", "Game Table 2"];
+  $scope.roles = [ "Setup", "Event", "Cleanup"];
   for (var i = $scope.roles.length - 1; i >= 0; i--) {
     var role = {};
     role.name = $scope.roles[i];
