@@ -14,8 +14,14 @@
                     <div ng-class="{'calendar-event-wrap': tm.events}" ng-show="tm.events">
                         <div ng-repeat="displayEvent in tm.events" class="calendar-event"
                              ng-click="eventSelected({event:displayEvent.event})"
-                             ng-style="{left: 100/displayEvent.overlapNumber*displayEvent.position+'%', width: 100/displayEvent.overlapNumber+'%', top: displayEvent.event.startTimeOffset+'%', height: 37*(displayEvent.event.totalApptTime)+'px'}">
-                            <div class="calendar-event-inner" style="white-space: pre-wrap; font-weight: bold">{{displayEvent.event.title}}</div>
+                             ng-style="{left: 100/displayEvent.overlapNumber*displayEvent.position+'%', 
+                                        width: 100/displayEvent.overlapNumber+'%',
+                                        top: displayEvent.event.startTimeOffset+'%',
+                                        height: 37*(displayEvent.event.totalApptTime)+'px'}">
+                            <div class="calendar-event-inner"
+                                 ng-class="{'primaryGreen':'primary-green', 'primaryBlue':'primary-blue', 'primaryRed':'primary-red'}[displayEvent.event.backgroundColor]"
+                                 style="white-space: pre-wrap; font-weight: bold">{{displayEvent.event.title}}
+                            </div>
                         </div>
                     </div>
                 </td>

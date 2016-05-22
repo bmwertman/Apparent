@@ -19,7 +19,22 @@ $positive: #B71C1C !default;
 $tagMdRed: #E53935 !default;
 $tagLtRed: #E57373 !default;
 $tagBlue: #010032 !default;
+$primaryGreen: #228B22 !default;
+$primaryBlue: #0000CD !default;
+$primaryRed: #B22222 !default;
 
+
+.primary-green{
+ background-color: $primaryGreen;
+}
+
+.primary-blue{
+  background-color: $primaryBlue
+}
+
+.primary-red{
+  background-color: $primaryRed;
+}
 
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;

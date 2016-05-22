@@ -52,36 +52,39 @@ Pta.constant('calendar2Config', {
         $scope.events.$loaded(function(data){
             $scope.eventSource2 = [];
             for (var i = data.length - 1; i >= 0; i--) {
-                if(data[i].cleanup_start){
-                    var cleanupObj = {};
-                    cleanupObj.allDay = false;
-                    cleanupObj.startTime = data[i].cleanup_start;
-                    cleanupObj.endTime = data[i].cleanup_end;
-                    cleanupObj.type = 'cleanup';
-                    cleanupObj.title = data[i].event_title + ' cleanup';
-                    cleanupObj.startTimeOffset = getTimeOffset(new Date(data[i].cleanup_start));
-                    cleanupObj.totalApptTime = getApptTime(new Date(data[i].cleanup_start), new Date(data[i].cleanup_end));
-                    $scope.eventSource2.push(cleanupObj);
-                }
                 if(data[i].setup_start){
-                    var setupObj = {};
-                    setupObj.allDay = false;
-                    setupObj.startTime = data[i].setup_start;
-                    setupObj.endTime = data[i].setup_end;
-                    setupObj.type = 'setup';
-                    setupObj.title = data[i].event_title + ' setup';
-                    setupObj.startTimeOffset = getTimeOffset(new Date(data[i].setup_start));
-                    setupObj.totalApptTime = getApptTime(new Date(data[i].setup_start), new Date(data[i].setup_end));
+                    var setupObj = {
+                        allday: false,
+                        startTime: data[i].setup_start,
+                        endTime:data[i].setup_end,
+                        backgroundColor: 'primaryGreen',
+                        title: data[i].event_title + ' setup',
+                        startTimeOffset: getTimeOffset(new Date(data[i].setup_start)),
+                        totalApptTime: getApptTime(new Date(data[i].setup_start), new Date(data[i].setup_end))
+                    }
                     $scope.eventSource2.push(setupObj);
                 }
-                var eventObj = {}
-                eventObj.allDay = false;
-                eventObj.startTime = data[i].event_start;
-                eventObj.endTime = data[i].event_end;
-                eventObj.type = 'event';
-                eventObj.title = data[i].event_title;
-                eventObj.startTimeOffset = getTimeOffset(new Date(data[i].event_start));
-                eventObj.totalApptTime = getApptTime(new Date(data[i].event_start), new Date(data[i].event_end));
+                if(data[i].cleanup_start){
+                    var cleanupObj = {
+                        allDay: false,
+                        startTime: data[i].cleanup_start,
+                        endTime: data[i].cleanup_end,
+                        backgroundColor: 'primaryRed',
+                        title: data[i].event_title + ' cleanup',
+                        startTimeOffset: getTimeOffset(new Date(data[i].cleanup_start)),
+                        totalApptTime: getApptTime(new Date(data[i].cleanup_start), new Date(data[i].cleanup_end))
+                    }
+                    $scope.eventSource2.push(cleanupObj);
+                }
+                var eventObj = {
+                    allDay: false,
+                    startTime: data[i].event_start,
+                    endTime: data[i].event_end,
+                    backgroundColor: 'primaryBlue',
+                    title: data[i].event_title,
+                    startTimeOffset: getTimeOffset(new Date(data[i].event_start)),
+                    totalApptTime: getApptTime(new Date(data[i].event_start), new Date(data[i].event_end))
+                }
                 $scope.eventSource2.push(eventObj);
             }
         });
