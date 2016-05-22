@@ -32,6 +32,18 @@ Pta.constant('calendar2Config', {
         function ($rootScope, $scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $localstorage, $ionicModal, LocationService, $ionicPlatform, $state, $ionicLoading, FIREBASE_URL, $firebaseArray) {
         'use strict';
 
+        function getTimeOffset(date) {
+          var minutes = date.getMinutes();
+          var percentOfHour = (minutes / 60) * 100; 
+          return percentOfHour;
+        };
+
+        function getApptTime(startTime, endTime) {
+          var totalDifference = endTime - startTime;
+          var convertToMins = totalDifference / 1000 / 60 / 60;
+          return convertToMins
+        };
+
         // Get the event data from firebase as an array
         var ref = new Firebase(FIREBASE_URL);
         var eventsRef = ref.child('events').orderByChild('date');
@@ -42,25 +54,34 @@ Pta.constant('calendar2Config', {
             for (var i = data.length - 1; i >= 0; i--) {
                 if(data[i].cleanup_start){
                     var cleanupObj = {};
+                    cleanupObj.allDay = false;
                     cleanupObj.startTime = data[i].cleanup_start;
                     cleanupObj.endTime = data[i].cleanup_end;
                     cleanupObj.type = 'cleanup';
                     cleanupObj.title = data[i].event_title + ' cleanup';
+                    cleanupObj.startTimeOffset = getTimeOffset(new Date(data[i].cleanup_start));
+                    cleanupObj.totalApptTime = getApptTime(new Date(data[i].cleanup_start), new Date(data[i].cleanup_end));
                     $scope.eventSource2.push(cleanupObj);
                 }
                 if(data[i].setup_start){
                     var setupObj = {};
+                    setupObj.allDay = false;
                     setupObj.startTime = data[i].setup_start;
                     setupObj.endTime = data[i].setup_end;
                     setupObj.type = 'setup';
                     setupObj.title = data[i].event_title + ' setup';
+                    setupObj.startTimeOffset = getTimeOffset(new Date(data[i].setup_start));
+                    setupObj.totalApptTime = getApptTime(new Date(data[i].setup_start), new Date(data[i].setup_end));
                     $scope.eventSource2.push(setupObj);
                 }
                 var eventObj = {}
+                eventObj.allDay = false;
                 eventObj.startTime = data[i].event_start;
                 eventObj.endTime = data[i].event_end;
                 eventObj.type = 'event';
                 eventObj.title = data[i].event_title;
+                eventObj.startTimeOffset = getTimeOffset(new Date(data[i].event_start));
+                eventObj.totalApptTime = getApptTime(new Date(data[i].event_start), new Date(data[i].event_end));
                 $scope.eventSource2.push(eventObj);
             }
         });
