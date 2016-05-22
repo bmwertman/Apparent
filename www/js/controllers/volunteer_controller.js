@@ -36,7 +36,7 @@ Pta.controller('VolunteerCtrl', [
   });
 
   $scope.volunteersNeeded = [];
-  $scope.roles = [ "Food Server 1", "Food Server 2", "Cashier", "Game Table 1", "Game Table 2"];
+  $scope.roles = ["Setup", "Event", "Cleanup"];
   for (var i = $scope.roles.length - 1; i >= 0; i--) {
     var role = {};
     role.name = $scope.roles[i];

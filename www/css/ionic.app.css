@@ -9981,94 +9981,102 @@ ion-header-bar .calendar-form {
   border: none;
   background-color: transparent; }
 
-.add_event {
+.add_event_modal .add_event_header .button-clear {
+  color: #fff !important;
+  font-size: 16px !important;
+  margin-right: 15px; }
+  .add_event_modal .add_event_header .button-clear i.ion-close::before {
+    font-size: 16px;
+    float: left; }
+
+.add_event_modal .add_event {
   margin-top: 10px; }
-  .add_event i {
+  .add_event_modal .add_event i {
     font-size: 20px;
     color: dimgrey;
     margin: 0 11px 0 11px; }
-  .add_event .ion-location {
+  .add_event_modal .add_event .ion-location {
     margin-left: 14px; }
-  .add_event .ion-android-time {
+  .add_event_modal .add_event .ion-android-time {
     margin-right: 5px; }
-  .add_event a.add-attachment {
+  .add_event_modal .add_event a.add-attachment {
     text-decoration: none;
     color: darkgray;
     font-size: 12px;
     margin-left: -8px; }
-  .add_event .drive_hr {
+  .add_event_modal .add_event .drive_hr {
     margin-bottom: 14px; }
-  .add_event .drive_wrapper {
+  .add_event_modal .add_event .drive_wrapper {
     height: 34px; }
-    .add_event .drive_wrapper i.icon-google-drive2 {
+    .add_event_modal .add_event .drive_wrapper i.icon-google-drive2 {
       margin: 0 11px 0 9px; }
-  .add_event .post_drive_hr {
+  .add_event_modal .add_event .post_drive_hr {
     margin-top: 2px; }
-  .add_event input {
+  .add_event_modal .add_event input {
     display: inline-block;
     width: calc(100% - 45px);
     font-size: 12px;
     border: none;
     padding: 0; }
-  .add_event .selector-container {
+  .add_event_modal .add_event .selector-container {
     height: 33px; }
-  .add_event md-input-container:not(.md-input-invalid).md-input-focused label {
+  .add_event_modal .add_event md-input-container:not(.md-input-invalid).md-input-focused label {
     color: dimgrey; }
-  .add_event md-input-container label:not(.md-no-float):not(.md-container-ignore) {
+  .add_event_modal .add_event md-input-container label:not(.md-no-float):not(.md-container-ignore) {
     padding-left: 0; }
-  .add_event md-input-container label {
+  .add_event_modal .add_event md-input-container label {
     margin: 0;
     padding: 0; }
-  .add_event span {
+  .add_event_modal .add_event span {
     display: inline-block; }
-    .add_event span md-input-container {
+    .add_event_modal .add_event span md-input-container {
       padding: 0;
       width: 130px;
       margin: 7px 18px 8px 0px; }
-      .add_event span md-input-container .md-input {
+      .add_event_modal .add_event span md-input-container .md-input {
         padding: 0;
         border: none;
         width: initial; }
-      .add_event span md-input-container .md-errors-spacer {
+      .add_event_modal .add_event span md-input-container .md-errors-spacer {
         min-height: 0; }
-  .add_event div.volunteers {
+  .add_event_modal .add_event div.volunteers {
     max-width: 360px;
     min-width: 288px;
     width: 100%; }
-    .add_event div.volunteers .volunteer_count {
+    .add_event_modal .add_event div.volunteers .volunteer_count {
       width: 65px;
       margin-right: calc(100% - 279px); }
-    .add_event div.volunteers md-input-container {
+    .add_event_modal .add_event div.volunteers md-input-container {
       margin-top: 10px;
       margin-bottom: 10px; }
-      .add_event div.volunteers md-input-container label {
+      .add_event_modal .add_event div.volunteers md-input-container label {
         margin-left: 0; }
-    .add_event div.volunteers label {
+    .add_event_modal .add_event div.volunteers label {
       margin-left: 36px; }
-    .add_event div.volunteers .event_dates {
+    .add_event_modal .add_event div.volunteers .event_dates {
       width: 230px; }
-      .add_event div.volunteers .event_dates label {
+      .add_event_modal .add_event div.volunteers .event_dates label {
         margin-left: 0; }
-      .add_event div.volunteers .event_dates i.volunteer {
+      .add_event_modal .add_event div.volunteers .event_dates i.volunteer {
         margin: 0 2px 0 8px; }
-      .add_event div.volunteers .event_dates md-input-container {
+      .add_event_modal .add_event div.volunteers .event_dates md-input-container {
         margin-left: 36px; }
-        .add_event div.volunteers .event_dates md-input-container .end_date {
+        .add_event_modal .add_event div.volunteers .event_dates md-input-container .end_date {
           margin-left: 0; }
-    .add_event div.volunteers .event_times md-input-container {
+    .add_event_modal .add_event div.volunteers .event_times md-input-container {
       width: 65px; }
-      .add_event div.volunteers .event_times md-input-container input {
+      .add_event_modal .add_event div.volunteers .event_times md-input-container input {
         width: 54px; }
-  .add_event .event_dates {
+  .add_event_modal .add_event .event_dates {
     width: 230px; }
-    .add_event .event_dates .end_date {
+    .add_event_modal .add_event .event_dates .end_date {
       margin-left: 38px; }
-  .add_event .event_times {
+  .add_event_modal .add_event .event_times {
     width: 100px; }
-  .add_event .icon-note {
+  .add_event_modal .add_event .icon-note {
     font-size: 11px;
     margin: 0 7px 0 8px; }
-  .add_event textarea {
+  .add_event_modal .add_event textarea {
     display: inline-block;
     width: calc(100% - 45px);
     font-size: 12px; }

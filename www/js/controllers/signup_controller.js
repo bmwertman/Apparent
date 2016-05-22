@@ -63,12 +63,12 @@ Pta.controller('SignupCtrl', [
     $ionicLoading.show({ template: '<ion-spinner></ion-spinner>', duration: 2000});
     // Create new user in firebase
     $scope.authObj.$createUser({
-      email: $scope.user.email,
+      email: $scope.user.user_email,
       password: $scope.user.password
     }).then(function(userData) {
       // Log in this newly created user
       return $scope.authObj.$authWithPassword({
-        email: $scope.user.email,
+        email: $scope.user.user_email,
         password: $scope.user.password
       });
     }).then(function(authData) {
@@ -80,8 +80,7 @@ Pta.controller('SignupCtrl', [
                           children: $scope.user.children,//an object with enumerable properties 
                                                          //representing the # of children a user 
                                                          //has at the school.
-                          full_name: $scope.user.full_name,
-                          user_email: $scope.user.email,
+                          email: $scope.user.user_email,
                           user_id: authData.uid,
                           isAdmin: false 
                         },

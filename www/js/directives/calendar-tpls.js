@@ -9,7 +9,7 @@ Pta.constant('calendar2Config', {
         showEventDetail: true,
         startingDay: 0,
         eventSource2: null,
-        queryMode: 'remote'
+        queryMode: 'local'
     })
     .controller('Calendar2Controller', [
         '$rootScope',
@@ -25,12 +25,46 @@ Pta.constant('calendar2Config', {
         '$ionicModal',
         'LocationService',
         '$ionicPlatform',
-        '$location',
+        '$state',
         '$ionicLoading',
         'FIREBASE_URL',
-        function ($rootScope, $scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $localstorage, $ionicModal, LocationService, $ionicPlatform, $sailsSocket, $location, $ionicLoading, FIREBASE_URL) {
+        '$firebaseArray',
+        function ($rootScope, $scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $localstorage, $ionicModal, LocationService, $ionicPlatform, $state, $ionicLoading, FIREBASE_URL, $firebaseArray) {
         'use strict';
-    
+
+        // Get the event data from firebase as an array
+        var ref = new Firebase(FIREBASE_URL);
+        var eventsRef = ref.child('events').orderByChild('date');
+        $scope.events = $firebaseArray(eventsRef);
+
+        $scope.events.$loaded(function(data){
+            $scope.eventSource2 = [];
+            for (var i = data.length - 1; i >= 0; i--) {
+                if(data[i].cleanup_start){
+                    var cleanupObj = {};
+                    cleanupObj.startTime = data[i].cleanup_start;
+                    cleanupObj.endTime = data[i].cleanup_end;
+                    cleanupObj.type = 'cleanup';
+                    cleanupObj.title = data[i].event_title + ' cleanup';
+                    $scope.eventSource2.push(cleanupObj);
+                }
+                if(data[i].setup_start){
+                    var setupObj = {};
+                    setupObj.startTime = data[i].setup_start;
+                    setupObj.endTime = data[i].setup_end;
+                    setupObj.type = 'setup';
+                    setupObj.title = data[i].event_title + ' setup';
+                    $scope.eventSource2.push(setupObj);
+                }
+                var eventObj = {}
+                eventObj.startTime = data[i].event_start;
+                eventObj.endTime = data[i].event_end;
+                eventObj.type = 'event';
+                eventObj.title = data[i].event_title;
+                $scope.eventSource2.push(eventObj);
+            }
+        });
+
         $scope.event = {};
 
         $scope.addEventModal = function() {
@@ -124,8 +158,8 @@ Pta.constant('calendar2Config', {
 
         $scope.hasCleanup = function(){
             if($scope.event.cleanup_volunteers_needed && $scope.event.setup_volunteers_needed != 0){
-                $scope.cleanupEndTime = moment($scope.eventStartTime).add(2, 'hours')._d;
-                $scope.cleanupStartTime = $scope.eventSndTime;
+                $scope.cleanupEndTime = moment($scope.eventEndTime).add(2, 'hours')._d;
+                $scope.cleanupStartTime = $scope.eventEndTime;
                 $scope.cleanupStartDate = $scope.eventStartDate;
                 $scope.cleanupEndDate = $scope.eventStartDate;
             }
@@ -140,20 +174,20 @@ Pta.constant('calendar2Config', {
             $scope.event.location = e.targetScope.location.formatted_address;
         });
         $scope.saveEvent = function(event){
-            $scope.event.event_start = moment(moment($scope.eventStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.eventStartTime).format('hh:mm a'))._d.toString();
-            $scope.event.event_end = moment(moment($scope.eventStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.eventStartTime).format('hh:mm a'))._d.toString();
+            $scope.event.startTime = moment(moment($scope.eventStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.eventStartTime).format('hh:mm a'))._d.toString();
+            $scope.event.endTime = moment(moment($scope.eventStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.eventEndTime).format('hh:mm a'))._d.toString();
             $scope.event.setup_start = moment(moment($scope.setupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.setupStartTime).format('hh:mm a'))._d.toString();
-            $scope.event.setup_end = moment(moment($scope.setupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.setupStartTime).format('hh:mm a'))._d.toString(); 
+            $scope.event.setup_end = moment(moment($scope.setupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.setupEndTime).format('hh:mm a'))._d.toString(); 
             $scope.event.cleanup_start = moment(moment($scope.cleanupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.cleanupStartTime).format('hh:mm a'))._d.toString();
-            $scope.event.cleanup_end = moment(moment($scope.cleanupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.cleanupStartTime).format('hh:mm a'))._d.toString();
+            $scope.event.cleanup_end = moment(moment($scope.cleanupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.cleanupEndTime).format('hh:mm a'))._d.toString();
+            $scope.event.volunteer_hours = moment($scope.event.setup_end).diff($scope.event.setup_start, 'hours') * $scope.event.setup_volunteers_needed + moment($scope.event.event_end).diff($scope.event.event_start, 'hours') * $scope.event.volunteers_needed + moment($scope.event.cleanup_end).diff($scope.event.cleanup_start, 'hours') * $scope.event.cleanup_volunteers_needed;
             // This is needed to order the events chronologically in the view
             $scope.event.date = $scope.eventStartDate.getTime();
             var ref = new Firebase(FIREBASE_URL);
             var eventsRef = ref.child('events');
             eventsRef.push($scope.event);
-            $scope.saved(event.title, function(){
-                $location.path('/volunteer');
-            }); 
+            $scope.saved(event.event_title, $scope.closeModal());
+            $state.go('app.volunteer');
         }
         
         var self = this,
@@ -164,7 +198,7 @@ Pta.constant('calendar2Config', {
             'showWeeks', 'showEventDetail', 'startingDay', 'eventSource2', 'queryMode'], function (key, index) {
             self[key] = angular.isDefined($attrs[key]) ? (index < 5 ? $interpolate($attrs[key])($scope.$parent) : $scope.$parent.$eval($attrs[key])) : calendar2Config[key];
         });
-        $scope.$parent.$watch('eventSource2', function (value) {
+        $scope.$watch('eventSource2', function (value) {
             self.onEventSourceChanged(value);
         });
 
@@ -1060,8 +1094,6 @@ Pta.constant('calendar2Config', {
                     $timeout(function () {
                         updateScrollGutter();
                     });
-                    
-
                 };
 
                 ctrl._refreshView = function () {

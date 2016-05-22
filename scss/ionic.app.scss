@@ -20,6 +20,7 @@ $tagMdRed: #E53935 !default;
 $tagLtRed: #E57373 !default;
 $tagBlue: #010032 !default;
 
+
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
@@ -88,8 +89,6 @@ i.icon-note {
     content: "\e903";
 }
 
-
-
 //Google Drive icon
 @font-face {
     font-family: 'drive';
@@ -123,7 +122,6 @@ i.icon-note {
 .icon-google-drive:before {
     content: "\e901";
 }
-
 
 .modal-backdrop-bg {
   transition: opacity 300ms ease-in-out;
@@ -287,6 +285,7 @@ ion-header-bar{
     }
   }
 }
+
 .profile{
   div.icon_wrapper{
     position: absolute;
@@ -344,136 +343,146 @@ ion-header-bar{
   background-color: transparent;
 }
 
-.add_event{
-  margin-top: 10px;
-  i{
-    font-size: 20px;
-    color: dimgrey;
-    margin: 0 11px 0 11px;
-  }
-  .ion-location{
-    margin-left: 14px;
-  }
-  .ion-android-time{
-    margin-right: 5px;
-  }
-  a.add-attachment{
-    text-decoration: none;
-    color: darkgray;
-    font-size: 12px;
-    margin-left: -8px;
-  }
-  .drive_hr{
-    margin-bottom: 14px;
-  }
-  .drive_wrapper{
-    height: 34px;
-    i.icon-google-drive2{
-      margin: 0 11px 0 9px;
+.add_event_modal{
+  .add_event_header .button-clear{
+    color: #fff !important;
+    font-size: 16px !important;
+    margin-right: 15px;
+    i.ion-close::before{
+      font-size: 16px;
+      float: left;
     }
   }
-  .post_drive_hr{
-    margin-top: 2px;
-  }
-  input{
-    display: inline-block;
-    width: calc(100% - 45px);
-    font-size: 12px;
-    border: none;
-    padding: 0;
-  }
-  .selector-container{ height: 33px;}
-  md-input-container{
-    &:not(.md-input-invalid).md-input-focused label{
+  .add_event{
+    margin-top: 10px;
+    i{
+      font-size: 20px;
       color: dimgrey;
+      margin: 0 11px 0 11px;
     }
-    label:not(.md-no-float):not(.md-container-ignore){
-      padding-left: 0;
+    .ion-location{
+      margin-left: 14px;
     }
-    label{
-      margin: 0;
+    .ion-android-time{
+      margin-right: 5px;
+    }
+    a.add-attachment{
+      text-decoration: none;
+      color: darkgray;
+      font-size: 12px;
+      margin-left: -8px;
+    }
+    .drive_hr{
+      margin-bottom: 14px;
+    }
+    .drive_wrapper{
+      height: 34px;
+      i.icon-google-drive2{
+        margin: 0 11px 0 9px;
+      }
+    }
+    .post_drive_hr{
+      margin-top: 2px;
+    }
+    input{
+      display: inline-block;
+      width: calc(100% - 45px);
+      font-size: 12px;
+      border: none;
       padding: 0;
     }
-  }
-  span{
-    display: inline-block;
+    .selector-container{ height: 33px;}
     md-input-container{
-      padding: 0;
-      width: 130px;
-      margin: 7px 18px 8px 0px;
-      .md-input{
+      &:not(.md-input-invalid).md-input-focused label{
+        color: dimgrey;
+      }
+      label:not(.md-no-float):not(.md-container-ignore){
+        padding-left: 0;
+      }
+      label{
+        margin: 0;
         padding: 0;
-        border: none;
-        width: initial;
-      }
-      .md-errors-spacer {
-          min-height: 0;
       }
     }
-  }
-  div.volunteers {
-    max-width: 360px;
-    min-width: 288px;
-    width: 100%;
-    .volunteer_count{
-      width: 65px;
-      margin-right: calc(100% - 279px)
-    }
-    md-input-container {
-      margin-top: 10px;
-      margin-bottom: 10px;
-      label{
-        margin-left: 0;
-      }
-    }   
-    label{
-      margin-left: 36px; 
-    }
-    .event_dates{
-      width: 230px;
-      label{
-        margin-left: 0;
-      }
-      i.volunteer{
-        margin: 0 2px 0 8px;
-      }
+    span{
+      display: inline-block;
       md-input-container{
-        margin-left: 36px;
-        .end_date{
+        padding: 0;
+        width: 130px;
+        margin: 7px 18px 8px 0px;
+        .md-input{
+          padding: 0;
+          border: none;
+          width: initial;
+        }
+        .md-errors-spacer {
+            min-height: 0;
+        }
+      }
+    }
+    div.volunteers {
+      max-width: 360px;
+      min-width: 288px;
+      width: 100%;
+      .volunteer_count{
+        width: 65px;
+        margin-right: calc(100% - 279px)
+      }
+      md-input-container {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        label{
           margin-left: 0;
         }
+      }   
+      label{
+        margin-left: 36px; 
       }
-    }
-    .event_times {
-      md-input-container{
-        width: 65px;
-        input{
-          width: 54px;
+      .event_dates{
+        width: 230px;
+        label{
+          margin-left: 0;
+        }
+        i.volunteer{
+          margin: 0 2px 0 8px;
+        }
+        md-input-container{
+          margin-left: 36px;
+          .end_date{
+            margin-left: 0;
+          }
+        }
+      }
+      .event_times {
+        md-input-container{
+          width: 65px;
+          input{
+            width: 54px;
+          }
         }
       }
     }
-  }
-  
-  .event_dates{
-    width: 230px;
-    .end_date{
-      margin-left: 38px;
+    
+    .event_dates{
+      width: 230px;
+      .end_date{
+        margin-left: 38px;
+      }
+    }
+    .event_times{
+      width: 100px;
+    }
+    .icon-note{
+      font-size: 11px;
+      margin: 0 7px 0 8px;
+    }
+    textarea{
+      display: inline-block;
+      width: calc(100% - 45px);
+      font-size: 12px;
     }
   }
-  .event_times{
-    width: 100px;
-  }
-  .icon-note{
-    font-size: 11px;
-    margin: 0 7px 0 8px;
-  }
-  textarea{
-    display: inline-block;
-    width: calc(100% - 45px);
-    font-size: 12px;
-  }
 }
-
 .events{
   img.event_img{
     float: left;

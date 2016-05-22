@@ -38,7 +38,7 @@ Pta.controller('LoginCtrl', [
     $ionicLoading.show({ template: '<ion-spinner></ion-spinner>'});
     var ref = new Firebase(FIREBASE_URL);
     ref.authWithPassword({
-      email    : $scope.loginData.username,
+      email    : $scope.loginData.email,
       password : $scope.loginData.password
     }, function(error, authData) {
       // $ionicLoading.hide();
@@ -52,9 +52,16 @@ Pta.controller('LoginCtrl', [
         // loginPopup.close();
         // cordova.plugins.Keyboard.close();
         // Save off login info into local storage
-        $localstorage.set('username', $scope.loginData.username);
-        $localstorage.set('password', $scope.loginData.password);
-        console.log("Authenticated successfully with payload:", authData);
+        //$ionicPlatform conditional is untested 
+        //hoping it prevents storing signin information on non-mobile
+        //web-based signins when this gets served as a website
+        if(!ionic.Platform.isWebView()){
+          $localstorage.set('email', $scope.loginData.username);
+          $localstorage.set('password', $scope.loginData.password);
+          $scope.loginData = {};
+        } else {
+          $scope.loginData = {};
+        }
       }
     });
   };
