@@ -30,13 +30,15 @@ Pta.controller('VolunteerCtrl', [
   $scope.closeModal = function() {
     $scope.modal.hide();
   };
-  //Cleanup the modal when we're done with it!
+  
   $scope.$on('$destroy', function() {
     $scope.modal.remove();
   });
 
   $scope.volunteersNeeded = [];
+
   $scope.roles = ["Setup", "Event", "Cleanup"];
+
   for (var i = $scope.roles.length - 1; i >= 0; i--) {
     var role = {};
     role.name = $scope.roles[i];
