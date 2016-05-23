@@ -55,6 +55,7 @@ Pta.constant('calendar2Config', {
                 if(data[i].setup_start){
                     var setupObj = {
                         allday: false,
+                        location: data[i].location,
                         startTime: data[i].setup_start,
                         endTime:data[i].setup_end,
                         backgroundColor: 'primaryGreen',
@@ -67,6 +68,7 @@ Pta.constant('calendar2Config', {
                 if(data[i].cleanup_start){
                     var cleanupObj = {
                         allDay: false,
+                        location: data[i].location,
                         startTime: data[i].cleanup_start,
                         endTime: data[i].cleanup_end,
                         backgroundColor: 'primaryRed',
@@ -78,6 +80,7 @@ Pta.constant('calendar2Config', {
                 }
                 var eventObj = {
                     allDay: false,
+                    location: data[i].location,
                     startTime: data[i].event_start,
                     endTime: data[i].event_end,
                     backgroundColor: 'primaryBlue',
