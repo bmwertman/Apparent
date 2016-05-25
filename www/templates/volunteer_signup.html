@@ -1,16 +1,22 @@
-<label class="item item-input item-select" style="margin-top: 10px">
-  <div class="input-label">
-      Filter by Volunteer Role
-  </div>
-  <select>
-      <option style="display:none" value=""></option>
-      <option value="All" selected="selected">All</option>
-      <option value="Setup">Setup</option>
-      <option value="Event">Event</option>
-      <option value="Cleanup">Cleanup</option>
-  </select>
-</label>
-
-<div class="well well-sm">
-  <calendar ng-model="currentDate" calendar-mode="mode" event-source="eventSource2" range-changed="reloadSource(startTime, endTime)" event-selected="onEventSelected(event)"></calendar>
-</div>
+<ion-modal-view class="add_event_modal">
+  <ion-header-bar align-title="left" class="bar-positive">
+    <h1 class="title">Volunteer</h1>
+  </ion-header-bar>
+  <ion-content>
+    <label class="item item-input item-select" style="margin-top: 10px">
+      <div class="input-label">
+          Filter by Volunteer Role
+      </div>
+      <select>
+          <option style="display:none" value=""></option>
+          <option value="All" selected="selected">All</option>
+          <option value="Setup">Setup</option>
+          <option value="Event">Event</option>
+          <option value="Cleanup">Cleanup</option>
+      </select>
+    </label>
+    <div class="well well-sm">
+      <calendar ng-model="currentDate" calendar-mode="mode" event-source="eventSource2" range-changed="reloadSource(startTime, endTime)" event-selected="onEventSelected(event)"></calendar>
+    </div>
+  </ion-content>
+</ion-modal-view>

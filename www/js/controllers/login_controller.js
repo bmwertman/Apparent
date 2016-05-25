@@ -9,21 +9,21 @@ Pta.controller('LoginCtrl', [
   function($scope, $ionicModal, $timeout, FIREBASE_URL, $ionicLoading, Auth, $localstorage) {
 
   // Form data for the login modal
-  $scope.loginData = {};
+  $scope.credentials = {};
 
   // Look in Local Cache to see if user/password is stored
-  var loginUsername = $localstorage.get('username');
+  var loginEmail = $localstorage.get('email');
   var loginPassword = $localstorage.get('password');
-  if (loginUsername && loginPassword) {
+  if (loginEmail && loginPassword) {
     // $ionicLoading.show({ template: '<ion-spinner></ion-spinner>', duration: 3000 });
-    loginPasswordCache(loginUsername, loginPassword);
+    loginPasswordCache(loginEmail, loginPassword);
   }
 
   // If username and password are found in local storage, then log in
-  function loginPasswordCache(loginUsername, loginPassword) {
+  function loginPasswordCache(loginEmail, loginPassword) {
     var ref = new Firebase(FIREBASE_URL);
     ref.authWithPassword({
-      email    : loginUsername,
+      email    : loginEmail,
       password : loginPassword
     }, function(error, authData) {
       if (error) {
@@ -38,8 +38,8 @@ Pta.controller('LoginCtrl', [
     $ionicLoading.show({ template: '<ion-spinner></ion-spinner>'});
     var ref = new Firebase(FIREBASE_URL);
     ref.authWithPassword({
-      email    : $scope.loginData.email,
-      password : $scope.loginData.password
+      email    : $scope.credentials.email,
+      password : $scope.credentials.password
     }, function(error, authData) {
       // $ionicLoading.hide();
       if (error) {
@@ -56,8 +56,8 @@ Pta.controller('LoginCtrl', [
         //hoping it prevents storing signin information on non-mobile
         //web-based signins when this gets served as a website
         if(!ionic.Platform.isWebView()){
-          $localstorage.set('email', $scope.loginData.username);
-          $localstorage.set('password', $scope.loginData.password);
+          $localstorage.set('email', $scope.credentials.email);
+          $localstorage.set('password', $scope.credentials.password);
           $scope.loginData = {};
         } else {
           $scope.loginData = {};

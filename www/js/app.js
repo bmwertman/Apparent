@@ -135,12 +135,12 @@ var Pta = angular.module('pta', [
     }
   })
 
-  .state('app.volunteer', {
-    url: '/volunteer',
+  .state('app.events', {
+    url: '/events',
     views: {
       'menuContent': {
-        templateUrl: 'templates/volunteer.html',
-        controller: 'VolunteerCtrl'
+        templateUrl: 'templates/events.html',
+        controller: 'EventsCtrl'
       }
     }
   });

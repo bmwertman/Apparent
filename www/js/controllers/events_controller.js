@@ -1,4 +1,4 @@
-Pta.controller('VolunteerCtrl', [
+Pta.controller('EventsCtrl', [
   '$scope', 
   '$ionicSideMenuDelegate', 
   '$ionicModal', 
@@ -24,7 +24,8 @@ Pta.controller('VolunteerCtrl', [
     $scope.modal = modal;
   });
 
-  $scope.openModal = function() {
+  $scope.openModal = function(eventDate) {
+    $scope.currentDate = new Date(eventDate);
     $scope.modal.show();
   };
   $scope.closeModal = function() {

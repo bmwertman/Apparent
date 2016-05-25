@@ -358,6 +358,11 @@ ion-header-bar{
   background-color: transparent;
 }
 
+.calendar-event-wrap{
+  max-width: 70%;
+  float: right;
+}
+
 .add_event_modal{
   .add_event_header .button-clear{
     color: #fff !important;

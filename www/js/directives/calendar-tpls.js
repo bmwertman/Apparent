@@ -201,13 +201,20 @@ Pta.constant('calendar2Config', {
             $scope.event.location = e.targetScope.location.formatted_address;
         });
         $scope.saveEvent = function(event){
-            $scope.event.startTime = moment(moment($scope.eventStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.eventStartTime).format('hh:mm a'))._d.toString();
-            $scope.event.endTime = moment(moment($scope.eventStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.eventEndTime).format('hh:mm a'))._d.toString();
-            $scope.event.setup_start = moment(moment($scope.setupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.setupStartTime).format('hh:mm a'))._d.toString();
-            $scope.event.setup_end = moment(moment($scope.setupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.setupEndTime).format('hh:mm a'))._d.toString(); 
-            $scope.event.cleanup_start = moment(moment($scope.cleanupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.cleanupStartTime).format('hh:mm a'))._d.toString();
-            $scope.event.cleanup_end = moment(moment($scope.cleanupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.cleanupEndTime).format('hh:mm a'))._d.toString();
-            $scope.event.volunteer_hours = moment($scope.event.setup_end).diff($scope.event.setup_start, 'hours') * $scope.event.setup_volunteers_needed + moment($scope.event.event_end).diff($scope.event.event_start, 'hours') * $scope.event.volunteers_needed + moment($scope.event.cleanup_end).diff($scope.event.cleanup_start, 'hours') * $scope.event.cleanup_volunteers_needed;
+            $scope.event.event_start = moment(moment($scope.eventStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.eventStartTime).format('hh:mm a'))._d.toString();
+            $scope.event.event_end = moment(moment($scope.eventStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.eventEndTime).format('hh:mm a'))._d.toString();
+            if($scope.event.setup_start){
+                $scope.event.setup_start = moment(moment($scope.setupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.setupStartTime).format('hh:mm a'))._d.toString();
+                $scope.event.setup_end = moment(moment($scope.setupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.setupEndTime).format('hh:mm a'))._d.toString(); 
+            }
+            if($scope.event.cleanup_start){
+                $scope.event.cleanup_start = moment(moment($scope.cleanupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.cleanupStartTime).format('hh:mm a'))._d.toString();
+                $scope.event.cleanup_end = moment(moment($scope.cleanupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.cleanupEndTime).format('hh:mm a'))._d.toString();
+            }
+            if($scope.event.setup_volunteers_needed || $scope.event.cleanup_volunteers_needed || $scope.event.volunteers_needed){
+                $scope.event.volunteer_hours = moment($scope.event.setup_end).diff($scope.event.setup_start, 'hours') * $scope.event.setup_volunteers_needed + moment($scope.event.event_end).diff($scope.event.event_start, 'hours') * $scope.event.volunteers_needed + moment($scope.event.cleanup_end).diff($scope.event.cleanup_start, 'hours') * $scope.event.cleanup_volunteers_needed;  
+            }
+            
             // This is needed to order the events chronologically in the view
             $scope.event.date = $scope.eventStartDate.getTime();
             var ref = new Firebase(FIREBASE_URL);
