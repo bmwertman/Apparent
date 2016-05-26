@@ -15,7 +15,7 @@ Pta.controller('LoginCtrl', [
   var loginEmail = $localstorage.get('email');
   var loginPassword = $localstorage.get('password');
   if (loginEmail && loginPassword) {
-    // $ionicLoading.show({ template: '<ion-spinner></ion-spinner>', duration: 3000 });
+    $ionicLoading.show({ template: '<ion-spinner></ion-spinner>', duration: 1000 });
     loginPasswordCache(loginEmail, loginPassword);
   }
 
@@ -58,9 +58,9 @@ Pta.controller('LoginCtrl', [
         if(!ionic.Platform.isWebView()){
           $localstorage.set('email', $scope.credentials.email);
           $localstorage.set('password', $scope.credentials.password);
-          $scope.loginData = {};
+          $scope.credentials = {};
         } else {
-          $scope.loginData = {};
+          $scope.credentials = {};
         }
       }
     });

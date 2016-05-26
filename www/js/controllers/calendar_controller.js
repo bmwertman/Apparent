@@ -9,43 +9,40 @@ Pta.controller('CalendarCtrl', [
   '$ionicSideMenuDelegate',
   'FIREBASE_URL',
   '$firebaseArray',
+  '$rootScope',
+  '$stateParams',
   // '$cordovaSocialSharing',
-  // 'eventService',// formerly repair service 
-  // 'jwtHelper',
-  // 'Idle',
-  // 'signinService',
   // '$ionicPlatform',
   // '$cordovaPrinter',
-  function ($scope, $ionicLoading, $location, $timeout, $state, $ionicModal, $ionicPopup, $ionicSideMenuDelegate, FIREBASE_URL, $firebaseArray) {
+  function ($scope, $ionicLoading, $location, $timeout, $state, $ionicModal, $ionicPopup, $ionicSideMenuDelegate, FIREBASE_URL, $firebaseArray, $rootScope, $stateParams) {
   'use strict';
 
   $ionicSideMenuDelegate.canDragContent(false)
 
+  if($rootScope.profile.isAdmin){
+      $scope.calendarTitle = "Calendar";
+      $scope.isAdmin = true;
+  } else {
+      $scope.calendarTitle = "Volunteer";
+      $scope.isAdmin = false;
+  }
+
+  if($stateParams.selectedEvent && $stateParams.selectedEvent.cleanup_start){
+    $scope.currentDate = new Date($stateParams.selectedEvent.cleanup_start);
+  } else if($stateParams.selectedEvent && $stateParams.selectedEvent.event_start) {
+    $scope.currentDate = new Date($stateParams.selectedEvent.event_start);
+  } else {
+    $scope.currentDate - new Date();
+  }
+
   // Get the event data from firebase as an array
   var ref = new Firebase(FIREBASE_URL);
   var eventsRef = ref.child('events');
-  $scope.events = $firebaseArray(eventsRef);
+  $scope.calEvents = $firebaseArray(eventsRef);
 
-  $scope.events.$loaded(function(data){
+  $scope.calEvents.$loaded(function(data){
     // This is where you have access to the data after it has loaded!!!
   });
-
-  // $scope.$on('signedin', function(){
-  //   Idle.watch();
-  // });
-
-  // if(!Idle.running()){
-  //   Idle.watch();
-  // }
-  
-  // $scope.$on('IdleStart', function(){
-  //   signinService
-  //   .init('signin/templates/signin.html', $scope)
-  //   .then(function(modal) {
-  //     modal.show();
-  //     Idle.unwatch();
-  //   });
-  // });
 
   //error message display
   $scope.err = function(err, lineNumber) {
@@ -70,42 +67,6 @@ Pta.controller('CalendarCtrl', [
   }).then(function(modal) {
     $scope.modal = modal;
   });
-
-
-  // $scope.printAppointment = function (){
-  //   $scope.jobId = $scope.editAppointmentDetails.repairDetails.id.toString();//encoded as a QR code on the printed work request
-  //   var wr = document.getElementById('wr');
-  //   $cordovaPrinter.isAvailable()
-  //   .then( function (isAvailable) {
-  //     if(isAvailable){
-  //       $cordovaPrinter.print(wr, 'edit_schedule.html', function () {
-  //         $ionicPopup.alert({
-  //           template:  "<h3>Success</h3><br><strong><p>Your work request is queued for printing</p></strong>"
-  //         });
-  //       });
-  //     } else {
-  //       $ionicPopup.alert({
-  //         template:  "<h3>Sorry</h3><br><strong><p>Print options are not available for your device</p></strong>"
-  //       });
-  //     }
-  //   });
-  // }
-
-  // $scope.emailAppointment = function () {
-  //   $scope.jobId = $scope.eventSource2[0].repairDetails.id.toString();//encoded as a QR code on the printed work request
-  //   var wr = angular.element(document.getElementById('wr')).html();
-  //   var techEmail = [];
-  //    for (var i = $scope.technicianNames.length - 1; i >= 0; i--) {
-  //       if($scope.technicianNames[i].id === $scope.editAppointmentDetails.repairDetails.technician_id){
-  //         techEmail.push($scope.technicianNames[i].email);
-  //       }
-  //     };
-  //   $timeout( function(){
-  //     var imgSrc = []
-  //     imgSrc.push(document.getElementById('qr-code').src);
-  //     $cordovaSocialSharing.shareViaEmail(wr, 'Next scheduled job', techEmail, null, null , imgSrc);
-  //   },75);
-  // }
 
   $scope.openModal = function() {
     $scope.modal.show();
@@ -145,7 +106,6 @@ Pta.controller('CalendarCtrl', [
   //   });
   // }
 
-  $scope.currentDate = new Date();
   $scope.mode = 'day';
 
   $scope.changeMode = function (mode) {
@@ -175,11 +135,11 @@ Pta.controller('CalendarCtrl', [
     $scope.openModal();
   };
 
-  $scope.reloadSource = function (startTime, endTime) {
-    $scope.lowerBound = startTime;
-    $scope.upperBound = endTime;
-    // getNewSchedule();
-  };
+  // $scope.reloadSource = function (startTime, endTime) {
+  //   $scope.lowerBound = startTime;
+  //   $scope.upperBound = endTime;
+  //   // getNewSchedule();
+  // };
 
   // $scope.getSchedule = function() {
   //   var startTimeToday = new Date();

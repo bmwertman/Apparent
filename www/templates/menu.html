@@ -14,11 +14,11 @@
 
   <ion-side-menu side="left">
     <ion-header-bar class="white-font bar-header bar-positive">
-      <h1 class="title">Left</h1>
+      <h1 class="title">Menu</h1>
     </ion-header-bar>
     <ion-content>
       <ion-list>
-        <ion-item menu-close href="#/app/calendar">
+        <ion-item menu-close href="#/app/calendar" ng-if="isAdmin">
           Calendar
         </ion-item>
         <ion-item menu-close href="#/app/profile">

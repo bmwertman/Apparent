@@ -87,7 +87,7 @@ var Pta = angular.module('pta', [
               if (data.isAdmin) {
                 $location.path('/app/calendar');
               } else {
-                $location.path('/app/volunteer');
+                $location.path('/app/events');
               }
             }
           );
@@ -113,11 +113,15 @@ var Pta = angular.module('pta', [
   .state('app', {
     url: '/app',
     abstract: true,
+    controller: 'MenuCtrl',
     templateUrl: 'templates/menu.html'
   })
 
   .state('app.calendar', {
     url: '/calendar',
+    params:{
+      selectedEvent: null
+    },
     views: {
       'menuContent': {
         templateUrl: 'templates/rcalendar.html',

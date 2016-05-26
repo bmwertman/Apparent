@@ -1,14 +1,14 @@
 <ion-view title="Get Involved">
   <ion-content>
     <ion-list class="events">
-      <ion-item ng-repeat="event in events">
+      <ion-item ng-repeat="event in calEvents">
         <h2 class="event_title">{{event.event_title}}</h2>
         <img class="event_img" ng-src="{{event.image}}" ng-show="event.image"></img>
         <p class="event_description">{{event.description}}</p>
         <h4 class="needed" ng-show="event.volunteer_hours">Uncovered Volunteer Hours: {{event.volunteer_hours}}</h4>
         <button class="button button-small button-balanced"
                 ng-show="event.volunteer_hours"
-                ng-click="openModal(event.startTime)">
+                ng-click="showEvent(event)">
                 Help Out
         </button>
       </ion-item>

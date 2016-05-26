@@ -1,10 +1,9 @@
 <ion-header-bar align-title="left" class="bar-positive">
-  <h1 class="title">Calendar</h1>
-  <!-- <a class="button button-icon icon ion-home" ng-click="shop()"></a> -->
+  <h1 class="title">{{calendarTitle}}</h1>
 </ion-header-bar>
-<ion-view title="Calendar">
-  <ion-content ng-init="getSchedule()" class="has-header">
-    <div class="btn-toolbar" style="margin-top: 10px">
+<ion-view title="{{calendarTitle}}">
+  <ion-content class="has-header calendar">
+    <div class="btn-toolbar" ng-if="isAdmin">
       <button type="button" class="btn btn-default cal_view_btn" ng-class="{active:mode==='month'}" ng-click="changeMode('month')">
           Month
       </button>
@@ -18,6 +17,18 @@
           Today
       </button>
     </div>
+    <label class="item item-input item-select role-filter">
+      <div class="input-label">
+          Filter by Volunteer Role
+      </div>
+      <select>
+          <option style="display:none" value=""></option>
+          <option value="All" selected="selected">All</option>
+          <option value="Setup">Setup</option>
+          <option value="Event">Event</option>
+          <option value="Cleanup">Cleanup</option>
+      </select>
+    </label>
     <div class="alert alert-success" ng-show="event">
       Event selected:{{event.startTime|date:'MMM/dd,yyyy,HH:mm'}} - {{event.endTime|date:'MMM/dd,yyyy,HH:mm'}}, {{event.title}}
     </div>
