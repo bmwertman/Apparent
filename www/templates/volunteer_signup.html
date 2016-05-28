@@ -2,7 +2,7 @@
   
   <ion-content ng-controller="CalendarController">
     <div class="well well-sm">
-      <calendar ng-model="currentDate" calendar-mode="mode" event-source="eventSource2" range-changed="reloadSource(startTime, endTime)" event-selected="onEventSelected(event)"></calendar>
+      <calendar ng-model="currentDate" calendar-mode="mode" event-source="filteredEvents" range-changed="reloadSource(startTime, endTime)" event-selected="onEventSelected(event)"></calendar>
     </div>
   </ion-content>
 </ion-modal-view>

@@ -8,7 +8,7 @@ Pta.constant('calendar2Config', {
         showWeeks: false,
         showEventDetail: true,
         startingDay: 0,
-        eventSource2: null,
+        filteredEvents: null,
         queryMode: 'local'
     })
     .controller('CalendarController', [
@@ -29,7 +29,8 @@ Pta.constant('calendar2Config', {
         '$ionicLoading',
         'FIREBASE_URL',
         '$firebaseArray',
-        function ($rootScope, $scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $localstorage, $ionicModal, LocationService, $ionicPlatform, $state, $ionicLoading, FIREBASE_URL, $firebaseArray) {
+        '$ionicHistory',
+        function ($rootScope, $scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $localstorage, $ionicModal, LocationService, $ionicPlatform, $state, $ionicLoading, FIREBASE_URL, $firebaseArray, $ionicHistory) {
         'use strict';
 
         function getTimeOffset(date) {
@@ -50,7 +51,7 @@ Pta.constant('calendar2Config', {
         $scope.calEvents = $firebaseArray(eventsRef);
 
         $scope.calEvents.$loaded(function(data){
-            $scope.eventSource2 = [];
+            $scope.eventSource = [];
             for (var i = data.length - 1; i >= 0; i--) {
                 if(data[i].setup_start){
                     var setupObj = {
@@ -58,12 +59,13 @@ Pta.constant('calendar2Config', {
                         location: data[i].location,
                         startTime: data[i].setup_start,
                         endTime:data[i].setup_end,
+                        type: 'setup',
                         backgroundColor: 'primaryGreen',
                         title: data[i].event_title + ' setup',
                         startTimeOffset: getTimeOffset(new Date(data[i].setup_start)),
                         totalApptTime: getApptTime(new Date(data[i].setup_start), new Date(data[i].setup_end))
                     }
-                    $scope.eventSource2.push(setupObj);
+                    $scope.eventSource.push(setupObj);
                 }
                 if(data[i].cleanup_start){
                     var cleanupObj = {
@@ -71,24 +73,39 @@ Pta.constant('calendar2Config', {
                         location: data[i].location,
                         startTime: data[i].cleanup_start,
                         endTime: data[i].cleanup_end,
+                        type: 'cleanup',
                         backgroundColor: 'primaryRed',
                         title: data[i].event_title + ' cleanup',
                         startTimeOffset: getTimeOffset(new Date(data[i].cleanup_start)),
                         totalApptTime: getApptTime(new Date(data[i].cleanup_start), new Date(data[i].cleanup_end))
                     }
-                    $scope.eventSource2.push(cleanupObj);
+                    $scope.eventSource.push(cleanupObj);
                 }
                 var eventObj = {
                     allDay: false,
                     location: data[i].location,
                     startTime: data[i].event_start,
                     endTime: data[i].event_end,
+                    type: 'event',
                     backgroundColor: 'primaryBlue',
                     title: data[i].event_title,
                     startTimeOffset: getTimeOffset(new Date(data[i].event_start)),
                     totalApptTime: getApptTime(new Date(data[i].event_start), new Date(data[i].event_end))
                 }
-                $scope.eventSource2.push(eventObj);
+                $scope.eventSource.push(eventObj);
+            }
+            $scope.filteredEvents = $scope.eventSource;
+        });
+
+        $scope.$on('eventFilter', function(eventType){
+            var unfilteredEvents = $scope.eventSource;
+            $scope.filteredEvents =[];
+            for (var i = unfilteredEvents.length - 1; i >= 0; i--) {
+              if(unfilteredEvents[i].type === eventType.targetScope.itemSelected.type){
+                $scope.filteredEvents.push(unfilteredEvents[i]);
+              } else if(i === 0 && $scope.filteredEvents.length === 0){
+                $scope.filteredEvents = $scope.eventSource;
+              }
             }
         });
 
@@ -163,11 +180,15 @@ Pta.constant('calendar2Config', {
                 $scope.selectedHour.el.firstElementChild.style.display = "none";
                 $scope.selectedHour.hashKey = null; 
                 var start = $scope.selectedHour.el.lastElementChild.innerHTML;
-                $scope.eventStartDate = new Date($scope.title);
-                $scope.eventEndDate = new Date($scope.title);
-                $scope.eventStartTime = new Date($scope.title + " " + start);
-                $scope.eventEndTime = new Date($scope.title + " " + $scope.endHour(start));
-                $scope.addEventModal();
+                if($ionicHistory.currentView().title === 'Calendar'){
+                  $scope.eventStartDate = new Date($scope.title);
+                  $scope.eventEndDate = new Date($scope.title);
+                  $scope.eventStartTime = new Date($scope.title + " " + start);
+                  $scope.eventEndTime = new Date($scope.title + " " + $scope.endHour(start));
+                  $scope.addEventModal();  
+                } else {
+                    //create the volunteer signup modal here
+                }
             } else {//first hour selection made
                 $event.currentTarget.firstElementChild.style.display = "inherit"; 
                 $scope.selectedHour.el = $event.currentTarget;
@@ -229,10 +250,10 @@ Pta.constant('calendar2Config', {
 
         // Configuration attributes
         angular.forEach(['formatDay', 'formatDayHeader', 'formatDayTitle', 'formatWeekTitle', 'formatMonthTitle',
-            'showWeeks', 'showEventDetail', 'startingDay', 'eventSource2', 'queryMode'], function (key, index) {
+            'showWeeks', 'showEventDetail', 'startingDay', 'filteredEvents', 'queryMode'], function (key, index) {
             self[key] = angular.isDefined($attrs[key]) ? (index < 5 ? $interpolate($attrs[key])($scope.$parent) : $scope.$parent.$eval($attrs[key])) : calendar2Config[key];
         });
-        $scope.$watch('eventSource2', function (value) {
+        $scope.$watch('filteredEvents', function (value) {
             self.onEventSourceChanged(value);
         });
 
@@ -288,7 +309,7 @@ Pta.constant('calendar2Config', {
         };
 
         self.onEventSourceChanged = function (value) {
-            self.eventSource2 = value;
+            self.filteredEvents = value;
             if (self._onDataLoaded) {
                 self._onDataLoaded();
             }
@@ -315,7 +336,7 @@ Pta.constant('calendar2Config', {
 
         self.rangeChanged = function () {
             if (self.queryMode === 'local') {
-                if (self.eventSource2 && self._onDataLoaded) {
+                if (self.filteredEvents && self._onDataLoaded) {
                     self._onDataLoaded();
                 }
             } else if (self.queryMode === 'remote') {
@@ -610,8 +631,8 @@ Pta.constant('calendar2Config', {
                     var headerDate = new Date(year, month, 1);
                     scope.$parent.title = dateFilter(headerDate, ctrl.formatMonthTitle);
                     scope.rows = ctrl.split(days, 7);
-                    var eventSource2 = ctrl.eventSource2,
-                        len = eventSource2 ? eventSource2.length : 0,
+                    var filteredEvents = ctrl.filteredEvents,
+                        len = filteredEvents ? filteredEvents.length : 0,
                         startTime = ctrl.range.startTime,
                         endTime = ctrl.range.endTime,
                         timeZoneOffset = -new Date().getTimezoneOffset(),
@@ -624,7 +645,7 @@ Pta.constant('calendar2Config', {
                         date;
 
                     for (var i = 0; i < len; i += 1) {
-                        var event = eventSource2[i];
+                        var event = filteredEvents[i];
                         var eventStartTime = new Date(event.startTime);
                         var eventEndTime = new Date(event.endTime);
                         var st;
@@ -820,8 +841,8 @@ Pta.constant('calendar2Config', {
                         weekFormatPattern = 'w',
                         title;
                     scope.rows = createDateObjects(firstDayOfWeek);
-                    var eventSource2 = ctrl.eventSource2,
-                        len = eventSource2 ? eventSource2.length : 0,
+                    var filteredEvents = ctrl.filteredEvents,
+                        len = filteredEvents ? filteredEvents.length : 0,
                         startTime = ctrl.range.startTime,
                         endTime = ctrl.range.endTime,
                         timeZoneOffset = -new Date().getTimezoneOffset(),
@@ -838,7 +859,7 @@ Pta.constant('calendar2Config', {
                         normalEventInRange = false;
                
                     for (var i = 0; i < len; i += 1) {
-                        var event = eventSource2[i];
+                        var event = filteredEvents[i];
                         var eventStartTime = new Date(event.startTime);
                         var eventEndTime = new Date(event.endTime);
 
@@ -1048,8 +1069,8 @@ Pta.constant('calendar2Config', {
                 ctrl._onDataLoaded = function () {
                     var startingDate = ctrl.range.startTime;
                     scope.rows = createDateObjects(startingDate);
-                    var eventSource2 = ctrl.eventSource2,
-                        len = eventSource2 ? eventSource2.length : 0,
+                    var filteredEvents = ctrl.filteredEvents,
+                        len = filteredEvents ? filteredEvents.length : 0,
                         startTime = ctrl.range.startTime,
                         endTime = ctrl.range.endTime,
                         timeZoneOffset = -new Date().getTimezoneOffset(),
@@ -1062,7 +1083,7 @@ Pta.constant('calendar2Config', {
                         eventSet,
                         normalEventInRange = false;
                     for (var i = 0; i < len; i += 1) {
-                        var event = eventSource2[i];
+                        var event = filteredEvents[i];
                         var eventStartTime = new Date(event.startTime);
                         var eventEndTime = new Date(event.endTime);
 

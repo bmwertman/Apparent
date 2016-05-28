@@ -1,7 +1,7 @@
 <ion-header-bar align-title="left" class="bar-positive">
   <h1 class="title">{{calendarTitle}}</h1>
 </ion-header-bar>
-<ion-view title="{{calendarTitle}}">
+<ion-view hide-back-button="true" title="{{calendarTitle}}">
   <ion-content class="has-header calendar">
     <div class="btn-toolbar" ng-if="isAdmin">
       <button type="button" class="btn btn-default cal_view_btn" ng-class="{active:mode==='month'}" ng-click="changeMode('month')">
@@ -17,23 +17,21 @@
           Today
       </button>
     </div>
-    <label class="item item-input item-select role-filter">
+    <label class="item item-input item-select role-filter" ng-if="calendarTitle === 'Calendar'">
       <div class="input-label">
           Filter by Volunteer Role
       </div>
-      <select>
-          <option style="display:none" value=""></option>
-          <option value="All" selected="selected">All</option>
-          <option value="Setup">Setup</option>
-          <option value="Event">Event</option>
-          <option value="Cleanup">Cleanup</option>
+      <select ng-options="option.type as option.label for option in eventTypes" 
+              ng-model="itemSelected.type" 
+              ng-change="reloadEvents()"
+              ng-init="itemSelected.type='all'">
       </select>
     </label>
     <div class="alert alert-success" ng-show="event">
       Event selected:{{event.startTime|date:'MMM/dd,yyyy,HH:mm'}} - {{event.endTime|date:'MMM/dd,yyyy,HH:mm'}}, {{event.title}}
     </div>
     <div class="well well-sm">
-      <calendar ng-model="currentDate" calendar-mode="mode" event-source="eventSource2" range-changed="reloadSource(startTime, endTime)" event-selected="onEventSelected(event)"></calendar>
+      <calendar ng-model="currentDate" calendar-mode="mode" event-source="filteredEvents" range-changed="reloadSource(startTime, endTime)" event-selected="onEventSelected(event)"></calendar>
     </div>
   </ion-content>
 </ion-view>

@@ -35,6 +35,18 @@ Pta.controller('CalendarCtrl', [
     $scope.currentDate - new Date();
   }
 
+  $scope.itemSelected = {};
+  $scope.eventTypes = [
+    {type: 'all', label: 'All'},
+    {type: 'setup', label: 'Setup'},
+    {type: 'event', label: 'Event'},
+    {type: 'cleanup', label: 'Cleanup'}
+  ];
+
+  $scope.reloadEvents = function(){
+    $scope.$broadcast('eventFilter', $scope.itemSelected.type);
+  }
+
   // Get the event data from firebase as an array
   var ref = new Firebase(FIREBASE_URL);
   var eventsRef = ref.child('events');
@@ -124,16 +136,16 @@ Pta.controller('CalendarCtrl', [
     return today.getTime() === currentCalendarDate.getTime();
   };
 
-  $scope.onEventSelected = function (event) {
-    $scope.pastJob = false;
-    $scope.editAppointmentDetails = event;
-    //Job can be edited up to twenty minute buffer after scheduled start
-    var startLessTwenty = Date.parse(event.startTime) - 1200000;
-    if(Date.parse(new Date()) >= startLessTwenty){
-      $scope.pastJob = true;//hides edit and delete buttons
-    }
-    $scope.openModal();
-  };
+  // $scope.onEventSelected = function (event) {
+  //   $scope.pastJob = false;
+  //   $scope.editAppointmentDetails = event;
+  //   //Job can be edited up to twenty minute buffer after scheduled start
+  //   var startLessTwenty = Date.parse(event.startTime) - 1200000;
+  //   if(Date.parse(new Date()) >= startLessTwenty){
+  //     $scope.pastJob = true;//hides edit and delete buttons
+  //   }
+  //   $scope.openModal();
+  // };
 
   // $scope.reloadSource = function (startTime, endTime) {
   //   $scope.lowerBound = startTime;
@@ -281,7 +293,7 @@ Pta.controller('CalendarCtrl', [
   //       }
   //       $scope.splitJobs(appointments, $scope.businessHours);
   //     };
-  //     $scope.eventSource2 = appointments;
+  //     $scope.filteredEvents = appointments;
   //   })
   //   .catch( function (err){
   //     $scope.err(err.status, 258);
