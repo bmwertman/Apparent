@@ -211,30 +211,30 @@ Pta.constant('calendar2Config', {
             }
         }
 
-        $scope.$on('dropArea.drag', function(e, el){
-            debugger;
-        });
-        $scope.$on('dropArea.dragEnd', function(e, el){
-            debugger;
-        });
-        $scope.$on('dropArea.drop', function(e, el){
-            debugger;
-        });
-        $scope.$on('dropArea.cancel', function(e, el){
-            debugger;
-        });
-        $scope.$on('dropArea.removeClass', function(e, el){
-            debugger;
-        });
-        $scope.$on('dropArea.shadow', function(e, el){
-            debugger;
-        });
-        $scope.$on('dropArea.over', function(e, el){
-            debugger;
-        });
-        $scope.$on('dropArea.out', function(e, el){
-            debugger;
-        });
+        // $scope.$on('dropArea.drag', function(e, el){
+        //     debugger;
+        // });
+        // $scope.$on('dropArea.dragEnd', function(e, el){
+        //     debugger;
+        // });
+        // $scope.$on('dropArea.drop', function(e, el){
+        //     debugger;
+        // });
+        // $scope.$on('dropArea.cancel', function(e, el){
+        //     debugger;
+        // });
+        // $scope.$on('dropArea.removeClass', function(e, el){
+        //     debugger;
+        // });
+        // $scope.$on('dropArea.shadow', function(e, el){
+        //     debugger;
+        // });
+        // $scope.$on('dropArea.over', function(e, el){
+        //     debugger;
+        // });
+        // $scope.$on('dropArea.out', function(e, el){
+        //     debugger;
+        // });
 
         $scope.hourTouch = function($event){
             if($scope.selectedHour.el && $scope.selectedHour.hashKey !== $event.currentTarget.$$hashKey){//selected a different hour
