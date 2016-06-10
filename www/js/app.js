@@ -12,7 +12,6 @@ var Pta = angular.module('pta', [
   'xeditable',
   'jrCrop',
   'naif.base64',
-  'ui.tree',
   angularDragula(angular)
   ])
 .run(function($ionicPlatform, $rootScope, Auth, FIREBASE_URL, editableThemes, editableOptions) {
@@ -96,9 +95,7 @@ var Pta = angular.module('pta', [
   };
 })
 
-.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, treeConfig) {
-
-  // treeConfig.defaultCollapsed = true;
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
   
   $stateProvider
 

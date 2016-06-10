@@ -211,28 +211,28 @@ Pta.constant('calendar2Config', {
             }
         }
 
-        $scope.$on('tm.events.drag', function(e, el){
+        $scope.$on('dropArea.drag', function(e, el){
             debugger;
         });
-        $scope.$on('tm.events.dragEnd', function(e, el){
+        $scope.$on('dropArea.dragEnd', function(e, el){
             debugger;
         });
-        $scope.$on('tm.events.drop', function(e, el){
+        $scope.$on('dropArea.drop', function(e, el){
             debugger;
         });
-        $scope.$on('tm.events.cancel', function(e, el){
+        $scope.$on('dropArea.cancel', function(e, el){
             debugger;
         });
-        $scope.$on('tm.events.removeClass', function(e, el){
+        $scope.$on('dropArea.removeClass', function(e, el){
             debugger;
         });
-        $scope.$on('tm.events.shadow', function(e, el){
+        $scope.$on('dropArea.shadow', function(e, el){
             debugger;
         });
-        $scope.$on('tm.events.over', function(e, el){
+        $scope.$on('dropArea.over', function(e, el){
             debugger;
         });
-        $scope.$on('tm.events.out', function(e, el){
+        $scope.$on('dropArea.out', function(e, el){
             debugger;
         });
 
