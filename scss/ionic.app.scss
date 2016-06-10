@@ -22,7 +22,7 @@ $tagBlue: #010032 !default;
 $primaryGreen: #228B22 !default;
 $primaryBlue: #0000CD !default;
 $primaryRed: #B22222 !default;
-
+$primaryOrange: orange !default;
 
 .primary-green{
  background-color: $primaryGreen;
@@ -307,10 +307,12 @@ ion-header-bar{
     }
   }
   .profile-pic{
+    top: 47px;
     width: 100px;
-    height: 136px;
+    height: 100px;
     position: absolute;
-    right: calc((100% - 100px)/2)
+    right: calc((100% - 100px)/2);
+    border-radius: 50%;
   }
   .tall .editable-wrap{
     margin-top: 138px;
@@ -365,8 +367,62 @@ ion-header-bar{
     width: 100%;
   }
   .calendar-event-wrap{
-    max-width: 70%;
+    max-width: 68%;
     float: right;
+  }
+  .volunteer-start {
+    background-color: $primaryOrange;
+    color: white;
+    font-weight: bold;
+    padding: 2px 6px;
+    height: 26px;
+    font-size: 13px;
+  }
+  .drag-element{
+    width: 65px;
+    display: none;
+    float: left;
+    margin: 6px 0 0 9px;
+    .arrow-head{
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 16px 20px 0;
+      border-color: transparent $primaryOrange transparent transparent;
+      position: relative;
+      left: -9px;
+      top: 31px;
+    }
+    .half-circle{
+      position: relative;
+      height: 33px;
+      text-align: center;
+      background-color: $primaryOrange;
+      color: white;
+      font-weight: bold;
+    }
+    .finish-time{
+      width: 100%;
+      border-radius: 33px 33px 0 0;
+      padding-top: 14px;
+    }
+    .node-handle{
+      border-radius: 0 0 33px 33px;
+      line-height: 10px;
+    }
+  }
+}
+
+body div.drag-element.gu-mirror{
+  .half-circle{
+    height: 33px;
+    text-align: left;
+    background-color: $primaryOrange;
+    opacity: 1;
+    font-weight: bold;
+    line-height: 0px;
+    font-size: 22px;
+    width: 85px;
   }
 }
 

@@ -1,9 +1,3 @@
-// Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.controllers' is found in controllers.js
 var Pta = angular.module('pta', [
   'ionic', 
   'swipe', 
@@ -17,10 +11,11 @@ var Pta = angular.module('pta', [
   'offClick',
   'xeditable',
   'jrCrop',
-  'naif.base64'
+  'naif.base64',
+  'ui.tree',
+  angularDragula(angular)
   ])
 .run(function($ionicPlatform, $rootScope, Auth, FIREBASE_URL, editableThemes, editableOptions) {
-  
   // hide xeditable cancel button
   editableThemes['default'].cancelTpl = '<button type="button" class="btn btn-default" style="display:none">';
   editableThemes['default'].submitTpl = '<button type="submit" class="xeditable-submit fa fa-pencil-square-o"></button>';
@@ -101,7 +96,10 @@ var Pta = angular.module('pta', [
   };
 })
 
-.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, treeConfig) {
+
+  // treeConfig.defaultCollapsed = true;
+  
   $stateProvider
 
   .state('login', {

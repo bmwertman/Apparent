@@ -1,36 +1,52 @@
 <div>
-    <div class="scrollable" style="height: 400px;">
-        <table class="table table-bordered table-fixed">
-            <tbody>
-            <tr ng-repeat="tm in rows track by $index" >
+    <table class="table table-bordered table-fixed">
+        <tbody>
+            <tr style="max-height:37px;" ng-repeat="tm in rows track by $index">
                 <td class="calendar-hour-column-view text-center">
                     {{$index<12?($index === 0?12:$index)+'am':($index === 12?$index:$index-12)+'pm'}}
                 </td>
                 <td class="calendar-cell">
-                    <div class="add_event_shade" style="height:100%;" ng-if="!tm.events && isAdmin" ng-show"clickCount" on-touch="hourTouch($event)">
+                   <!--  <div class="add_event_shade" 
+                         style="height:100%;"
+                         ng-if="isCalView"
+                         ng-show"clickCount"
+                         on-touch="hourTouch($event)">
                         <p style="display:none;">+ New event</p>
                         <p style="display:none;">{{$index<12?($index === 0?12:$index)+':00 am':($index === 12?$index:$index-12)+':00 pm'}}</p>
-                    </div>
-                    <div class="add_event_shade" style="height:100%;" ng-if="tm.events && !isAdmin" ng-show"clickCount" on-touch="hourTouch($event)">
-                        <p style="display:none;">Sign up</p>
-                        <p style="display:none;">{{$index<12?($index === 0?12:$index)+':00 am':($index === 12?$index:$index-12)+':00 pm'}}</p>
+                    </div> -->
+                    <!--  drag-element width 62px on OnePlus -->
+                    <div style="position:absolute;height:93px;" dragula="dropArea">
+                        <div class="drag-element">
+                            <div class="arrow-head"></div>
+                            <div class='finish-time half-circle'>
+                                {{displayEnd}}
+                            </div>
+                            <div class="node-handle half-circle">
+                                Finish
+                                <i class="ion-ios-drag"
+                                   style="display:block;margin-top:-15px;font-size:47px;"></i>
+                            </div> 
+                        </div>
                     </div>
                     <div ng-class="{'calendar-event-wrap': tm.events}" ng-show="tm.events">
-                        <div ng-repeat="displayEvent in tm.events" class="calendar-event"
+                        <div ng-repeat="displayEvent in tm.events" 
+                        class="calendar-event"
                              ng-click="eventSelected({event:displayEvent.event})"
                              ng-style="{left: 100/displayEvent.overlapNumber*displayEvent.position+'%', 
                                         width: 100/displayEvent.overlapNumber+'%',
                                         top: displayEvent.event.startTimeOffset+'%',
-                                        height: 37*(displayEvent.event.totalApptTime)+'px'}">
+                                        height: 37*(displayEvent.event.totalApptTime)+'px'}"
+                            insert-signup>
                             <div class="calendar-event-inner"
+                                 ng-if="isCalView || displayEvent.event.volunteersNeeded"
                                  ng-class="{'primaryGreen':'primary-green', 'primaryBlue':'primary-blue', 'primaryRed':'primary-red'}[displayEvent.event.backgroundColor]"
                                  style="white-space: pre-wrap; font-weight: bold">{{displayEvent.event.title}}
                             </div>
                         </div>
                     </div>
+                    <p style="display:none;">{{$index<12?($index === 0?12:$index)+':00 am':($index === 12?$index:$index-12)+':00 pm'}}</p>
                 </td>
             </tr>
-            </tbody>
-        </table>
-    </div>
+        </tbody>
+    </table>
 </div>

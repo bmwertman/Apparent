@@ -26,7 +26,7 @@ Pta.controller('UserCtrl', [
         $jrCrop.crop({
           url: results[0],
           width: 100,
-          height: 145,
+          height: 100,
           circle: true
         }).then(function(canvas){
           $scope.user.pic = canvas.toDataURL()

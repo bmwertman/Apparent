@@ -1,0 +1,10 @@
+<div style="position:absolute;width:105px;height:27px;">
+    <div class="add_event_shade"
+         style="height:100%;"
+         ng-if="!isCalView" 
+         on-touch="hourTouch($event)"
+         off-click="cancelSignup()"
+         off-click-if="signupShown">
+        <p style="display:none;" ng-model='volunteerStart'>Signup</p>
+    </div>
+</div>

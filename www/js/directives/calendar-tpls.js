@@ -30,8 +30,18 @@ Pta.constant('calendar2Config', {
         'FIREBASE_URL',
         '$firebaseArray',
         '$ionicHistory',
-        function ($rootScope, $scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $localstorage, $ionicModal, LocationService, $ionicPlatform, $state, $ionicLoading, FIREBASE_URL, $firebaseArray, $ionicHistory) {
+        'dragulaService',
+        function ($rootScope, $scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $localstorage, $ionicModal, LocationService, $ionicPlatform, $state, $ionicLoading, FIREBASE_URL, $firebaseArray, $ionicHistory, dragulaService) {
         'use strict';
+
+        dragulaService.options($scope, 'dropArea', {
+            invalid: function(el){
+                return el.className === "drag-element";
+            },
+            moves: function (el, container, handle) {
+               return handle.className === 'node-handle';
+             }
+        });
 
         function getTimeOffset(date) {
           var minutes = date.getMinutes();
@@ -51,6 +61,13 @@ Pta.constant('calendar2Config', {
         $scope.calEvents = $firebaseArray(eventsRef);
 
         $scope.calEvents.$loaded(function(data){
+            if(!$scope.isCalView){// filtering out events that don't need volunteers for volunteer signup view
+                for (var i = data.length - 1; i >= 0; i--) {
+                    if(!data[i].volunteer_hours){
+                        data.splice(i, 1);
+                    }
+                }
+            }
             $scope.eventSource = [];
             for (var i = data.length - 1; i >= 0; i--) {
                 if(data[i].setup_start){
@@ -60,6 +77,7 @@ Pta.constant('calendar2Config', {
                         startTime: data[i].setup_start,
                         endTime:data[i].setup_end,
                         type: 'setup',
+                        volunteersNeeded: data[i].setup_volunteers_needed,
                         backgroundColor: 'primaryGreen',
                         title: data[i].event_title + ' setup',
                         startTimeOffset: getTimeOffset(new Date(data[i].setup_start)),
@@ -74,6 +92,7 @@ Pta.constant('calendar2Config', {
                         startTime: data[i].cleanup_start,
                         endTime: data[i].cleanup_end,
                         type: 'cleanup',
+                        volunteersNeeded: data[i].cleanup_volunteers_needed,
                         backgroundColor: 'primaryRed',
                         title: data[i].event_title + ' cleanup',
                         startTimeOffset: getTimeOffset(new Date(data[i].cleanup_start)),
@@ -87,6 +106,7 @@ Pta.constant('calendar2Config', {
                     startTime: data[i].event_start,
                     endTime: data[i].event_end,
                     type: 'event',
+                    volunteersNeeded: data[i].volunteers_needed,
                     backgroundColor: 'primaryBlue',
                     title: data[i].event_title,
                     startTimeOffset: getTimeOffset(new Date(data[i].event_start)),
@@ -170,27 +190,84 @@ Pta.constant('calendar2Config', {
             return endHour;
         }
 
+        //Determine if we're in the Calendar or Volunteer view
+        if($ionicHistory.currentView().title === 'Calendar'){
+            $scope.isCalView = true;
+        } else {
+            $scope.isCalView = false;
+        }
+
+        $scope.signupShown = false;
+        $scope.cancelSignup = function(){
+            if($scope.selectedHour.el){
+                var signup = angular.element($scope.selectedHour.el.firstElementChild);
+                $scope.dragEl.style.display= "none";
+                signup.html("Signup")
+                      .removeClass('volunteer-start')
+                      .css("display", "none");
+                $scope.displayEnd = null;
+                $scope.selectedHour.el = null;
+                $scope.signupShown = false;
+            }
+        }
+
+        $scope.$on('tm.events.drag', function(e, el){
+            debugger;
+        });
+        $scope.$on('tm.events.dragEnd', function(e, el){
+            debugger;
+        });
+        $scope.$on('tm.events.drop', function(e, el){
+            debugger;
+        });
+        $scope.$on('tm.events.cancel', function(e, el){
+            debugger;
+        });
+        $scope.$on('tm.events.removeClass', function(e, el){
+            debugger;
+        });
+        $scope.$on('tm.events.shadow', function(e, el){
+            debugger;
+        });
+        $scope.$on('tm.events.over', function(e, el){
+            debugger;
+        });
+        $scope.$on('tm.events.out', function(e, el){
+            debugger;
+        });
+
         $scope.hourTouch = function($event){
             if($scope.selectedHour.el && $scope.selectedHour.hashKey !== $event.currentTarget.$$hashKey){//selected a different hour
-                $event.currentTarget.firstElementChild.style.display = "inherit";
+                $event.currentTarget.firstElementChild.style.display = "inline-block";
                 $scope.selectedHour.el.firstElementChild.style.display = "none";
                 $scope.selectedHour.el = $event.currentTarget;
                 $scope.selectedHour.hashKey = $event.currentTarget.$$hashKey;
             } else if($scope.selectedHour.el && $scope.selectedHour.hashKey === $event.currentTarget.$$hashKey){//selected the same hour again
-                $scope.selectedHour.el.firstElementChild.style.display = "none";
+                var children = angular.element($scope.selectedHour.el).parent();;
+                var start = children.parent().children()[children.parent().children().length - 1].innerHTML;
+                $scope.volunteerStart = moment(new Date($scope.title + " " +  start));
+                $scope.displayStart = $scope.volunteerStart.format('h:mm a');
                 $scope.selectedHour.hashKey = null; 
-                var start = $scope.selectedHour.el.lastElementChild.innerHTML;
                 if($ionicHistory.currentView().title === 'Calendar'){
-                  $scope.eventStartDate = new Date($scope.title);
-                  $scope.eventEndDate = new Date($scope.title);
-                  $scope.eventStartTime = new Date($scope.title + " " + start);
-                  $scope.eventEndTime = new Date($scope.title + " " + $scope.endHour(start));
-                  $scope.addEventModal();  
+                    $scope.eventStartDate = new Date($scope.title);
+                    $scope.eventEndDate = new Date($scope.title);
+                    $scope.eventStartTime = new Date($scope.title + " " + start);
+                    $scope.eventEndTime = new Date($scope.title + " " + $scope.endHour(start));
+                    $scope.addEventModal();  
                 } else {
-                    //create the volunteer signup modal here
+                    $scope.selectedHour.el.firstElementChild.innerHTML = "Start: " + $scope.displayStart;
+                    $scope.selectedHour.el.firstElementChild.className = "volunteer-start";
+                    $scope.selectedHour.el.firstElementChild.style.display = "inline-block"
+                    $scope.displayEnd = $scope.volunteerStart.add(1, 'h').format('h:mm a');
+                    var selectedHour = angular.element($scope.selectedHour.el);
+                    $scope.dragEl = selectedHour.parent().next().children()[0];
+                    $scope.dragEl.style.display = 'inherit';
+                    $timeout(function(){
+                        $scope.signupShown = true;
+                    }, 500);
                 }
             } else {//first hour selection made
-                $event.currentTarget.firstElementChild.style.display = "inherit"; 
+                $event.currentTarget.firstElementChild.style.display = "inline-block"; 
                 $scope.selectedHour.el = $event.currentTarget;
                 $scope.selectedHour.hashKey = $event.currentTarget.$$hashKey
             }

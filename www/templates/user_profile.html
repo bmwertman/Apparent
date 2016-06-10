@@ -3,7 +3,9 @@
     <div class="icon_wrapper" ng-if="!user.pic">
       <i class="ion-person" ng-click="getImage()"></i>
     </div>
-    <img class="profile-pic" ng-click="getImage()" ng-if="user.pic" ng-src="{{user.pic}}"></img>
+    <div class="pic_frame">
+      <img class="profile-pic" ng-click="getImage()" ng-if="user.pic" ng-src="{{user.pic}}"></img>
+    </div>
     <input ng-model="user.pic" base-sixty-four-input style="display:none">
     <h3 id="name"
         class="title title-center"
@@ -19,10 +21,10 @@
       <h4 class="subtitle">Contact</h4>
       <div class="editable-group">
         <label for="email">Email</label>
-        <p editable-email="user.user_email"
-           onaftersave="editSubmit(user.user_email, 'user_email')"
+        <p editable-email="user.email"
+           onaftersave="editSubmit(user.email, 'email')"
            >
-          {{ user.user_email }}
+          {{ user.email }}
         </p>
       </div>
       <div class="editable-group">

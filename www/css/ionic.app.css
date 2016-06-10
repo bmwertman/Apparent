@@ -9947,10 +9947,12 @@ ion-header-bar .calendar-form {
     display: inline-block; }
 
 .profile .profile-pic {
+  top: 47px;
   width: 100px;
-  height: 136px;
+  height: 100px;
   position: absolute;
-  right: calc((100% - 100px)/2); }
+  right: calc((100% - 100px)/2);
+  border-radius: 50%; }
 
 .profile .tall .editable-wrap {
   margin-top: 138px;
@@ -9996,8 +9998,55 @@ ion-header-bar .calendar-form {
   width: 100%; }
 
 .calendar .calendar-event-wrap {
-  max-width: 70%;
+  max-width: 68%;
   float: right; }
+
+.calendar .volunteer-start {
+  background-color: orange;
+  color: white;
+  font-weight: bold;
+  padding: 2px 6px;
+  height: 26px;
+  font-size: 13px; }
+
+.calendar .drag-element {
+  width: 65px;
+  display: none;
+  float: left;
+  margin: 6px 0 0 9px; }
+  .calendar .drag-element .arrow-head {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 16px 20px 0;
+    border-color: transparent orange transparent transparent;
+    position: relative;
+    left: -9px;
+    top: 31px; }
+  .calendar .drag-element .half-circle {
+    position: relative;
+    height: 33px;
+    text-align: center;
+    background-color: orange;
+    color: white;
+    font-weight: bold; }
+  .calendar .drag-element .finish-time {
+    width: 100%;
+    border-radius: 33px 33px 0 0;
+    padding-top: 14px; }
+  .calendar .drag-element .node-handle {
+    border-radius: 0 0 33px 33px;
+    line-height: 10px; }
+
+body div.drag-element.gu-mirror .half-circle {
+  height: 33px;
+  text-align: left;
+  background-color: orange;
+  opacity: 1;
+  font-weight: bold;
+  line-height: 0px;
+  font-size: 22px;
+  width: 85px; }
 
 .add_event_modal .add_event_header .button-clear {
   color: #fff !important;
