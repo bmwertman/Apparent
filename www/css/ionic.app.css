@@ -10043,10 +10043,11 @@ ion-header-bar .calendar-form {
     line-height: 10px; }
 
 body div.drag-element.gu-mirror {
-  width: 85px;
+  width: 190px;
   display: none;
   float: left;
-  margin: 6px 0 0 9px; }
+  margin: 6px 0 0 9px;
+  opacity: 1; }
   body div.drag-element.gu-mirror .arrow-head {
     width: 0;
     height: 0;
@@ -10057,21 +10058,25 @@ body div.drag-element.gu-mirror {
     left: -9px;
     top: 40px; }
   body div.drag-element.gu-mirror .half-circle {
-    height: 43px;
+    height: 33px;
     text-align: center;
+    padding-left: 100px;
     background-color: orange;
     font-weight: bold;
-    opacity: 1;
     line-height: 7px;
     font-size: 16px;
     color: white; }
   body div.drag-element.gu-mirror .finish-time {
     width: 100%;
-    border-radius: 43px 43px 0 0;
+    border-radius: 33px 33px 0 0;
     padding-top: 14px; }
   body div.drag-element.gu-mirror .node-handle {
-    border-radius: 0 0 43px 43px;
-    line-height: 10px; }
+    border-radius: 0 0 33px 33px;
+    line-height: 10px;
+    font-size: 16px; }
+    body div.drag-element.gu-mirror .node-handle .ion-ios-drag {
+      transform: scale(4.3, 1);
+      margin-left: -97px; }
 
 .add_event_modal .add_event_header .button-clear {
   color: #fff !important;

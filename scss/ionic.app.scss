@@ -418,10 +418,11 @@ ion-header-bar{
 }
 
 body div.drag-element.gu-mirror{
-  width: 85px;
+  width: 190px;
   display: none;
   float: left;
   margin: 6px 0 0 9px;
+  opacity: 1 ;
   .arrow-head{
     width: 0;
     height: 0;
@@ -433,23 +434,28 @@ body div.drag-element.gu-mirror{
     top: 40px;
   }
   .half-circle{
-    height: 43px;
+    height: 33px;
     text-align: center;
+    padding-left: 100px;
     background-color: $primaryOrange;
     font-weight: bold;
-    opacity: 1;
     line-height: 7px;
     font-size: 16px;
     color: white;
   }
   .finish-time{
     width: 100%;
-    border-radius: 43px 43px 0 0;
+    border-radius: 33px 33px 0 0;
     padding-top: 14px;
   }
   .node-handle{
-    border-radius: 0 0 43px 43px;
+    border-radius: 0 0 33px 33px;
     line-height: 10px;
+    font-size: 16px;
+    .ion-ios-drag{
+      transform: scale(4.3, 1);
+      margin-left: -97px;
+    }
   }
 }
 

@@ -209,6 +209,7 @@ Pta.constant('calendar2Config', {
                 $scope.displayEnd = null;
                 $scope.selectedHour.el = null;
                 $scope.signupShown = false;
+                $scope.dropped = true;
             }
         }
         $scope.dropped = false;
@@ -216,10 +217,13 @@ Pta.constant('calendar2Config', {
         $scope.$on('bag.cloned', function(e, el){
             el.attr('offset-top', 'top');
             el.attr('drag-watch', '');
+            $scope.targetEl = angular.element(document.getElementsByClassName('gu-transit')[0])
+            $scope.targetEl.addClass('gu-hide');
             $compile(el)($scope);
             (function forceFeed(newValue){
                 if(!$scope.dropped){
                     $timeout(function(){
+                        console.log("digest");
                         $scope.$digest();
                         forceFeed();
                     }, false);
@@ -227,32 +231,18 @@ Pta.constant('calendar2Config', {
             })();
         });
 
-        $scope.$on('bag.drop', function(e, el){
+        $scope.$on('bag.drag', function(el, source){
+            $scope.targetInitParent = source.parent();
+        });
+
+        $scope.$on('bag.drop', function(el, target, source){
             $scope.dropped = true;
+            $scope.targetInitParent.prepend($scope.targetEl);
+            $scope.targetEl.removeClass('gu-hide gu-transit');
+            $scope.cancelSignup();
             console.log("scope.dropped is " + $scope.dropped);
         });
-        // $scope.$on('bag.dragEnd', function(e, el){
-        //     debugger;
-        // });
-        // $scope.$on('bag.drop', function(e, el){
-        //     debugger;
-        // });
-        // $scope.$on('bag.cancel', function(e, el){
-        //     debugger;
-        // });
-        // $scope.$on('bag.removeClass', function(e, el){
-        //     debugger;
-        // });
-        // $scope.$on('bag.shadow', function(e, el){
-        //     debugger;
-        // });
-        // $scope.$on('bag.over', function(e, el){
-        //     debugger;
-        // });
-        // $scope.$on('bag.out', function(e, el){
-        //     debugger;
-        // });
-
+        
         $scope.hourTouch = function($event){
             if(!$scope.signupShown && $scope.selectedHour.el && $scope.selectedHour.hashKey !== $event.currentTarget.$$hashKey){//selected a different hour
                 $event.currentTarget.firstElementChild.style.display = "inline-block";
@@ -279,6 +269,7 @@ Pta.constant('calendar2Config', {
                     var selectedHour = angular.element($scope.selectedHour.el);
                     $scope.dragEl = selectedHour.parent().next().children()[0];
                     $scope.dragEl.style.display = 'inherit';
+                    $scope.dropped = false;
                     $timeout(function(){
                         $scope.signupShown = true;
                     }, 500);
