@@ -32,13 +32,11 @@ Pta.constant('calendar2Config', {
         '$ionicHistory',
         'dragulaService',
         '$compile',
-        function ($rootScope, $scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $localstorage, $ionicModal, LocationService, $ionicPlatform, $state, $ionicLoading, FIREBASE_URL, $firebaseArray, $ionicHistory, dragulaService, $compile) {
+        '$ionicPopup',
+        function ($rootScope, $scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $localstorage, $ionicModal, LocationService, $ionicPlatform, $state, $ionicLoading, FIREBASE_URL, $firebaseArray, $ionicHistory, dragulaService, $compile, $ionicPopup) {
         'use strict';
 
         dragulaService.options($scope, '"bag"', {
-            // invalid: function(el){
-            //     return el.className === "drag-element";
-            // },
             moves: function (el, container, handle) {
                return handle.className === 'drag-element';
              }
@@ -232,19 +230,40 @@ Pta.constant('calendar2Config', {
         });
 
         $scope.confirmSignup = function() {
-           var confirmPopup = $ionicPopup.confirm({
-             title: 'You\'re signing up to help your child\'s school!' ,
-             template: 'Are you sure you\'re available from ' + 
-             $scope.displayStart + ' to ' + $scope.displayEnd + ' on ' + $scope.title + '?';
-           });
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'You\'re signing up to help your child\'s school!' ,
+                template: 'Are you sure you\'re available from ' + 
+                $scope.displayStart + ' to ' + $scope.displayEnd + ' on ' + $scope.title + '?'
+            });
 
-           confirmPopup.then(function(res) {
-             if(res) {
-               console.log('You are sure');
-             } else {
-               console.log('You are not sure');
-             }
-           });
+            // var popup = angular.element(document.getElementsByClassName('popup-container'));
+            // var button = angular.element(popup.children().children()[popup.children().children().length - 1]);
+            // button.attr('ng-show', 'false');
+            confirmPopup.then(function(res){
+                if(res) {
+                    //Check for sync with user's google or ical calendar here
+                    //if synched add to their calendar and show confirmation message
+                    //else walk through synch process first
+                    var alert = $ionicPopup.alert({
+                        title: 'Thanks!',
+                        template: 'You\'re child\'s school is better because of people like you.',
+                        buttons: []
+                    });                    
+                } else {
+                    //return to cal
+                    var alert = $ionicPopup.alert({
+                        title: 'Aaaawww, we really need you.',
+                        template: 'Maybe another time?',
+                        buttons: []
+                    });
+                }
+                $timeout(function(){
+                    alert.close();
+                    if(res){
+                        $state.go('app.events');
+                    }
+                }, 3000);
+            });
         };
 
         $scope.$on('bag.drag', function(el, source){
