@@ -6,16 +6,16 @@
                     {{$index<12?($index === 0?12:$index)+'am':($index === 12?$index:$index-12)+'pm'}}
                 </td>
                 <td class="calendar-cell">
-                   <!--  <div class="add_event_shade" 
+                    <div class="add_event_shade" 
                          style="height:100%;"
                          ng-if="isCalView"
                          ng-show"clickCount"
                          on-touch="hourTouch($event)">
                         <p style="display:none;">+ New event</p>
                         <p style="display:none;">{{$index<12?($index === 0?12:$index)+':00 am':($index === 12?$index:$index-12)+':00 pm'}}</p>
-                    </div> -->
+                    </div>
                     <!--  drag-element width 62px on OnePlus -->
-                    <div style="position:relative;height:25px;width:32%;top:67px;float:left;" dragula='"bag"'>
+                    <div ng-if="!isCalView" style="position:relative;height:25px;width:32%;top:67px;float:left;" dragula='"bag"'>
                         <div class="drag-element" offset-top="top">
                             <div class="arrow-head"></div>
                             <div class='finish-time half-circle' ng-bind="displayEnd"></div>
