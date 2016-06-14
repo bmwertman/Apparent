@@ -235,10 +235,6 @@ Pta.constant('calendar2Config', {
                 template: 'Are you sure you\'re available from ' + 
                 $scope.displayStart + ' to ' + $scope.displayEnd + ' on ' + $scope.title + '?'
             });
-
-            // var popup = angular.element(document.getElementsByClassName('popup-container'));
-            // var button = angular.element(popup.children().children()[popup.children().children().length - 1]);
-            // button.attr('ng-show', 'false');
             confirmPopup.then(function(res){
                 if(res) {
                     //Check for sync with user's google or ical calendar here
