@@ -199,18 +199,18 @@ Pta.constant('calendar2Config', {
         }
 
         $scope.signupShown = false;
-        // $scope.cancelSignup = function(){
-        //     if($scope.selectedHour.el){
-        //         var signup = angular.element($scope.selectedHour.el.firstElementChild);
-        //         $scope.dragEl.style.display= "none";
-        //         signup.html("Signup")
-        //               .removeClass('volunteer-start')
-        //               .css("display", "none");
-        //         $scope.displayEnd = null;
-        //         $scope.selectedHour.el = null;
-        //         $scope.signupShown = false;
-        //     }
-        // }
+        $scope.cancelSignup = function(){
+            if($scope.selectedHour.el){
+                var signup = angular.element($scope.selectedHour.el.firstElementChild);
+                $scope.dragEl.style.display= "none";
+                signup.html("Signup")
+                      .removeClass('volunteer-start')
+                      .css("display", "none");
+                $scope.displayEnd = null;
+                $scope.selectedHour.el = null;
+                $scope.signupShown = false;
+            }
+        }
         $scope.dropped = false;
 
         $scope.$on('bag.cloned', function(e, el){
