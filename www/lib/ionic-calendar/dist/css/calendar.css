@@ -118,7 +118,7 @@
 
 .calendar-cell {
     padding: 0 !important;
-    height: 37px;
+    height: 40px; /*Increased from 37 to 40 px for even time calculation*/
 }
 
 .monthview-primary-with-event {

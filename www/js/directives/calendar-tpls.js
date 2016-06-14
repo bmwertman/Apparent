@@ -31,15 +31,16 @@ Pta.constant('calendar2Config', {
         '$firebaseArray',
         '$ionicHistory',
         'dragulaService',
-        function ($rootScope, $scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $localstorage, $ionicModal, LocationService, $ionicPlatform, $state, $ionicLoading, FIREBASE_URL, $firebaseArray, $ionicHistory, dragulaService) {
+        '$compile',
+        function ($rootScope, $scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $localstorage, $ionicModal, LocationService, $ionicPlatform, $state, $ionicLoading, FIREBASE_URL, $firebaseArray, $ionicHistory, dragulaService, $compile) {
         'use strict';
 
-        dragulaService.options($scope, 'dropArea', {
-            invalid: function(el){
-                return el.className === "drag-element";
-            },
+        dragulaService.options($scope, '"bag"', {
+            // invalid: function(el){
+            //     return el.className === "drag-element";
+            // },
             moves: function (el, container, handle) {
-               return handle.className === 'node-handle';
+               return handle.className === 'drag-element';
              }
         });
 
@@ -198,46 +199,62 @@ Pta.constant('calendar2Config', {
         }
 
         $scope.signupShown = false;
-        $scope.cancelSignup = function(){
-            if($scope.selectedHour.el){
-                var signup = angular.element($scope.selectedHour.el.firstElementChild);
-                $scope.dragEl.style.display= "none";
-                signup.html("Signup")
-                      .removeClass('volunteer-start')
-                      .css("display", "none");
-                $scope.displayEnd = null;
-                $scope.selectedHour.el = null;
-                $scope.signupShown = false;
-            }
-        }
+        // $scope.cancelSignup = function(){
+        //     if($scope.selectedHour.el){
+        //         var signup = angular.element($scope.selectedHour.el.firstElementChild);
+        //         $scope.dragEl.style.display= "none";
+        //         signup.html("Signup")
+        //               .removeClass('volunteer-start')
+        //               .css("display", "none");
+        //         $scope.displayEnd = null;
+        //         $scope.selectedHour.el = null;
+        //         $scope.signupShown = false;
+        //     }
+        // }
+        $scope.dropped = false;
 
-        // $scope.$on('dropArea.drag', function(e, el){
+        $scope.$on('bag.cloned', function(e, el){
+            el.attr('offset-top', 'top');
+            el.attr('drag-watch', '');
+            $compile(el)($scope);
+            (function forceFeed(newValue){
+                if(!$scope.dropped){
+                    $timeout(function(){
+                        $scope.$digest();
+                        forceFeed();
+                    }, false);
+                }
+            })();
+        });
+
+        $scope.$on('bag.drop', function(e, el){
+            $scope.dropped = true;
+            console.log("scope.dropped is " + $scope.dropped);
+        });
+        // $scope.$on('bag.dragEnd', function(e, el){
         //     debugger;
         // });
-        // $scope.$on('dropArea.dragEnd', function(e, el){
+        // $scope.$on('bag.drop', function(e, el){
         //     debugger;
         // });
-        // $scope.$on('dropArea.drop', function(e, el){
+        // $scope.$on('bag.cancel', function(e, el){
         //     debugger;
         // });
-        // $scope.$on('dropArea.cancel', function(e, el){
+        // $scope.$on('bag.removeClass', function(e, el){
         //     debugger;
         // });
-        // $scope.$on('dropArea.removeClass', function(e, el){
+        // $scope.$on('bag.shadow', function(e, el){
         //     debugger;
         // });
-        // $scope.$on('dropArea.shadow', function(e, el){
+        // $scope.$on('bag.over', function(e, el){
         //     debugger;
         // });
-        // $scope.$on('dropArea.over', function(e, el){
-        //     debugger;
-        // });
-        // $scope.$on('dropArea.out', function(e, el){
+        // $scope.$on('bag.out', function(e, el){
         //     debugger;
         // });
 
         $scope.hourTouch = function($event){
-            if($scope.selectedHour.el && $scope.selectedHour.hashKey !== $event.currentTarget.$$hashKey){//selected a different hour
+            if(!$scope.signupShown && $scope.selectedHour.el && $scope.selectedHour.hashKey !== $event.currentTarget.$$hashKey){//selected a different hour
                 $event.currentTarget.firstElementChild.style.display = "inline-block";
                 $scope.selectedHour.el.firstElementChild.style.display = "none";
                 $scope.selectedHour.el = $event.currentTarget;
@@ -266,7 +283,7 @@ Pta.constant('calendar2Config', {
                         $scope.signupShown = true;
                     }, 500);
                 }
-            } else {//first hour selection made
+            } else if(!$scope.signupShown) {//first hour selection made
                 $event.currentTarget.firstElementChild.style.display = "inline-block"; 
                 $scope.selectedHour.el = $event.currentTarget;
                 $scope.selectedHour.hashKey = $event.currentTarget.$$hashKey

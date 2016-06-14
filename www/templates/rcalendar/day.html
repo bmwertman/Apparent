@@ -15,12 +15,10 @@
                         <p style="display:none;">{{$index<12?($index === 0?12:$index)+':00 am':($index === 12?$index:$index-12)+':00 pm'}}</p>
                     </div> -->
                     <!--  drag-element width 62px on OnePlus -->
-                    <div style="position:absolute;height:93px;" dragula="dropArea">
-                        <div class="drag-element">
+                    <div style="position:relative;height:25px;width:32%;top:67px;float:left;" dragula='"bag"'>
+                        <div class="drag-element" offset-top="top">
                             <div class="arrow-head"></div>
-                            <div class='finish-time half-circle'>
-                                {{displayEnd}}
-                            </div>
+                            <div class='finish-time half-circle' ng-bind="displayEnd"></div>
                             <div class="node-handle half-circle">
                                 Finish
                                 <i class="ion-ios-drag"
@@ -35,7 +33,7 @@
                              ng-style="{left: 100/displayEvent.overlapNumber*displayEvent.position+'%', 
                                         width: 100/displayEvent.overlapNumber+'%',
                                         top: displayEvent.event.startTimeOffset+'%',
-                                        height: 37*(displayEvent.event.totalApptTime)+'px'}"
+                                        height: 40*(displayEvent.event.totalApptTime)+'px'}"
                             insert-signup>
                             <div class="calendar-event-inner"
                                  ng-if="isCalView || displayEvent.event.volunteersNeeded"

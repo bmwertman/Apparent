@@ -538,8 +538,9 @@ function dragula (initialContainers, options) {
     }
     var rect = _item.getBoundingClientRect();
     _mirror = _item.cloneNode(true);
-    _mirror.style.width = getRectWidth(rect) + 'px';
-    _mirror.style.height = getRectHeight(rect) + 'px';
+    //Commented out to enlarge the width and height of the drag element on-drag. BW 6/10/16
+    // _mirror.style.width = getRectWidth(rect) + 'px';
+    // _mirror.style.height = getRectHeight(rect) + 'px';
     classes.rm(_mirror, 'gu-transit');
     classes.add(_mirror, 'gu-mirror');
     o.mirrorContainer.appendChild(_mirror);

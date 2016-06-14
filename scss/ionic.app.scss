@@ -377,12 +377,15 @@ ion-header-bar{
     padding: 2px 6px;
     height: 26px;
     font-size: 13px;
+    margin: 0;
   }
   .drag-element{
+    position: absolute;
     width: 65px;
     display: none;
-    float: left;
-    margin: 6px 0 0 9px;
+    top: -40px;
+    height: 65px;
+    margin-left: 9px;
     .arrow-head{
       width: 0;
       height: 0;
@@ -391,7 +394,7 @@ ion-header-bar{
       border-color: transparent $primaryOrange transparent transparent;
       position: relative;
       left: -9px;
-      top: 31px;
+      top: 13px;
     }
     .half-circle{
       position: relative;
@@ -400,6 +403,7 @@ ion-header-bar{
       background-color: $primaryOrange;
       color: white;
       font-weight: bold;
+      bottom: 21px;
     }
     .finish-time{
       width: 100%;
@@ -414,15 +418,38 @@ ion-header-bar{
 }
 
 body div.drag-element.gu-mirror{
+  width: 85px;
+  display: none;
+  float: left;
+  margin: 6px 0 0 9px;
+  .arrow-head{
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 16px 20px 0;
+    border-color: transparent $primaryOrange transparent transparent;
+    position: relative;
+    left: -9px;
+    top: 40px;
+  }
   .half-circle{
-    height: 33px;
-    text-align: left;
+    height: 43px;
+    text-align: center;
     background-color: $primaryOrange;
-    opacity: 1;
     font-weight: bold;
-    line-height: 0px;
-    font-size: 22px;
-    width: 85px;
+    opacity: 1;
+    line-height: 7px;
+    font-size: 16px;
+    color: white;
+  }
+  .finish-time{
+    width: 100%;
+    border-radius: 43px 43px 0 0;
+    padding-top: 14px;
+  }
+  .node-handle{
+    border-radius: 0 0 43px 43px;
+    line-height: 10px;
   }
 }
 
