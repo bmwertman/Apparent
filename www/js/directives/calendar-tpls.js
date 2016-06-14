@@ -231,12 +231,29 @@ Pta.constant('calendar2Config', {
             })();
         });
 
+        $scope.confirmSignup = function() {
+           var confirmPopup = $ionicPopup.confirm({
+             title: 'You\'re signing up to help your child\'s school!' ,
+             template: 'Are you sure you\'re available from ' + 
+             $scope.displayStart + ' to ' + $scope.displayEnd + ' on ' + $scope.title + '?';
+           });
+
+           confirmPopup.then(function(res) {
+             if(res) {
+               console.log('You are sure');
+             } else {
+               console.log('You are not sure');
+             }
+           });
+        };
+
         $scope.$on('bag.drag', function(el, source){
             $scope.targetInitParent = source.parent();
         });
 
         $scope.$on('bag.drop', function(el, target, source){
             $scope.dropped = true;
+            $scope.confirmSignup();
             $scope.targetInitParent.prepend($scope.targetEl);
             $scope.targetEl.removeClass('gu-hide gu-transit');
             $scope.cancelSignup();
