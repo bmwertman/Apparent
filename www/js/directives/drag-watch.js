@@ -4,7 +4,7 @@ Pta.directive('dragWatch', ['$timeout', function ($timeout) {
 
         link: function (scope, element, attrs) {
 
-            scope.parseTime = function (timeStr, dt) {
+            function parseTime(timeStr, dt) {
                 if (!dt) {
                     dt = new Date();
                 }
@@ -24,7 +24,7 @@ Pta.directive('dragWatch', ['$timeout', function ($timeout) {
                 dt.setHours(hours);
                 dt.setMinutes(parseInt(time[2], 10) || 0);
                 dt.setSeconds(0, 0);
-                return dt; //Create an array of hours that represents the repair shop's operating hours
+                return dt; 
             }
             
             scope.$watch(function () {
@@ -37,7 +37,7 @@ Pta.directive('dragWatch', ['$timeout', function ($timeout) {
 
             function styleChangedCallBack(newValue, oldValue) {
                 if(initDrag){
-                    scope.displayEnd = moment(scope.parseTime(scope.displayEnd)).add({minutes:45}).format('h:mm a');
+                    scope.displayEnd = moment(parseTime(scope.displayEnd)).add({minutes:45}).format('h:mm a');
                     initDrag = false;
                 }
 
@@ -58,7 +58,7 @@ Pta.directive('dragWatch', ['$timeout', function ($timeout) {
                         }
                         
                     }
-                    scope.displayEnd = moment(scope.parseTime(scope.displayEnd))
+                    scope.displayEnd = moment(parseTime(scope.displayEnd))
                     if(newValue > oldValue){ // dragged down = time increase
                        scope.displayEnd = scope.displayEnd.add(offsetChange()).format('h:mm a');
                     } 

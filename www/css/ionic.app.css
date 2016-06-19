@@ -9812,6 +9812,29 @@ i.icon-note {
 .icon-google-drive:before {
   content: "\e901"; }
 
+.popup {
+  min-width: 300px; }
+  .popup label.hidden-input {
+    margin-left: calc((100% - 117px)/2); }
+  .popup input[name="amount"] {
+    width: 100px;
+    display: inline-block; }
+  .popup .time-select {
+    margin: 8px calc((100% - 172px)/2) -8px;
+    font-weight: bold;
+    border-radius: 4px;
+    color: white;
+    background-color: #0000CD;
+    padding: 3px 20px;
+    border: none;
+    height: 35px;
+    width: 172px; }
+  .popup .popup-buttons {
+    color: rgba(255, 255, 255, 0.8); }
+    .popup .popup-buttons button {
+      max-height: 43px;
+      margin-top: 10px; }
+
 .modal-backdrop-bg {
   transition: opacity 300ms ease-in-out;
   -webkit-transition: opacity 300ms ease-in-out;

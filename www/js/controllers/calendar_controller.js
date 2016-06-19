@@ -11,10 +11,9 @@ Pta.controller('CalendarCtrl', [
   '$firebaseArray',
   '$rootScope',
   '$stateParams',
-  // '$cordovaSocialSharing',
-  // '$ionicPlatform',
-  // '$cordovaPrinter',
-  function ($scope, $ionicLoading, $location, $timeout, $state, $ionicModal, $ionicPopup, $ionicSideMenuDelegate, FIREBASE_URL, $firebaseArray, $rootScope, $stateParams) {
+  '$compile',
+  '$localstorage',
+  function ($scope, $ionicLoading, $location, $timeout, $state, $ionicModal, $ionicPopup, $ionicSideMenuDelegate, FIREBASE_URL, $firebaseArray, $rootScope, $stateParams, $compile, $localstorage) {
   'use strict';
 
   $ionicSideMenuDelegate.canDragContent(false)
@@ -88,36 +87,6 @@ Pta.controller('CalendarCtrl', [
     $scope.modal.remove();
   });
 
-  // $scope.editAppointment = function() {
-  //   var repair = $scope.editAppointmentDetails;
-  //   for (var i = $scope.employees.length - 1; i >= 0; i--) {//in editRepair()
-  //     if($scope.employees[i].tech_id && $scope.employees[i].tech_id === repair.repairDetails.technician_id){
-  //       repair.currentTech = $scope.employees[i];
-  //     }
-  //   };
-  //   repairService.setRepair(repair);
-  //   $scope.modal.hide();
-  //   $location.path('/manage');
-  // }
-
-  // $scope.deleteAppointment = function() {
-  //   $sailsSocket.delete('/schedules/' + $scope.editAppointmentDetails.schedule_id)
-  //   .then(function(response){
-  //     $sailsSocket.delete('/repairhistory/' + response.data.repair_history_id.id)
-  //     .then(function (){
-  //       $scope.deleted();
-  //       $scope.modal.hide();
-  //       $state.go($state.current, {}, {reload: true});
-  //     })
-  //     .catch(function (err){
-  //       $scope.err(err.status, 134);
-  //     });
-  //   })
-  //   .catch(function (err){
-  //     $scope.err(err.status, 141);
-  //   });
-  // }
-
   $scope.mode = 'day';
 
   $scope.changeMode = function (mode) {
@@ -135,36 +104,6 @@ Pta.controller('CalendarCtrl', [
     currentCalendarDate.setHours(0, 0, 0, 0);
     return today.getTime() === currentCalendarDate.getTime();
   };
-
-  // $scope.onEventSelected = function (event) {
-  //   $scope.pastJob = false;
-  //   $scope.editAppointmentDetails = event;
-  //   //Job can be edited up to twenty minute buffer after scheduled start
-  //   var startLessTwenty = Date.parse(event.startTime) - 1200000;
-  //   if(Date.parse(new Date()) >= startLessTwenty){
-  //     $scope.pastJob = true;//hides edit and delete buttons
-  //   }
-  //   $scope.openModal();
-  // };
-
-  // $scope.reloadSource = function (startTime, endTime) {
-  //   $scope.lowerBound = startTime;
-  //   $scope.upperBound = endTime;
-  //   // getNewSchedule();
-  // };
-
-  // $scope.getSchedule = function() {
-  //   var startTimeToday = new Date();
-  //   startTimeToday.setHours(0);
-  //   startTimeToday.setMinutes(0);
-  //   var endTimeToday = new Date();
-  //   endTimeToday.setHours(23);
-  //   endTimeToday.setMinutes(59);
-  //   $scope.lowerBound = startTimeToday;
-  //   $scope.upperBound = endTimeToday;
-  //   $scope.getShopHours();
-  //   getNewSchedule();
-  // };
 
   function formatAMPM(date) {
     var hours = date.getHours();
@@ -189,91 +128,176 @@ Pta.controller('CalendarCtrl', [
     return convertToMins
   };
 
-  // $scope.splitJobs = function (appointments, businessHours){
-  //   for (var i = appointments.length - 1; i >= 0; i--) {
-  //     var end_time = moment.utc(appointments[i].endTime);
-  //     var start_time = moment.utc(appointments[i].startTime);
-  //     for (var x = businessHours.length - 1; x >= 0; x--) {
-  //       var close = moment.utc(businessHours[x].close_time);
-  //       if(end_time.isAfter(close) && start_time.day() === close.day()){//This is a job that gets split
-  //         var jobStart  = moment.utc(appointments[i].startTime);
+  $scope.parseTime = function (timeStr, dt) {
+      if (!dt) {
+          dt = new Date();
+      }
 
-  //         var ms = moment.utc(jobStart,"DD/MM/YYYY HH:mm:ss").diff(moment.utc(close,"DD/MM/YYYY HH:mm:ss"));
-  //         var d = moment.duration(ms);
-  //         var s = Math.floor(d.asHours());
-  //         var timeIntoTomorrow = Math.round((parseFloat(appointments[i].repairDetails.allotted_time) + s) * 10)/10;
-  //         var apptSplit = {}
-  //         for(var prop in appointments[i]){
-  //           apptSplit[prop]=appointments[i][prop];
-  //         }
-  //         appointments[i].endTime = close.toISOString();
-  //         appointments[i].totalApptTime = (Math.round((parseFloat(appointments[i].repairDetails.allotted_time)) * 10)/10) - timeIntoTomorrow;
-  //         for (var v = businessHours.length - 1; v >= 0; v--) {
-  //           //If this is the day after the day the split job started on
-  //           if(moment.utc(businessHours[v].open_time).day() === moment.utc(businessHours[x].open_time).day() + 1){
-  //             apptSplit.startTime = moment.utc(businessHours[v].open_time).toISOString();
-  //             apptSplit.endTime = moment.utc(Date.parse(apptSplit.startTime)+(timeIntoTomorrow * 3600000)).toISOString();
-  //             apptSplit.totalApptTime = timeIntoTomorrow;
-  //           }
-  //         };
-  //         appointments.push(apptSplit);
-  //       }
-  //     };
-  //   };
-  // }
+      var time = timeStr.match(/(\d+)(?::(\d\d))?\s*(p?)/i);
+      if (!time) {
+          return NaN;
+      }
+      var hours = parseInt(time[1], 10);
+      if (hours == 12 && !time[3]) {
+          hours = 0;
+      }
+      else {
+          hours += (hours < 12 && time[3]) ? 12 : 0;
+      }
 
-  // function getNewSchedule() {
-  //   if ($scope.technicianID && $scope.technicianID.fullName !== 'All') {
-  //     var getTechnicianID = $scope.technicianID.id;
-  //   } else {
-  //     var getTechnicianID = {'!': undefined };
-  //   }
+      dt.setHours(hours);
+      dt.setMinutes(parseInt(time[2], 10) || 0);
+      dt.setSeconds(0, 0);
+      return dt;
+  }
 
-  //   $sailsSocket.get("/schedules", {params: 
-  //     {where: {
-  //       repair_shop_id: $localstorage.get('shopId'),
-  //       technician_id: getTechnicianID,
-  //       scheduled_start_time:{ date: {'>':$scope.lowerBound, '<':$scope.upperBound}}
-  //       }
-  //     }
-  //   })
-  //   .then(function (response){
-  //     var jobs = response.data;
-  //     var appointments = [];
-  //     for (var i = 0; i < jobs.length; i++) {
-  //       var convertStartDate = formatAMPM(new Date(jobs[i].scheduled_start_time));
-  //       var convertEndDate = formatAMPM(new Date(jobs[i].scheduled_end_time));
-  //       var startTimeOffsetPercent = getTimeOffset(new Date(jobs[i].scheduled_start_time));
-  //       var totalApptTime = getApptTime(new Date(jobs[i].scheduled_start_time), new Date(jobs[i].scheduled_end_time));
-  //       if($scope.technicianNames){
-  //         for (var x = $scope.technicianNames.length - 1; x >= 0; x--) {
-  //           if($scope.technicianNames[x].id === jobs[i].technician_id.id){
-  //             var techName = $scope.technicianNames[x].fullName;
-  //           }
-  //         };
-  //         appointments[i] = {allDay: false,
-  //                           schedule_id: jobs[i].id, 
-  //                           startTime: jobs[i].scheduled_start_time,
-  //                           startTimeOffset: startTimeOffsetPercent,
-  //                           startTimeDisplay: convertStartDate,
-  //                           endTime: jobs[i].scheduled_end_time,
-  //                           endTimeDisplay: convertEndDate,
-  //                           totalApptTime: totalApptTime,
-  //                           repairDetails: jobs[i].repair_history_id,
-  //                           repairShopEquipmentID: jobs[i].repair_shop_equipment_id,
-  //                           fullName: techName, 
-  //                           title: techName + '\n' +
-  //                           jobs[i].repair_shop_equipment_id.repair_shop_equipment_name + '\n' +
-  //                           jobs[i].repair_history_id.repair_description + '\n' +
-  //                           convertStartDate + ' - ' + convertEndDate
-  //                           };
-  //       }
-  //       $scope.splitJobs(appointments, $scope.businessHours);
-  //     };
-  //     $scope.filteredEvents = appointments;
-  //   })
-  //   .catch( function (err){
-  //     $scope.err(err.status, 258);
-  //   });
-  // };
+  $scope.selectedEvent = $stateParams.selectedEvent;
+
+  $scope.$on('displayTimes', function(e, displayStart, displayEnd){
+    $scope.displayStart = displayStart;
+    $scope.displayEnd = displayEnd;
+  });
+
+  $scope.inputHidden = function(){
+    if($scope.selectedTime.id === 0){
+      return "hidden-input";
+    }
+  }
+
+  $scope.timeValue = null;
+  $scope.items = [{
+          id: 0,
+          name: "Time unit options",
+          label: "Choose a time unit"
+      },{
+          id: 1,
+          name: "Minutes",
+          label: "How many minutes before?"
+      },{
+          id: 60,
+          name: "Hours",
+          label: "How many hours before?" 
+      },{
+          id: 1440,
+          name: "Days",
+          label: "How many days before?"
+      },{
+          id: 10080,
+          name: "Weeks",
+          label: "How many weeks before?"
+      }];
+  $scope.selectedTime = $scope.items[0];
+
+  var timeInputWatch = $scope.$watch('timeValue', function(newValue, oldValue) {
+      if(newValue && newValue != 0){// The user has set a time value
+          var popupTitle = angular.element(document.getElementsByClassName('popup-title'));
+          // Swap the "Add Reminder?" title for an "Add another reminder?" button
+          $scope.secondNotificationBtn = $compile('<button id="add-another-btn" ng-click="addAnotherNotification()">Add another reminder?</button>')($scope);
+          popupTitle.replaceWith($scope.secondNotificationBtn);
+          timeInputWatch();
+          $scope.$watch('timeValue', function(newValue, oldValue) {
+             $localstorage.set('secondReminderMinutes', ($scope.timeValue * $scope.selectedTime.id));
+             console.log("line 200: ",$scope.timeValue * $scope.selectedTime.id);
+          });
+      }
+      // else if(newValue && newValue != 0 && $scope.secondReminderMinutes) {// User clicked add another notification
+      //   angular.element(document.getElementsByClassName('notification-ctrl')).css({display:'none'});
+      //   var popupButtons = angular.element(document.getElementsByClassName('popup-buttons'));
+      //   popupButtons.children().eq(popupButtons.children.length - 1).css({color: "rgba(255, 255, 255, 1)", boxShadow: "0 5px 15px rgba(51, 201, 95, .4)"});
+      // }
+  });
+
+  $scope.$watch('selectedTime', function(newValue, oldValue){
+    $scope.selectedTime = newValue;
+  });
+
+  $scope.addAnotherNotification = function(){// Hide the button, reset the form
+      angular.element($scope.secondNotificationBtn).remove();
+      $localstorage.set('firstReminderMinutes', ($scope.timeValue * $scope.selectedTime.id));
+      $scope.timeValue = null;
+      $scope.selectedTime = $scope.items[0];
+  }
+
+  $scope.createCalEvent = function(){
+    var calOptions = window.plugins.calendar.getCalendarOptions(); 
+    calOptions.firstReminderMinutes = $localstorage.get('firstReminderMinutes');
+    calOptions.secondReminderMinutes = $localstorage.get('secondReminderMinutes');
+    var title = $scope.selectedEvent.event_title,
+        eventLocation = $scope.selectedEvent.location,
+        notes = null,
+        startDate = $scope.parseTime($scope.displayStart, new Date($scope.selectedEvent.date)),
+        endDate = $scope.parseTime($scope.displayEnd, new Date($scope.selectedEvent.date));
+    window.plugins.calendar.createEventWithOptions(title, eventLocation, notes, startDate, endDate, calOptions,
+      function (result) {
+        var alert = $ionicPopup.alert({
+           title: '<b>Thanks!</b>',
+           template: '<div style="text-align:center;">You\'re child\'s school is better because of people like you.</div>',
+           buttons: []
+        });
+        $timeout(function(){
+           alert.close();
+           $state.go('app.events');
+        }, 3000); 
+      }, function (err) {
+       console.log('Error: '+ err);
+      });
+      $localstorage.set('firstReminderMinutes', null);
+      $localstorage.set('secondReminderMinutes', null);
+  }
+
+  $scope.confirmSignup = function() {
+      var confirmPopup = $ionicPopup.confirm({
+          title: '<b style="text-align:center;">You\'re signing up to help your child\'s school!</b>' ,
+          template: '<div style="text-align:center;">Are you sure you\'re available from<br><b>' + 
+                    $scope.displayStart + '</b> to <b>' + $scope.displayEnd +'</b><br> on <b>' + 
+                    moment($scope.selectedEvent.date).format('dddd MMMM Do') + '</b>?</div>',
+          cancelText: 'No',
+          cancelType: 'button-assertive',
+          okText: 'Yes',
+          okType: 'button-balanced'     
+      });
+      confirmPopup.then(function(res){// Are they sure they want to sign up?
+          if(res) {// They're sure!
+              var count = 0;
+              $scope.createReminders = $ionicPopup.show({
+                  title: 'Add a reminder?',
+                  templateUrl: 'templates/set-notification.html',
+                  buttons:[
+                      { 
+                          text: 'No Thanks',
+                          type: 'button-assertive',
+                          onTap: function(){
+                              if(count === 0){//Hack fix because onTap kept calling createEvent() twice
+                                count++;
+                                var calOptions = window.plugins.calendar.getCalendarOptions(); 
+                                calOptions.firstReminderMinutes = null;
+                                calOptions.secondReminderMinutes = null;
+                                $scope.createCalEvent(calOptions);// Add the event w/o notifications
+                                console.log("onTap called");
+                              }
+                          }
+                      },{
+                          text: 'Add Reminder(s)',
+                          type: 'button-balanced',
+                          onTap: function(e){
+                            if(count === 0){
+                              count++
+                              $scope.createCalEvent();// Add the event w/ notifications
+                            }
+                          }
+                      }
+                  ]
+              });                       
+          } else {// Changed their mind.
+              var alert = $ionicPopup.alert({
+                  title: '<b>Aaaawww, we really need you.</b>',
+                  template: '<div style="text-align:center;>">Maybe another time?</div>',
+                  buttons: []
+              });
+              $timeout(function(){
+                  alert.close();
+              }, 3000); 
+          }
+      });
+  };
 }]);

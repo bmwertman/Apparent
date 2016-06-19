@@ -54,6 +54,17 @@ Pta.constant('calendar2Config', {
           return convertToMins
         };
 
+        $scope.eventSelected = function(calEvent){
+            $scope.eventStartDate = calEvent.event.startTime;
+            $scope.eventEndDate = calEvent.event.endTime;
+            $scope.eventStartTime = calEvent.event.startTime;
+            $scope.eventEndTime = calEvent.event.endTime;
+            $scope.event.event_title = calEvent.event.title;
+            $scope.location = {};
+            $scope.location.formatted_address = calEvent.event.location;
+            $scope.modal.show();
+        }
+
         // Get the event data from firebase as an array
         var ref = new Firebase(FIREBASE_URL);
         var eventsRef = ref.child('events').orderByChild('date');
@@ -170,8 +181,11 @@ Pta.constant('calendar2Config', {
 
         $scope.endHour = function(startHour){
             var endHour,
-                hrRegEx = /^\w+/g,
-                hour = parseInt(hrRegEx.exec(startHour)),
+                hrRegEx = /^\w+/g;
+            if(!parseInt(hrRegEx.exec(startHour))){
+               var startHour = "12:00 pm";
+            }
+            var hour = parseInt(hrRegEx.exec(startHour)),
                 merideanRegEx = /am|pm/g,
                 meridean = merideanRegEx.exec(startHour)[0];
             if(hour === 12){
@@ -221,7 +235,6 @@ Pta.constant('calendar2Config', {
             (function forceFeed(newValue){
                 if(!$scope.dropped){
                     $timeout(function(){
-                        console.log("digest");
                         $scope.$digest();
                         forceFeed();
                     }, false);
@@ -229,50 +242,18 @@ Pta.constant('calendar2Config', {
             })();
         });
 
-        $scope.confirmSignup = function() {
-            var confirmPopup = $ionicPopup.confirm({
-                title: 'You\'re signing up to help your child\'s school!' ,
-                template: 'Are you sure you\'re available from ' + 
-                $scope.displayStart + ' to ' + $scope.displayEnd + ' on ' + $scope.title + '?'
-            });
-            confirmPopup.then(function(res){
-                if(res) {
-                    //Check for sync with user's google or ical calendar here
-                    //if synched add to their calendar and show confirmation message
-                    //else walk through synch process first
-                    var alert = $ionicPopup.alert({
-                        title: 'Thanks!',
-                        template: 'You\'re child\'s school is better because of people like you.',
-                        buttons: []
-                    });                    
-                } else {
-                    //return to cal
-                    var alert = $ionicPopup.alert({
-                        title: 'Aaaawww, we really need you.',
-                        template: 'Maybe another time?',
-                        buttons: []
-                    });
-                }
-                $timeout(function(){
-                    alert.close();
-                    if(res){
-                        $state.go('app.events');
-                    }
-                }, 3000);
-            });
-        };
-
         $scope.$on('bag.drag', function(el, source){
             $scope.targetInitParent = source.parent();
         });
 
         $scope.$on('bag.drop', function(el, target, source){
             $scope.dropped = true;
-            $scope.confirmSignup();
+            $scope.displayEnd = target.children().eq(1).html();
+            $scope.$emit('displayTimes', $scope.displayStart, $scope.displayEnd);
+            $scope.$parent.confirmSignup();
             $scope.targetInitParent.prepend($scope.targetEl);
             $scope.targetEl.removeClass('gu-hide gu-transit');
             $scope.cancelSignup();
-            console.log("scope.dropped is " + $scope.dropped);
         });
         
         $scope.hourTouch = function($event){
@@ -282,18 +263,21 @@ Pta.constant('calendar2Config', {
                 $scope.selectedHour.el = $event.currentTarget;
                 $scope.selectedHour.hashKey = $event.currentTarget.$$hashKey;
             } else if($scope.selectedHour.el && $scope.selectedHour.hashKey === $event.currentTarget.$$hashKey){//selected the same hour again
-                var children = angular.element($scope.selectedHour.el).parent();;
-                var start = children.parent().children()[children.parent().children().length - 1].innerHTML;
-                $scope.volunteerStart = moment(new Date($scope.title + " " +  start));
-                $scope.displayStart = $scope.volunteerStart.format('h:mm a');
+                var children = angular.element($scope.selectedHour.el).parent();
                 $scope.selectedHour.hashKey = null; 
                 if($ionicHistory.currentView().title === 'Calendar'){
+                    var start = children.children().eq(children.children().length - 1).html();
+                    $scope.volunteerStart = moment(new Date($scope.title + " " +  start));
+                    $scope.displayStart = $scope.volunteerStart.format('h:mm a');
                     $scope.eventStartDate = new Date($scope.title);
                     $scope.eventEndDate = new Date($scope.title);
                     $scope.eventStartTime = new Date($scope.title + " " + start);
                     $scope.eventEndTime = new Date($scope.title + " " + $scope.endHour(start));
                     $scope.addEventModal();  
                 } else {
+                    var start = children.parent().children().eq(children.parent().children().length - 1).html();
+                    $scope.volunteerStart = moment(new Date($scope.title + " " +  start));
+                    $scope.displayStart = $scope.volunteerStart.format('h:mm a');
                     $scope.selectedHour.el.firstElementChild.innerHTML = "Start: " + $scope.displayStart;
                     $scope.selectedHour.el.firstElementChild.className = "volunteer-start";
                     $scope.selectedHour.el.firstElementChild.style.display = "inline-block"
@@ -359,7 +343,12 @@ Pta.constant('calendar2Config', {
             var eventsRef = ref.child('events');
             eventsRef.push($scope.event);
             $scope.saved(event.event_title, $scope.closeModal());
-            $state.go('app.volunteer');
+            if($ionicHistory.currentView().title === 'Calendar'){
+                $state.go('app.calendar');
+            } else {
+                $state.go('app.volunteer');
+            }
+            
         }
         
         var self = this,
@@ -463,8 +452,6 @@ Pta.constant('calendar2Config', {
                         endTime: this.range.endTime
                     });
                 }
-                // $scope.repairShopOpenTime = $scope.$root.repairShopHours[this.range.startTime.getDay()].open_time;
-                // $scope.repairShopCloseTime = $scope.$root.repairShopHours[this.range.startTime.getDay()].close_time;
             }
         };
 
@@ -717,15 +704,7 @@ Pta.constant('calendar2Config', {
                     };
                 }
 
-                function compareEvent(event1, event2) {
-                    // if (event1.allDay) {
-                    //     return 1;
-                    // } else if (event2.allDay) {
-                    //     return -1;
-                    // } else {
-                    //     return (event1.startTime.getTime() - event2.startTime.getTime());
-                    // }
-                }
+                function compareEvent(event1, event2) {}
 
                 ctrl._onDataLoaded = function () {
                     var startDate = ctrl.range.startTime,
@@ -894,27 +873,7 @@ Pta.constant('calendar2Config', {
                     step: {days: 7}
                 };
 
-                function updateScrollGutter() {
-                    // var children = element.children();
-                    // var allDayEventBody = children[1].children[1];
-                    // var allDayEventGutterWidth = allDayEventBody.offsetWidth - allDayEventBody.clientWidth;
-                    // var normalEventBody = children[2];
-                    // var normalEventGutterWidth = normalEventBody.offsetWidth - normalEventBody.clientWidth;
-                    // var gutterWidth = allDayEventGutterWidth || normalEventGutterWidth || 0;
-                    // if (gutterWidth > 0) {
-                    //     scope.gutterWidth = gutterWidth;
-                    //     if (allDayEventGutterWidth <= 0) {
-                    //         scope.allDayEventGutterWidth = gutterWidth;
-                    //     } else {
-                    //         scope.allDayEventGutterWidth = 0;
-                    //     }
-                    //     if (normalEventGutterWidth <= 0) {
-                    //         scope.normalGutterWidth = gutterWidth;
-                    //     } else {
-                    //         scope.normalGutterWidth = 0;
-                    //     }
-                    // }
-                }
+                function updateScrollGutter() {}
 
                 function getDates(startTime, n) {
                     var dates = new Array(n),

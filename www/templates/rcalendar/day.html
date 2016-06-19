@@ -14,7 +14,6 @@
                         <p style="display:none;">+ New event</p>
                         <p style="display:none;">{{$index<12?($index === 0?12:$index)+':00 am':($index === 12?$index:$index-12)+':00 pm'}}</p>
                     </div>
-                    <!--  drag-element width 62px on OnePlus -->
                     <div ng-if="!isCalView" style="position:relative;height:25px;width:32%;top:67px;float:left;" dragula='"bag"'>
                         <div class="drag-element" offset-top="top">
                             <div class="arrow-head"></div>

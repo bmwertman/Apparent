@@ -1,0 +1,7 @@
+<div class="notification-ctrl" ng-controller="CalendarCtrl">
+  <label ng-class="inputHidden()" for="amount"> {{selectedTime.label}}
+    <input type="number" name="amount" ng-model="timeValue" placeholder="Enter a number" ng-hide="selectedTime.id == 0">
+  </label>
+  <select class="time-select" ng-model="selectedTime" required ng-options="item.name for item in items track by item.id">
+  </select>
+</div>
