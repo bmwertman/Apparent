@@ -38,8 +38,8 @@ Pta.constant('calendar2Config', {
 
         dragulaService.options($scope, '"bag"', {
             moves: function (el, container, handle) {
-               return handle.className === 'drag-element';
-             }
+                return handle.className === 'drag-element';
+            }
         });
 
         function getTimeOffset(date) {
@@ -55,14 +55,16 @@ Pta.constant('calendar2Config', {
         };
 
         $scope.eventSelected = function(calEvent){
-            $scope.eventStartDate = calEvent.event.startTime;
-            $scope.eventEndDate = calEvent.event.endTime;
-            $scope.eventStartTime = calEvent.event.startTime;
-            $scope.eventEndTime = calEvent.event.endTime;
-            $scope.event.event_title = calEvent.event.title;
-            $scope.location = {};
-            $scope.location.formatted_address = calEvent.event.location;
-            $scope.modal.show();
+            if($scope.isCalView){// If this isn't the volunteer signup view;
+                $scope.eventStartDate = calEvent.event.startTime;
+                $scope.eventEndDate = calEvent.event.endTime;
+                $scope.eventStartTime = calEvent.event.startTime;
+                $scope.eventEndTime = calEvent.event.endTime;
+                $scope.event.event_title = calEvent.event.title;
+                $scope.location = {};
+                $scope.location.formatted_address = calEvent.event.location;
+                $scope.modal.show();
+            }
         }
 
         // Get the event data from firebase as an array
@@ -89,26 +91,11 @@ Pta.constant('calendar2Config', {
                         type: 'setup',
                         volunteersNeeded: data[i].setup_volunteers_needed,
                         backgroundColor: 'primaryGreen',
-                        title: data[i].event_title + ' setup',
+                        title: data[i].event_title + ' Setup',
                         startTimeOffset: getTimeOffset(new Date(data[i].setup_start)),
                         totalApptTime: getApptTime(new Date(data[i].setup_start), new Date(data[i].setup_end))
                     }
                     $scope.eventSource.push(setupObj);
-                }
-                if(data[i].cleanup_start){
-                    var cleanupObj = {
-                        allDay: false,
-                        location: data[i].location,
-                        startTime: data[i].cleanup_start,
-                        endTime: data[i].cleanup_end,
-                        type: 'cleanup',
-                        volunteersNeeded: data[i].cleanup_volunteers_needed,
-                        backgroundColor: 'primaryRed',
-                        title: data[i].event_title + ' cleanup',
-                        startTimeOffset: getTimeOffset(new Date(data[i].cleanup_start)),
-                        totalApptTime: getApptTime(new Date(data[i].cleanup_start), new Date(data[i].cleanup_end))
-                    }
-                    $scope.eventSource.push(cleanupObj);
                 }
                 var eventObj = {
                     allDay: false,
@@ -123,6 +110,21 @@ Pta.constant('calendar2Config', {
                     totalApptTime: getApptTime(new Date(data[i].event_start), new Date(data[i].event_end))
                 }
                 $scope.eventSource.push(eventObj);
+                if(data[i].cleanup_start){
+                    var cleanupObj = {
+                        allDay: false,
+                        location: data[i].location,
+                        startTime: data[i].cleanup_start,
+                        endTime: data[i].cleanup_end,
+                        type: 'cleanup',
+                        volunteersNeeded: data[i].cleanup_volunteers_needed,
+                        backgroundColor: 'primaryRed',
+                        title: data[i].event_title + ' Cleanup',
+                        startTimeOffset: getTimeOffset(new Date(data[i].cleanup_start)),
+                        totalApptTime: getApptTime(new Date(data[i].cleanup_start), new Date(data[i].cleanup_end))
+                    }
+                    $scope.eventSource.push(cleanupObj);
+                }
             }
             $scope.filteredEvents = $scope.eventSource;
         });
@@ -224,7 +226,6 @@ Pta.constant('calendar2Config', {
                 $scope.dropped = true;
             }
         }
-        $scope.dropped = false;
 
         $scope.$on('bag.cloned', function(e, el){
             el.attr('offset-top', 'top');
@@ -243,17 +244,37 @@ Pta.constant('calendar2Config', {
         });
 
         $scope.$on('bag.drag', function(el, source){
+            var eventSource = el.currentScope.eventSource,
+                latestFinish;
+            $scope.latestFinish = (function(){// Set the latest a volunteer may finish
+                if(eventSource.length === 3){// Check if the event has cleanup or not
+                    latestFinish = moment(eventSource[2].endTime);// Cleanup end time
+                } else {
+                    latestFinish = moment(eventSource[1].endTime);// Event end time
+                }
+                return latestFinish;
+            })();
             $scope.targetInitParent = source.parent();
         });
 
-        $scope.$on('bag.drop', function(el, target, source){
+        $scope.dropped = false;
+        $scope.handleDrop = function(){
             $scope.dropped = true;
-            $scope.displayEnd = target.children().eq(1).html();
             $scope.$emit('displayTimes', $scope.displayStart, $scope.displayEnd);
             $scope.$parent.confirmSignup();
             $scope.targetInitParent.prepend($scope.targetEl);
             $scope.targetEl.removeClass('gu-hide gu-transit');
             $scope.cancelSignup();
+        }
+
+        $scope.$on('bag.drop', function(el, target, source){
+            $scope.handleDrop();
+        });
+        
+        // Treat a cancel event like a drop event because we're not using
+        // Angular-Dragula's drop containers in our logic
+        $scope.$on('bag.cancel', function(el, container, source){
+            $scope.handleDrop();
         });
         
         $scope.hourTouch = function($event){
@@ -277,6 +298,7 @@ Pta.constant('calendar2Config', {
                 } else {
                     var start = children.parent().children().eq(children.parent().children().length - 1).html();
                     $scope.volunteerStart = moment(new Date($scope.title + " " +  start));
+                    $scope.earliestFinish = moment($scope.volunteerStart._d).add(1, 'hours');
                     $scope.displayStart = $scope.volunteerStart.format('h:mm a');
                     $scope.selectedHour.el.firstElementChild.innerHTML = "Start: " + $scope.displayStart;
                     $scope.selectedHour.el.firstElementChild.className = "volunteer-start";

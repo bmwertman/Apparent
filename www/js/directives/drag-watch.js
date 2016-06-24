@@ -37,7 +37,8 @@ Pta.directive('dragWatch', ['$timeout', function ($timeout) {
 
             function styleChangedCallBack(newValue, oldValue) {
                 if(initDrag){
-                    scope.displayEnd = moment(parseTime(scope.displayEnd)).add({minutes:45}).format('h:mm a');
+                    scope.dateTime = moment(parseTime(scope.displayEnd, scope.latestFinish._d)).add({minutes:45});
+                    scope.displayEnd = scope.dateTime.format('h:mm a');
                     initDrag = false;
                 }
 
@@ -56,18 +57,18 @@ Pta.directive('dragWatch', ['$timeout', function ($timeout) {
                             obj.minutes = 15;
                             return obj; //rounded Y-axis position change in pixels
                         }
-                        
                     }
-                    scope.displayEnd = moment(parseTime(scope.displayEnd))
-                    if(newValue > oldValue){ // dragged down = time increase
-                       scope.displayEnd = scope.displayEnd.add(offsetChange()).format('h:mm a');
-                    } 
-                    else if(newValue < oldValue){ // dragged up = time decrease
-                        scope.displayEnd = scope.displayEnd.subtract(offsetChange()).format('h:mm a');
+                    // dragged down = time increase and signup time is still before latest finish time
+                    if(newValue > oldValue && moment(scope.latestFinish._i).diff(scope.dateTime) > 0 ){
+                        scope.dateTime.add(offsetChange());
                     }
+                    // dragged up = time decrease and //signup time is still after latest finish time 
+                    else if(newValue < oldValue && scope.dateTime.diff(scope.earliestFinish) > 0){ 
+                        scope.dateTime.subtract(offsetChange());
+                    }
+                    scope.displayEnd = scope.dateTime.format('h:mm a');// Update the displayed time in the drag element
                 } 
             }
-
         }
     };
 
