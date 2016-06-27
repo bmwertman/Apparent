@@ -9,7 +9,6 @@
                     <div class="add_event_shade" 
                          style="height:100%;"
                          ng-if="isCalView"
-                         ng-show"clickCount"
                          on-touch="hourTouch($event)">
                         <p style="display:none;">+ New event</p>
                         <p style="display:none;">{{$index<12?($index === 0?12:$index)+':00 am':($index === 12?$index:$index-12)+':00 pm'}}</p>

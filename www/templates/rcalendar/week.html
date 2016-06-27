@@ -3,7 +3,10 @@
         <thead>
         <tr>
             <th class="calendar-hour-column-view"></th>
-            <th ng-repeat="dt in dates" class="text-center weekview-header-label-view">{{dt.date| date: 'EEE d'}}</span></th>
+            <th ng-repeat="dt in dates" class="text-center weekview-header-label-view">
+                <span>{{dt.date| date: 'EEE d'}}</span>
+                <p style="display:none;">{{dt.date}}</p>
+            </th>
             <th ng-if="gutterWidth>0" ng-style="{width: gutterWidth+'px'}"></th>
         </tr>
         </thead>
@@ -14,10 +17,15 @@
             <tr ng-repeat="row in rows track by $index" ng-if="($index >= 7) && ($index < 22)">
                 <td class="calendar-hour-column-view text-center">
                     {{$index<12?($index === 0?12:$index)+'am':($index === 12?$index:$index-12)+'pm'}}
+                    <p style="display:none;">{{$index<12?($index === 0?12:$index)+':00 am':($index === 12?$index:$index-12)+':00 pm'}}</p>
                 </td>
                 <td ng-repeat="tm in row track by tm.time" class="calendar-cell">
-                    <div class="add_event_shade" style="height:100%;" ng-if="!tm.events" ng-show"clickCount" on-touch="hourTouch($event)">
+                    <div class="add_event_shade"
+                         style="height:100%;"
+                         ng-if="!tm.events"
+                         on-touch="hourTouch($event)">
                         <p style="display:none;">+ New event</p>
+                        <p style="display:none;">{{tm.time| date:'MMMM dd, yyyy h:mm a'}}</p>
                     </div>
                     <div ng-class="{'calendar-event-wrap': tm.events}" ng-if="tm.events">
                         <div ng-repeat="displayEvent in tm.events" class="calendar-event"

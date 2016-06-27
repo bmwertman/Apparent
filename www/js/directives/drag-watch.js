@@ -37,7 +37,7 @@ Pta.directive('dragWatch', ['$timeout', function ($timeout) {
 
             function styleChangedCallBack(newValue, oldValue) {
                 if(initDrag){
-                    scope.dateTime = moment(parseTime(scope.displayEnd, scope.latestFinish._d)).add({minutes:45});
+                    scope.dateTime = moment(parseTime(scope.displayEnd, scope.latestFinish._d)).add({minutes:60});
                     scope.displayEnd = scope.dateTime.format('h:mm a');
                     initDrag = false;
                 }
@@ -52,9 +52,9 @@ Pta.directive('dragWatch', ['$timeout', function ($timeout) {
                             runningCount = runningCount + (actualPixels * -1);// Dragging up, decreasing time
                         }
                         
-                        if(runningCount >= 10){
-                            runningCount = runningCount - 10;
-                            obj.minutes = 15;
+                        if(runningCount >= 40){
+                            runningCount = runningCount - 40;
+                            obj.minutes = 60;
                             return obj; //rounded Y-axis position change in pixels
                         }
                     }

@@ -56,10 +56,10 @@ Pta.constant('calendar2Config', {
 
         $scope.eventSelected = function(calEvent){
             if($scope.isCalView){// If this isn't the volunteer signup view;
-                $scope.eventStartDate = calEvent.event.startTime;
-                $scope.eventEndDate = calEvent.event.endTime;
-                $scope.eventStartTime = calEvent.event.startTime;
-                $scope.eventEndTime = calEvent.event.endTime;
+                $scope.event.startDate = calEvent.event.startTime;
+                $scope.event.endDate = calEvent.event.endTime;
+                $scope.event.startTime = calEvent.event.startTime;
+                $scope.event.endTime = calEvent.event.endTime;
                 $scope.event.event_title = calEvent.event.title;
                 $scope.location = {};
                 $scope.location.formatted_address = calEvent.event.location;
@@ -184,10 +184,11 @@ Pta.constant('calendar2Config', {
         $scope.endHour = function(startHour){
             var endHour,
                 hrRegEx = /^\w+/g;
-            if(!parseInt(hrRegEx.exec(startHour))){
+            if(!parseInt(hrRegEx.exec(startHour)[0])){
                var startHour = "12:00 pm";
             }
-            var hour = parseInt(hrRegEx.exec(startHour)),
+            hrRegEx.lastIndex = 0;
+            var hour = parseInt(hrRegEx.exec(startHour)[0]),
                 merideanRegEx = /am|pm/g,
                 meridean = merideanRegEx.exec(startHour)[0];
             if(hour === 12){
@@ -288,12 +289,19 @@ Pta.constant('calendar2Config', {
                 $scope.selectedHour.hashKey = null; 
                 if($ionicHistory.currentView().title === 'Calendar'){
                     var start = children.children().eq(children.children().length - 1).html();
-                    $scope.volunteerStart = moment(new Date($scope.title + " " +  start));
-                    $scope.displayStart = $scope.volunteerStart.format('h:mm a');
-                    $scope.eventStartDate = new Date($scope.title);
-                    $scope.eventEndDate = new Date($scope.title);
-                    $scope.eventStartTime = new Date($scope.title + " " + start);
-                    $scope.eventEndTime = new Date($scope.title + " " + $scope.endHour(start));
+                    if(start.length > 8){//Setting a new event from the week view
+                        $scope.event.startDate = new Date(angular.element($event.target).next().html());
+                        $scope.event.startTime = new Date(angular.element($event.target).next().html());
+                        $scope.event.endDate = new Date(angular.element($event.target).next().html());
+                        $scope.event.endTime = new Date(moment(angular.element($event.target).next().html()).add(2, 'hours'));
+                    } else {// Setting a new event from the day view
+                        $scope.volunteerStart = moment(new Date($scope.title + " " +  start));
+                        $scope.displayStart = $scope.volunteerStart.format('h:mm a');
+                        $scope.event.startDate = new Date($scope.title);
+                        $scope.event.endDate = new Date($scope.title);
+                        $scope.event.startTime = new Date($scope.title + " " + start);
+                        $scope.event.endTime = new Date($scope.title + " " + $scope.endHour(start));
+                    }
                     $scope.addEventModal();  
                 } else {
                     var start = children.parent().children().eq(children.parent().children().length - 1).html();
@@ -320,19 +328,19 @@ Pta.constant('calendar2Config', {
         }
         $scope.hasSetup = function(){
             if($scope.event.setup_volunteers_needed && $scope.event.setup_volunteers_needed != 0){
-                $scope.setupStartTime = moment($scope.eventStartTime).subtract(2, 'hours')._d;
-                $scope.setupEndTime = $scope.eventStartTime;
-                $scope.setupStartDate = $scope.eventStartDate;
-                $scope.setupEndDate = $scope.eventStartDate;
+                $scope.event.setupStartTime = moment($scope.event.startTime).subtract(2, 'hours')._d;
+                $scope.event.setupEndTime = $scope.event.startTime;
+                $scope.event.setupStartDate = $scope.event.startDate;
+                $scope.event.setupEndDate = $scope.event.startDate;
             }
         }
 
         $scope.hasCleanup = function(){
             if($scope.event.cleanup_volunteers_needed && $scope.event.setup_volunteers_needed != 0){
-                $scope.cleanupEndTime = moment($scope.eventEndTime).add(2, 'hours')._d;
-                $scope.cleanupStartTime = $scope.eventEndTime;
-                $scope.cleanupStartDate = $scope.eventStartDate;
-                $scope.cleanupEndDate = $scope.eventStartDate;
+                $scope.event.cleanupEndTime = moment($scope.event.endTime).add(2, 'hours')._d;
+                $scope.event.cleanupStartTime = $scope.event.endTime;
+                $scope.event.cleanupStartDate = $scope.event.startDate;
+                $scope.event.cleanupEndDate = $scope.event.startDate;
             }
         }
 
@@ -345,22 +353,22 @@ Pta.constant('calendar2Config', {
             $scope.event.location = e.targetScope.location.formatted_address;
         });
         $scope.saveEvent = function(event){
-            $scope.event.event_start = moment(moment($scope.eventStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.eventStartTime).format('hh:mm a'))._d.toString();
-            $scope.event.event_end = moment(moment($scope.eventStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.eventEndTime).format('hh:mm a'))._d.toString();
+            $scope.event.event_start = moment(moment($scope.event.startDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.event.startTime).format('hh:mm a'))._d.toString();
+            $scope.event.event_end = moment(moment($scope.event.startDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.event.endTime).format('hh:mm a'))._d.toString();
             if($scope.event.setup_start){
-                $scope.event.setup_start = moment(moment($scope.setupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.setupStartTime).format('hh:mm a'))._d.toString();
-                $scope.event.setup_end = moment(moment($scope.setupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.setupEndTime).format('hh:mm a'))._d.toString(); 
+                $scope.event.setup_start = moment(moment($scope.event.setupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.event.setupStartTime).format('hh:mm a'))._d.toString();
+                $scope.event.setup_end = moment(moment($scope.event.setupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.event.setupEndTime).format('hh:mm a'))._d.toString(); 
             }
             if($scope.event.cleanup_start){
-                $scope.event.cleanup_start = moment(moment($scope.cleanupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.cleanupStartTime).format('hh:mm a'))._d.toString();
-                $scope.event.cleanup_end = moment(moment($scope.cleanupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.cleanupEndTime).format('hh:mm a'))._d.toString();
+                $scope.event.cleanup_start = moment(moment($scope.event.cleanupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.event.cleanupStartTime).format('hh:mm a'))._d.toString();
+                $scope.event.cleanup_end = moment(moment($scope.event.cleanupStartDate).format('ddd, MMM DD, YYYY') + " " + moment($scope.event.cleanupEndTime).format('hh:mm a'))._d.toString();
             }
             if($scope.event.setup_volunteers_needed || $scope.event.cleanup_volunteers_needed || $scope.event.volunteers_needed){
                 $scope.event.volunteer_hours = moment($scope.event.setup_end).diff($scope.event.setup_start, 'hours') * $scope.event.setup_volunteers_needed + moment($scope.event.event_end).diff($scope.event.event_start, 'hours') * $scope.event.volunteers_needed + moment($scope.event.cleanup_end).diff($scope.event.cleanup_start, 'hours') * $scope.event.cleanup_volunteers_needed;  
             }
             
             // This is needed to order the events chronologically in the view
-            $scope.event.date = $scope.eventStartDate.getTime();
+            $scope.event.date = $scope.event.startDate.getTime();
             var ref = new Firebase(FIREBASE_URL);
             var eventsRef = ref.child('events');
             eventsRef.push($scope.event);
@@ -920,6 +928,7 @@ Pta.constant('calendar2Config', {
 
                     for (var hour = 0; hour < 24; hour += 1) {
                         row = [];
+                        time = new Date(startTime.getTime());
                         for (var day = 0; day < 7; day += 1) {
                             time.setHours(currentHour + hour);
                             time.setDate(currentDate + day);

@@ -197,7 +197,6 @@ Pta.controller('CalendarCtrl', [
           timeInputWatch();
           $scope.$watch('timeValue', function(newValue, oldValue) {
              $localstorage.set('secondReminderMinutes', ($scope.timeValue * $scope.selectedTime.id));
-             console.log("line 200: ",$scope.timeValue * $scope.selectedTime.id);
           });
       }
       // else if(newValue && newValue != 0 && $scope.secondReminderMinutes) {// User clicked add another notification
@@ -243,6 +242,9 @@ Pta.controller('CalendarCtrl', [
       });
       $localstorage.set('firstReminderMinutes', null);
       $localstorage.set('secondReminderMinutes', null);
+      var eventRef = new Firebase(FIREBASE_URL).child('events').child($scope.selectedEvent.$id);
+      var uid = JSON.parse($localstorage.get('firebase:session::sizzling-fire-7440')).uid;//get the user's id
+      eventRef.update({volunteers:{uid}});
   }
 
   $scope.confirmSignup = function() {
@@ -273,7 +275,6 @@ Pta.controller('CalendarCtrl', [
                                 calOptions.firstReminderMinutes = null;
                                 calOptions.secondReminderMinutes = null;
                                 $scope.createCalEvent(calOptions);// Add the event w/o notifications
-                                console.log("onTap called");
                               }
                           }
                       },{
