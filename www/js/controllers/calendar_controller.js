@@ -1,7 +1,6 @@
 Pta.controller('CalendarCtrl', [
   '$scope', 
   '$ionicLoading', 
-  '$location', 
   '$timeout', 
   '$state',
   '$ionicModal',
@@ -13,26 +12,33 @@ Pta.controller('CalendarCtrl', [
   '$stateParams',
   '$compile',
   '$localstorage',
-  function ($scope, $ionicLoading, $location, $timeout, $state, $ionicModal, $ionicPopup, $ionicSideMenuDelegate, FIREBASE_URL, $firebaseArray, $rootScope, $stateParams, $compile, $localstorage) {
+  '$ionicPlatform',
+  '$ionicHistory',
+  function ($scope, $ionicLoading, $timeout, $state, $ionicModal, $ionicPopup, $ionicSideMenuDelegate, FIREBASE_URL, $firebaseArray, $rootScope, $stateParams, $compile, $localstorage, $ionicPlatform, $ionicHistory) {
   'use strict';
 
+  $scope.selectedEvent = $stateParams.selectedEvent;
   $ionicSideMenuDelegate.canDragContent(false)
-
-  if($rootScope.profile.isAdmin){
-      $scope.calendarTitle = "Calendar";
-      $scope.isAdmin = true;
-  } else {
-      $scope.calendarTitle = "Volunteer";
-      $scope.isAdmin = false;
-  }
 
   if($stateParams.selectedEvent && $stateParams.selectedEvent.cleanup_start){
     $scope.currentDate = new Date($stateParams.selectedEvent.cleanup_start);
   } else if($stateParams.selectedEvent && $stateParams.selectedEvent.event_start) {
     $scope.currentDate = new Date($stateParams.selectedEvent.event_start);
   } else {
-    $scope.currentDate - new Date();
+    $scope.currentDate = new Date();
   }
+
+  $scope.isAdmin = false;
+  $scope.calendarTitle = "Volunteer";
+  $scope.isVolunteerSignup = true;
+
+  if($rootScope.profile.isAdmin && $ionicHistory.backView().stateName === "app.events"){
+    $scope.isAdmin = true;
+  } else if($rootScope.profile.isAdmin) {
+    $scope.isAdmin = true;
+    $scope.calendarTitle = "Calendar";
+    $scope.isVolunteerSignup = false;
+  } 
 
   $scope.itemSelected = {};
   $scope.eventTypes = [
@@ -55,14 +61,49 @@ Pta.controller('CalendarCtrl', [
     // This is where you have access to the data after it has loaded!!!
   });
 
-  //error message display
-  $scope.err = function(err, lineNumber) {
+  // $ionicModal.fromTemplateUrl('templates/edit_event.html', {
+  //   scope: $scope,
+  //   animation: 'slide-in-up'
+  // }).then(function(modal) {
+  //   $scope.modal = modal;
+  // });
+
+  $ionicModal.fromTemplateUrl('templates/add_event.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+  $scope.addEventModal = function() {
+      $scope.modal.show();
+  };
+
+  $scope.$on('$destroy', function(){
+      $scope.modal.remove();
+  });
+
+  $scope.closeModal = function() {
+      $scope.modal.hide();
+      $scope.event = {};
+  };
+
+  //save confirmation post submit
+  $scope.saved = function(data, cb) {
     $ionicLoading.show({
-      template: 'The save failed with error ' + err + '.Line ' + lineNumber + ', CalendarCtrl',
+      template: data + ' has been saved.',
       duration: 2300
     });
   }
 
+  //error message display
+  $scope.err = function(err, lineNumber) {
+    $ionicLoading.show({
+      template: 'The save failed with error ' + err.status + '.Line ' + lineNumber + ', CheckinCtrl.',
+      duration: 4000
+    });
+  }
+  
   $scope.deleted = function(){
     $ionicLoading.show({
       template: 'Job Succesfully Deleted',
@@ -71,17 +112,6 @@ Pta.controller('CalendarCtrl', [
   }
 
   $scope.isDragging = true;
-
-  $ionicModal.fromTemplateUrl('templates/edit_event.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-
-  $scope.openModal = function() {
-    $scope.modal.show();
-  };
 
   $scope.$on('$destroy', function(){
     $scope.modal.remove();
@@ -129,29 +159,27 @@ Pta.controller('CalendarCtrl', [
   };
 
   $scope.parseTime = function (timeStr, dt) {
-      if (!dt) {
-          dt = new Date();
-      }
+    if (!dt) {
+        dt = new Date();
+    }
 
-      var time = timeStr.match(/(\d+)(?::(\d\d))?\s*(p?)/i);
-      if (!time) {
-          return NaN;
-      }
-      var hours = parseInt(time[1], 10);
-      if (hours == 12 && !time[3]) {
-          hours = 0;
-      }
-      else {
-          hours += (hours < 12 && time[3]) ? 12 : 0;
-      }
+    var time = timeStr.match(/(\d+)(?::(\d\d))?\s*(p?)/i);
+    if (!time) {
+        return NaN;
+    }
+    var hours = parseInt(time[1], 10);
+    if (hours == 12 && !time[3]) {
+        hours = 0;
+    }
+    else {
+        hours += (hours < 12 && time[3]) ? 12 : 0;
+    }
 
-      dt.setHours(hours);
-      dt.setMinutes(parseInt(time[2], 10) || 0);
-      dt.setSeconds(0, 0);
-      return dt;
+    dt.setHours(hours);
+    dt.setMinutes(parseInt(time[2], 10) || 0);
+    dt.setSeconds(0, 0);
+    return dt;
   }
-
-  $scope.selectedEvent = $stateParams.selectedEvent;
 
   $scope.$on('displayTimes', function(e, displayStart, displayEnd){
     $scope.displayStart = displayStart;
@@ -166,26 +194,26 @@ Pta.controller('CalendarCtrl', [
 
   $scope.timeValue = null;
   $scope.items = [{
-          id: 0,
-          name: "Time unit options",
-          label: "Choose a time unit"
-      },{
-          id: 1,
-          name: "Minutes",
-          label: "How many minutes before?"
-      },{
-          id: 60,
-          name: "Hours",
-          label: "How many hours before?" 
-      },{
-          id: 1440,
-          name: "Days",
-          label: "How many days before?"
-      },{
-          id: 10080,
-          name: "Weeks",
-          label: "How many weeks before?"
-      }];
+        id: 0,
+        name: "Time unit options",
+        label: "Choose a time unit"
+    },{
+        id: 1,
+        name: "Minutes",
+        label: "How many minutes before?"
+    },{
+        id: 60,
+        name: "Hours",
+        label: "How many hours before?" 
+    },{
+        id: 1440,
+        name: "Days",
+        label: "How many days before?"
+    },{
+        id: 10080,
+        name: "Weeks",
+        label: "How many weeks before?"
+  }];
   $scope.selectedTime = $scope.items[0];
 
   var timeInputWatch = $scope.$watch('timeValue', function(newValue, oldValue) {
@@ -301,4 +329,80 @@ Pta.controller('CalendarCtrl', [
           }
       });
   };
+
+  $scope.event = {};
+  $scope.$on('timeSelected', function(eventTimes){
+    $scope.event = eventTimes.targetScope.event;
+    $scope.addEventModal();
+  })
+
+  $scope.eventSelected = function(calEvent){
+      if($scope.isCalView){// If this isn't the volunteer signup view;
+          $scope.event.start_date = calEvent.event.start_time;
+          $scope.event.end_date = calEvent.event.end_time;
+          $scope.event.start_time = calEvent.event.start_time;
+          $scope.event.end_time = calEvent.event.end_time;
+          $scope.event.event_title = calEvent.event.title;
+          $scope.location = {};
+          $scope.location.formatted_address = calEvent.event.location;
+          $scope.modal.show();
+      }
+  }
+
+  $scope.hasSetup = function(){
+      if($scope.event.setup_volunteers_needed && $scope.event.setup_volunteers_needed != 0){
+          $scope.event.setup_start_time = moment($scope.event.start_time).subtract(2, 'hours')._d;
+          $scope.event.setup_end_time = $scope.event.start_time;
+          $scope.event.setup_start_date = $scope.event.start_date;
+          $scope.event.setup_end_date = $scope.event.start_date;
+      }
+  }
+
+  $scope.hasCleanup = function(){
+      if($scope.event.cleanup_volunteers_needed && $scope.event.setup_volunteers_needed != 0){
+          $scope.event.cleanup_end_time = moment($scope.event.end_time).add(2, 'hours')._d;
+          $scope.event.cleanup_start_time = $scope.event.end_time;
+          $scope.event.cleanup_start_date = $scope.event.start_date;
+          $scope.event.cleanup_end_date = $scope.event.start_date;
+      }
+  }
+
+  $ionicPlatform.onHardwareBackButton(function(){
+      $scope.event.setup_volunteers_needed = null;
+      $scope.event.volunteers_needed = null;
+      $scope.event.cleanup_volunteers_needed = null;
+  });
+
+  $scope.$on('selectedLocation', function(e){
+      $scope.event.location = e.targetScope.location.formatted_address;
+  });
+
+  $scope.saveEvent = function(event){
+      $scope.event.event_start = moment(moment($scope.event.start_date).format('ddd, MMM DD, YYYY') + " " + moment($scope.event.start_time).format('hh:mm a'))._d.toString();
+      $scope.event.event_end = moment(moment($scope.event.start_date).format('ddd, MMM DD, YYYY') + " " + moment($scope.event.end_time).format('hh:mm a'))._d.toString();
+      if($scope.event.setup_start_date){
+          $scope.event.setup_start = moment(moment($scope.event.setup_start_date).format('ddd, MMM DD, YYYY') + " " + moment($scope.event.setup_start_time).format('hh:mm a'))._d.toString();
+          $scope.event.setup_end = moment(moment($scope.event.setup_start_date).format('ddd, MMM DD, YYYY') + " " + moment($scope.event.setup_end_time).format('hh:mm a'))._d.toString(); 
+      }
+      if($scope.event.cleanup_start_date){
+          $scope.event.cleanup_start = moment(moment($scope.event.cleanup_start_date).format('ddd, MMM DD, YYYY') + " " + moment($scope.event.cleanup_start_time).format('hh:mm a'))._d.toString();
+          $scope.event.cleanup_end = moment(moment($scope.event.cleanup_start_date).format('ddd, MMM DD, YYYY') + " " + moment($scope.event.cleanup_end_time).format('hh:mm a'))._d.toString();
+      }
+      if($scope.event.setup_volunteers_needed || $scope.event.cleanup_volunteers_needed || $scope.event.volunteers_needed){
+          $scope.event.volunteer_hours = moment($scope.event.setup_end).diff($scope.event.setup_start, 'hours') * $scope.event.setup_volunteers_needed + moment($scope.event.event_end).diff($scope.event.event_start, 'hours') * $scope.event.volunteers_needed + moment($scope.event.cleanup_end).diff($scope.event.cleanup_start, 'hours') * $scope.event.cleanup_volunteers_needed;  
+      }
+      
+      // This is needed to order the events chronologically in the view
+      $scope.event.date = $scope.event.start_date.getTime();
+      var ref = new Firebase(FIREBASE_URL);
+      var eventsRef = ref.child('events');
+      eventsRef.push($scope.event);
+      $scope.saved(event.event_title, $scope.closeModal());
+      if($rootScope.profile.isAdmin){
+          $state.go('app.calendar');
+      } else {
+          $state.go('app.volunteer');
+      }   
+  }
+
 }]);

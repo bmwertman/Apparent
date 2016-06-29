@@ -3,7 +3,7 @@
 </ion-header-bar>
 <ion-view hide-back-button="true" title="{{calendarTitle}}">
   <ion-content class="has-header calendar">
-    <div class="btn-toolbar" ng-if="isAdmin">
+    <div class="btn-toolbar" ng-if="isAdmin && !isVolunteerSignup">
       <button type="button" class="btn btn-default cal_view_btn" ng-class="{active:mode==='month'}" ng-click="changeMode('month')">
           Month
       </button>
@@ -17,7 +17,7 @@
           Today
       </button>
     </div>
-    <label class="item item-input item-select role-filter" ng-if="isAdmin">
+    <label class="item item-input item-select role-filter" ng-if="isAdmin && !isVolunteerSignup">
       <div class="input-label">
           Filter by Volunteer Role
       </div>
@@ -27,9 +27,6 @@
               ng-init="itemSelected.type='all'">
       </select>
     </label>
-    <div class="alert alert-success" ng-show="event">
-      Event selected:{{event.startTime|date:'MMM/dd,yyyy,HH:mm'}} - {{event.endTime|date:'MMM/dd,yyyy,HH:mm'}}, {{event.title}}
-    </div>
     <div class="well well-sm">
       <calendar ng-model="currentDate" calendar-mode="mode" event-source="filteredEvents" range-changed="reloadSource(startTime, endTime)" event-selected="onEventSelected(event)"></calendar>
     </div>

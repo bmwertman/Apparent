@@ -10,7 +10,7 @@ Pta.directive('insertSignup', [
         $templateRequest('templates/signup-btn.html')
         .then(function(html){
           var calEvent = angular.element(element);
-          var hours = parseInt(calEvent[0].style.height)/37;
+          var hours = parseInt(calEvent[0].style.height)/40;
           var tableCell = calEvent.parent().parent();
           var tableRow = tableCell.parent();
           var template;
@@ -22,13 +22,12 @@ Pta.directive('insertSignup', [
             if(hours > 1){
               for (var i = hours; i > 0; i--) {
                 template = angular.element(html);
-                if(i < hours){
-                  tableCell = angular.element(tableRow.next().children()[tableRow.next().children().length - 1]);
+                if(i !== hours){
+                  tableCell = tableCell.parent().next().children().eq(tableCell.parent().next().children().length - 1);
                 }
                 prependTpl(tableCell, template);
-
               }
-            } else if( hours === 1){
+            } else if(hours === 1){
               template = angular.element(html);
               prependTpl(tableCell, template);
             }
