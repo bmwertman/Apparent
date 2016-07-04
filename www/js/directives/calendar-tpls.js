@@ -25,7 +25,8 @@ Pta.constant('calendar2Config', {
         '$ionicHistory',
         'dragulaService',
         '$compile',
-        function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, FIREBASE_URL, $firebaseArray, $ionicHistory, dragulaService, $compile) {
+        '$filter',
+        function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, FIREBASE_URL, $firebaseArray, $ionicHistory, dragulaService, $compile, $filter) {
         'use strict';
 
         function getTimeOffset(date) {
@@ -45,6 +46,77 @@ Pta.constant('calendar2Config', {
         var eventsRef = ref.child('events').orderByChild('date');
         $scope.calEvents = $firebaseArray(eventsRef);
 
+        // check if a volunteer was in the previously added event segment
+        function checkSegment(volunteers, key){
+            for (var i = volunteers.length - 1; i >= 0; i--) {
+                if(volunteers[i]['id'] === key){
+                    return true
+                } else if(i < 0) {
+                    return false;
+                }
+            }
+        }
+
+        $scope.arrayify = function(event, eventType){
+            var volunteerArr = [],
+                volunteer = {},
+                volunteerDuration,
+                volunteerStart,
+                volunteerEnd,
+                hoursToAdd,
+                eventStart = moment(event[eventType + 'start']),
+                eventEnd = moment(event[eventType + 'end']);
+            volunteer.hours = [];
+            // Iterate over volunteers and match the hours they volunteered
+            // to the correct event segment
+            angular.forEach(event.volunteers, function(value, key){
+                volunteerStart = moment(value.start);
+                volunteerEnd = moment(value.end);
+                // Determine if volunteer's start or end time falls within this event segment
+                // and get the duration
+                if(volunteerStart.isBetween(eventStart, eventEnd)){// Volunteer starts during this segment
+                    volunteerDuration = eventEnd.diff(volunteerStart, 'hours');
+                } else if(volunteerEnd.isBetween(eventStart, eventEnd)) {// Volunteer finishes during this segment
+                    volunteerDuration = volunteerEnd.diff(eventStart, 'hours');
+                } else if(volunteerEnd.isAfter(eventEnd)){// Volunteer is signed up for the entire segment and part of the next
+                    volunteerDuration = eventEnd.diff(eventStart, 'hours');
+                }
+
+                // Create an array of date-times for each hour volunteered in this event segment
+                if(volunteerDuration > 0){
+                    if($scope.eventSource.length > 0 && event.$id === $scope.eventId){ // Is either event or cleanup segment of the same event
+                        var previousSegment = $scope.eventSource[$scope.eventSource.length - 1],//the previous segment added
+                            setupSegment = $filter('filter')($scope.eventSource[0].volunteers, {id: key});
+                        // Currently adding volunteer hours for the event, the volunteer finishes during the eventSegment, setup 
+                        // volunteer hours were already added in the setup segment and we need to adjust the starting hour count
+                        if(setupSegment && previousSegment.type === 'setup' && checkSegment(previousSegment.volunteers, key) || volunteerDuration === eventEnd.diff(eventStart, 'hours')){
+                            hoursToAdd = setupSegment[0].hours.length;
+                        //Currently adding hours to the Cleanup segment of the event and volunteer hours were added
+                        } else if(setupSegment && previousSegment.type === 'event' && checkSegment(previousSegment.volunteers, key)) {
+                            var eventSegment = $filter('filter')($scope.eventSource[1].volunteers, {id: key});
+                            hoursToAdd = setupSegment[0].hours.length + eventSegment[0].hours.length;
+                        } else {
+                            console.log("You missed an edge case on calculating volunteer hours");
+                        }
+                    } else {
+                        hoursToAdd = 0;
+                    }
+
+                    for (var i = 0; i < volunteerDuration; i++) {
+                        volunteer.hours.push(moment(volunteerStart._d).add((i + hoursToAdd), 'hours')); 
+                    }
+                    volunteer.id = key
+                }
+            });
+            volunteerArr.push(volunteer)
+            if(volunteerArr.length > 0){
+                return volunteerArr;
+            } else {
+                return null;
+            }
+            
+        }
+
         $scope.calEvents.$loaded(function(data){
             if($ionicHistory.backView.stateName = "app.events"){// filtering out events that don't need volunteers for volunteer signup view
                 for (var i = data.length - 1; i >= 0; i--) {
@@ -53,8 +125,12 @@ Pta.constant('calendar2Config', {
                     }
                 }
             }
+            if($scope.$parent.$parent.selectedEvent && $scope.$parent.$parent.selectedEvent.date){// If only interested in a particular event
+                data = $scope.filterEventsByDate(data, new Date($scope.$parent.$parent.selectedEvent.date), 'event_start');  
+            }
             $scope.eventSource = [];
             for (var i = data.length - 1; i >= 0; i--) {
+                $scope.eventId = data[i].$id;
                 if(data[i].setup_start){
                     var setupObj = {
                         allday: false,
@@ -63,26 +139,36 @@ Pta.constant('calendar2Config', {
                         endTime:data[i].setup_end,
                         type: 'setup',
                         volunteersNeeded: data[i].setup_volunteers_needed,
-                        backgroundColor: 'primaryGreen',
+                        color: 'primaryGreen',
                         title: data[i].event_title + ' Setup',
                         startTimeOffset: getTimeOffset(new Date(data[i].setup_start)),
                         totalApptTime: getApptTime(new Date(data[i].setup_start), new Date(data[i].setup_end))
                     }
+                    if(data[i].volunteers){// This event has volunteers
+                        setupObj.volunteers =  $scope.arrayify(data[i], "setup_");
+                        setupObj.volunteerTitle = Object.keys(data[i].volunteers).length + ' of ' + data[i].setup_volunteers_needed; 
+                    }
                     $scope.eventSource.push(setupObj);
                 }
-                var eventObj = {
-                    allDay: false,
-                    location: data[i].location,
-                    startTime: data[i].event_start,
-                    endTime: data[i].event_end,
-                    type: 'event',
-                    volunteersNeeded: data[i].volunteers_needed,
-                    backgroundColor: 'primaryBlue',
-                    title: data[i].event_title,
-                    startTimeOffset: getTimeOffset(new Date(data[i].event_start)),
-                    totalApptTime: getApptTime(new Date(data[i].event_start), new Date(data[i].event_end))
-                }
-                $scope.eventSource.push(eventObj);
+                if(data[i].event_start){
+                    var eventObj = {
+                        allDay: false,
+                        location: data[i].location,
+                        startTime: data[i].event_start,
+                        endTime: data[i].event_end,
+                        type: 'event',
+                        volunteersNeeded: data[i].volunteers_needed,
+                        color: 'primaryBlue',
+                        title: data[i].event_title,
+                        startTimeOffset: getTimeOffset(new Date(data[i].event_start)),
+                        totalApptTime: getApptTime(new Date(data[i].event_start), new Date(data[i].event_end))
+                    }
+                    if(data[i].volunteers){// This event has volunteers
+                        eventObj.volunteers = $scope.arrayify(data[i], "event_");
+                        eventObj.volunteerTitle = Object.keys(data[i].volunteers).length + ' of ' + data[i].volunteers_needed; 
+                    }
+                    $scope.eventSource.push(eventObj);
+                } 
                 if(data[i].cleanup_start){
                     var cleanupObj = {
                         allDay: false,
@@ -91,16 +177,30 @@ Pta.constant('calendar2Config', {
                         endTime: data[i].cleanup_end,
                         type: 'cleanup',
                         volunteersNeeded: data[i].cleanup_volunteers_needed,
-                        backgroundColor: 'primaryRed',
+                        color: 'primaryRed',
                         title: data[i].event_title + ' Cleanup',
                         startTimeOffset: getTimeOffset(new Date(data[i].cleanup_start)),
                         totalApptTime: getApptTime(new Date(data[i].cleanup_start), new Date(data[i].cleanup_end))
+                    }
+                    if(data[i].volunteers){// This event has volunteers
+                        cleanupObj.volunteers = $scope.arrayify(data[i], "cleanup_");;
+                        cleanupObj.volunteerTitle = Object.keys(data[i].volunteers).length + ' of ' + data[i].cleanup_volunteers_needed; 
                     }
                     $scope.eventSource.push(cleanupObj);
                 }
             }
             $scope.filteredEvents = $scope.eventSource;
         });
+
+        $scope.setBorderStyle = function(color){
+            if(color === 'primaryGreen'){
+                return {'border-radius':'5px 0 0 0'};
+            } else if(color === 'primaryRed'){
+                return {'border-radius':'0 0 0 5px'};
+            } else {
+                return {'border-radius':'0'};
+            }
+        }
 
         $scope.$on('eventFilter', function(eventType){
             var unfilteredEvents = $scope.eventSource;
@@ -185,14 +285,26 @@ Pta.constant('calendar2Config', {
             })();
         });
 
+        $scope.filterEventsByDate = function(array, filterBy, prop){
+            var filteredEvents = []
+            var filter = moment(filterBy, 'DD-MM-YYYY');
+            for (var i = array.length - 1; i >= 0; i--) {
+                var checkDate = moment(array[i][prop], 'DD-MM-YYYY');
+                if(checkDate.isSame(filter)){
+                    filteredEvents.push(array[i]);
+                }
+            }
+            return filteredEvents;
+        }
+
         $scope.$on('bag.drag', function(el, source){
-            var eventSource = el.currentScope.eventSource,
+                var eventSource = $scope.filterEventsByDate(el.currentScope.eventSource, $scope.$parent.$parent.currentDate, 'startTime'),
                 latestFinish;
             $scope.latestFinish = (function(){// Set the latest a volunteer may finish
                 if(eventSource.length === 3){// Check if the event has cleanup or not
-                    latestFinish = moment(eventSource[2].endTime);// Cleanup end time
+                    latestFinish = moment($filter('filter')(eventSource, {type: 'cleanup'})[0].endTime);// Cleanup end time
                 } else {
-                    latestFinish = moment(eventSource[1].endTime);// Event end time
+                    latestFinish = moment($filter('filter')(eventSource, {type: 'event'})[0].endTime);// Event end time
                 }
                 return latestFinish;
             })();

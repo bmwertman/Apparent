@@ -62,7 +62,7 @@ Pta.directive('dragWatch', ['$timeout', function ($timeout) {
                     if(newValue > oldValue && moment(scope.latestFinish._i).diff(scope.dateTime) > 0 ){
                         scope.dateTime.add(offsetChange());
                     }
-                    // dragged up = time decrease and //signup time is still after latest finish time 
+                    // dragged up = time decrease and signup time is still after latest finish time 
                     else if(newValue < oldValue && scope.dateTime.diff(scope.earliestFinish) > 0){ 
                         scope.dateTime.subtract(offsetChange());
                     }

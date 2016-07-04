@@ -29,7 +29,7 @@ Pta.controller('CalendarCtrl', [
   }
 
   $scope.isAdmin = false;
-  $scope.calendarTitle = "Volunteer";
+  $scope.calendarTitle = "Volunteer - " + moment($scope.currentDate).format('dddd, MMMM Do');
   $scope.isVolunteerSignup = true;
 
   if($rootScope.profile.isAdmin && $ionicHistory.backView().stateName === "app.events"){
@@ -254,7 +254,13 @@ Pta.controller('CalendarCtrl', [
         notes = null,
         startDate = $scope.parseTime($scope.displayStart, new Date($scope.selectedEvent.date)),
         endDate = $scope.parseTime($scope.displayEnd, new Date($scope.selectedEvent.date));
-    window.plugins.calendar.createEventWithOptions(title, eventLocation, notes, startDate, endDate, calOptions,
+    window.plugins.calendar.createEventWithOptions(
+        title,
+        eventLocation,
+        notes,
+        startDate,
+        endDate,
+        calOptions,
       function (result) {
         var alert = $ionicPopup.alert({
            title: '<b>Thanks!</b>',
@@ -265,14 +271,20 @@ Pta.controller('CalendarCtrl', [
            alert.close();
            $state.go('app.events');
         }, 3000); 
-      }, function (err) {
+      }, 
+      function (err) {
        console.log('Error: '+ err);
       });
-      $localstorage.set('firstReminderMinutes', null);
-      $localstorage.set('secondReminderMinutes', null);
-      var eventRef = new Firebase(FIREBASE_URL).child('events').child($scope.selectedEvent.$id);
-      var uid = JSON.parse($localstorage.get('firebase:session::sizzling-fire-7440')).uid;//get the user's id
-      eventRef.update({volunteers:{uid}});
+    $localstorage.set('firstReminderMinutes', null);
+    $localstorage.set('secondReminderMinutes', null);
+    var eventRef = new Firebase(FIREBASE_URL).child('events').child($scope.selectedEvent.$id);
+    var uid = JSON.parse($localstorage.get('firebase:session::sizzling-fire-7440')).uid;//get the user's id
+    var volunteers = {};
+    volunteers[uid] = { 
+      start: moment(startDate)._d, 
+      end: moment(endDate)._d
+    };
+    eventRef.update({volunteers});
   }
 
   $scope.confirmSignup = function() {

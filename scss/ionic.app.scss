@@ -26,14 +26,29 @@ $primaryOrange: orange !default;
 
 .primary-green{
  background-color: $primaryGreen;
+ color: white;
 }
 
 .primary-blue{
-  background-color: $primaryBlue
+  background-color: $primaryBlue;
+  color: white;
 }
 
 .primary-red{
   background-color: $primaryRed;
+  color: white;
+}
+
+.primary-green-border{
+ border: 3px solid $primaryGreen;
+}
+
+.primary-blue-border{
+  border: 3px solid $primaryBlue;
+}
+
+.primary-red-border{
+  border: 3px solid $primaryRed;
 }
 
 // The path for our ionicons font files, relative to the built CSS in www/css

@@ -16,13 +16,25 @@ $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
 .primary-green {
-  background-color: #228B22; }
+  background-color: #228B22;
+  color: white; }
 
 .primary-blue {
-  background-color: #0000CD; }
+  background-color: #0000CD;
+  color: white; }
 
 .primary-red {
-  background-color: #B22222; }
+  background-color: #B22222;
+  color: white; }
+
+.primary-green-border {
+  border: 3px solid #228B22; }
+
+.primary-blue-border {
+  border: 3px solid #0000CD; }
+
+.primary-red-border {
+  border: 3px solid #B22222; }
 
 /*!
   Ionicons, v2.0.1

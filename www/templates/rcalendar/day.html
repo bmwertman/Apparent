@@ -1,7 +1,7 @@
 <div>
     <table class="table table-bordered table-fixed">
         <tbody>
-            <tr style="max-height:37px;" ng-repeat="tm in rows track by $index">
+            <tr ng-repeat="tm in rows track by $index">
                 <td class="calendar-hour-column-view text-center">
                     {{$index<12?($index === 0?12:$index)+'am':($index === 12?$index:$index-12)+'pm'}}
                 </td>
@@ -26,17 +26,36 @@
                     </div>
                     <div ng-class="{'calendar-event-wrap': tm.events}" ng-show="tm.events">
                         <div ng-repeat="displayEvent in tm.events" 
-                        class="calendar-event"
+                             class="calendar-event"
                              ng-click="eventSelected({event:displayEvent.event})"
                              ng-style="{left: 100/displayEvent.overlapNumber*displayEvent.position+'%', 
                                         width: 100/displayEvent.overlapNumber+'%',
                                         top: displayEvent.event.startTimeOffset+'%',
                                         height: 40*(displayEvent.event.totalApptTime)+'px'}"
                             insert-signup>
+                            <!-- <span ng-if="displayEvent.event.totalVolunteered"
+                                  style="bottom:5px;left:5px;position:absolute;"
+                                  ng-style="{height: (40 * displayEvent.event.totalApptTime) - 4 +'px',
+                                             lineHeight: (40 * displayEvent.event.totalApptTime) - 4 +'px'}">
+                                  Volunteers signed up
+                            </span> -->
                             <div class="calendar-event-inner"
+                                 style="color:black;"
+                                 ng-style="setBorderStyle(displayEvent.event.color)"
                                  ng-if="isCalView || displayEvent.event.volunteersNeeded"
-                                 ng-class="{'primaryGreen':'primary-green', 'primaryBlue':'primary-blue', 'primaryRed':'primary-red'}[displayEvent.event.backgroundColor]"
-                                 style="white-space: pre-wrap; font-weight: bold">{{displayEvent.event.title}}
+                                 ng-class="{'primaryGreen':'primary-green-border', 'primaryBlue':'primary-blue-border', 'primaryRed':'primary-red-border'}[displayEvent.event.color]"
+                                 style="white-space: pre-wrap;">
+                                    <div style="position:absolute;font-weight:bold;text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;">
+                                        {{displayEvent.event.title}}
+                                    </div>
+                            </div>
+                            <div style="width:100%;">
+                                <div ng-repeat="volunteer in displayEvent.event.totalvolunteered" 
+                                     style="text-align:right;margin-right:5px;padding-right:5px;padding-right:5px;height:36px;line-height:40px;float:right;"
+                                     ng-class="{'primaryGreen':'primary-green', 'primaryBlue':'primary-blue', 'primaryRed':'primary-red'}[displayEvent.event.color]"
+                                     ng-style="{width: (100/displayEvent.overlapNumber) * (displayEvent.event.totalVolunteered/displayEvent.event.volunteersNeeded)+'%'}">
+                                                {{displayEvent.event.volunteerTitle}}
+                                </div>
                             </div>
                         </div>
                     </div>
