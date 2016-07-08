@@ -46,6 +46,24 @@ Pta.constant('calendar2Config', {
         var eventsRef = ref.child('events').orderByChild('date');
         $scope.calEvents = $firebaseArray(eventsRef);
 
+        $scope.middleIndex = function(index, hours){
+            if(hours.length > 1){
+                if(hours.length % 2 === 0){// Its even
+                    if(index === (hours.length/2) - 1){
+                        return true;
+                    }
+                } else { // Its odd
+                    if(index === Math.round(hours.length/2) - 1){
+                        return true;
+                    }
+                }
+            } else if(hours.length === 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
         // check if a volunteer was in the previously added event segment
         function checkSegment(volunteers, key){
             for (var i = volunteers.length - 1; i >= 0; i--) {
@@ -57,19 +75,19 @@ Pta.constant('calendar2Config', {
             }
         }
 
-        $scope.arrayify = function(event, eventType){
+        $scope.arrayify = function(event, newObj){
             var volunteerArr = [],
-                volunteer = {},
                 volunteerDuration,
                 volunteerStart,
                 volunteerEnd,
                 hoursToAdd,
-                eventStart = moment(event[eventType + 'start']),
-                eventEnd = moment(event[eventType + 'end']);
-            volunteer.hours = [];
+                eventStart = moment(event[newObj.type + '_' + 'start']),
+                eventEnd = moment(event[newObj.type + '_' + 'end']);
             // Iterate over volunteers and match the hours they volunteered
             // to the correct event segment
             angular.forEach(event.volunteers, function(value, key){
+                var volunteer = {};
+                volunteer.hours = [];
                 volunteerStart = moment(value.start);
                 volunteerEnd = moment(value.end);
                 // Determine if volunteer's start or end time falls within this event segment
@@ -78,25 +96,27 @@ Pta.constant('calendar2Config', {
                     volunteerDuration = eventEnd.diff(volunteerStart, 'hours');
                 } else if(volunteerEnd.isBetween(eventStart, eventEnd)) {// Volunteer finishes during this segment
                     volunteerDuration = volunteerEnd.diff(eventStart, 'hours');
-                } else if(volunteerEnd.isAfter(eventEnd)){// Volunteer is signed up for the entire segment and part of the next
+                } else if(volunteerEnd.isSame(eventEnd) || volunteerEnd.isAfter(eventEnd)){// Volunteer is signed up for the entire segment
                     volunteerDuration = eventEnd.diff(eventStart, 'hours');
+                } else {
+                    console.log("Error checking volunteer start and end times in respect to event times");
                 }
 
                 // Create an array of date-times for each hour volunteered in this event segment
                 if(volunteerDuration > 0){
-                    if($scope.eventSource.length > 0 && event.$id === $scope.eventId){ // Is either event or cleanup segment of the same event
+                    if($scope.eventSource.length > 0 && event.$id === $scope.eventId && newObj.type !== 'setup'){ // Is either event or cleanup segment of the same event
                         var previousSegment = $scope.eventSource[$scope.eventSource.length - 1],//the previous segment added
-                            setupSegment = $filter('filter')($scope.eventSource[0].volunteers, {id: key});
+                            setupSegment = $filter('filter')($scope.eventSource[0].volunteers, {id: value.id});
                         // Currently adding volunteer hours for the event, the volunteer finishes during the eventSegment, setup 
                         // volunteer hours were already added in the setup segment and we need to adjust the starting hour count
-                        if(setupSegment && previousSegment.type === 'setup' && checkSegment(previousSegment.volunteers, key) || volunteerDuration === eventEnd.diff(eventStart, 'hours')){
+                        if(setupSegment && previousSegment.type === 'setup' && checkSegment(previousSegment.volunteers, value.id)){
                             hoursToAdd = setupSegment[0].hours.length;
                         //Currently adding hours to the Cleanup segment of the event and volunteer hours were added
-                        } else if(setupSegment && previousSegment.type === 'event' && checkSegment(previousSegment.volunteers, key)) {
-                            var eventSegment = $filter('filter')($scope.eventSource[1].volunteers, {id: key});
+                        } else if(setupSegment && previousSegment.type === 'event' && checkSegment(previousSegment.volunteers, value.id)) {
+                            var eventSegment = $filter('filter')($scope.eventSource[1].volunteers, {id: value.id});
                             hoursToAdd = setupSegment[0].hours.length + eventSegment[0].hours.length;
                         } else {
-                            console.log("You missed an edge case on calculating volunteer hours");
+                            console.log("Error calculating volunteer hours");
                         }
                     } else {
                         hoursToAdd = 0;
@@ -105,16 +125,35 @@ Pta.constant('calendar2Config', {
                     for (var i = 0; i < volunteerDuration; i++) {
                         volunteer.hours.push(moment(volunteerStart._d).add((i + hoursToAdd), 'hours')); 
                     }
-                    volunteer.id = key
+                    volunteer.id = value.id
                 }
+                volunteerArr.push(volunteer);
             });
-            volunteerArr.push(volunteer)
             if(volunteerArr.length > 0){
+                // for (var i = volunteers.length - 1; i >= 0; i--) {
+                //     for (var x = hours.length - 1; x >= 0; x--) {
+                //        volunteers[i] hours[x]
+                //     }
+                // }
                 return volunteerArr;
             } else {
                 return null;
             }
             
+        }
+
+        function arrifySlots(obj){
+            var slotsArr= [],
+                slot = 'open slot',
+                grid = {};
+                grid.rows = [];
+            for(var i = 0; i < obj.volunteersNeeded; i++){
+                slotsArr.push(slot);
+            }
+            for(var x = 0; x < obj.totalApptTime; x++){
+                grid.rows.push(slotsArr);
+            }
+            return grid;
         }
 
         $scope.calEvents.$loaded(function(data){
@@ -144,9 +183,11 @@ Pta.constant('calendar2Config', {
                         startTimeOffset: getTimeOffset(new Date(data[i].setup_start)),
                         totalApptTime: getApptTime(new Date(data[i].setup_start), new Date(data[i].setup_end))
                     }
+                    setupObj.grid = arrifySlots(setupObj);
                     if(data[i].volunteers){// This event has volunteers
-                        setupObj.volunteers =  $scope.arrayify(data[i], "setup_");
-                        setupObj.volunteerTitle = Object.keys(data[i].volunteers).length + ' of ' + data[i].setup_volunteers_needed; 
+                        setupObj.grid.volunteers = $scope.arrayify(data[i], setupObj);
+                        setupObj.volunteersCount = Object.keys(data[i].volunteers).length
+                        setupObj.volunteerTitle = setupObj.volunteersCount + ' of ' + data[i].setup_volunteers_needed; 
                     }
                     $scope.eventSource.push(setupObj);
                 }
@@ -163,9 +204,11 @@ Pta.constant('calendar2Config', {
                         startTimeOffset: getTimeOffset(new Date(data[i].event_start)),
                         totalApptTime: getApptTime(new Date(data[i].event_start), new Date(data[i].event_end))
                     }
+                    eventObj.grid = arrifySlots(eventObj);
                     if(data[i].volunteers){// This event has volunteers
-                        eventObj.volunteers = $scope.arrayify(data[i], "event_");
-                        eventObj.volunteerTitle = Object.keys(data[i].volunteers).length + ' of ' + data[i].volunteers_needed; 
+                        eventObj.grid.volunteers = $scope.arrayify(data[i], eventObj);
+                        eventObj.volunteersCount = Object.keys(data[i].volunteers).length
+                        eventObj.volunteerTitle = eventObj.volunteersCount + ' of ' + data[i].setup_volunteers_needed; 
                     }
                     $scope.eventSource.push(eventObj);
                 } 
@@ -182,9 +225,11 @@ Pta.constant('calendar2Config', {
                         startTimeOffset: getTimeOffset(new Date(data[i].cleanup_start)),
                         totalApptTime: getApptTime(new Date(data[i].cleanup_start), new Date(data[i].cleanup_end))
                     }
+                    cleanupObj.grid = arrifySlots(cleanupObj);
                     if(data[i].volunteers){// This event has volunteers
-                        cleanupObj.volunteers = $scope.arrayify(data[i], "cleanup_");;
-                        cleanupObj.volunteerTitle = Object.keys(data[i].volunteers).length + ' of ' + data[i].cleanup_volunteers_needed; 
+                        cleanupObj.grid.volunteers = $scope.arrayify(data[i], cleanupObj);;
+                        cleanupObj.volunteersCount = Object.keys(data[i].volunteers).length
+                        cleanupObj.volunteerTitle = cleanupObj.volunteersCount + ' of ' + data[i].setup_volunteers_needed; 
                     }
                     $scope.eventSource.push(cleanupObj);
                 }

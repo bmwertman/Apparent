@@ -9912,16 +9912,6 @@ ion-content.has-tall-header {
   background-image: none !important;
   border-bottom: none !important; }
 
-ion-header-bar p.tag_line {
-  position: absolute;
-  right: 7px;
-  top: 15px;
-  width: 219px; }
-
-ion-header-bar .title.title-left {
-  right: 0;
-  margin: 0 0 0 10px; }
-
 ion-header-bar .calendar-form {
   height: 60px; }
   ion-header-bar .calendar-form input {
@@ -9946,21 +9936,23 @@ ion-header-bar .calendar-form {
       ion-header-bar .calendar-form button.button.button-clear.button-positive.close-calendar i.icon.ion-close::before {
         font-size: 18px; }
 
-.signup form {
-  border: 1px solid;
-  border-color: gainsboro;
-  padding: 10px;
-  border-radius: 1px;
-  box-shadow: 0px 0px 1px 0px; }
-  .signup form .children {
-    margin-bottom: 15px; }
-    .signup form .children input {
-      width: 200px;
-      display: inline-block; }
-    .signup form .children select {
-      margin-right: calc(100% - 141px); }
-  .signup form label input {
-    width: 100%; }
+.signup {
+  top: 160px; }
+  .signup form {
+    border: 1px solid;
+    border-color: gainsboro;
+    padding: 10px;
+    border-radius: 1px;
+    box-shadow: 0px 0px 1px 0px; }
+    .signup form .children {
+      margin-bottom: 15px; }
+      .signup form .children input {
+        width: 200px;
+        display: inline-block; }
+      .signup form .children select {
+        margin-right: calc(100% - 141px); }
+    .signup form label input {
+      width: 100%; }
 
 .profile div.icon_wrapper {
   position: absolute;
@@ -10032,11 +10024,71 @@ ion-header-bar .calendar-form {
   display: block;
   width: 100%; }
 
-.calendar .calendar-event-wrap {
-  max-width: 68%;
-  float: right; }
+.calendar .calendar-cell .add_event_shade p {
+  display: none; }
 
-.calendar .volunteer-start {
+.calendar .calendar-cell .drop-container {
+  position: relative;
+  height: 25px;
+  width: 32%;
+  top: 67px;
+  float: left; }
+  .calendar .calendar-cell .drop-container .drag-element {
+    position: absolute;
+    width: 65px;
+    display: none;
+    top: -40px;
+    height: 65px;
+    margin-left: 9px; }
+    .calendar .calendar-cell .drop-container .drag-element .arrow-head {
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 16px 20px 0;
+      border-color: transparent orange transparent transparent;
+      position: relative;
+      left: -9px;
+      top: 13px; }
+    .calendar .calendar-cell .drop-container .drag-element .half-circle {
+      position: relative;
+      height: 33px;
+      text-align: center;
+      background-color: orange;
+      color: white;
+      font-weight: bold;
+      bottom: 21px; }
+    .calendar .calendar-cell .drop-container .drag-element .finish-time {
+      width: 100%;
+      border-radius: 33px 33px 0 0;
+      padding-top: 14px; }
+    .calendar .calendar-cell .drop-container .drag-element .node-handle {
+      border-radius: 0 0 33px 33px;
+      line-height: 10px; }
+
+.calendar .calendar-cell .calendar-event-wrap {
+  max-width: 68%;
+  float: right;
+  top: -3px; }
+  .calendar .calendar-cell .calendar-event-wrap .calendar-event {
+    padding: 0; }
+    .calendar .calendar-cell .calendar-event-wrap .calendar-event .calendar-event-inner {
+      padding: 0;
+      color: black;
+      white-space: pre-wrap; }
+      .calendar .calendar-cell .calendar-event-wrap .calendar-event .calendar-event-inner .event-title {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        font-weight: bold;
+        text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+        z-index: 1000; }
+      .calendar .calendar-cell .calendar-event-wrap .calendar-event .calendar-event-inner .volunteers-wrapper {
+        position: absolute;
+        top: 0; }
+        .calendar .calendar-cell .calendar-event-wrap .calendar-event .calendar-event-inner .volunteers-wrapper .eventrow-wrapper {
+          line-height: 20px; }
+
+.calendar .calendar-cell .volunteer-start {
   background-color: orange;
   color: white;
   font-weight: bold;
@@ -10044,38 +10096,6 @@ ion-header-bar .calendar-form {
   height: 26px;
   font-size: 13px;
   margin: 0; }
-
-.calendar .drag-element {
-  position: absolute;
-  width: 65px;
-  display: none;
-  top: -40px;
-  height: 65px;
-  margin-left: 9px; }
-  .calendar .drag-element .arrow-head {
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 0 16px 20px 0;
-    border-color: transparent orange transparent transparent;
-    position: relative;
-    left: -9px;
-    top: 13px; }
-  .calendar .drag-element .half-circle {
-    position: relative;
-    height: 33px;
-    text-align: center;
-    background-color: orange;
-    color: white;
-    font-weight: bold;
-    bottom: 21px; }
-  .calendar .drag-element .finish-time {
-    width: 100%;
-    border-radius: 33px 33px 0 0;
-    padding-top: 14px; }
-  .calendar .drag-element .node-handle {
-    border-radius: 0 0 33px 33px;
-    line-height: 10px; }
 
 body div.drag-element.gu-mirror {
   width: 190px;

@@ -1,9 +1,11 @@
-<ion-modal-view title="The PTA App">
-  <ion-header-bar align-title="left" class="white-font bar bar-header bar-positive">
-    <h3 class="title title-left">The PTA App</h3>
-    <p class="tag_line">Connected parents. Better schools.</p>
-  </ion-header-bar>
-  <ion-content class="padding signup">
+<ion-modal-view>
+  <div align-title="left" class="white-font bar bar-header bar-positive">
+    <h1 class="title" style="font-size:30px;font-weight:bold;text-align:left;">Apparent</h1>
+  </div>
+  <div class="white-font bar bar-subheader bar-positive">
+    <p class="title" style="font-size:1.1em;text-align:left;line-height:30px;">Clearly connected parents. Visibly better schools.</p>
+  </div>
+  <ion-content class="padding signup" has-subheader="true">
     <form name="signupForm" ng-submit="signupSubmit()">
       <label for="school-name">School name
         <input type="text" name="school-name" ng-model="user.school" placeholder="Child's school name" required="true">

@@ -278,13 +278,17 @@ Pta.controller('CalendarCtrl', [
     $localstorage.set('firstReminderMinutes', null);
     $localstorage.set('secondReminderMinutes', null);
     var eventRef = new Firebase(FIREBASE_URL).child('events').child($scope.selectedEvent.$id);
+    var volunteersRef = eventRef.child('volunteers');
     var uid = JSON.parse($localstorage.get('firebase:session::sizzling-fire-7440')).uid;//get the user's id
-    var volunteers = {};
-    volunteers[uid] = { 
+    var volunteer = { 
+      id: uid,
       start: moment(startDate)._d, 
       end: moment(endDate)._d
-    };
-    eventRef.update({volunteers});
+    }
+    var volunteerPushId = volunteersRef.push(volunteer).key();
+    var volunteerRef = volunteersRef.child(volunteerPushId);
+    volunteerRef.update(volunteer);
+    
   }
 
   $scope.confirmSignup = function() {
