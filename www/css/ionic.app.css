@@ -10086,7 +10086,17 @@ ion-header-bar .calendar-form {
         position: absolute;
         top: 0; }
         .calendar .calendar-cell .calendar-event-wrap .calendar-event .calendar-event-inner .volunteers-wrapper .eventrow-wrapper {
-          line-height: 20px; }
+          line-height: 0px; }
+          .calendar .calendar-cell .calendar-event-wrap .calendar-event .calendar-event-inner .volunteers-wrapper .eventrow-wrapper .volunteer-slot {
+            height: 40px; }
+            .calendar .calendar-cell .calendar-event-wrap .calendar-event .calendar-event-inner .volunteers-wrapper .eventrow-wrapper .volunteer-slot .filled-slot {
+              height: 40px; }
+              .calendar .calendar-cell .calendar-event-wrap .calendar-event .calendar-event-inner .volunteers-wrapper .eventrow-wrapper .volunteer-slot .filled-slot span {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                padding-top: 17px; }
 
 .calendar .calendar-cell .volunteer-start {
   background-color: orange;

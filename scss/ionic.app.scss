@@ -470,33 +470,21 @@ ion-header-bar{
             position:absolute;
             top: 0;
             .eventrow-wrapper{
-              line-height: 20px;
+              line-height: 0px;
+              .volunteer-slot{
+                height:40px;
+                .filled-slot{
+                  height: 40px;
+                  span{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100%;
+                    padding-top: 17px;
+                  }
+                }
+              }
             }
-          //   width: 100%;
-          //   display: table;
-          //   .eventrow-wrapper{
-          //     width: 100%;
-          //     height: 40px;
-          //     display: table-row;
-          //     .volunteer-slot{
-          //       display: inline-block: 
-          //     }
-          //   }
-            // .event-volunteer{
-            //   text-align: right;
-            //   height: 100%;
-            //   display: table;
-            //   margin-top: -12px;
-            //   float: right;
-              // .volunteer-slot{
-              //   height: 40px;
-              //   // span{
-              //   //   margin-right: 7px;
-              //   //   line-height: 0;
-              //   //   display: block;
-              //   // }
-              // }
-            // }
           }
         }
       }

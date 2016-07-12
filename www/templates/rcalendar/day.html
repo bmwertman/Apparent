@@ -1,7 +1,7 @@
 <div>
     <table class="table table-bordered table-fixed">
         <tbody>
-            <tr ng-repeat="tm in rows track by $index">
+            <tr style="max-height:37px;" ng-repeat="tm in rows track by $index">
                 <td class="calendar-hour-column-view text-center">
                     {{$index<12?($index === 0?12:$index)+'am':($index === 12?$index:$index-12)+'pm'}}
                 </td>
@@ -24,7 +24,6 @@
                         </div>
                     </div>
                     <div ng-class="{'calendar-event-wrap': tm.events}" ng-show="tm.events">
-                        <!-- ng-style removed: left: 100/displayEvent.overlapNumber*displayEvent.position+'%', top: displayEvent.event.startTimeOffset+'%', -->
                         <div ng-repeat="displayEvent in tm.events" 
                              class="calendar-event"
                              ng-click="eventSelected({event:displayEvent.event})"
@@ -38,22 +37,22 @@
                                     <div class="event-title">{{displayEvent.event.title}}</div>
                                 <table class="volunteers-wrapper">
                                     <tbody>
-                                        <tr class="eventrow-wrapper" ng-repeat="row in displayEvent.event.grid.rows track by $index">
+                                        <tr class="eventrow-wrapper"
+                                            ng-repeat="row in displayEvent.event.grid track by $index"
+                                            data-event-id="{{row[0].event}}">
                                            <td class="volunteer-slot"
                                                 ng-repeat="slot in row track by $index"
                                                 ng-style="{width: (100/displayEvent.overlapNumber) * (1/displayEvent.event.volunteersNeeded)+'%'}">
-                                                <div class="filled-slot"></div>
+                                                <div ng-if="slot.id"
+                                                     data-volunteer-id="{{slot.id}}"
+                                                     ng-class="{'primaryGreen':'primary-green', 'primaryBlue':'primary-blue', 'primaryRed':'primary-red'}[displayEvent.event.color]"
+                                                     data-hour="{{slot.hours[row.indexOf(slot)]}}"
+                                                     class="filled-slot">
+                                                     <span ng-if="$last"> {{slot.volunteersCount}} of {{ displayEvent.event.volunteersNeeded}}</span>
+                                                </div>
                                            </td>
                                         </tr>
                                     </tbody>
-                                   <!--  <div class="event-volunteer" ng-repeat="volunteer in displayEvent.event.volunteers" 
-                                         ng-style="{width: (100/displayEvent.overlapNumber) * (displayEvent.event.volunteersCount/displayEvent.event.volunteersNeeded)+'%'}">
-                                        <div class="volunteer-hour"
-                                             ng-repeat="hour in volunteer.hours"
-                                             ng-class="{'primaryGreen':'primary-green', 'primaryBlue':'primary-blue', 'primaryRed':'primary-red'}[displayEvent.event.color]">
-                                             <span ng-if="middleIndex($index, volunteer.hours)">{{displayEvent.event.volunteerTitle}}</span>
-                                        </div>
-                                    </div> -->
                                 </table>
                             </div>
                         </div>
