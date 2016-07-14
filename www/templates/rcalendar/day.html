@@ -39,7 +39,7 @@
                                     <tbody>
                                         <tr class="eventrow-wrapper"
                                             ng-repeat="row in displayEvent.event.grid track by $index"
-                                            data-event-id="{{row[0].event}}">
+                                            ng-click="adminInteract($event,row[0].event)">
                                            <td class="volunteer-slot"
                                                 ng-repeat="slot in row track by $index"
                                                 ng-style="{width: (100/displayEvent.overlapNumber) * (1/displayEvent.event.volunteersNeeded)+'%'}">
@@ -48,7 +48,7 @@
                                                      ng-class="{'primaryGreen':'primary-green', 'primaryBlue':'primary-blue', 'primaryRed':'primary-red'}[displayEvent.event.color]"
                                                      data-hour="{{slot.hours[row.indexOf(slot)]}}"
                                                      class="filled-slot">
-                                                     <span ng-if="$last"> {{slot.volunteersCount}} of {{ displayEvent.event.volunteersNeeded}}</span>
+                                                     <!-- <span ng-if="$last"> {{slot.volunteersCount}} of {{ displayEvent.event.volunteersNeeded}}</span> -->
                                                 </div>
                                            </td>
                                         </tr>

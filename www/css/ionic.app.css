@@ -9759,7 +9759,7 @@ a.button {
   font-weight: normal;
   font-style: normal; }
 
-i.volunteer {
+i.volunteer_hands {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'volunteer' !important;
   speak: none;
@@ -9772,7 +9772,7 @@ i.volunteer {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
-.volunteer:before {
+.volunteer_hands:before {
   content: "\e902"; }
 
 @font-face {
@@ -10077,8 +10077,8 @@ ion-header-bar .calendar-form {
       white-space: pre-wrap; }
       .calendar .calendar-cell .calendar-event-wrap .calendar-event .calendar-event-inner .event-title {
         position: absolute;
-        top: 6px;
-        left: 6px;
+        top: 2px;
+        left: 3px;
         font-weight: bold;
         text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
         z-index: 1000; }
@@ -10106,6 +10106,12 @@ ion-header-bar .calendar-form {
   height: 26px;
   font-size: 13px;
   margin: 0; }
+
+.admin_interact_modal .volunteers-wrapper .volunteer {
+  width: 80%;
+  margin-left: 10%; }
+  .admin_interact_modal .volunteers-wrapper .volunteer img {
+    width: 80px; }
 
 body div.drag-element.gu-mirror {
   width: 190px;

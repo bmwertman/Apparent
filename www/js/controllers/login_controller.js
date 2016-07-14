@@ -2,11 +2,11 @@ Pta.controller('LoginCtrl', [
   '$scope',
   '$ionicModal',
   '$timeout',
-  'FIREBASE_URL',
   '$ionicLoading',
   'Auth',
   '$localstorage',
-  function($scope, $ionicModal, $timeout, FIREBASE_URL, $ionicLoading, Auth, $localstorage) {
+  '$firebaseAuth',
+  function($scope, $ionicModal, $timeout, $ionicLoading, Auth, $localstorage, $firebaseAuth) {
 
   // Form data for the login modal
   $scope.credentials = {};
@@ -21,11 +21,8 @@ Pta.controller('LoginCtrl', [
 
   // If username and password are found in local storage, then log in
   function loginPasswordCache(loginEmail, loginPassword) {
-    var ref = new Firebase(FIREBASE_URL);
-    ref.authWithPassword({
-      email    : loginEmail,
-      password : loginPassword
-    }, function(error, authData) {
+    $firebaseAuth().$signInWithEmailAndPassword(loginEmail, loginPassword,
+      function(error, authData) {
       if (error) {
         console.log("Login Failed!", error);
       }
@@ -36,11 +33,9 @@ Pta.controller('LoginCtrl', [
   $scope.doLogin = function () {
     $scope.errorMessage = null;
     $ionicLoading.show({ template: '<ion-spinner></ion-spinner>'});
-    var ref = new Firebase(FIREBASE_URL);
-    ref.authWithPassword({
-      email    : $scope.credentials.email,
-      password : $scope.credentials.password
-    }, function(error, authData) {
+    var ref = firebase.database().ref();
+    $firebaseAuth().$signInWithEmailAndPassword($scope.credentials.email, $scope.credentials.password,
+      function(error, authData) {
       // $ionicLoading.hide();
       if (error) {
         $ionicLoading.hide();

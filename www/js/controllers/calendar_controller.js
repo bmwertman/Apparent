@@ -6,7 +6,6 @@ Pta.controller('CalendarCtrl', [
   '$ionicModal',
   '$ionicPopup',
   '$ionicSideMenuDelegate',
-  'FIREBASE_URL',
   '$firebaseArray',
   '$rootScope',
   '$stateParams',
@@ -14,7 +13,7 @@ Pta.controller('CalendarCtrl', [
   '$localstorage',
   '$ionicPlatform',
   '$ionicHistory',
-  function ($scope, $ionicLoading, $timeout, $state, $ionicModal, $ionicPopup, $ionicSideMenuDelegate, FIREBASE_URL, $firebaseArray, $rootScope, $stateParams, $compile, $localstorage, $ionicPlatform, $ionicHistory) {
+  function ($scope, $ionicLoading, $timeout, $state, $ionicModal, $ionicPopup, $ionicSideMenuDelegate, $firebaseArray, $rootScope, $stateParams, $compile, $localstorage, $ionicPlatform, $ionicHistory) {
   'use strict';
 
   $scope.selectedEvent = $stateParams.selectedEvent;
@@ -53,7 +52,7 @@ Pta.controller('CalendarCtrl', [
   }
 
   // Get the event data from firebase as an array
-  var ref = new Firebase(FIREBASE_URL);
+  var ref = firebase.database().ref();
   var eventsRef = ref.child('events');
   $scope.calEvents = $firebaseArray(eventsRef);
 
@@ -277,7 +276,8 @@ Pta.controller('CalendarCtrl', [
       });
     $localstorage.set('firstReminderMinutes', null);
     $localstorage.set('secondReminderMinutes', null);
-    var eventRef = new Firebase(FIREBASE_URL).child('events').child($scope.selectedEvent.$id);
+    var ref = firebase.database().ref();
+    var eventRef = ref.child('events').child($scope.selectedEvent.$id);
     var volunteersRef = eventRef.child('volunteers');
     var uid = JSON.parse($localstorage.get('firebase:session::sizzling-fire-7440')).uid;//get the user's id
     var volunteer = { 
@@ -288,7 +288,7 @@ Pta.controller('CalendarCtrl', [
     var volunteerPushId = volunteersRef.push(volunteer).key();
     var volunteerRef = volunteersRef.child(volunteerPushId);
     volunteerRef.update(volunteer);
-    
+
   }
 
   $scope.confirmSignup = function() {
@@ -410,7 +410,7 @@ Pta.controller('CalendarCtrl', [
       
       // This is needed to order the events chronologically in the view
       $scope.event.date = $scope.event.start_date.getTime();
-      var ref = new Firebase(FIREBASE_URL);
+      var ref = firebase.database().ref();
       var eventsRef = ref.child('events');
       eventsRef.push($scope.event);
       $scope.saved(event.event_title, $scope.closeModal());

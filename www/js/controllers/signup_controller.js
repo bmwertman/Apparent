@@ -2,12 +2,11 @@ Pta.controller('SignupCtrl', [
   '$scope',
   '$ionicSideMenuDelegate',
   '$ionicModal',
-  'FIREBASE_URL',
   '$firebaseAuth',
   '$ionicLoading',
   '$firebaseArray',
   '$http',
-  function($scope, $ionicSideMenuDelegate, $ionicModal, FIREBASE_URL, $firebaseAuth, $ionicLoading, $firebaseArray, $http) {
+  function($scope, $ionicSideMenuDelegate, $ionicModal, $firebaseAuth, $ionicLoading, $firebaseArray, $http) {
 
   $ionicSideMenuDelegate.canDragContent(true);
   $scope.childCntRcvd = false;
@@ -30,9 +29,6 @@ Pta.controller('SignupCtrl', [
     '11th': 11,
     '12th': 12
   };
-  var ref = new Firebase(FIREBASE_URL);
-  $scope.authObj = $firebaseAuth(ref);
-
   $scope.childInfoInputs = function(num){
     $scope.childArr = [];
     for (var i = 0; i < num; i++) {
@@ -63,15 +59,10 @@ Pta.controller('SignupCtrl', [
   $scope.signupSubmit = function() {
     $ionicLoading.show({ template: '<ion-spinner></ion-spinner>', duration: 2000});
     // Create new user in firebase
-    $scope.authObj.$createUser({
-      email: $scope.user.email,
-      password: $scope.user.password
-    }).then(function(userData) {
+    $firebaseAuth().$createUserWithEmailAndPassword($scope.user.email, $scope.user.password)
+    .then(function(userData) {
       // Log in this newly created user
-      return $scope.authObj.$authWithPassword({
-        email: $scope.user.email,
-        password: $scope.user.password
-      });
+      return $firebaseAuth().$signInWithEmailAndPassword($scope.user.email, $scope.user.password);
     }).then(function(authData) {
       // If the user is now created and logged in, then add the user's
       // info into firebase
@@ -85,6 +76,7 @@ Pta.controller('SignupCtrl', [
                           user_id: authData.uid,
                           isAdmin: false 
                         },
+          ref = firebase.database().ref(),
           usersRef = ref.child('users').child(authData.uid);
       // Write the signup data in firebase under "users" with the key being
       // the unique ID firebase assigned this user

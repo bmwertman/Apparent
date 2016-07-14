@@ -13,8 +13,8 @@
     "angular-validation-match": "^1.9.0",
     "angular-off-click": "^0.0.10",
     "angular-xeditable": "^0.1.12",
-    "jr-crop": "^1.1.2",
     "angular-base64-upload": "^0.1.19",
-    "angular-dragula": "^1.2.7"
+    "angular-dragula": "^1.2.7",
+    "ng-img-crop": "ngImgCrop#^0.3.2"
   }
 }

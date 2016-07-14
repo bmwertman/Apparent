@@ -1,15 +1,14 @@
 Pta.controller('EventsCtrl', [
   '$scope', 
   '$ionicSideMenuDelegate', 
-  'FIREBASE_URL',
   '$firebaseArray',
   '$state',
-  function($scope, $ionicSideMenuDelegate, FIREBASE_URL, $firebaseArray, $state) {
+  function($scope, $ionicSideMenuDelegate, $firebaseArray, $state) {
 
   $ionicSideMenuDelegate.canDragContent(true);
 
   // Get the event data from firebase as an array
-  var ref = new Firebase(FIREBASE_URL);
+  var ref = firebase.database().ref();
   var eventsRef = ref.child('events').orderByChild('date');
   $scope.calEvents = $firebaseArray(eventsRef);
   

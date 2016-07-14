@@ -69,7 +69,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     font-style: normal;
 }
 
-i.volunteer {
+i.volunteer_hands {
     /* use !important to prevent issues with browser extensions that change fonts */
     font-family: 'volunteer' !important;
     speak: none;
@@ -84,7 +84,7 @@ i.volunteer {
     -moz-osx-font-smoothing: grayscale;
 }
 
-.volunteer:before {
+.volunteer_hands:before {
     content: "\e902";
 }
 
@@ -460,8 +460,8 @@ ion-header-bar{
           white-space: pre-wrap;
           .event-title{
             position: absolute;
-            top: 6px;
-            left: 6px;
+            top: 2px;
+            left: 3px;
             font-weight: bold;
             text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
             z-index: 1000;
@@ -497,6 +497,20 @@ ion-header-bar{
       height: 26px;
       font-size: 13px;
       margin: 0;
+    }
+  }
+}
+
+.admin_interact_modal{
+  .admin_interact_header{
+  }
+  .volunteers-wrapper{
+    .volunteer{
+      width: 80%;
+      margin-left: 10%;
+      img{
+        width: 80px
+      }
     }
   }
 }

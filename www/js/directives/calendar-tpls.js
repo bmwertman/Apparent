@@ -20,14 +20,14 @@ Pta.constant('calendar2Config', {
         'dateFilter', 
         'calendar2Config', 
         '$timeout',
-        'FIREBASE_URL',
         '$firebaseArray',
         '$ionicHistory',
         'dragulaService',
         '$compile',
         '$filter',
         '$q',
-        function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, FIREBASE_URL, $firebaseArray, $ionicHistory, dragulaService, $compile, $filter, $q) {
+        '$ionicModal',
+        function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $firebaseArray, $ionicHistory, dragulaService, $compile, $filter, $q, $ionicModal) {
         'use strict';
 
         function getTimeOffset(date) {
@@ -43,8 +43,9 @@ Pta.constant('calendar2Config', {
         };
 
         // Get the event data from firebase as an array
-        var ref = new Firebase(FIREBASE_URL);
+        var ref = firebase.database().ref();
         var eventsRef = ref.child('events').orderByChild('date');
+        var usersRef = $firebaseArray(ref.child('users'));
         $scope.calEvents = $firebaseArray(eventsRef);
 
         $scope.middleIndex = function(index, hours){
@@ -64,19 +65,6 @@ Pta.constant('calendar2Config', {
                 return false;
             }
         }
-
-        // check if a volunteer was in the previously added event segment
-        // function checkSegment(volunteers, key){
-        //     if(volunteers){
-        //         for (var i = volunteers.length - 1; i >= 0; i--) {
-        //             if(volunteers[i]['id'] === key){
-        //                 return true
-        //             } else if(i < 0) {
-        //                 return false;
-        //             }
-        //         }
-        //     }
-        // }
         
         $scope.calEvents.$loaded(function(data){
             if($ionicHistory.backView.stateName = "app.events"){// filtering out events that don't need volunteers for volunteer signup view
@@ -228,8 +216,6 @@ Pta.constant('calendar2Config', {
                         var volunteerHours = volunteerArr[i].hours;
                         for (var y = volunteerHours.length - 1; y >= 0; y--) {//iterates a volunteer's hours
                             if(moment.isMoment(grid[x][i]) && (grid[x][i]).isSame(volunteerHours[y])){//matches volunteer signup hr to grid slot & checks slot if available
-                                volunteersCount++;
-                                volunteerArr[i].volunteersCount = volunteersCount;
                                 grid[x].splice(i, 1, volunteerArr[i]);
                             }
                         }
@@ -241,6 +227,43 @@ Pta.constant('calendar2Config', {
                     $scope.arrayify(event, $scope.eventSource[$scope.eventSource.length - (iterations + 1)])
                 }
             } 
+        }
+
+        $scope.adminInteract = function(e, eventId){
+            var slots = e.currentTarget.children,
+                child,
+                volunteerId;
+            $scope.thisHoursVolunteers = [];
+            for (var i = slots.length - 1; i >= 0; i--) {
+                if(slots[i].children[0]){
+                    var child = slots[i].children[0];
+                    volunteerId = angular.element(child).attr('data-volunteer-id');
+                    $scope.thisHoursVolunteers.push(usersRef.$getRecord(volunteerId));
+                } else {
+                    break;
+                }
+            } 
+            $scope.adminInteractModal();
+        }
+
+        $ionicModal.fromTemplateUrl('templates/admin-interact.html', {
+          scope: $scope,
+          animation: 'slide-in-up'
+        }).then(function(modal) {
+          $scope.modal= modal;
+        });
+
+        $scope.$on('$destroy', function(){
+            $scope.modal.remove();
+        });
+
+        $scope.closeModal = function() {
+            $scope.modal.hide();
+            $scope.thisHoursVolunteers = [];
+        };
+
+        $scope.adminInteractModal = function(){
+            $scope.modal.show();
         }
 
         $scope.setBorderStyle = function(color){

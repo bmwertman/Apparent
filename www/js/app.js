@@ -10,11 +10,12 @@ var Pta = angular.module('pta', [
   'validation.match',
   'offClick',
   'xeditable',
-  'jrCrop',
+  'ngImgCrop',
   'naif.base64',
+  'firebase',
   angularDragula(angular)
   ])
-.run(function($ionicPlatform, $rootScope, Auth, FIREBASE_URL, editableThemes, editableOptions) {
+.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions) {
   // hide xeditable cancel button
   editableThemes['default'].cancelTpl = '<button type="button" class="btn btn-default" style="display:none">';
   editableThemes['default'].submitTpl = '<button type="submit" class="xeditable-submit fa fa-pencil-square-o"></button>';
@@ -47,29 +48,23 @@ var Pta = angular.module('pta', [
       }
     });
 })
-
-// URL of the firebase database to be used in controllers and factories
-.constant('FIREBASE_URL', 'https://sizzling-fire-7440.firebaseio.com')
-
 // Watches for authentication event. If login occurs, then get the user's profile info and go to calender or volunteer page
-.factory('Auth', function($firebaseAuth, $timeout, $rootScope, FIREBASE_URL, $firebaseObject, $location, userService){
-  var ref = new Firebase(FIREBASE_URL);
-  var auth = $firebaseAuth(ref);
+.factory('Auth', function($firebaseAuth, $timeout, $rootScope, $firebaseObject, $location, userService){
   return {
     // helper method to login with multiple providers
     loginWithProvider: function loginWithProvider(provider) {
-      return auth.$authWithOAuthPopup(provider);
+      return $firebaseAuth().$signInWithPopup(provider);
     },
     // wrapping the unauth function
     logout: function logout() {
-      auth.$unauth();
+      $firebaseAuth().$signOut();
     },
     // Watch for an authentication event
     onAuth: function onLoggedIn(callback) {
-      auth.$onAuth(function(authData) {
+      $firebaseAuth().$onAuthStateChanged(function(authData) {
         // If user is successfully authenticated, then get their profile
         if (authData) {
-          var ref = new Firebase(FIREBASE_URL);
+          var ref = firebase.database().ref();
           var userID = authData.uid;
           var profileObjectRef = ref.child('users').child(userID);
           $rootScope.profile = $firebaseObject(profileObjectRef);

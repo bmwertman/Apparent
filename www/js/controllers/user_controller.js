@@ -2,12 +2,10 @@ Pta.controller('UserCtrl', [
   '$scope',
   '$ionicSideMenuDelegate',
   '$ionicModal',
-  'FIREBASE_URL',
   'userService',
   '$cordovaImagePicker',
-  '$jrCrop',
   '$filter',
-  function($scope, $ionicSideMenuDelegate, $ionicModal, FIREBASE_URL, userService, $cordovaImagePicker, $jrCrop, $filter) {
+  function($scope, $ionicSideMenuDelegate, $ionicModal, userService, $cordovaImagePicker, $filter) {
 
     $ionicSideMenuDelegate.canDragContent(true);
     // var parts = $scope.full_name.split(" "),
@@ -15,26 +13,37 @@ Pta.controller('UserCtrl', [
     //     last = parts.shift() || "";
 
     $scope.user = userService.getUser();
-    
+
+    $ionicModal.fromTemplateUrl('templates/crop-image.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.modal = modal;
+    });
+
+    $scope.cropImageModal = function() {
+        $scope.modal.show();
+    };
+
+    $scope.$on('$destroy', function(){
+        $scope.modal.remove();
+    });
+
+    $scope.closeModal = function() {
+        $scope.modal.hide();
+        $scope.event = {};
+    };
+  
     //image pic & crop
     $scope.getImage = function(){
       $cordovaImagePicker.getPictures({
       maximumImagesCount: 1
       })
       .then(function (results) {
-
-        $jrCrop.crop({
-          url: results[0],
-          width: 100,
-          height: 100,
-          circle: true
-        }).then(function(canvas){
-          $scope.user.pic = canvas.toDataURL()
-          $scope.editSubmit($scope.user.pic, 'pic');
-        });
-
+        $scope.picFile = results[0];
+        $scope.cropImageModal();
       }, function(error) {
-       // error getting photos
+       console.log(error)
       });
     }
 
@@ -62,13 +71,16 @@ Pta.controller('UserCtrl', [
     };
 
     //handle submits
-    $scope.editSubmit = function(modelValue, prop){
-      var ref = new Firebase(FIREBASE_URL);
+    $scope.editSubmit = function(modelValue, prop, cb){
       var userId = $scope.user.user_id;
+      var ref = firebase.database().ref();
       var userRef = ref.child('users').child(userId);
       var obj = {};
       obj[prop] = modelValue;
       userRef.update(obj);
+      if(cb){
+        cb();
+      }
     }
 
 }]);
