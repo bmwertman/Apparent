@@ -5,7 +5,8 @@ Pta.controller('UserCtrl', [
   'userService',
   '$cordovaImagePicker',
   '$filter',
-  function($scope, $ionicSideMenuDelegate, $ionicModal, userService, $cordovaImagePicker, $filter) {
+  '$timeout',
+  function($scope, $ionicSideMenuDelegate, $ionicModal, userService, $cordovaImagePicker, $filter, $timeout) {
 
     $ionicSideMenuDelegate.canDragContent(true);
     // var parts = $scope.full_name.split(" "),
@@ -70,17 +71,94 @@ Pta.controller('UserCtrl', [
       return ($scope.user.phone_type && selected.length) ? selected[0].text : 'Home or Cell Phone?';
     };
 
+    $scope.storeImage = function(file){
+      var imageDataArray = file.split(','),
+          binary = window.atob(imageDataArray[1]),
+          array = new Uint8Array(binary.length);
+      for( var i = 0; i < binary.length; i++ ) { 
+        array[i] = binary.charCodeAt(i) 
+      }
+      var image = new Blob([array]);
+      var storageRef = firebase.storage().ref(),
+          uploadTask = storageRef.child('profile_pics/' + $scope.user.user_id + '.jpg')
+      uploadTask.getDownloadURL()
+      .then(function(onResolved){// Ensure we're only storing one profile pic per user
+        uploadTask.delete()
+        .then(function(){
+          var uploadTask = storageRef.child('profile_pics/' + $scope.user.user_id + '.jpg').put(image);
+          uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, {
+            next: function(snapshot){
+              var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              switch (snapshot.state) {
+                case firebase.storage.TaskState.PAUSED: // or 'paused'
+                  console.log('Upload is paused');
+                  break;
+                case firebase.storage.TaskState.RUNNING: // or 'running'
+                  console.log('Uploading ' + progress + "% complete");
+                  break;
+              }
+            }, 
+            error: function(error){
+              switch (error.code) {
+                 case 'storage/unauthorized':
+                   console.log("You don't have permission to access this image");
+                   break;
+
+                 case 'storage/canceled':
+                   console.log("Upload was canceled");
+                   break;
+              }
+            },
+            complete: function(){
+                $scope.editSubmit(uploadTask.snapshot.downloadURL, 'pic');
+                $scope.closeModal();
+            }
+          });
+        }).catch(function(error){
+          console.log(error);
+        });
+      }).catch(function(onReject){
+        var uploadTask = storageRef.child('profile_pics/' + $scope.user.user_id + '.jpg').put(image);
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, {
+          next: function(snapshot){
+            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            switch (snapshot.state) {
+              case firebase.storage.TaskState.PAUSED: // or 'paused'
+                console.log('Upload is paused');
+                break;
+              case firebase.storage.TaskState.RUNNING: // or 'running'
+                console.log('Uploading ' + progress + "% complete");
+                break;
+            }
+          }, 
+          error: function(error){
+            switch (error.code) {
+               case 'storage/unauthorized':
+                 console.log("You don't have permission to access this image");
+                 break;
+
+               case 'storage/canceled':
+                 console.log("Upload was canceled");
+                 break;
+            }
+          },
+          complete: function(){
+            $scope.editSubmit(uploadTask.snapshot.downloadURL, 'pic');
+            $scope.closeModal();
+          }
+        });
+      });
+    }
+
     //handle submits
-    $scope.editSubmit = function(modelValue, prop, cb){
-      var userId = $scope.user.user_id;
-      var ref = firebase.database().ref();
-      var userRef = ref.child('users').child(userId);
-      var obj = {};
+    $scope.editSubmit = function(modelValue, prop){
+      var userId = $scope.user.user_id,
+          ref = firebase.database().ref(),
+          userRef = ref.child('users').child(userId),
+          obj = {};
       obj[prop] = modelValue;
       userRef.update(obj);
-      if(cb){
-        cb();
-      }
     }
 
 }]);
