@@ -506,10 +506,14 @@ ion-header-bar{
   }
   .volunteers-wrapper{
     .volunteer{
-      width: 80%;
-      margin-left: 10%;
+      border: 2px solid gainsboro;
+      margin-top: 10px;
+      padding: 5px;
+      width: 94%;
+      margin-left: 3%;
       img{
-        width: 80px
+        border-radius: 50%;
+        width: 100px;
       }
     }
   }

@@ -1,15 +1,15 @@
 <ion-modal-view class="admin_interact_modal">
-  <ion-header-bar class="admin_interact_header white-font bar-header bar-positive calendar-form">
-    <button class="close-calendar button button-clear button-positive" ng-click="closeModal(adminInteractModal)">
-      <i class="icon ion-close"></i>
-    </button>
+  <ion-header-bar align-title="left" class="bar-positive">
+    <h1 class="title">Manage Volunteers</h1>
   </ion-header-bar>
   <ion-content>
     <div class="volunteers-wrapper">
       <div class="volunteer"
-           ng-repeat="volunteer in thisHoursVolunteers">
-           <img ng-src="{{volunteer.pic}}">
-           <h4>{{volunteer.name}}</h4>
+           ng-repeat="volunteer in thisHoursVolunteers track by $index">
+           <img ng-src="{{volunteer.user.pic}}">
+           <h4>{{volunteer.user.name}}</h4>
+           <h4>{{volunteer.hours.start}}</h4>
+           <h4>{{volunteer.hours.end}}</h4>
       </div>
     </div>
   </ion-content>

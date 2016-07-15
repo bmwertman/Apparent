@@ -27,7 +27,8 @@ Pta.constant('calendar2Config', {
         '$filter',
         '$q',
         '$ionicModal',
-        function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $firebaseArray, $ionicHistory, dragulaService, $compile, $filter, $q, $ionicModal) {
+        '$firebaseObject',
+        function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $firebaseArray, $ionicHistory, dragulaService, $compile, $filter, $q, $ionicModal, $firebaseObject) {
         'use strict';
 
         function getTimeOffset(date) {
@@ -47,24 +48,6 @@ Pta.constant('calendar2Config', {
         var eventsRef = ref.child('events').orderByChild('date');
         var usersRef = $firebaseArray(ref.child('users'));
         $scope.calEvents = $firebaseArray(eventsRef);
-
-        $scope.middleIndex = function(index, hours){
-            if(hours.length > 1){
-                if(hours.length % 2 === 0){// Its even
-                    if(index === (hours.length/2) - 1){
-                        return true;
-                    }
-                } else { // Its odd
-                    if(index === Math.round(hours.length/2) - 1){
-                        return true;
-                    }
-                }
-            } else if(hours.length === 1) {
-                return true;
-            } else {
-                return false;
-            }
-        }
         
         $scope.calEvents.$loaded(function(data){
             if($ionicHistory.backView.stateName = "app.events"){// filtering out events that don't need volunteers for volunteer signup view
@@ -190,6 +173,7 @@ Pta.constant('calendar2Config', {
                     }
                     volunteer.id = value.id
                     volunteer.event = event.$id;
+                    volunteer.fbKey = key;
                 }
                 volunteerArr.push(volunteer);
             });
@@ -232,18 +216,35 @@ Pta.constant('calendar2Config', {
         $scope.adminInteract = function(e, eventId){
             var slots = e.currentTarget.children,
                 child,
-                volunteerId;
+                userId,
+                volunteerId,
+                eventRef = ref.child('events').child(eventId),
+                volunteersRef = eventRef.child('volunteers'),
+                i = slots.length - 1;
             $scope.thisHoursVolunteers = [];
-            for (var i = slots.length - 1; i >= 0; i--) {
+            function getVolunteersFromFB(){
                 if(slots[i].children[0]){
-                    var child = slots[i].children[0];
-                    volunteerId = angular.element(child).attr('data-volunteer-id');
-                    $scope.thisHoursVolunteers.push(usersRef.$getRecord(volunteerId));
+                    child = angular.element(slots[i].children[0]);
+                    userId = child.attr('data-user-id');
+                    volunteerId = child.attr('data-volunteer-id');
+                    var volunteer = {},
+                        volunteers = $firebaseObject(volunteersRef.child(volunteerId));
+                    volunteer.user = usersRef.$getRecord(userId);
+                    volunteers.$loaded(function(data){
+                        volunteer.hours = data;
+                    });
+                    $scope.thisHoursVolunteers.push(volunteer);
+                    i--;
                 } else {
-                    break;
+                    i--;
                 }
-            } 
-            $scope.adminInteractModal();
+                if(i >= 0){
+                    getVolunteersFromFB()
+                } else {
+                    $scope.adminInteractModal();
+                }
+            }
+            getVolunteersFromFB()
         }
 
         $ionicModal.fromTemplateUrl('templates/admin-interact.html', {

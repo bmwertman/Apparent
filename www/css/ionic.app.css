@@ -10108,10 +10108,14 @@ ion-header-bar .calendar-form {
   margin: 0; }
 
 .admin_interact_modal .volunteers-wrapper .volunteer {
-  width: 80%;
-  margin-left: 10%; }
+  border: 2px solid gainsboro;
+  margin-top: 10px;
+  padding: 5px;
+  width: 94%;
+  margin-left: 3%; }
   .admin_interact_modal .volunteers-wrapper .volunteer img {
-    width: 80px; }
+    border-radius: 50%;
+    width: 100px; }
 
 body div.drag-element.gu-mirror {
   width: 190px;
