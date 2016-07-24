@@ -107,6 +107,29 @@ var Pta = angular.module('pta', [
     templateUrl: 'templates/menu.html'
   })
 
+  .state('app.rooms', {
+    url: '/rooms',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/chat-rooms.html',
+        controller: 'RoomsCtrl'
+      }
+    }
+  })
+
+  .state('app.chat', {
+    url: '/chat',
+    params:{
+      roomId: null
+    },
+    views: {
+      'app-chat': {
+        templateUrl: 'templates/chat-room.html',
+        controller: 'ChatCtrl'
+      }
+    }
+  })
+
   .state('app.calendar', {
     url: '/calendar',
     params:{

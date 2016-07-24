@@ -1,0 +1,17 @@
+<ion-modal-view>
+  <div align-title="left" class="white-font bar bar-header bar-positive">
+    <h1 class="title school-name">{{user.school}}</h1>
+    <h1 class="title connections">Connections</h1>
+  </div>
+  <div class="white-font bar bar-subheader bar-positive">
+    <p class="title add-new-conversations">Add multiple names for group chats!</p>
+  </div>
+  <ion-content class="chat-options" has-subheader="true">
+    <select contactpicker
+            multi="true"
+            model="invitees"
+            placeholder="Type child's name or grade, parent's name or email"
+            value-attr="email">
+    </select>
+  </ion-content>
+</ion-modal-view>

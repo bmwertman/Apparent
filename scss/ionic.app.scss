@@ -39,6 +39,11 @@ $primaryOrange: orange !default;
   color: white;
 }
 
+.primary-orange{
+  background-color: $primaryOrange;
+  color: white;
+}
+
 .primary-green-border{
  border: 3px solid $primaryGreen;
 }
@@ -501,19 +506,121 @@ ion-header-bar{
   }
 }
 
-.admin_interact_modal{
-  .admin_interact_header{
+.title.connections{
+  font-weight: bold;
+  text-align: left;
+  margin-top: 14px; 
+}
+.title.school-name{
+  font-weight: bold;
+  text-align: left;
+  margin-top: -9px; 
+}
+
+.bar.bar-subheader{
+    height: 30px;
+  p.title.add-new-conversations{
+    font-size: 1.1em;
+    font-weight: normal;
+    line-height: 30px;
+    height: 30px;
+    text-align: left;
   }
-  .volunteers-wrapper{
-    .volunteer{
-      border: 2px solid gainsboro;
-      margin-top: 10px;
-      padding: 5px;
-      width: 94%;
-      margin-left: 3%;
-      img{
-        border-radius: 50%;
-        width: 100px;
+}
+.chat-options{
+  .selector-container{
+    border: 1px solid gainsboro;
+    border-radius: 2px;
+    padding: 4px;
+    margin: 74px 0 0 15px;
+    width: calc(100% - 13px);
+  }
+}
+
+.chat-rooms{
+  .no-rooms{
+    .ion-android-add{
+      background-color: #228B22;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px 1px;
+      font-size: 16px;
+    }
+  }
+  .add-button{
+    background-color: $primaryGreen;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    position: fixed;
+    left: calc(100% - 70px);
+    top: calc(100% - 72px);
+    border: none;
+    text-align: center;
+    .ion-android-add{
+      background-color: transparent;
+      color: white;
+      font-size: 30px;
+      line-height: 30px;
+    }
+  }
+}
+
+
+.admin_interact_modal{
+  .bar-subheader{
+    height: 50px;
+    padding: 2px 11px;
+    .event-times{
+      display: flex;
+      width: 100%;
+      .event-segment{
+        display: inline-flex;
+        height: 45px;
+        text-align: left;
+        padding: 4px 0 0 4px;
+        line-height: 12px;
+        font-weight: bold;
+        font-size: 12px;
+      }
+    }
+  }
+  ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header{
+    top: 94px;
+    .volunteers-wrapper{
+      .volunteer{
+        border: 2px solid gainsboro;
+        margin-top: 10px;
+        padding: 5px;
+        width: 96%;
+        margin-left: 2%;
+        h4{
+          margin: 0;
+        }
+        .volunteer-times{
+          width: 80%;
+          font-weight: bold;
+          text-align: center;
+          margin-bottom: 5px;
+        }
+        img{
+          display: inline-block;
+          border-radius: 50%;
+          width: 100px;
+        }
+        label{
+          display: inline-block;
+          margin-left: 20px;
+          button{
+            border: none;
+            background-color: rgba(0,0,0,0);
+            margin: 0 20px 0 10px;
+            font-size: 26px;
+            .ion-email{
+              font-size: 31px;
+            }
+          }
+        }
       }
     }
   }

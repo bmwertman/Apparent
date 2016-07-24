@@ -28,8 +28,11 @@ Pta.constant('calendar2Config', {
         '$q',
         '$ionicModal',
         '$firebaseObject',
-        function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $firebaseArray, $ionicHistory, dragulaService, $compile, $filter, $q, $ionicModal, $firebaseObject) {
+        'userService',
+        function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $firebaseArray, $ionicHistory, dragulaService, $compile, $filter, $q, $ionicModal, $firebaseObject, userService) {
         'use strict';
+
+        $scope.user = userService.getUser();
 
         function getTimeOffset(date) {
           var minutes = date.getMinutes();
@@ -217,30 +220,62 @@ Pta.constant('calendar2Config', {
             var slots = e.currentTarget.children,
                 child,
                 userId,
+                volunteer,
                 volunteerId,
                 eventRef = ref.child('events').child(eventId),
+                fbEventRef = $firebaseObject(eventRef),
                 volunteersRef = eventRef.child('volunteers'),
                 i = slots.length - 1;
+            $scope.thisEvent = {};
+            fbEventRef.$loaded(function(data){
+                $scope.thisEvent.id = data.$id;
+                $scope.thisEvent.date = moment(data.event_start).format('dddd MMMM Do');
+                $scope.thisEvent.title = data.event_title;
+                $scope.thisEvent.setup_start = moment(data.setup_start);
+                $scope.thisEvent.setup_end = moment(data.setup_end);
+                $scope.thisEvent.setup_total = moment(data.setup_end).diff(data.setup_start, 'minutes');
+
+                $scope.thisEvent.event_start = moment(data.event_start);
+                $scope.thisEvent.event_end = moment(data.event_end);
+                $scope.thisEvent.event_total = moment(data.event_end).diff(data.event_start, 'minutes');
+
+                $scope.thisEvent.cleanup_start = moment(data.cleanup_start);
+                $scope.thisEvent.cleanup_end = moment(data.cleanup_end);
+                $scope.thisEvent.cleanup_total = moment(data.cleanup_end).diff(data.cleanup_start, 'minutes');
+
+                $scope.thisEvent.total_time = moment(data.cleanup_end).diff(data.setup_start, 'minutes');
+            });
             $scope.thisHoursVolunteers = [];
             function getVolunteersFromFB(){
                 if(slots[i].children[0]){
                     child = angular.element(slots[i].children[0]);
-                    userId = child.attr('data-user-id');
-                    volunteerId = child.attr('data-volunteer-id');
-                    var volunteer = {},
-                        volunteers = $firebaseObject(volunteersRef.child(volunteerId));
-                    volunteer.user = usersRef.$getRecord(userId);
-                    volunteers.$loaded(function(data){
-                        volunteer.hours = data;
+                    volunteer = {};
+                    volunteer.user = usersRef.$getRecord(child.attr('data-user-id'));
+                    $firebaseObject(volunteersRef.child(child.attr('data-volunteer-id'))).$loaded()
+                    .then(function(data){
+                            volunteer.start = moment(data.start);
+                            volunteer.end = moment(data.end); 
+                            volunteer.total_time = moment(data.end).diff(data.start, 'minutes');
+                            if($scope.thisEvent.setup_start){
+                                volunteer.marginLeft  = ((volunteer.start.diff($scope.thisEvent.setup_start, 'minutes'))/$scope.thisEvent.total_time * 100) + '%';
+                            } else if($scope.thisEvent.event_start){
+                                volunteer.marginLeft  = ((volunteer.start.diff($scope.thisEvent.event_start, 'minutes'))/$scope.thisEvent.total_time * 100) + '%';
+                            } else {
+                                volunteer.marginLeft  = ((volunteer.start.diff($scope.thisEvent.cleanup_start, 'minutes'))/$scope.thisEvent.total_time * 100) + '%';
+                            }
+                            $scope.thisHoursVolunteers.push(volunteer);
+                            i--;
+                            if(i >= 0){
+                                getVolunteersFromFB();
+                            }
+                    })
+                    .catch(function(error){
+                        debugger;
                     });
-                    $scope.thisHoursVolunteers.push(volunteer);
-                    i--;
                 } else {
                     i--;
                 }
-                if(i >= 0){
-                    getVolunteersFromFB()
-                } else {
+                if(i < 0) {
                     $scope.adminInteractModal();
                 }
             }

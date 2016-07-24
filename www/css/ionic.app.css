@@ -27,6 +27,10 @@ $dark:                            #444 !default;
   background-color: #B22222;
   color: white; }
 
+.primary-orange {
+  background-color: orange;
+  color: white; }
+
 .primary-green-border {
   border: 3px solid #228B22; }
 
@@ -10107,15 +10111,99 @@ ion-header-bar .calendar-form {
   font-size: 13px;
   margin: 0; }
 
-.admin_interact_modal .volunteers-wrapper .volunteer {
-  border: 2px solid gainsboro;
-  margin-top: 10px;
-  padding: 5px;
-  width: 94%;
-  margin-left: 3%; }
-  .admin_interact_modal .volunteers-wrapper .volunteer img {
-    border-radius: 50%;
-    width: 100px; }
+.title.connections {
+  font-weight: bold;
+  text-align: left;
+  margin-top: 14px; }
+
+.title.school-name {
+  font-weight: bold;
+  text-align: left;
+  margin-top: -9px; }
+
+.bar.bar-subheader {
+  height: 30px; }
+  .bar.bar-subheader p.title.add-new-conversations {
+    font-size: 1.1em;
+    font-weight: normal;
+    line-height: 30px;
+    height: 30px;
+    text-align: left; }
+
+.chat-options .selector-container {
+  border: 1px solid gainsboro;
+  border-radius: 2px;
+  padding: 4px;
+  margin: 74px 0 0 15px;
+  width: calc(100% - 13px); }
+
+.chat-rooms .no-rooms .ion-android-add {
+  background-color: #228B22;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px 1px;
+  font-size: 16px; }
+
+.chat-rooms .add-button {
+  background-color: #228B22;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  position: fixed;
+  left: calc(100% - 70px);
+  top: calc(100% - 72px);
+  border: none;
+  text-align: center; }
+  .chat-rooms .add-button .ion-android-add {
+    background-color: transparent;
+    color: white;
+    font-size: 30px;
+    line-height: 30px; }
+
+.admin_interact_modal .bar-subheader {
+  height: 50px;
+  padding: 2px 11px; }
+  .admin_interact_modal .bar-subheader .event-times {
+    display: flex;
+    width: 100%; }
+    .admin_interact_modal .bar-subheader .event-times .event-segment {
+      display: inline-flex;
+      height: 45px;
+      text-align: left;
+      padding: 4px 0 0 4px;
+      line-height: 12px;
+      font-weight: bold;
+      font-size: 12px; }
+
+.admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header {
+  top: 94px; }
+  .admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer {
+    border: 2px solid gainsboro;
+    margin-top: 10px;
+    padding: 5px;
+    width: 96%;
+    margin-left: 2%; }
+    .admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer h4 {
+      margin: 0; }
+    .admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer .volunteer-times {
+      width: 80%;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 5px; }
+    .admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer img {
+      display: inline-block;
+      border-radius: 50%;
+      width: 100px; }
+    .admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer label {
+      display: inline-block;
+      margin-left: 20px; }
+      .admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer label button {
+        border: none;
+        background-color: transparent;
+        margin: 0 20px 0 10px;
+        font-size: 26px; }
+        .admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer label button .ion-email {
+          font-size: 31px; }
 
 body div.drag-element.gu-mirror {
   width: 190px;

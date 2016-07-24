@@ -1,4 +1,14 @@
-Pta.directive('contactpicker', ['$q', '$filter', '$timeout', '$window', '$http', '$cordovaContacts', function ($q, $filter, $timeout, $window, $http, $cordovaContacts) {
+Pta.directive('contactpicker', [
+    '$q',
+    '$filter',
+    '$timeout',
+    '$window',
+    '$http',
+    '$cordovaContacts',
+    '$firebaseArray',
+    'userService',
+    'userFilter',
+    function ($q, $filter, $timeout, $window, $http, $cordovaContacts, $firebaseArray, userService, userFilter) {
         'use strict'
         return {
             restrict: 'EAC',
@@ -121,22 +131,33 @@ Pta.directive('contactpicker', ['$q', '$filter', '$timeout', '$window', '$http',
                     };
 
                     scope.searchContacts = function(){
-                        $cordovaContacts.find({
-                            filter: document.getElementById('contactsInput').value,
-                            multiple: true,
-                            fields: ['displayName', 'name']
-                        })
-                        .then(function(contactsFound){
-                            var nameRegEx = /^([a-z0-9_\.-]+)@/g;
-                            angular.forEach(contactsFound, function(value, key){
-                                if(value.emails && value.displayName && !nameRegEx.test(value.displayName)){
-                                    var contact = {};
-                                    contact.email = value.emails[0].value
-                                    contact.id = parseInt(value.id);
-                                    contact.label = value.displayName + " " + "<" + value.emails[0].value + ">"
-                                    scope.options.push(contact);
-                                }
-                            });
+                        // Disabled phone contacts search in favor of only searching registered users 
+                        // at the parent's associated school
+                        // if(scope.isAdmin && !scope.searchSchool){
+                        //     $cordovaContacts.find({
+                        //         filter: document.getElementById('contactsInput').value,
+                        //         multiple: true,
+                        //         fields: ['displayName', 'name']
+                        //     })
+                        //     .then(function(contactsFound){
+                        //         var nameRegEx = /^([a-z0-9_\.-]+)@/g;
+                        //         angular.forEach(contactsFound, function(value, key){
+                        //             if(value.emails && value.displayName && !nameRegEx.test(value.displayName)){
+                        //                 var contact = {};
+                        //                 contact.email = value.emails[0].value
+                        //                 contact.id = parseInt(value.id);
+                        //                 contact.label = value.displayName + " " + "<" + value.emails[0].value + ">"
+                        //                 scope.options.push(contact);
+                        //             }
+                        //         });
+                        //     });
+                        // } else {
+                        var user = userService.getUser();
+                        var users = firebase.database().ref('users');
+                        var school = $firebaseArray(users.orderByChild('school').equalTo(user.school));
+                        school.$loaded()
+                        .then(function(schoolParents){
+                            scope.options = userFilter(schoolParents, scope.search);
                         });
                     }
 
@@ -167,8 +188,10 @@ Pta.directive('contactpicker', ['$q', '$filter', '$timeout', '$window', '$http',
                     
                     // Value utilities
                     scope.setValue = function (value) {
-                        if (!scope.multiple) scope.value = scope.valueAttr == null ? (value || {}) : (value || {})[scope.valueAttr];
-                        else scope.value = scope.valueAttr == null ? (value || []) : (value || []).map(function (option) { return option[scope.valueAttr]; });
+                        var emailRegex = /<(.*?)\>/g;
+                        var nameValue = emailRegex.exec(value);
+                        if (!scope.multiple) scope.value = scope.valueAttr == null ? (nameValue || {}) : (nameValue || {})[scope.valueAttr];
+                        else scope.value = scope.valueAttr == null ? (nameValue || []) : (nameValue || []).map(function (option) { return option[scope.valueAttr]; });
                     };
                     scope.hasValue = function () {
                         return scope.multiple ? (scope.value || []).length > 0 : (scope.valueAttr == null ? !angular.equals({}, scope.value) : !!scope.value);
@@ -181,7 +204,7 @@ Pta.directive('contactpicker', ['$q', '$filter', '$timeout', '$window', '$http',
                             if (tagName == 'option') scope.optionToObject(element);
                             if (tagName == 'optgroup') {
                                 angular.forEach(element.querySelectorAll('option'), function (option) {
-                                    scope.optionToObject(option, (element.attributes.label || {}).value);
+                                    scope.optionToObject(option, (element.attributes.name || {}).value);
                                 });
                             }
                         });
@@ -265,7 +288,7 @@ Pta.directive('contactpicker', ['$q', '$filter', '$timeout', '$window', '$http',
                         return options.indexOf(value) >= 0;
                     };
                     scope.filterOptions = function () {
-                        scope.filteredOptions = $filter('filter')(scope.options || [], scope.search);
+                        scope.filteredOptions = scope.options;
                         if (scope.multiple)
                             scope.filteredOptions = scope.filteredOptions.filter(function (option) {
                                 var selectedValues = angular.isArray(scope.selectedValues) ? scope.selectedValues : [scope.selectedValues];

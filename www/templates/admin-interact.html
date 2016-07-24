@@ -1,15 +1,47 @@
 <ion-modal-view class="admin_interact_modal">
-  <ion-header-bar align-title="left" class="bar-positive">
-    <h1 class="title">Manage Volunteers</h1>
-  </ion-header-bar>
-  <ion-content>
+  <div align-title="left" class="white-font bar bar-header bar-positive">
+    <h1 class="title" style="font-weight:bold;text-align:left;">Manage Volunteers for {{thisEvent.date}}</h1>  
+  </div>
+  <div class="bar bar-subheader bar-stable">
+    <div class="event-times">
+      <div class="primary-green white-font event-segment"
+           ng-style="{ width: (thisEvent.setup_total/thisEvent.total_time * 100) + '%' }">
+           Setup 
+           <br> 
+           {{thisEvent.setup_start._d | date: 'ha'}} - {{thisEvent.setup_end._d | date: 'ha'}}
+      </div>
+      <div class="primary-blue white-font event-segment"
+           ng-style="{ width: (thisEvent.event_total/thisEvent.total_time * 100) + '%'}">
+           Event
+           <br>
+           {{thisEvent.event_start._d | date: 'ha'}} - {{thisEvent.event_end._d | date: 'ha'}}
+      </div>
+      <div class="primary-red white-font event-segment"
+           ng-style="{ width: (thisEvent.cleanup_total/thisEvent.total_time * 100) + '%'}">
+           Cleanup
+           <br>
+           {{thisEvent.cleanup_start._d | date: 'ha'}} - {{thisEvent.cleanup_end._d | date: 'ha'}}
+      </div>
+    </div>
+  </div>
+  <ion-content has-subheader="true" class="has-header">
     <div class="volunteers-wrapper">
       <div class="volunteer"
            ng-repeat="volunteer in thisHoursVolunteers track by $index">
+           <div class="event-times bar-stable">
+             <div class="volunteer-times primary-orange"
+                  ng-style="{width: ((volunteer.total_time/thisEvent.total_time) * 100) + '%',
+                             'margin-left': volunteer.marginLeft }">
+                             Scheduled<br>
+               {{volunteer.start._d | date: 'ha'}} - {{volunteer.end._d | date: 'ha'}}
+             </div>
+           </div>
            <img ng-src="{{volunteer.user.pic}}">
+           <label> Contact:
+             <button class="icon ion-android-chat" ui-sref="app.chat(thisEvent.id + user.id + volunteer.user.$id)"></button>
+             <email-btn recipient="volunteer.user.email" prepend="Volunteering at" append="thisEvent.title">
+           </label>
            <h4>{{volunteer.user.name}}</h4>
-           <h4>{{volunteer.hours.start}}</h4>
-           <h4>{{volunteer.hours.end}}</h4>
       </div>
     </div>
   </ion-content>
