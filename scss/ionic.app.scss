@@ -652,6 +652,7 @@ ion-header-bar{
     align-content: center !important;
     align-items: center !important;
     border: none;
+    width: calc(100% + 72px);
     .chatter-pic-wrapper{
       display: inline-block;
       width: 42px;
@@ -686,23 +687,30 @@ ion-header-bar{
     align-self: auto !important;
     width: 72px !important;
     text-align: center !important;
-    padding: 0 0 0 0 !important;
-    position: relative;
-    right: -72px;
+    padding: 0 !important;
   }
   //This is the user's messages
   .messages.user {
+    .user-time{
+      flex: 0 1 auto !important;
+      align-self: auto !important;
+      width: 72px !important;
+      text-align: center !important;
+      padding: 0 !important;
+      position: relative;
+      right: -72px;
+    }
     .chatter-pic-wrapper {
       display: none;
     }
     .message {
       text-align: right !important;
-      position: relative;
-      left: 68px;
-    }
-    span {
-      color: black !important;
-      background-color: #C7C7CC !important;
+      // position: relative;
+      // left: 68px;
+      span {
+        color: black !important;
+        background-color: #C7C7CC !important;
+      }
     }
   }
   span {

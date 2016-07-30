@@ -10234,7 +10234,8 @@ ion-header-bar .calendar-form {
   display: flex !important;
   align-content: center !important;
   align-items: center !important;
-  border: none; }
+  border: none;
+  width: calc(100% + 72px); }
   .chat-room .messages .chatter-pic-wrapper {
     display: inline-block;
     width: 42px;
@@ -10264,7 +10265,14 @@ ion-header-bar .calendar-form {
   align-self: auto !important;
   width: 72px !important;
   text-align: center !important;
-  padding: 0 0 0 0 !important;
+  padding: 0 !important; }
+
+.chat-room .messages.user .user-time {
+  flex: 0 1 auto !important;
+  align-self: auto !important;
+  width: 72px !important;
+  text-align: center !important;
+  padding: 0 !important;
   position: relative;
   right: -72px; }
 
@@ -10272,13 +10280,10 @@ ion-header-bar .calendar-form {
   display: none; }
 
 .chat-room .messages.user .message {
-  text-align: right !important;
-  position: relative;
-  left: 68px; }
-
-.chat-room .messages.user span {
-  color: black !important;
-  background-color: #C7C7CC !important; }
+  text-align: right !important; }
+  .chat-room .messages.user .message span {
+    color: black !important;
+    background-color: #C7C7CC !important; }
 
 .chat-room span {
   background: #007AFF !important;

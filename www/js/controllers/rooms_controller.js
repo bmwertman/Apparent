@@ -51,5 +51,5 @@ Pta.controller('RoomsCtrl', [
     $scope.closeModal();
   }
 
-  
+
 }]);

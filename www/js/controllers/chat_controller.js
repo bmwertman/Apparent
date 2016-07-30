@@ -13,23 +13,29 @@ Pta.controller('ChatCtrl', [
 
     $scope.slide = function(e){
         var userChats = angular.element(document.getElementsByClassName('user')),
-            times = angular.element(document.getElementsByClassName('time'));
+            times = angular.element(document.getElementsByClassName('time'))
+            Usertimes = angular.element(document.getElementsByClassName('user-time'));
         if(e.type === "swiperight"){
             times.css({
                 'transition': 'all 250ms ease-in-out',
-                'transform':'translate3D(75px, 0, 0)'});
-            times.attr({'style': ''});
+                'transform':'translate3D(72px, 0, 0)'});
+            Usertimes.css({
+                'transition': 'all 250ms ease-in-out',
+                'transform':'translate3D(72px, 0, 0)'});
             userChats.css({
                 'transition': 'all 250ms ease-in-out',
-                'transform':'translate3D(0, 0, 0)'});
+                'transform':'translate3D(72px, 0, 0)'});
             userChats.attr({'style': ''});
         } else {
             times.css({
                 'transition': 'all 250ms ease-in-out',
-                'transform':'translate3D(0, 0, 0)'});
+                'transform':'translate3D(-72px, 0, 0)'});
+            Usertimes.css({
+                'transition': 'all 250ms ease-in-out',
+                'transform':'translate3D(-72px, 0, 0)'});
             userChats.css({
                 'transition': 'all 250ms ease-in-out',
-                'transform':'translate3D(-75px, 0, 0)'});
+                'transform':'translate3D(-72px, 0, 0)'});
         }
     }
 

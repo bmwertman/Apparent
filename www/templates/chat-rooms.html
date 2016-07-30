@@ -3,7 +3,7 @@
         <ion-list ng-show="rooms.length > 0">
             <ion-item class="chat-room" ng-repeat="room in rooms" type="item-text-wrap" ng-click="openChatRoom(room.$id)">
                 <div class="room-pic-wrapper">
-                    <div ng-repeat-start="chatter in room.chatters | limitTo: 4 track by $index"
+                    <div ng-repeat-start="chatter in room.chatters | filter: {id: '!' + user.$id} | limitTo: 4 track by $index"
                          ng-class="room.chatters.length > 1 ? 'multi-pic' : 'single-pic'"
                          ng-if="chatter.pic.length > 1">
                         <img class="chatter-pic" ng-src="{{chatter.pic}}">

@@ -1,4 +1,5 @@
-<ion-view view-title="{{ roomName }}">
+<ion-view>
+    <ion-nav-title> {{ roomName }}</ion-nav-title> 
     <ion-content class="chat-room"
                  on-swipe-left="slide($event)"
                  on-swipe-right="slide($event)">
@@ -23,7 +24,7 @@
             <div class="message">
                 <span>{{ chat.message }}</span>
             </div>
-            <div class="time">
+            <div ng-class="{'user-time': chat.userId === user.$id, 'time': chat.userId !== user.$id}">
                 {{chat.createdAt | formatDate }}
             </div>
         </div>
