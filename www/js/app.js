@@ -117,13 +117,13 @@ var Pta = angular.module('pta', [
     }
   })
 
-  .state('app.chat', {
+  .state('app.rooms.chat', {
     url: '/chat',
     params:{
       roomId: null
     },
     views: {
-      'app-chat': {
+      'menuContent@app': {
         templateUrl: 'templates/chat-room.html',
         controller: 'ChatCtrl'
       }

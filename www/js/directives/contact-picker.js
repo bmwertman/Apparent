@@ -1,3 +1,4 @@
+// Future work - Filter the current user out of contact search results
 Pta.directive('contactpicker', [
     '$q',
     '$filter',
@@ -253,6 +254,11 @@ Pta.directive('contactpicker', [
                         scope.resetInput();
                     };
 
+                    //Watches for the correct time to hide or show the new chat room creat button
+                    scope.$watchGroup(['isOpen', 'selectedValues'], function(newValues){
+                        scope.$emit('chatSubmitChanged', newValues);
+                    });
+
                     scope.createOption = function (value) {
                         var option = {};
                         if (angular.isFunction(scope.create)) {
@@ -352,12 +358,14 @@ Pta.directive('contactpicker', [
                     // Update selected values
                     scope.updateSelected = function () {
                         if (!scope.multiple) scope.selectedValues = (scope.options || []).filter(function (option) { return scope.optionEquals(option); }).slice(0, 1);
-                        else
-                            scope.selectedValues = (scope.value || []).map(function (value) {
-                                return $filter('filter')(scope.options, function (option) {
-                                    return scope.optionEquals(option, value);
-                                })[0];
-                            }).filter(function (value) { return angular.isDefined(value); });
+                        // This was causing previously selected contact to be removed from scope.selectedValues when a new search was started to add multiple
+                        // contacts after the seach location was switched from device contacts to Firebase users.
+                        // else
+                            // scope.selectedValues = (scope.value || []).map(function (value) {
+                            //     return $filter('filter')(scope.options, function (option) {
+                            //         return scope.optionEquals(option, value);
+                            //     })[0];
+                            // }).filter(function (value) { return angular.isDefined(value); });
                     };
                     scope.$watch('value', function (newValue, oldValue) {
                         if (angular.equals(newValue, oldValue)) return;

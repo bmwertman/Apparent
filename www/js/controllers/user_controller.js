@@ -7,7 +7,8 @@ Pta.controller('UserCtrl', [
   '$filter',
   '$timeout',
   function($scope, $ionicSideMenuDelegate, $ionicModal, userService, $cordovaImagePicker, $filter, $timeout) {
-
+    // Future work - Add child's current teacher to their parent's profile
+    
     $ionicSideMenuDelegate.canDragContent(true);
     // var parts = $scope.full_name.split(" "),
     //     first = parts.shift(),

@@ -6,7 +6,6 @@ in ionic's _variables.scss file.
 For example, you might change some of the default colors:
 
 $light:                           #fff !default;
-$stable:                          #f8f8f8 !default;
 $positive:                        #387ef5 !default;
 $calm:                            #11c1f3 !default;
 $balanced:                        #33cd5f !default;
@@ -10137,6 +10136,68 @@ ion-header-bar .calendar-form {
   margin: 74px 0 0 15px;
   width: calc(100% - 13px); }
 
+.chat-options .submit-slideout {
+  position: absolute;
+  background-color: lightgreen;
+  width: 100px;
+  right: -100px;
+  z-index: 1000;
+  border-radius: 50% 0 0 50%;
+  height: 95px;
+  bottom: 20px; }
+  .chat-options .submit-slideout .create-chat {
+    top: 0px;
+    left: 10px;
+    width: 71px;
+    font-weight: bold;
+    font-size: 15px;
+    line-height: 19px;
+    border-radius: 50%;
+    height: 71px;
+    box-shadow: 2px 2px 1px 1px green;
+    padding-top: 17px; }
+
+.chat-rooms .chat-room {
+  height: 56px;
+  padding: 0; }
+  .chat-rooms .chat-room .room-pic-wrapper {
+    display: flex;
+    flex-flow: row wrap;
+    width: 60px;
+    float: left;
+    padding: 4px;
+    text-align: center;
+    font-weight: bold;
+    margin-right: 10px; }
+    .chat-rooms .chat-room .room-pic-wrapper .chatter-pic {
+      border-radius: 50%; }
+    .chat-rooms .chat-room .room-pic-wrapper .chatter-initial {
+      background-color: #B71C1C;
+      color: white;
+      border-radius: 50%; }
+    .chat-rooms .chat-room .room-pic-wrapper .single-pic {
+      display: block;
+      width: 42px;
+      font-size: 28px;
+      line-height: 42px; }
+      .chat-rooms .chat-room .room-pic-wrapper .single-pic img {
+        width: 42px; }
+    .chat-rooms .chat-room .room-pic-wrapper .multi-pic {
+      display: inline-block;
+      width: 24px;
+      font-size: 18px;
+      height: 24px;
+      vertical-align: top;
+      line-height: 26px; }
+      .chat-rooms .chat-room .room-pic-wrapper .multi-pic img {
+        width: 24px; }
+  .chat-rooms .chat-room .room-title {
+    font-size: 16px;
+    color: black;
+    height: 54px;
+    margin: 0;
+    line-height: 42px; }
+
 .chat-rooms .no-rooms .ion-android-add {
   background-color: #228B22;
   color: white;
@@ -10159,6 +10220,110 @@ ion-header-bar .calendar-form {
     color: white;
     font-size: 30px;
     line-height: 30px; }
+
+.chat-room .no-messages {
+  width: 260px;
+  text-align: center;
+  margin: 0 auto;
+  border: 1px solid grey;
+  border-radius: 3px;
+  box-shadow: 2px 1px 2px -1px;
+  margin-top: 50px; }
+
+.chat-room .messages {
+  display: flex !important;
+  align-content: center !important;
+  align-items: center !important;
+  border: none; }
+  .chat-room .messages .chatter-pic-wrapper {
+    display: inline-block;
+    width: 42px;
+    float: left;
+    text-align: center;
+    font-weight: bold;
+    margin: 0 2px 0 5px; }
+    .chat-room .messages .chatter-pic-wrapper .chatter-pic {
+      border-radius: 50%; }
+    .chat-room .messages .chatter-pic-wrapper .chatter-initial {
+      background-color: #B71C1C;
+      color: white;
+      border-radius: 50%; }
+    .chat-room .messages .chatter-pic-wrapper .single-pic {
+      display: block;
+      width: 42px;
+      font-size: 28px;
+      line-height: 42px; }
+  .chat-room .messages .message {
+    flex: 1 1 auto !important;
+    padding: 2px !important;
+    overflow: hidden !important;
+    text-align: left !important; }
+
+.chat-room .time {
+  flex: 0 1 auto !important;
+  align-self: auto !important;
+  width: 72px !important;
+  text-align: center !important;
+  padding: 0 0 0 0 !important;
+  position: relative;
+  right: -72px; }
+
+.chat-room .messages.user .chatter-pic-wrapper {
+  display: none; }
+
+.chat-room .messages.user .message {
+  text-align: right !important;
+  position: relative;
+  left: 68px; }
+
+.chat-room .messages.user span {
+  color: black !important;
+  background-color: #C7C7CC !important; }
+
+.chat-room span {
+  background: #007AFF !important;
+  display: inline-block !important;
+  color: white !important;
+  padding: 10px !important;
+  border-radius: 10px !important;
+  text-align: left !important;
+  max-width: 240px !important; }
+
+.footer-bar {
+  position: fixed;
+  bottom: 0;
+  height: 100px;
+  width: 100%; }
+  .footer-bar .sub-bar {
+    height: 40px;
+    background-color: #e6e6e6;
+    padding-top: 2px; }
+    .footer-bar .sub-bar input {
+      width: 94%;
+      margin-left: 3%;
+      background-color: #f8f8f8;
+      border-radius: 10px;
+      padding-left: 8px;
+      height: 35px;
+      margin-top: 3px; }
+    .footer-bar .sub-bar.bottom {
+      height: 60px;
+      position: absolute;
+      bottom: 0;
+      width: 100%; }
+      .footer-bar .sub-bar.bottom .send-button {
+        border-radius: 50%;
+        background-color: #2AD4FF;
+        color: #1102FF;
+        border: none;
+        width: 40px;
+        margin: 8px 8px;
+        line-height: 37px;
+        font-size: 30px;
+        text-align: right;
+        float: right;
+        padding-top: 3px;
+        box-shadow: 3px 2px 6px -1px; }
 
 .admin_interact_modal .bar-subheader {
   height: 50px;

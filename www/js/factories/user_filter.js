@@ -33,12 +33,12 @@ Pta.factory('userFilter', function(){
         });
       }  
     }
+    // Future work - Move adding the user's full name and creating the label to the signup controller;
+                // - Make parent's searchable by their child's current teacher
     var displayableOptions = function(contactsFound){
       var madeDisplayable = [];
       angular.forEach(contactsFound, function(value, key){
-          var contact = {};
-          contact.email = value.email
-          contact.id = value.$id;
+          var contact = value;
           contact.label = value.name + " " + "<" + value.email + ">"
           madeDisplayable.push(contact);
       });

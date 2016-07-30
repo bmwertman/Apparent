@@ -1,12 +1,26 @@
 <ion-view view-title="Rooms">
     <ion-content class="chat-rooms">
-        <ion-list ng-show="rooms">
-            <ion-item class="item-icon-left" ng-repeat="room in rooms" type="item-text-wrap" ng-click="openChatRoom(room.id)">
+        <ion-list ng-show="rooms.length > 0">
+            <ion-item class="chat-room" ng-repeat="room in rooms" type="item-text-wrap" ng-click="openChatRoom(room.$id)">
+                <div class="room-pic-wrapper">
+                    <div ng-repeat-start="chatter in room.chatters | limitTo: 4 track by $index"
+                         ng-class="room.chatters.length > 1 ? 'multi-pic' : 'single-pic'"
+                         ng-if="chatter.pic.length > 1">
+                        <img class="chatter-pic" ng-src="{{chatter.pic}}">
+                    </div>
+                    <div class="chatter-initial"
+                         ng-repeat-end
+                         ng-class="room.chatters.length > 1 ? 'multi-pic' : 'single-pic'"
+                         ng-if="chatter.pic.length === 1">
+                         {{chatter.pic}}
+                    </div>
+                </div>
+                <p class="room-title">{{room.title}}</p>
                 <i class="icon {{room.icon}}"></i>
                 <h2>{{room.name}}</h2>
             </ion-item>
         </ion-list>
-        <ion-list ng-hide="rooms.length">
+        <ion-list ng-hide="rooms.length > 0">
             <ion-item class="no-rooms">
                 Select <span class="icon ion-android-add"></span> to start a new conversation
             </ion-item>

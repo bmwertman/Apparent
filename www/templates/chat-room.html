@@ -1,34 +1,42 @@
-<ion-view view-title="Chat Room {{ roomName }}">
-    <ion-content>
-        <ion-list ng-show="roomName">
-            <ion-item class="item item-input-inset">
-                <label class="item-input-wrapper">
-                    <input type="text" ng-model="IM.textMessage" placeholder="Type in your message...">
-                </label>
-                <button ng-click="sendMessage(IM.textMessage)" class="button button-small button-balanced">
-                    Send
-                </button>
-            </ion-item>
-            <ion-item ng-hide="chats" class="textCenter">
-                <i class="icon ion-loading-c"></i> Loading Chats
-            </ion-item>
-            <ion-item ng-if="chats.length == 0" class="textCenter">
-                <h4>No messages in this room. Send message to start.</h4>
-            </ion-item>
-            <ion-item class="" ng-repeat="chat in chats | orderBy:'createdAt':true" type="item-text-wrap">
-                <h4>{{chat.from}} :</h4>
-                <span am-time-ago="chat.createdAt" class="item-note">
-                </span>
-                <p>{{chat.message}}</p>
-                <ion-option-button class="button-assertive" ng-click="remove(chat)">
-                    Delete
-                </ion-option-button>
-            </ion-item>
-        </ion-list>
-        <ion-list ng-hide="roomName">
-            <ion-item class="textCenter">
-                <h4>Please select a room to chat first.</h4>
-            </ion-item>
-        </ion-list>
-    </ion-content>
+<ion-view view-title="{{ roomName }}">
+    <ion-content class="chat-room"
+                 on-swipe-left="slide($event)"
+                 on-swipe-right="slide($event)">
+        <div ng-hide="chats" class="no-messages">
+            <i class="icon ion-loading-c"></i> Loading Chats
+        </div>
+        <div ng-if="chats.length == 0" class="no-messages">
+            <h4>No messages in this room. Send a message to get the conversation started.</h4>
+        </div>
+        <div ng-repeat="chat in chats"
+             ng-class="{'user': chat.userId === user.$id}"
+             class="messages">
+            <div class="chatter-pic-wrapper">
+                <img class="chatter-pic single-pic"
+                     ng-src="{{chat.pic}}"
+                     ng-if="chat.pic.length > 1">
+                <div class="chatter-initial single-pic"
+                     ng-if="chat.pic.length === 1">
+                     {{chat.pic}}
+                </div>
+            </div>
+            <div class="message">
+                <span>{{ chat.message }}</span>
+            </div>
+            <div class="time">
+                {{chat.createdAt | formatDate }}
+            </div>
+        </div>
+    </ion-content>    
+    <div class="footer-bar">
+        <div class="sub-bar">
+            <input type="text" ng-model="IM.textMessage" placeholder="Write a message">
+        </div>
+        <div class="sub-bar bottom">
+            <button ng-click="sendMessage()" class="send-button">
+                <i class="icon ion-android-send"></i>
+            </button>
+        </div>
+    </div>
 </ion-view>
+

@@ -1,27 +1,71 @@
-Pta.controller('ChatCtrl', function ($scope, Chats, $state) {
-    //console.log("Chat Controller initialized");
+Pta.controller('ChatCtrl', [
+    '$scope',
+    'Chats',
+    '$state',
+    '$timeout',
+    '$ionicScrollDelegate',
+    'userService',
+    'dateFilter',
+    function ($scope, Chats, $state, $timeout, $ionicScrollDelegate, userService, dateFilter) {
+    $scope.IM = { textMessage: "" };
+    $scope.user =  userService.getUser();
+    $scope.data = {};
 
-    $scope.IM = {
-        textMessage: ""
-    };
+    $scope.slide = function(e){
+        var userChats = angular.element(document.getElementsByClassName('user')),
+            times = angular.element(document.getElementsByClassName('time'));
+        if(e.type === "swiperight"){
+            times.css({
+                'transition': 'all 250ms ease-in-out',
+                'transform':'translate3D(75px, 0, 0)'});
+            times.attr({'style': ''});
+            userChats.css({
+                'transition': 'all 250ms ease-in-out',
+                'transform':'translate3D(0, 0, 0)'});
+            userChats.attr({'style': ''});
+        } else {
+            times.css({
+                'transition': 'all 250ms ease-in-out',
+                'transform':'translate3D(0, 0, 0)'});
+            userChats.css({
+                'transition': 'all 250ms ease-in-out',
+                'transform':'translate3D(-75px, 0, 0)'});
+        }
+    }
 
     Chats.selectRoom($state.params.roomId);
 
-    var roomName = Chats.getSelectedRoomName();
+    var isIOS = ionic.Platform.isWebView() && ionic.Platform.isIOS(),
+        selectedRoom = Chats.getSelectedRoomName();
 
-    // Fetching Chat Records only if a Room is Selected
-    if (roomName) {
-        $scope.roomName = " - " + roomName;
-        $scope.chats = Chats.all();
-    }
+    selectedRoom.$loaded()
+    .then(function(){
+        if (selectedRoom) {
+            // Fetching Chat Records only if a Room is Selected
+            $scope.roomName = selectedRoom.title;
+            $scope.chats = Chats.all();
+        } else {
+            $scope.chats = [];
+        }
+    });
 
-    $scope.sendMessage = function (msg) {
-        console.log(msg);
-        Chats.send($scope.displayName, msg);
+    $scope.sendMessage = function() {
+        Chats.send($scope.user, $scope.IM.textMessage);
         $scope.IM.textMessage = "";
-    }
 
-    $scope.remove = function (chat) {
-        Chats.remove(chat);
-    }
-})
+        $ionicScrollDelegate.scrollBottom(true);
+    };
+
+    // $scope.inputUp = function() {
+    //     if (isIOS) $scope.data.keyboardHeight = 216;
+    //         $timeout(function() {
+    //         $ionicScrollDelegate.scrollBottom(true);
+    //     }, 300);
+    // };
+
+    // $scope.inputDown = function() {
+    //     if (isIOS) $scope.data.keyboardHeight = 0;
+    //     $ionicScrollDelegate.resize();
+    // };
+
+}]);

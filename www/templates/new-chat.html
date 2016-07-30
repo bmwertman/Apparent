@@ -9,9 +9,11 @@
   <ion-content class="chat-options" has-subheader="true">
     <select contactpicker
             multi="true"
-            model="invitees"
             placeholder="Type child's name or grade, parent's name or email"
             value-attr="email">
     </select>
+    <div class="submit-slideout">
+      <a ng-click="createRoom()" class="button button-block button-balanced create-chat">Create Chat</a> 
+    </div>
   </ion-content>
 </ion-modal-view>
