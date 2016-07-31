@@ -19,9 +19,13 @@ $tagMdRed: #E53935 !default;
 $tagLtRed: #E57373 !default;
 $tagBlue: #010032 !default;
 $primaryGreen: #228B22 !default;
-$primaryBlue: #0000CD !default;
+// $primaryBlue: #0000CD !default;
 $primaryRed: #B22222 !default;
-$primaryOrange: orange !default;
+// $primaryOrange: orange !default;
+$apparentBlue: #1102FF;
+$apparentLtBlue: #2AD4FF;
+$apparentOrange: #FF8F02;
+$apparentFontColor: #E0FFFF;//lightcyan
 
 .primary-green{
  background-color: $primaryGreen;
@@ -29,7 +33,7 @@ $primaryOrange: orange !default;
 }
 
 .primary-blue{
-  background-color: $primaryBlue;
+  background-color: $apparentBlue;
   color: white;
 }
 
@@ -39,7 +43,7 @@ $primaryOrange: orange !default;
 }
 
 .primary-orange{
-  background-color: $primaryOrange;
+  background-color: $apparentOrange;
   color: white;
 }
 
@@ -48,7 +52,7 @@ $primaryOrange: orange !default;
 }
 
 .primary-blue-border{
-  border: 3px solid $primaryBlue;
+  border: 3px solid $apparentBlue;
 }
 
 .primary-red-border{
@@ -155,6 +159,11 @@ i.icon-note {
 }
 .icon-google-drive:before {
     content: "\e901";
+}
+.side-menu{
+  .item{
+    padding: 0;
+  }
 }
 
 .popup{
@@ -425,7 +434,7 @@ ion-header-bar{
           height: 0;
           border-style: solid;
           border-width: 0 16px 20px 0;
-          border-color: transparent $primaryOrange transparent transparent;
+          border-color: transparent $apparentOrange transparent transparent;
           position: relative;
           left: -9px;
           top: 13px;
@@ -434,7 +443,7 @@ ion-header-bar{
           position: relative;
           height: 33px;
           text-align: center;
-          background-color: $primaryOrange;
+          background-color: $apparentOrange;
           color: white;
           font-weight: bold;
           bottom: 21px;
@@ -494,7 +503,7 @@ ion-header-bar{
       }
     }
     .volunteer-start {
-      background-color: $primaryOrange;
+      background-color: $apparentOrange;
       color: white;
       font-weight: bold;
       padding: 2px 6px;
@@ -636,6 +645,19 @@ ion-header-bar{
   }
 }
 
+.has-subject{
+  .bar{
+    height: 54px;
+    .title{
+      line-height: 26px;
+      height: 54px;
+    }
+  }
+  .chat-room{
+    top: 54px;
+  }
+}
+
 .chat-room{
   .no-messages{
     width: 260px;
@@ -727,7 +749,7 @@ ion-header-bar{
 .footer-bar{
   position: fixed;
   bottom: 0;
-  height: 100px;
+  height: 90px;
   width: 100%;
   .sub-bar{
     height: 40px;
@@ -743,19 +765,19 @@ ion-header-bar{
       margin-top: 3px;
     }
     &.bottom{
-      height: 60px;
+      height: 50px;
       position: absolute;
       bottom: 0;
       width: 100%;
       .send-button{
         border-radius: 50%;
-        background-color: #2AD4FF;
-        color: #1102FF;
-        border: none;
+        background-color: $apparentBlue;
+        color: $apparentFontColor;
+        border: 2px solid $apparentLtBlue;
         width: 40px;
-        margin: 8px 8px;
-        line-height: 37px;
-        font-size: 30px;
+        margin: 3px 8px;
+        line-height: 32px;
+        font-size: 27px;
         text-align: right;
         float: right;
         padding-top: 3px;
@@ -769,7 +791,7 @@ ion-header-bar{
 .admin_interact_modal{
   .bar-subheader{
     height: 50px;
-    padding: 2px 11px;
+    padding: 2px calc(2% + 5px);
     .event-times{
       display: flex;
       width: 100%;
@@ -790,11 +812,13 @@ ion-header-bar{
       .volunteer{
         border: 2px solid gainsboro;
         margin-top: 10px;
-        padding: 5px;
+        padding: 5px 5px 0 5px;
         width: 96%;
         margin-left: 2%;
         h4{
-          margin: 0;
+          width: 100%;
+          text-align: center;
+          margin-top: 0;
         }
         .volunteer-times{
           width: 80%;
@@ -806,19 +830,25 @@ ion-header-bar{
           display: inline-block;
           border-radius: 50%;
           width: 100px;
+          margin-left: calc(50% - 50px);
         }
         label{
           display: inline-block;
           margin-left: 20px;
-          button{
-            border: none;
-            background-color: rgba(0,0,0,0);
-            margin: 0 20px 0 10px;
-            font-size: 26px;
-            .ion-email{
-              font-size: 31px;
-            }
-          }
+        }
+        .chat-btn{
+          border-radius: 50%;
+          border: 2px solid $apparentLtBlue;
+          background-color: $apparentBlue;
+          line-height: 36px;
+          font-size: 27px;
+          color: $apparentFontColor;
+          width: 40px;
+          display: inline-block;
+          text-align: center;
+          float: right;
+          margin-right: calc(50% - 140px + 2%);
+          margin-top: 60px;
         }
       }
     }
@@ -836,7 +866,7 @@ body div.drag-element.gu-mirror{
     height: 0;
     border-style: solid;
     border-width: 0 16px 20px 0;
-    border-color: transparent $primaryOrange transparent transparent;
+    border-color: transparent $apparentOrange transparent transparent;
     position: relative;
     left: -9px;
     top: 40px;
@@ -845,7 +875,7 @@ body div.drag-element.gu-mirror{
     height: 33px;
     text-align: center;
     padding-left: 100px;
-    background-color: $primaryOrange;
+    background-color: $apparentOrange;
     font-weight: bold;
     line-height: 7px;
     font-size: 16px;

@@ -19,7 +19,7 @@ $dark:                            #444 !default;
   color: white; }
 
 .primary-blue {
-  background-color: #0000CD;
+  background-color: #1102FF;
   color: white; }
 
 .primary-red {
@@ -27,14 +27,14 @@ $dark:                            #444 !default;
   color: white; }
 
 .primary-orange {
-  background-color: orange;
+  background-color: #FF8F02;
   color: white; }
 
 .primary-green-border {
   border: 3px solid #228B22; }
 
 .primary-blue-border {
-  border: 3px solid #0000CD; }
+  border: 3px solid #1102FF; }
 
 .primary-red-border {
   border: 3px solid #B22222; }
@@ -9827,6 +9827,9 @@ i.icon-note {
 .icon-google-drive:before {
   content: "\e901"; }
 
+.side-menu .item {
+  padding: 0; }
+
 .popup {
   min-width: 300px; }
   .popup label.hidden-input {
@@ -10048,7 +10051,7 @@ ion-header-bar .calendar-form {
       height: 0;
       border-style: solid;
       border-width: 0 16px 20px 0;
-      border-color: transparent orange transparent transparent;
+      border-color: transparent #FF8F02 transparent transparent;
       position: relative;
       left: -9px;
       top: 13px; }
@@ -10056,7 +10059,7 @@ ion-header-bar .calendar-form {
       position: relative;
       height: 33px;
       text-align: center;
-      background-color: orange;
+      background-color: #FF8F02;
       color: white;
       font-weight: bold;
       bottom: 21px; }
@@ -10102,7 +10105,7 @@ ion-header-bar .calendar-form {
                 padding-top: 17px; }
 
 .calendar .calendar-cell .volunteer-start {
-  background-color: orange;
+  background-color: #FF8F02;
   color: white;
   font-weight: bold;
   padding: 2px 6px;
@@ -10221,6 +10224,15 @@ ion-header-bar .calendar-form {
     font-size: 30px;
     line-height: 30px; }
 
+.has-subject .bar {
+  height: 54px; }
+  .has-subject .bar .title {
+    line-height: 26px;
+    height: 54px; }
+
+.has-subject .chat-room {
+  top: 54px; }
+
 .chat-room .no-messages {
   width: 260px;
   text-align: center;
@@ -10297,7 +10309,7 @@ ion-header-bar .calendar-form {
 .footer-bar {
   position: fixed;
   bottom: 0;
-  height: 100px;
+  height: 90px;
   width: 100%; }
   .footer-bar .sub-bar {
     height: 40px;
@@ -10312,19 +10324,19 @@ ion-header-bar .calendar-form {
       height: 35px;
       margin-top: 3px; }
     .footer-bar .sub-bar.bottom {
-      height: 60px;
+      height: 50px;
       position: absolute;
       bottom: 0;
       width: 100%; }
       .footer-bar .sub-bar.bottom .send-button {
         border-radius: 50%;
-        background-color: #2AD4FF;
-        color: #1102FF;
-        border: none;
+        background-color: #1102FF;
+        color: #E0FFFF;
+        border: 2px solid #2AD4FF;
         width: 40px;
-        margin: 8px 8px;
-        line-height: 37px;
-        font-size: 30px;
+        margin: 3px 8px;
+        line-height: 32px;
+        font-size: 27px;
         text-align: right;
         float: right;
         padding-top: 3px;
@@ -10332,7 +10344,7 @@ ion-header-bar .calendar-form {
 
 .admin_interact_modal .bar-subheader {
   height: 50px;
-  padding: 2px 11px; }
+  padding: 2px calc(2% + 5px); }
   .admin_interact_modal .bar-subheader .event-times {
     display: flex;
     width: 100%; }
@@ -10350,11 +10362,13 @@ ion-header-bar .calendar-form {
   .admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer {
     border: 2px solid gainsboro;
     margin-top: 10px;
-    padding: 5px;
+    padding: 5px 5px 0 5px;
     width: 96%;
     margin-left: 2%; }
     .admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer h4 {
-      margin: 0; }
+      width: 100%;
+      text-align: center;
+      margin-top: 0; }
     .admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer .volunteer-times {
       width: 80%;
       font-weight: bold;
@@ -10363,17 +10377,24 @@ ion-header-bar .calendar-form {
     .admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer img {
       display: inline-block;
       border-radius: 50%;
-      width: 100px; }
+      width: 100px;
+      margin-left: calc(50% - 50px); }
     .admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer label {
       display: inline-block;
       margin-left: 20px; }
-      .admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer label button {
-        border: none;
-        background-color: transparent;
-        margin: 0 20px 0 10px;
-        font-size: 26px; }
-        .admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer label button .ion-email {
-          font-size: 31px; }
+    .admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer .chat-btn {
+      border-radius: 50%;
+      border: 2px solid #2AD4FF;
+      background-color: #1102FF;
+      line-height: 36px;
+      font-size: 27px;
+      color: #E0FFFF;
+      width: 40px;
+      display: inline-block;
+      text-align: center;
+      float: right;
+      margin-right: calc(50% - 140px + 2%);
+      margin-top: 60px; }
 
 body div.drag-element.gu-mirror {
   width: 190px;
@@ -10386,7 +10407,7 @@ body div.drag-element.gu-mirror {
     height: 0;
     border-style: solid;
     border-width: 0 16px 20px 0;
-    border-color: transparent orange transparent transparent;
+    border-color: transparent #FF8F02 transparent transparent;
     position: relative;
     left: -9px;
     top: 40px; }
@@ -10394,7 +10415,7 @@ body div.drag-element.gu-mirror {
     height: 33px;
     text-align: center;
     padding-left: 100px;
-    background-color: orange;
+    background-color: #FF8F02;
     font-weight: bold;
     line-height: 7px;
     font-size: 16px;

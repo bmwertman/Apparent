@@ -36,7 +36,17 @@ var Pta = angular.module('pta', [
 
   $rootScope.logout = function() {
     Auth.logout(); 
-  }; 
+  };
+
+  $rootScope.$on('$stateChangeSuccess', function(){
+    if($rootScope.subject){
+      delete $rootScope.subject;
+    }
+  }); 
+
+  $rootScope.$on('subject', function(e, subject){
+    $rootScope.subject = subject;
+  });
 
   // checking for errors in state change
   $rootScope.$on('$stateChangeError',
@@ -142,6 +152,21 @@ var Pta = angular.module('pta', [
       }
     }
   })
+
+  .state('app.calendar.volunteers', {
+    url: '/volunteers',
+    params:{
+      thisHoursVolunteers: null,
+      thisEvent: null
+    },
+    views: {
+      'menuContent@app': {
+        templateUrl: 'templates/admin-interact.html',
+        controller: 'VolunteerCtrl'
+      }
+    }
+  })
+
   .state('app.profile', {
     url: '/profile',
     views: {

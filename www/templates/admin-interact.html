@@ -1,4 +1,4 @@
-<ion-modal-view class="admin_interact_modal">
+<ion-view class="admin_interact_modal">
   <div align-title="left" class="white-font bar bar-header bar-positive">
     <h1 class="title" style="font-weight:bold;text-align:left;">Manage Volunteers for {{thisEvent.date}}</h1>  
   </div>
@@ -37,12 +37,10 @@
              </div>
            </div>
            <img ng-src="{{volunteer.user.pic}}">
-           <label> Contact:
-             <button class="icon ion-android-chat" ui-sref="app.chat(thisEvent.id + user.id + volunteer.user.$id)"></button>
-             <email-btn recipient="volunteer.user.email" prepend="Volunteering at" append="thisEvent.title">
-           </label>
+           <a class="chat-btn" ng-click="createRoom(thisHoursVolunteers, thisEvent, volunteer)"><i class="icon ion-chatboxes"></i></a>
+            <!--  <email-btn recipient="volunteer.user.email" prepend="Volunteering at" append="thisEvent.title"> -->
            <h4>{{volunteer.user.name}}</h4>
       </div>
     </div>
   </ion-content>
-</ion-modal-view>
+</ion-view>

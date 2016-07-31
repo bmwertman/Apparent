@@ -1,5 +1,12 @@
-<ion-view>
-    <ion-nav-title> {{ roomName }}</ion-nav-title> 
+<ion-view ng-class="{'has-subject': subject}">
+    <ion-nav-title> 
+        <div ng-if="subject">
+            {{subject}}
+        </div>
+        <div>
+            {{roomName}}
+        </div>
+    </ion-nav-title> 
     <ion-content class="chat-room"
                  on-swipe-left="slide($event)"
                  on-swipe-right="slide($event)">

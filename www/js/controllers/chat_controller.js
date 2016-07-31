@@ -48,6 +48,7 @@ Pta.controller('ChatCtrl', [
     .then(function(){
         if (selectedRoom) {
             // Fetching Chat Records only if a Room is Selected
+            $scope.$emit('subject', selectedRoom.subject)
             $scope.roomName = selectedRoom.title;
             $scope.chats = Chats.all();
         } else {

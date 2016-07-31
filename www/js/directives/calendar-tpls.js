@@ -29,7 +29,8 @@ Pta.constant('calendar2Config', {
         '$ionicModal',
         '$firebaseObject',
         'userService',
-        function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $firebaseArray, $ionicHistory, dragulaService, $compile, $filter, $q, $ionicModal, $firebaseObject, userService) {
+        '$state',
+        function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $firebaseArray, $ionicHistory, dragulaService, $compile, $filter, $q, $ionicModal, $firebaseObject, userService, $state) {
         'use strict';
 
         $scope.user = userService.getUser();
@@ -276,30 +277,10 @@ Pta.constant('calendar2Config', {
                     i--;
                 }
                 if(i < 0) {
-                    $scope.adminInteractModal();
+                    $state.go('app.calendar.volunteers', {thisHoursVolunteers: $scope.thisHoursVolunteers, thisEvent: $scope.thisEvent});
                 }
             }
             getVolunteersFromFB()
-        }
-
-        $ionicModal.fromTemplateUrl('templates/admin-interact.html', {
-          scope: $scope,
-          animation: 'slide-in-up'
-        }).then(function(modal) {
-          $scope.modal= modal;
-        });
-
-        $scope.$on('$destroy', function(){
-            $scope.modal.remove();
-        });
-
-        $scope.closeModal = function() {
-            $scope.modal.hide();
-            $scope.thisHoursVolunteers = [];
-        };
-
-        $scope.adminInteractModal = function(){
-            $scope.modal.show();
         }
 
         $scope.setBorderStyle = function(color){

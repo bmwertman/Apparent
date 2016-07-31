@@ -13,8 +13,13 @@ Pta.controller('CalendarCtrl', [
   '$localstorage',
   '$ionicPlatform',
   '$ionicHistory',
-  function ($scope, $ionicLoading, $timeout, $state, $ionicModal, $ionicPopup, $ionicSideMenuDelegate, $firebaseArray, $rootScope, $stateParams, $compile, $localstorage, $ionicPlatform, $ionicHistory) {
+  'Rooms',
+  function ($scope, $ionicLoading, $timeout, $state, $ionicModal, $ionicPopup, $ionicSideMenuDelegate, $firebaseArray, $rootScope, $stateParams, $compile, $localstorage, $ionicPlatform, $ionicHistory, Rooms) {
   'use strict';
+
+  $scope.volunteerChat = function(){
+    debugger;
+  }
 
   $scope.selectedEvent = $stateParams.selectedEvent;
   $ionicSideMenuDelegate.canDragContent(false)

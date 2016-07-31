@@ -46,10 +46,9 @@ Pta.controller('RoomsCtrl', [
   }
 
   $scope.createRoom = function() {
-    var id = Rooms.addNewRoom(this.$$childHead.selectedValues);
+    var id = Rooms.addNewRoom(this.$$childHead.selectedValues, '/user-rooms/');
     $state.go('app.rooms.chat', {roomId: id});
     $scope.closeModal();
   }
-
 
 }]);
