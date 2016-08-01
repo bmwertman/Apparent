@@ -10342,13 +10342,13 @@ ion-header-bar .calendar-form {
         padding-top: 3px;
         box-shadow: 3px 2px 6px -1px; }
 
-.admin_interact_modal .bar-subheader {
+.admin_interact .bar-subheader {
   height: 50px;
   padding: 2px calc(2% + 5px); }
-  .admin_interact_modal .bar-subheader .event-times {
+  .admin_interact .bar-subheader .event-times {
     display: flex;
     width: 100%; }
-    .admin_interact_modal .bar-subheader .event-times .event-segment {
+    .admin_interact .bar-subheader .event-times .event-segment {
       display: inline-flex;
       height: 45px;
       text-align: left;
@@ -10357,32 +10357,32 @@ ion-header-bar .calendar-form {
       font-weight: bold;
       font-size: 12px; }
 
-.admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header {
+.admin_interact ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header {
   top: 94px; }
-  .admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer {
+  .admin_interact ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer {
     border: 2px solid gainsboro;
     margin-top: 10px;
     padding: 5px 5px 0 5px;
     width: 96%;
     margin-left: 2%; }
-    .admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer h4 {
+    .admin_interact ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer h4 {
       width: 100%;
       text-align: center;
       margin-top: 0; }
-    .admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer .volunteer-times {
+    .admin_interact ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer .volunteer-times {
       width: 80%;
       font-weight: bold;
       text-align: center;
       margin-bottom: 5px; }
-    .admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer img {
+    .admin_interact ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer img {
       display: inline-block;
       border-radius: 50%;
       width: 100px;
       margin-left: calc(50% - 50px); }
-    .admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer label {
+    .admin_interact ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer label {
       display: inline-block;
       margin-left: 20px; }
-    .admin_interact_modal ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer .chat-btn {
+    .admin_interact ion-content.scroll-content.ionic-scroll.overflow-scroll.has-header .volunteers-wrapper .volunteer .chat-btn {
       border-radius: 50%;
       border: 2px solid #2AD4FF;
       background-color: #1102FF;
@@ -10395,6 +10395,38 @@ ion-header-bar .calendar-form {
       float: right;
       margin-right: calc(50% - 140px + 2%);
       margin-top: 60px; }
+
+.admin_interact .footer-bar {
+  height: 75px; }
+  .admin_interact .footer-bar .btn-text {
+    position: absolute; }
+  .admin_interact .footer-bar #chatwarp, .admin_interact .footer-bar #allwarp {
+    color: #E0FFFF;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 1000;
+    width: 55px;
+    position: absolute; }
+  .admin_interact .footer-bar #chatwarp {
+    right: 13px;
+    top: 30px; }
+  .admin_interact .footer-bar #allwarp {
+    right: 15px;
+    top: 24px; }
+  .admin_interact .footer-bar .chat-all {
+    position: absolute;
+    left: calc(100% - 70px);
+    top: calc(100% - 72px);
+    border-radius: 50%;
+    border: 2px solid #2AD4FF;
+    background-color: #1102FF;
+    line-height: 56px;
+    font-size: 24px;
+    color: #E0FFFF;
+    width: 55px;
+    height: 55px;
+    display: inline-block;
+    text-align: center; }
 
 body div.drag-element.gu-mirror {
   width: 190px;

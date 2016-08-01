@@ -788,7 +788,7 @@ ion-header-bar{
 }
 
 
-.admin_interact_modal{
+.admin_interact{
   .bar-subheader{
     height: 50px;
     padding: 2px calc(2% + 5px);
@@ -851,6 +851,43 @@ ion-header-bar{
           margin-top: 60px;
         }
       }
+    }
+  }
+  .footer-bar{
+    height: 75px;
+    .btn-text{
+      position: absolute; 
+    }
+    #chatwarp, #allwarp{
+      color: $apparentFontColor;
+      font-size: 14px;
+      font-weight: bold;
+      z-index: 1000;
+      width: 55px;
+      position: absolute;
+    }
+    #chatwarp{
+      right: 13px;
+      top: 30px;
+    } 
+    #allwarp{
+      right: 15px;
+      top: 24px;
+    }
+    .chat-all{
+      position: absolute;
+      left: calc(100% - 70px);
+      top: calc(100% - 72px);
+      border-radius: 50%;
+      border: 2px solid $apparentLtBlue;
+      background-color: $apparentBlue;
+      line-height: 56px;
+      font-size: 24px;
+      color: $apparentFontColor;
+      width: 55px;
+      height: 55px;
+      display: inline-block;
+      text-align: center;
     }
   }
 }
