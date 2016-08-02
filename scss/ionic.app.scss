@@ -305,31 +305,167 @@ ion-header-bar{
     }
   }
 }
-  
-.signup{
-  top: 160px;
-  form{
-    border: 1px solid;
-    border-color: gainsboro;
-    padding: 10px;
-    border-radius: 1px;
-    box-shadow: 0px 0px 1px 0px;
-    .children{
-      margin-bottom: 15px;
-      input{
-        width: 200px;
-        display: inline-block;
+
+@keyframes shake {
+  0% {transform: translateX(0);}
+  12.5% {transform: translateX(-6px) rotateY(-5deg)}
+  37.5% {transform: translateX(5px) rotateY(4deg)}
+  62.5% {transform: translateX(-3px) rotateY(-2deg)}
+  87.5% {transform: translateX(2px) rotateY(1deg)}
+  100% {transform: translateX(0)}
+}
+
+.shake {
+  animation: shake 400ms ease-in-out;
+}
+
+.reset-popup{
+  .popup{
+    background-color: #2AD4FF;
+    border-radius: 5px;
+    .popup-head{
+      border-bottom: none;
+      h3{
+        text-shadow: 1px 0px 1px black;
+        border: none;
+        color: snow;
+        font-size: 20px;
+        font-weight: bold;
       }
-      select{
-        margin-right: calc(100% - 141px);
+      h5{
+        position: absolute;
+        top: 120px;
+        font-size: 16px;
+        width: 100%;
+        margin-left: -10px;
+      }  
+    }
+    .popup-subtitle{
+      font-size: 14px;
+      position: absolute;
+      top: 104px;
+      margin-left: 36px;
+    }
+    .popup-body{
+      input{
+        padding-left: 5px;
+        border-radius: 2px;
+      }
+      .email-valid{
+        position: relative;
+        bottom: 18px;
       }
     }
-    label input{
-      width: 100%;
+    button.send{
+      background-color: #1102FF;
+      color: snow;
     }
   }
 }
 
+.login{
+  .card{
+    width: 280px;
+    margin: 40px auto;
+    background-color: #1102FF;
+    color: snow;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px black;
+    label{
+      display: block;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    input{
+      width: 260px;
+      border-radius: 2px;
+      padding-left: 5px;
+      margin-bottom: 15px;
+    }
+    .forgot-password{
+      color: snow;
+    }
+    button {
+      margin: 30px auto;
+      background-color: #FF8F02;
+      color: snow;
+      font-size: 22px;
+      font-weight: bold;
+      width: 140px;
+      box-shadow: 2px 2px 2px black;
+      text-shadow: 1px 1px 1px black;
+    }
+    .prompt{
+      display: inline-block;
+      color: snow;
+      width: 97px;
+      float: left;
+      margin-right: 2px;
+    }
+    .create-acct{
+      display: inline-block;
+      color: #FF8F02;
+      font-weight: bold;
+      text-shadow: 1px 1px 1px black;
+    }
+  }
+}
+
+.signup-modal{
+  background-color: #f4f5ed;
+  .header{
+    width: 100%;
+    background-color: #f4f5ed;
+    img.apparent{
+      width: 288px;
+      display: block;
+      margin: 10px auto;
+    }
+  }
+  .signup{
+    top: 110px;
+    padding: 0;
+    form{
+      border: none;
+      background-color: #1102FF;
+      border-radius: 5px;
+      padding: 10px 0;
+      width: 80%;
+      margin-left: 10%;
+      label{
+        font-weight: bold;
+        color: white;
+        margin-left: 8%;
+        input{
+          padding-left: 5px;
+          border-radius: 8px;
+          margin-bottom: 7px;
+          width: 84%;
+          margin-left: 8%;
+        }
+      }
+      button{
+        margin: 0;
+        font-size: 20px;
+        font-weight: bold;
+        background-color: #FF8F02;
+        color: white;
+        width: 60%;
+        margin-left: 20%;
+      }
+    }
+    form:nth-child(4) input{
+      margin-bottom: 0;
+    }
+    img{
+      display: block;
+      width: 100%;
+    }
+  }
+}
+  
 .profile{
   div.icon_wrapper{
     position: absolute;

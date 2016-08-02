@@ -3,8 +3,13 @@ Pta.controller('VolunteerCtrl', [
     '$state',
     'Rooms',
     'userService',
-    function ($scope, $state, Rooms, userService) {
-    var   chatWarp = {
+    '$firebaseObject',
+    function ($scope, $state, Rooms, userService, $firebaseObject) {
+    $scope.user = userService.getUser();
+    $scope.thisHoursVolunteers = $state.params.thisHoursVolunteers;
+    $scope.thisEvent = $state.params.thisEvent;
+    var userRoomsRef = firebase.database().ref('user-rooms');
+    var chatWarp = {
             path:{ 
                 radius: 14,
                 angle: "0deg" 
@@ -21,13 +26,15 @@ Pta.controller('VolunteerCtrl', [
             targets:"#allwarp",
             align: "center",
         };
-    $scope.user = userService.getUser();
-    $scope.thisHoursVolunteers = $state.params.thisHoursVolunteers;
-    $scope.thisEvent = $state.params.thisEvent;
 
     cssWarp(chatWarp, allWarp);
 
     $scope.createRoom = function(volunteers, event, volunteer) {
+        $firebaseObject(userRoomsRef.child(volunteer.$id).child(event.id))
+        .$loaded()
+        .then(function(){
+
+        })
         var volunteersArr = [];
         if(volunteer){
             volunteersArr.push(volunteer.user);

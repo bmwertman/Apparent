@@ -1,21 +1,51 @@
-<ion-view title="Login User" hide-back-button=true>
-  <ion-content class="padding">
+<ion-view class="login" title="Login User" hide-back-button=true>
+  <ion-content class="padding" scroll="false">
     <ion-item class="card padding">
-      <div class="item-text-wrap padding">
-        Enter Email and Password to Login
-      </div>
-      <label class="item item-input">
-        <input type="text" ng-model="credentials.email" placeholder="Email" />
-      </label>
-      <label class="item item-input">
-        <input type="password" ng-model="credentials.password" placeholder="Password" />
-      </label>
-      <div class="padding">
-        <button class="button button-block" ng-click="doLogin()">Login</button>
-        <button class="button button-block" ng-controller="SignupCtrl" ng-click="openModal()">Create Account</button>
-      </div>
-      <!-- This displays user error messages (automatically generated from firebase) for login (like "The specified password is incorrect") -->
-      <p ng-if="errorMessage">{{ errorMessage }}</p>
+      <form name="form" shake-that submitted="submitted" submit="doLogin()">
+          <div class="form-group" ng-class="{'has-error': form.email.$invalid && submitted}">
+            <label for="email" class="control-label">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              placeholder="Email"
+              ng-model="credentials.email"
+              ng-model-options="{updateOn: 'blur'}"
+              required>
+          </div>
+          <div class="form-group" ng-class="{'has-error': form.password.$invalid && submitted}">
+            <label for="password" class="control-label">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              placeholder="Password"
+              ng-model="credentials.password"
+              ng-model-options="{updateOn: 'blur'}"
+              required>
+          </div>
+          <a class="forgot-password" ng-click="confirmReset()">Forgot password?</a>
+          <button type="submit" class="button button-block">Login</button>
+          <p class="error" ng-if="errorMessage">{{ errorMessage }}</p>
+          <p class="prompt">Not registered? </p>
+          <a class="create-acct" ng-controller="SignupCtrl" ng-click="openModal()">Create an account</a>
+      </form>
     </ion-item>
   </ion-content>
 </ion-view>
+
+<!-- <div class="item-text-wrap padding">
+  Enter Email and Password to Login
+</div>
+<label class="item item-input">
+  <input type="text" ng-model="credentials.email" placeholder="Email" />
+</label>
+<label class="item item-input">
+  <input type="password" ng-model="credentials.password" placeholder="Password" />
+</label>
+<div class="padding">
+  <button class="button button-block" ng-click="doLogin()">Login</button>
+  
+</div> -->

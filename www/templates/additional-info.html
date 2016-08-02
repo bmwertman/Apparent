@@ -1,0 +1,14 @@
+<label for="school-name">School name
+  <input type="text" name="school-name" ng-model="user.school" placeholder="Child's school name" required="true">
+</label>
+<label for="child-count" ng-if="user.school">Children attending {{ user.school}}
+  <input type="number" ng-keyup="childInfoInputs(child_count)" name="child-count" ng-model="child_count" ng-change="childInputs()" placeholder="How many?" class="number_input" required>
+</label>
+<div class="children" ng-if="childCntRcvd" ng-repeat="childcount in childArr track by $index">
+  <label for="child-name">Child's name:
+    <input type="text" name="child-name" ng-model="user.children[$index].name" placeholder="Child's full name" required>
+  </label>
+  <select type="number" name="grade-level" ng-model="user.children[$index].grade" ng-options="key for (key,value) in grades"required>
+    <option value="" disabled selected>Current grade level</option>
+  </select>
+</div>
