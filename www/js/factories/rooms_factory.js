@@ -28,11 +28,12 @@ Pta.factory('Rooms', [
           chatter.id = value.$id;
           chatter.email = value.email;
           chatter.name = value.name;
-          if(!value.pic){
-            chatter.pic = value.name.charAt(0);// if no pic use first letter of first name
-          } else {
-            chatter.pic = value.pic;
-          }
+          chatter.pic = value.pic;
+          // if(!value.pic){
+          //   chatter.pic = value.name.charAt(0);// if no pic use first letter of first name
+          // } else {
+          //   chatter.pic = value.pic;
+          // }
           if(chatter.id === user.$id){
             room.owner = chatter.id;
           }

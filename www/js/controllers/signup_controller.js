@@ -5,37 +5,11 @@ Pta.controller('SignupCtrl', [
   '$firebaseAuth',
   '$ionicLoading',
   '$firebaseArray',
-  '$http',
-  function($scope, $ionicSideMenuDelegate, $ionicModal, $firebaseAuth, $ionicLoading, $firebaseArray, $http) {
+  '$state',
+  function($scope, $ionicSideMenuDelegate, $ionicModal, $firebaseAuth, $ionicLoading, $firebaseArray, $state) {
 
   $ionicSideMenuDelegate.canDragContent(true);
-  $scope.childCntRcvd = false;
   $scope.user = {};
-  $scope.user.children = {};
-  $scope.child_name = [];
-  $scope.child_grade = [];
-  $scope.grades = {
-    'K': 0,
-    '1st': 1,
-    '2nd': 2,
-    '3rd': 3,
-    '4th': 4,
-    '5th': 5,
-    '6th': 6,
-    '7th': 7,
-    '8th': 8,
-    '9th': 9,
-    '10th': 10,
-    '11th': 11,
-    '12th': 12
-  };
-  $scope.childInfoInputs = function(num){
-    $scope.childArr = [];
-    for (var i = 0; i < num; i++) {
-      $scope.childArr.push(i);
-    }
-    $scope.childCntRcvd = true;
-  }
   
   $ionicModal.fromTemplateUrl('templates/signup.html', {
     scope: $scope,
@@ -83,6 +57,7 @@ Pta.controller('SignupCtrl', [
       usersRef.update(userProfile);
       $ionicLoading.hide();
       $scope.closeModal();
+      $state.go('app.profile', {isNewUser: true});
     }).catch(function(error) {
       console.error("Error: ", error);
       $scope.errorMessage = error.message;

@@ -26,6 +26,8 @@ $apparentBlue: #1102FF;
 $apparentLtBlue: #2AD4FF;
 $apparentOrange: #FF8F02;
 $apparentFontColor: #E0FFFF;//lightcyan
+$edit: darkgray;
+$fontColor: snow;
 
 .primary-green{
  background-color: $primaryGreen;
@@ -227,7 +229,7 @@ body.md-dialog-is-showing{
 }
 
 .tall{
-  height: 180px;
+  height: 175px;
 }
 
 ion-content.has-tall-header{
@@ -321,7 +323,7 @@ ion-header-bar{
 
 .reset-popup{
   .popup{
-    background-color: #2AD4FF;
+    background-color: $apparentLtBlue;
     border-radius: 5px;
     .popup-head{
       border-bottom: none;
@@ -357,7 +359,7 @@ ion-header-bar{
       }
     }
     button.send{
-      background-color: #1102FF;
+      background-color: $apparentBlue;
       color: snow;
     }
   }
@@ -367,7 +369,7 @@ ion-header-bar{
   .card{
     width: 280px;
     margin: 40px auto;
-    background-color: #1102FF;
+    background-color: $apparentBlue;
     color: snow;
     border: none;
     border-radius: 5px;
@@ -389,7 +391,7 @@ ion-header-bar{
     }
     button {
       margin: 30px auto;
-      background-color: #FF8F02;
+      background-color: $apparentOrange;
       color: snow;
       font-size: 22px;
       font-weight: bold;
@@ -406,7 +408,7 @@ ion-header-bar{
     }
     .create-acct{
       display: inline-block;
-      color: #FF8F02;
+      color: $apparentOrange;
       font-weight: bold;
       text-shadow: 1px 1px 1px black;
     }
@@ -429,7 +431,7 @@ ion-header-bar{
     padding: 0;
     form{
       border: none;
-      background-color: #1102FF;
+      background-color: $apparentBlue;
       border-radius: 5px;
       padding: 10px 0;
       width: 80%;
@@ -450,7 +452,7 @@ ion-header-bar{
         margin: 0;
         font-size: 20px;
         font-weight: bold;
-        background-color: #FF8F02;
+        background-color: $apparentOrange;
         color: white;
         width: 60%;
         margin-left: 20%;
@@ -467,51 +469,386 @@ ion-header-bar{
 }
   
 .profile{
-  div.icon_wrapper{
-    position: absolute;
-    right: calc((100% - 86px)/2);
-    top: 44px;
-    border: 2px solid white;
-    border-radius: 50%;
-    width: 86px;
-    height: 99px;
-    padding: 0px 7px;
-    .ion-person{
-      font-size: 90px;
+  i.ion-edit{
+    color: $edit;
+    span{
+      font-size: 12px;
     }
   }
-  #name{
-    margin-top: 138px;
-    h3{
-      color: white;
-      margin: 7px 0;
-      display: inline-block;
+  .bar-header{
+    .profile-pic{
+      top: 44px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      position: absolute;
+      right: calc((100% - 100px)/2);
     }
-  }
-  .profile-pic{
-    top: 47px;
-    width: 100px;
-    height: 100px;
-    position: absolute;
-    right: calc((100% - 100px)/2);
-    border-radius: 50%;
-  }
-  .tall .editable-wrap{
-    margin-top: 138px;
-    margin-left: calc((100% - 120px)/2);
-    .user-name{
-      width: 130px;
+    .user-initial{
+      color: $positive;
+      background-color: $fontColor;
+      font-weight: bold;
+      text-align: center;
+      padding: 4px;
+      font-size: 70px;
+      line-height: 100px;
+    }
+    i.icon{
       font-size: 19px;
-      color: white;
+      position: absolute;
+      top: 130px;
+      color: $edit;
+      right: calc(50% - 46px);
+      &.ion-edit{
+        position: relative;
+        font-size: 12px;
+        top: 0;
+        left: 0;
+        span{
+          position: initial;
+          margin-left: 3px;
+        }
+      }
+      span{
+        position: absolute;
+        top: 0px;
+        left: 17px;
+        font-size: 12px;
+      }
+    }
+    #name-wrap{
+      height: 30px;
+      margin: 138px auto 0;
+      display: block;
+      #name{
+        margin: 0 auto;
+        font-weight: normal;
+        position: relative;
+        top: -3px;
+        height: 37px;
+        display: inline;
+      }
+      i.icon.ion-edit{
+        position: relative;
+        font-size: 12px;
+        top: -3px;
+        left: 0;
+      }
+    }
+    .editable-wrap{
+      margin: 71px auto 0;
+      height: 23px;
+      .user-name{
+        width: 150px;
+        height: 23px;
+        font-size: 19px;
+        color: $fontColor;
+        background-color: $positive;
+        font-weight: bold;
+      }
+      .xeditable-submit{
+        color: $fontColor;
+      }
+    }
+  }
+  .content-body{
+    .school-wrapper{
+      #school-name{
+        background: transparent;
+        display: block;
+        width: 190px;
+        margin: -14px auto 0;
+        .layout-row{
+          box-shadow: none;
+          #md-school-input{
+            padding: 0;
+            width: 190px;
+            font-size: 20px;
+            font-weight: bold;
+            color: $positive;
+          }
+          button{
+            display: none;
+          }
+        }
+      }
+      #school-name-edit{
+        position: absolute;
+        top: 12px;
+        width: 38px;
+      }
+    }
+    .children{
+      #add-child{
+        position: initial;
+        top: initial;
+        left: initial;
+        float: left;
+        box-shadow: 2px 1px 3px black;
+        margin-left: calc((48% - 55px)/2);
+      }
+      .child{
+        box-shadow: 2px 2px 5px 0px black;
+        border-radius: 8px;
+        border: 1px solid darkgray;
+        display: inline-block;
+        float: left;
+        width: 163px;
+        &:nth-child(odd){
+          margin-right: 10px;
+        }
+        .child-header{
+          background-color: $positive;
+          color: $fontColor;
+          border-radius: 8px 8px 0 0;
+          .teacher{
+            position: absolute;
+            height: 22px;
+            width: calc(100% - 207px);
+            margin: 20px 0 0 0;
+          }
+          i.ion-edit{
+            transform: scaleX(-1);
+            display: inline-block;
+            margin-top: 7px;
+            font-size: 14px;
+          }
+
+          .grade-wrapper{
+            float: right;
+            margin: 4px;
+            height: 34px;
+            span{
+              position: relative;
+              bottom: 4px;
+              color: darkgray;
+              font-size: 12px;
+              .ion-edit{
+                font-size: 12px;
+              }
+            }
+            .grade-number{
+              display: inline-block;
+              width: 30px;
+              border: none;
+              background-color: transparent;
+              -webkit-appearance: none;
+              color: snow;
+              font-weight: bold;
+              font-size: 20px;
+              float: right;
+              margin: 0 4px;
+              height: 20px;
+              line-height: 20px;
+            }
+            .grade{
+              margin: 0;
+              line-height: 0;
+              color: $fontColor;
+              width: 36px;
+              position: relative;
+              left: 40px;
+            }
+          }
+        }
+        .child-body{
+          i.icon{ 
+            font-size: 19px;
+            color: $edit;
+            &.ion-ios-camera{
+              position: relative;
+              left: 112px;
+              top: -4px;
+            }
+            span{
+              position: absolute;
+              top: 2px;
+              left: 17px;
+              font-size: 12px;
+            }
+          }
+          .child-pic{
+            border-radius: 50%;
+            width: 100px;
+            margin: 10px auto -10px;
+            display: block;
+          }
+          .child-initial{
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            color: snow;
+            background-color: #B71C1C;
+            font-weight: bold;
+            text-align: center;
+            font-size: 50px;
+            line-height: 70px;
+            margin: 5px auto;
+          }
+        }
+        .child-footer{
+          border-top: 1px solid darkgray;
+          background-color:$positive;
+          padding: 0 5px;
+          .editable-wrap{
+            .user-name{
+              height: 23px;
+              font-size: 18px;
+            }
+            .xeditable-submit{
+              color: $fontColor;
+            }
+          }
+          #name-wrap{
+            margin: 7px auto 0;
+            height: 23px;
+            display: block;
+            #name{
+              margin: 0 auto;
+              font-weight: normal;
+              position: relative;
+              top: -2px;
+              height: 37px;
+              display: inline;
+              font-size: 16px;
+              color: $fontColor;
+            }
+            i.icon.ion-edit{
+              position: relative;
+              font-size: 12px;
+              top: -3px;
+              left: 0;
+            }
+          }
+        }
+      }
+    }
+
+  }
+  .contact-info{
+    padding: 5px;
+    background-color: $positive;
+    height: 80px;
+    h4 {
+      color: $fontColor;
+      margin: 0;
+    }
+    i.icon{
+      display: block;
+      color: $edit;
+      font-size: 14px;
+      span{
+        font-size: 12px;
+        margin-left: 3px;
+      }
+    }
+    #phone-type{
+      color: $fontColor;
+    }
+    .editable-wrap{
+      [type="email"]{
+        -webkit-appearance: textfield;
+      }
+      ::-webkit-input-placeholder{
+        color: $fontColor !important;
+      }
+      max-width: 50%;
+      float: left;
+      &:last-child{
+        margin-left: 10px;
+      }
+      .xeditable-submit{
+        color: $fontColor;
+        margin: 0;
+      }
+      .user-email, .user-phone{
+        font-size: 14px;
+        color: $fontColor;
+        background-color: $positive;
+        font-weight: bold;
+      }
+      color: $fontColor;
+      display: inline-block;
+      .ion-ios-telephone{
+        margin-left: 10px;
+      }
+      p{
+        display: inline-block;
+        &.tel{
+          color: $fontColor;
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+}
+
+.edit-children{
+  .child{
+    border: 2px solid $apparentLtBlue;
+    border-radius: 5px;
+    width: 94%;
+    margin: 5px 3%;
+    box-shadow: 1px 1px 4px darkgray;
+    .child-initial{
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      color: snow;
       background-color: #B71C1C;
       font-weight: bold;
+      text-align: center;
+      font-size: 50px;
+      line-height: 70px;
+      margin: 5px auto;
     }
-    .xeditable-submit{
-      color: white;
+    i.icon{ 
+      font-size: 19px;
+      color: $edit;
+      &.ion-ios-camera{
+        position: absolute;
+        top: 57px;
+        right: calc(50% - 40px);
+      }
+      &.ion-edit{
+        right: 74px;
+        position: relative;
+        font-size: 14px;
+      }
+      span{
+        position: absolute;
+        top: 0px;
+        left: 17px;
+        font-size: 12px;
+      }
+    }
+    label{
+      display: block;
+      margin-left: calc((100% - 144px)/2);
+      input{
+        display: inline;
+      }
+      select{
+        width: 100px;
+        padding-left: 5px;
+        border: none;
+        background-color: transparent;
+        -webkit-appearance: none;
+      }
     }
   }
-  p{
-    margin: 0;
+  a.button{
+    width: 45%;
+    margin: 5px 0 5px 3%;
+    color: snow;
+    font-weight: bold;
+    box-shadow: 1px 1px 4px darkgray;
+    &.cancel{
+      background-color: $apparentOrange;
+    }
+    &.save{
+      background-color: $apparentBlue;
+    }
   }
 }
 
@@ -580,7 +917,7 @@ ion-header-bar{
           height: 33px;
           text-align: center;
           background-color: $apparentOrange;
-          color: white;
+          color: $fontColor;
           font-weight: bold;
           bottom: 21px;
         }
@@ -640,7 +977,7 @@ ion-header-bar{
     }
     .volunteer-start {
       background-color: $apparentOrange;
-      color: white;
+      color: $fontColor;
       font-weight: bold;
       padding: 2px 6px;
       height: 26px;
@@ -721,7 +1058,7 @@ ion-header-bar{
       }
       .chatter-initial{
         background-color: $positive;
-        color: white;
+        color: $fontColor;
         border-radius: 50%;
       }
       .single-pic{
@@ -755,29 +1092,30 @@ ion-header-bar{
   }
   .no-rooms{
     .ion-android-add{
-      background-color: #228B22;
+      background-color: $primaryGreen;
       color: white;
       border-radius: 50%;
       padding: 2px 6px 1px;
       font-size: 16px;
     }
   }
-  .add-button{
-    background-color: $primaryGreen;
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    position: fixed;
-    left: calc(100% - 70px);
-    top: calc(100% - 72px);
-    border: none;
-    text-align: center;
-    .ion-android-add{
-      background-color: transparent;
-      color: white;
-      font-size: 30px;
-      line-height: 30px;
-    }
+}
+
+.add-button{
+  background-color: $primaryGreen;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  position: fixed;
+  left: calc(100% - 70px);
+  top: calc(100% - 72px);
+  border: none;
+  text-align: center;
+  .ion-android-add{
+    background-color: transparent;
+    color: white;
+    font-size: 30px;
+    line-height: 30px;
   }
 }
 
@@ -1096,7 +1434,7 @@ body div.drag-element.gu-mirror{
     }
     a.add-attachment{
       text-decoration: none;
-      color: darkgray;
+      color: $edit;
       font-size: 12px;
       margin-left: -8px;
     }

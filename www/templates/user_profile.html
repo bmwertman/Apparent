@@ -1,49 +1,131 @@
-<ion-view class="profile" title="Profile">
-  <div align-title="center" class="tall white-font bar bar-header bar-positive">
-    <div class="icon_wrapper" ng-if="!user.pic">
-      <i class="ion-person" ng-click="getImage()"></i>
+<ion-view class="profile">
+  <div class="tall white-font bar bar-header bar-positive">
+    <div ng-if="user.pic.length > 1">
+        <img class="profile-pic" ng-click="getImage()" ng-src="{{user.pic}}">
     </div>
-    <div class="pic_frame">
-      <img class="profile-pic" ng-click="getImage()" ng-if="user.pic" ng-src="{{user.pic}}"></img>
+    <div class="profile-pic user-initial"
+         ng-if="user.pic.length === 1"
+         ng-click="getImage()">
+         {{ user.pic }}
     </div>
-    <input ng-model="user.pic" base-sixty-four-input style="display:none">
-    <h3 id="name"
-        class="title title-center"
-        editable-text="user.name"
-        e-class="user-name" 
-        e-placeholder="Enter your full name"
-        onaftersave="editSubmit(user.name, 'name')">
-        {{user.name}}
-    </h3>
+    <i class="icon ion-ios-camera"><span>EDIT</span></i>
+    <!-- <input ng-model="user.pic" base-sixty-four-input style="display:none"> -->
+    <div id="name-wrap"
+         class="editable-wrap"
+         font="normal 19px Roboto">
+      <h3 id="name"
+          class="title title-center"
+          editable-text="user.name"
+          e-class="user-name" 
+          e-placeholder="Enter your full name"
+          onaftersave="editSubmit(user.name, 'name')">
+          {{ user.name }}
+      </h3>
+      <i class="icon ion-edit"><span>EDIT</span></i>
+    </div>
   </div>
-  <ion-content class="has-tall-header padding">
-    <div class="contact-info">
-      <h4 class="subtitle">Contact</h4>
-      <div class="editable-group">
-        <label for="email">Email</label>
-        <p editable-email="user.email"
-           onaftersave="editSubmit(user.email, 'email')"
-           >
-          {{ user.email }}
-        </p>
-      </div>
-      <div class="editable-group">
-        <label ng-show="!user.phone">Phone</label>
-        <p id="phone-type"
-           ng-show="user.phone"
-           editable-select="user.phone_type"
-           e-ng-change="phoneTypeStyle()" 
-           e-ng-options="type.value as type.text for type in phoneTypes"
-           onaftersave="editSubmit(user.phone_type, 'phone_type')">
-          {{ phoneType() }}
-          <i class="ion-edit" ng-click="phoneTypeEdit.$show()" style="display:none;"></i>
-        </p>
-        <p editable-tel="user.phone"
-           e-placeholder="Enter your phone number"
-           onaftersave="editSubmit(user.phone, 'phone')">
-          {{ user.phone || 'Enter your phone number' }}
-        </p>
-      </div>
+  <ion-content class="content-body has-tall-header padding">
+    <div class="school-wrapper">
+      <md-autocomplete
+        id="school-name"
+        placeholder="Your School Name"
+        font="bold 20px Roboto"
+        md-selected-item="school"
+        md-input-id="md-school-input"
+        md-selected-item-change="editSubmit(school)"
+        md-search-text="searchText"
+        md-items="school in querySchools(searchText)"
+        md-item-text="school.SCHNAM09">
+        <md-item-template>
+          <span md-highlight-text="searchText">{{school.SCHNAM09}}</span>
+        </md-item-template>
+        <md-not-found>No matches found.</md-not-found>
+      </md-autocomplete>
+    </div>
+    <div class="children">
+      <div ng-repeat="(key, child) in user.children track by key" class="child">
+        <div class="child-header cf">
+          <h5 class="teacher">{{child.teacher}}</h5>
+          <label class="grade-wrapper">
+            <span>EDIT
+              <i class="icon ion-edit"></i>
+            </span>
+            <select type="number"
+                    class="grade-number"
+                    name="grade-level"
+                    ng-model="user.children[key].grade"
+                    ng-options="key for (key,value) in grades">
+              <option value=""
+                      disabled
+                      selected>
+                      Current grade level
+              </option>
+            </select>
+            <h5 class="grade">grade</h5>
+          </label>
+          <!-- <div class="grade-wrapper">
+            <h4 class="grade-number">{{child.grade | ordinal}}</h4>
+            <h5 class="grade">grade</h5>
+          </div> -->
+        </div>
+        <div class="child-body">
+          <div ng-if="child.pic.length > 1">
+              <img class="profile-pic child-pic"
+                   ng-model="user.children[key].pic"
+                   ng-click="getImage('children/' + key + '/pic')"
+                   ng-src="{{child.pic}}">
+          </div>
+          <div class="child-initial"
+               ng-if="child.pic.length === 1"
+               ng-model="user.children[key].pic"
+               ng-click="getImage('children/' + key + '/pic')">
+               {{ child.pic }}
+          </div>
+          <i class="icon ion-ios-camera"><span>EDIT</span></i> 
+        </div>
+        <div class="child-footer">
+          <div id="name-wrap"
+               class="editable-wrap"
+               font="normal 19px Roboto">
+            <h3 id="name"
+                class="title title-center"
+                editable-text="user.name"
+                e-class="user-name" 
+                e-placeholder="Enter your full name"
+                onaftersave="editSubmit(child.name, 'children/' + key + '/name')">
+                {{ child.name }}
+            </h3>
+            <i class="icon ion-edit"><span>EDIT</span></i>
+          </div>
+        </div>
+      </div> 
+      <button id="add-child"
+              class="add-button"
+              ng-click="openModal('child-modal')">
+        <i class="icon ion-android-add"></i>
+      </button>
     </div>
   </ion-content>
+  <div class="contact-info footer-bar">
+    <h4 class="subtitle">Contact</h4>
+    <div class="editable-wrap">
+      <i class="icon ion-email"><span>EDIT</span></i>
+      <p editable-email="user.email"
+         e-class="user-email"
+         onaftersave="editSubmit(user.email, 'email')">
+        {{ user.email }}
+      </p>
+    </div>
+    <div class="editable-wrap">
+      <i class="icon ion-ios-telephone"><span>EDIT</span></i>
+      <p class="tel"
+         editable-tel="user.phone"
+         e-class="user-phone"
+         e-placeholder="Enter your phone number"
+         onaftersave="editSubmit(user.phone, 'phone')">
+        {{ user.phone || 'Enter your phone number' }}
+      </p>
+    </div>
+  </div>
 </ion-view>
+ 

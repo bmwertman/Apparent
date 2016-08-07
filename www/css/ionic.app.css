@@ -9882,7 +9882,7 @@ body.md-dialog-is-showing {
   color: #FFF; }
 
 .tall {
-  height: 180px; }
+  height: 175px; }
 
 ion-content.has-tall-header {
   top: 180px; }
@@ -10075,47 +10075,315 @@ ion-header-bar .calendar-form {
       display: block;
       width: 100%; }
 
-.profile div.icon_wrapper {
-  position: absolute;
-  right: calc((100% - 86px)/2);
+.profile i.ion-edit {
+  color: darkgray; }
+  .profile i.ion-edit span {
+    font-size: 12px; }
+
+.profile .bar-header .profile-pic {
   top: 44px;
-  border: 2px solid white;
-  border-radius: 50%;
-  width: 86px;
-  height: 99px;
-  padding: 0px 7px; }
-  .profile div.icon_wrapper .ion-person {
-    font-size: 90px; }
-
-.profile #name {
-  margin-top: 138px; }
-  .profile #name h3 {
-    color: white;
-    margin: 7px 0;
-    display: inline-block; }
-
-.profile .profile-pic {
-  top: 47px;
   width: 100px;
   height: 100px;
+  border-radius: 50%;
   position: absolute;
-  right: calc((100% - 100px)/2);
-  border-radius: 50%; }
+  right: calc((100% - 100px)/2); }
 
-.profile .tall .editable-wrap {
-  margin-top: 138px;
-  margin-left: calc((100% - 120px)/2); }
-  .profile .tall .editable-wrap .user-name {
-    width: 130px;
+.profile .bar-header .user-initial {
+  color: #B71C1C;
+  background-color: snow;
+  font-weight: bold;
+  text-align: center;
+  padding: 4px;
+  font-size: 70px;
+  line-height: 100px; }
+
+.profile .bar-header i.icon {
+  font-size: 19px;
+  position: absolute;
+  top: 130px;
+  color: darkgray;
+  right: calc(50% - 46px); }
+  .profile .bar-header i.icon.ion-edit {
+    position: relative;
+    font-size: 12px;
+    top: 0;
+    left: 0; }
+    .profile .bar-header i.icon.ion-edit span {
+      position: initial;
+      margin-left: 3px; }
+  .profile .bar-header i.icon span {
+    position: absolute;
+    top: 0px;
+    left: 17px;
+    font-size: 12px; }
+
+.profile .bar-header #name-wrap {
+  height: 30px;
+  margin: 138px auto 0;
+  display: block; }
+  .profile .bar-header #name-wrap #name {
+    margin: 0 auto;
+    font-weight: normal;
+    position: relative;
+    top: -3px;
+    height: 37px;
+    display: inline; }
+  .profile .bar-header #name-wrap i.icon.ion-edit {
+    position: relative;
+    font-size: 12px;
+    top: -3px;
+    left: 0; }
+
+.profile .bar-header .editable-wrap {
+  margin: 71px auto 0;
+  height: 23px; }
+  .profile .bar-header .editable-wrap .user-name {
+    width: 150px;
+    height: 23px;
     font-size: 19px;
-    color: white;
+    color: snow;
     background-color: #B71C1C;
     font-weight: bold; }
-  .profile .tall .editable-wrap .xeditable-submit {
-    color: white; }
+  .profile .bar-header .editable-wrap .xeditable-submit {
+    color: snow; }
 
-.profile p {
-  margin: 0; }
+.profile .content-body .school-wrapper #school-name {
+  background: transparent;
+  display: block;
+  width: 190px;
+  margin: -14px auto 0; }
+  .profile .content-body .school-wrapper #school-name .layout-row {
+    box-shadow: none; }
+    .profile .content-body .school-wrapper #school-name .layout-row #md-school-input {
+      padding: 0;
+      width: 190px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #B71C1C; }
+    .profile .content-body .school-wrapper #school-name .layout-row button {
+      display: none; }
+
+.profile .content-body .school-wrapper #school-name-edit {
+  position: absolute;
+  top: 12px;
+  width: 38px; }
+
+.profile .content-body .children #add-child {
+  position: initial;
+  top: initial;
+  left: initial;
+  float: left;
+  box-shadow: 2px 1px 3px black;
+  margin-left: calc((48% - 55px)/2); }
+
+.profile .content-body .children .child {
+  box-shadow: 2px 2px 5px 0px black;
+  border-radius: 8px;
+  border: 1px solid darkgray;
+  display: inline-block;
+  float: left;
+  width: 163px; }
+  .profile .content-body .children .child:nth-child(odd) {
+    margin-right: 10px; }
+  .profile .content-body .children .child .child-header {
+    background-color: #B71C1C;
+    color: snow;
+    border-radius: 8px 8px 0 0; }
+    .profile .content-body .children .child .child-header .teacher {
+      position: absolute;
+      height: 22px;
+      width: calc(100% - 207px);
+      margin: 20px 0 0 0; }
+    .profile .content-body .children .child .child-header i.ion-edit {
+      transform: scaleX(-1);
+      display: inline-block;
+      margin-top: 7px;
+      font-size: 14px; }
+    .profile .content-body .children .child .child-header .grade-wrapper {
+      float: right;
+      margin: 4px;
+      height: 34px; }
+      .profile .content-body .children .child .child-header .grade-wrapper span {
+        position: relative;
+        bottom: 4px;
+        color: darkgray;
+        font-size: 12px; }
+        .profile .content-body .children .child .child-header .grade-wrapper span .ion-edit {
+          font-size: 12px; }
+      .profile .content-body .children .child .child-header .grade-wrapper .grade-number {
+        display: inline-block;
+        width: 30px;
+        border: none;
+        background-color: transparent;
+        -webkit-appearance: none;
+        color: snow;
+        font-weight: bold;
+        font-size: 20px;
+        float: right;
+        margin: 0 4px;
+        height: 20px;
+        line-height: 20px; }
+      .profile .content-body .children .child .child-header .grade-wrapper .grade {
+        margin: 0;
+        line-height: 0;
+        color: snow;
+        width: 36px;
+        position: relative;
+        left: 40px; }
+  .profile .content-body .children .child .child-body i.icon {
+    font-size: 19px;
+    color: darkgray; }
+    .profile .content-body .children .child .child-body i.icon.ion-ios-camera {
+      position: relative;
+      left: 112px;
+      top: -4px; }
+    .profile .content-body .children .child .child-body i.icon span {
+      position: absolute;
+      top: 2px;
+      left: 17px;
+      font-size: 12px; }
+  .profile .content-body .children .child .child-body .child-pic {
+    border-radius: 50%;
+    width: 100px;
+    margin: 10px auto -10px;
+    display: block; }
+  .profile .content-body .children .child .child-body .child-initial {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    color: snow;
+    background-color: #B71C1C;
+    font-weight: bold;
+    text-align: center;
+    font-size: 50px;
+    line-height: 70px;
+    margin: 5px auto; }
+  .profile .content-body .children .child .child-footer {
+    border-top: 1px solid darkgray;
+    background-color: #B71C1C;
+    padding: 0 5px; }
+    .profile .content-body .children .child .child-footer .editable-wrap .user-name {
+      height: 23px;
+      font-size: 18px; }
+    .profile .content-body .children .child .child-footer .editable-wrap .xeditable-submit {
+      color: snow; }
+    .profile .content-body .children .child .child-footer #name-wrap {
+      margin: 7px auto 0;
+      height: 23px;
+      display: block; }
+      .profile .content-body .children .child .child-footer #name-wrap #name {
+        margin: 0 auto;
+        font-weight: normal;
+        position: relative;
+        top: -2px;
+        height: 37px;
+        display: inline;
+        font-size: 16px;
+        color: snow; }
+      .profile .content-body .children .child .child-footer #name-wrap i.icon.ion-edit {
+        position: relative;
+        font-size: 12px;
+        top: -3px;
+        left: 0; }
+
+.profile .contact-info {
+  padding: 5px;
+  background-color: #B71C1C;
+  height: 80px; }
+  .profile .contact-info h4 {
+    color: snow;
+    margin: 0; }
+  .profile .contact-info i.icon {
+    display: block;
+    color: darkgray;
+    font-size: 14px; }
+    .profile .contact-info i.icon span {
+      font-size: 12px;
+      margin-left: 3px; }
+  .profile .contact-info #phone-type {
+    color: snow; }
+  .profile .contact-info .editable-wrap {
+    max-width: 50%;
+    float: left;
+    color: snow;
+    display: inline-block; }
+    .profile .contact-info .editable-wrap [type="email"] {
+      -webkit-appearance: textfield; }
+    .profile .contact-info .editable-wrap ::-webkit-input-placeholder {
+      color: snow !important; }
+    .profile .contact-info .editable-wrap:last-child {
+      margin-left: 10px; }
+    .profile .contact-info .editable-wrap .xeditable-submit {
+      color: snow;
+      margin: 0; }
+    .profile .contact-info .editable-wrap .user-email, .profile .contact-info .editable-wrap .user-phone {
+      font-size: 14px;
+      color: snow;
+      background-color: #B71C1C;
+      font-weight: bold; }
+    .profile .contact-info .editable-wrap .ion-ios-telephone {
+      margin-left: 10px; }
+    .profile .contact-info .editable-wrap p {
+      display: inline-block; }
+      .profile .contact-info .editable-wrap p.tel {
+        color: snow;
+        margin-left: 10px; }
+
+.edit-children .child {
+  border: 2px solid #2AD4FF;
+  border-radius: 5px;
+  width: 94%;
+  margin: 5px 3%;
+  box-shadow: 1px 1px 4px darkgray; }
+  .edit-children .child .child-initial {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    color: snow;
+    background-color: #B71C1C;
+    font-weight: bold;
+    text-align: center;
+    font-size: 50px;
+    line-height: 70px;
+    margin: 5px auto; }
+  .edit-children .child i.icon {
+    font-size: 19px;
+    color: darkgray; }
+    .edit-children .child i.icon.ion-ios-camera {
+      position: absolute;
+      top: 57px;
+      right: calc(50% - 40px); }
+    .edit-children .child i.icon.ion-edit {
+      right: 74px;
+      position: relative;
+      font-size: 14px; }
+    .edit-children .child i.icon span {
+      position: absolute;
+      top: 0px;
+      left: 17px;
+      font-size: 12px; }
+  .edit-children .child label {
+    display: block;
+    margin-left: calc((100% - 144px)/2); }
+    .edit-children .child label input {
+      display: inline; }
+    .edit-children .child label select {
+      width: 100px;
+      padding-left: 5px;
+      border: none;
+      background-color: transparent;
+      -webkit-appearance: none; }
+
+.edit-children a.button {
+  width: 45%;
+  margin: 5px 0 5px 3%;
+  color: snow;
+  font-weight: bold;
+  box-shadow: 1px 1px 4px darkgray; }
+  .edit-children a.button.cancel {
+    background-color: #FF8F02; }
+  .edit-children a.button.save {
+    background-color: #1102FF; }
 
 .editable-group {
   margin-bottom: 30px; }
@@ -10175,7 +10443,7 @@ ion-header-bar .calendar-form {
       height: 33px;
       text-align: center;
       background-color: #FF8F02;
-      color: white;
+      color: snow;
       font-weight: bold;
       bottom: 21px; }
     .calendar .calendar-cell .drop-container .drag-element .finish-time {
@@ -10221,7 +10489,7 @@ ion-header-bar .calendar-form {
 
 .calendar .calendar-cell .volunteer-start {
   background-color: #FF8F02;
-  color: white;
+  color: snow;
   font-weight: bold;
   padding: 2px 6px;
   height: 26px;
@@ -10291,7 +10559,7 @@ ion-header-bar .calendar-form {
       border-radius: 50%; }
     .chat-rooms .chat-room .room-pic-wrapper .chatter-initial {
       background-color: #B71C1C;
-      color: white;
+      color: snow;
       border-radius: 50%; }
     .chat-rooms .chat-room .room-pic-wrapper .single-pic {
       display: block;
@@ -10323,7 +10591,7 @@ ion-header-bar .calendar-form {
   padding: 2px 6px 1px;
   font-size: 16px; }
 
-.chat-rooms .add-button {
+.add-button {
   background-color: #228B22;
   width: 55px;
   height: 55px;
@@ -10333,7 +10601,7 @@ ion-header-bar .calendar-form {
   top: calc(100% - 72px);
   border: none;
   text-align: center; }
-  .chat-rooms .add-button .ion-android-add {
+  .add-button .ion-android-add {
     background-color: transparent;
     color: white;
     font-size: 30px;

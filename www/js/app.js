@@ -13,6 +13,7 @@ var Pta = angular.module('pta', [
   'ngImgCrop',
   'naif.base64',
   'firebase',
+  'angularMoment',
   angularDragula(angular)
   ])
 .run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions) {
@@ -169,6 +170,9 @@ var Pta = angular.module('pta', [
 
   .state('app.profile', {
     url: '/profile',
+    params:{
+      isNewUser: null
+    },
     views: {
       'menuContent': {
         templateUrl: 'templates/user_profile.html',
