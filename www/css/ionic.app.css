@@ -9909,6 +9909,9 @@ body.md-dialog-is-showing {
 ion-content.has-tall-header {
   top: 180px; }
 
+ion-content.has-footer {
+  margin-bottom: 36px; }
+
 .dtp .dtp-date-view .dtp-header {
   background-color: #B71C1C !important; }
 

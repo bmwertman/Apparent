@@ -1,20 +1,20 @@
-<ion-modal-view class="signup-modal">
+<ion-view class="signup-modal" hide-back-button=true>
   <div class="header">
     <img class="apparent" src="img/apparent_v2.svg">
   </div>
   <ion-content class="padding signup" has-subheader="true">
     <form name="signupForm" ng-submit="signupSubmit()">
       <label for="full-name">Full name
-        <input type="text" name="full-name" ng-model="user.name" placeholder="First and last name" required="true">
+        <input type="text" name="full-name" ng-model="newUser.name" placeholder="First and last name" required="true">
       </label>
       <label for="email">Email
-        <input type="email" name="email" ng-model="user.email" placeholder="Email" required>
+        <input type="email" name="email" ng-model="newUser.email" placeholder="Email" required="true">
       </label>
       <label for="password">Password
-        <input type="password" name="password" ng-model="user.password" placeholder="Password" required>
+        <input type="password" name="password" ng-model="newUser.password" placeholder="Password" required="true">
       </label>
       <label for="confirm">Confirm password
-        <input type="password" name="confirm" ng-model="confirm_password" placeholder="Confirm password" name"confirmField" match="user.password" match-ignore-empty="true" required>
+        <input type="password" name="confirm" ng-model="confirm_password" placeholder="Confirm password" name"confirmField" match="user.password" match-ignore-empty="true" required="true">
       </label>
       <!-- This displays user error messages (automatically generated from firebase) for login (like "The specified password is incorrect") -->
       <p ng-if="errorMessage">{{ errorMessage }}</p>  
@@ -23,4 +23,4 @@
     </form>
     <img src="img/students.jpg">
   </ion-content>
-</ion-modal-view>
+</ion-view>

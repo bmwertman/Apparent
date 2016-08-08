@@ -111,6 +111,12 @@ var Pta = angular.module('pta', [
      controller : 'LoginCtrl'
    })
 
+  .state('signup', {
+     url: '/signup',
+     templateUrl: 'templates/signup.html',
+     controller : 'SignupCtrl'
+   })
+
   .state('app', {
     url: '/app',
     abstract: true,

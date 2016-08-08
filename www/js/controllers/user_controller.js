@@ -294,22 +294,17 @@ Pta.controller('UserCtrl', [
         uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, {
           next: function(snapshot){
             var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log('Upload is ' + progress + '% done');
             switch (snapshot.state) {
               case firebase.storage.TaskState.PAUSED: // or 'paused'
-                console.log('Upload is paused');
                 break;
               case firebase.storage.TaskState.RUNNING: // or 'running'
-                console.log('Uploading ' + progress + "% complete");
                 break;
             }
           }, 
           error: function(error){
             switch (error.code) {
                case 'storage/unauthorized':
-                 console.log("You don't have permission to access this image");
                  break;
-
                case 'storage/canceled':
                  console.log("Upload was canceled");
                  break;

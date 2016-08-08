@@ -7,9 +7,14 @@ Pta.controller('LoginCtrl', [
   '$localstorage',
   '$firebaseAuth',
   'Auth',
-  function($scope, $ionicModal, $ionicPopup, $timeout, $ionicLoading, $localstorage, $firebaseAuth, Auth) {
+  '$state',
+  function($scope, $ionicModal, $ionicPopup, $timeout, $ionicLoading, $localstorage, $firebaseAuth, Auth, $state) {
 
-  // Form data for the login modal
+  $scope.openSignup = function(){
+    $state.go('signup');
+  }
+
+  // Form data for the login view
   $scope.credentials = {};
   $scope.submitted = false;
   var authObj = $firebaseAuth(),

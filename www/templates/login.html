@@ -30,22 +30,8 @@
           <button type="submit" class="button button-block">Login</button>
           <p class="error" ng-if="errorMessage">{{ errorMessage }}</p>
           <p class="prompt">Not registered? </p>
-          <a class="create-acct" ng-controller="SignupCtrl" ng-click="openModal()">Create an account</a>
+          <a class="create-acct" ng-click="openSignup()">Create an account</a>
       </form>
     </ion-item>
   </ion-content>
 </ion-view>
-
-<!-- <div class="item-text-wrap padding">
-  Enter Email and Password to Login
-</div>
-<label class="item item-input">
-  <input type="text" ng-model="credentials.email" placeholder="Email" />
-</label>
-<label class="item item-input">
-  <input type="password" ng-model="credentials.password" placeholder="Password" />
-</label>
-<div class="padding">
-  <button class="button button-block" ng-click="doLogin()">Login</button>
-  
-</div> -->

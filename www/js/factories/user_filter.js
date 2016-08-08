@@ -11,12 +11,17 @@ Pta.factory('userFilter', function(){
           if(i < properties.length - 1 && parent[properties[i]] && parent[properties[i]].indexOf(search) >= 0 && options.map(function(el){ return el.$id }).indexOf(parent.$id)< 0){
             options.push(parent);
           } else {
-            for (var x = parent.children.length - 1; x >= 0; x--) {
-              //The Child's name has been matched && this child's parent isn't already in options
-              if(parent.children[x].name.indexOf(search) >= 0 && options.map(function(el){ return el.$id }).indexOf(parent.$id) < 0){
+            angular.forEach(parent.children, function(value, key){
+              if(key.name.indexOf(search) >= 0 && options.map(function(el){ return el.$id }).indexOf(parent.$id) < 0){
                 options.push(parent);
               }
-            }
+            });
+            // for (var x = parent.children.length - 1; x >= 0; x--) {
+            //   //The Child's name has been matched && this child's parent isn't already in options
+            //   if(parent.children[x].name.indexOf(search) >= 0 && options.map(function(el){ return el.$id }).indexOf(parent.$id) < 0){
+            //     options.push(parent);
+            //   }
+            // }
           }
         }
       });
@@ -33,8 +38,7 @@ Pta.factory('userFilter', function(){
         });
       }  
     }
-    // Future work - Move adding the user's full name and creating the label to the signup controller;
-                // - Make parent's searchable by their child's current teacher
+    // Future work - Make parent's searchable by their child's current teacher
     var displayableOptions = function(contactsFound){
       var madeDisplayable = [];
       angular.forEach(contactsFound, function(value, key){
