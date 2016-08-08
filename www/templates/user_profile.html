@@ -16,7 +16,9 @@
       <h3 id="name"
           class="title title-center"
           editable-text="user.name"
-          e-class="user-name" 
+          e-class="user-name"
+          onhide="showEditIcon()"
+          e-ng-focus="hideEditIcon($event)" 
           e-placeholder="Enter your full name"
           onaftersave="editSubmit(user.name, 'name')">
           {{ user.name }}
@@ -53,6 +55,7 @@
             <select type="number"
                     class="grade-number"
                     name="grade-level"
+                    ng-change="editSubmit(user.children[key].grade, 'children/' + key + '/grade')"
                     ng-model="user.children[key].grade"
                     ng-options="key for (key,value) in grades">
               <option value=""
@@ -63,10 +66,6 @@
             </select>
             <h5 class="grade">grade</h5>
           </label>
-          <!-- <div class="grade-wrapper">
-            <h4 class="grade-number">{{child.grade | ordinal}}</h4>
-            <h5 class="grade">grade</h5>
-          </div> -->
         </div>
         <div class="child-body">
           <div ng-if="child.pic.length > 1">
@@ -81,7 +80,11 @@
                ng-click="getImage('children/' + key + '/pic')">
                {{ child.pic }}
           </div>
-          <i class="icon ion-ios-camera"><span>EDIT</span></i> 
+          <i class="icon ion-ios-camera"><span>EDIT</span></i>
+          <a class="remove-child"
+             ng-click="removeChild(key)">
+            <i class="icon ion-android-person-subtract"></i>
+          </a> 
         </div>
         <div class="child-footer">
           <div id="name-wrap"
@@ -89,21 +92,24 @@
                font="normal 19px Roboto">
             <h3 id="name"
                 class="title title-center"
-                editable-text="user.name"
-                e-class="user-name" 
-                e-placeholder="Enter your full name"
+                editable-text="user.children[key].name"
+                e-class="user-name"
+                onhide="showEditIcon()"
+                e-ng-focus="hideEditIcon($event)"
+                e-placeholder="Child's full name"
                 onaftersave="editSubmit(child.name, 'children/' + key + '/name')">
                 {{ child.name }}
             </h3>
-            <i class="icon ion-edit"><span>EDIT</span></i>
+            <i class="icon ion-edit"><span>EDIT</span></i> 
           </div>
         </div>
-      </div> 
-      <button id="add-child"
-              class="add-button"
-              ng-click="openModal('child-modal')">
-        <i class="icon ion-android-add"></i>
-      </button>
+      </div>
+      <a id="add-child"
+         class="add-button"
+         ng-click="addChild()">
+        <i class="icon ion-android-person-add"></i>
+        <div id="childwarp">Child</div>
+      </a> 
     </div>
   </ion-content>
   <div class="contact-info footer-bar">

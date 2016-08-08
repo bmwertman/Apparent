@@ -4,13 +4,16 @@ Pta.controller('RoomsCtrl', [
   '$state',
   '$ionicModal',
   'userService',
-  function ($scope, Rooms, $state, $ionicModal, userService) {
-  $scope.user = userService.getUser();
+  '$firebaseObject',
+  function ($scope, Rooms, $state, $ionicModal, userService, $firebaseObject) {
   var userRooms = Rooms.all();
   userRooms.$loaded()
   .then(function(userRooms){
     $scope.rooms = userRooms;
   });
+  // Future work - if $scope.school is null block view and redirect user to add their school to their profile
+  $scope.user = userService.getUser();
+  $scope.school = $firebaseObject(firebase.database().ref('schools/' + $scope.user.school));
 
   $scope.$on('chatSubmitChanged', function(e, newValues){
     var submitSlideout = angular.element(document.getElementsByClassName('submit-slideout'));

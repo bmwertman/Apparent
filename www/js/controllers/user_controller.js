@@ -2,6 +2,7 @@ Pta.controller('UserCtrl', [
   '$scope',
   '$ionicSideMenuDelegate',
   '$ionicModal',
+  '$ionicPopup',
   'userService',
   '$cordovaImagePicker',
   '$filter',
@@ -10,17 +11,29 @@ Pta.controller('UserCtrl', [
   '$http',
   '$firebaseArray',
   '$firebaseObject',
-  function($scope, $ionicSideMenuDelegate, $ionicModal, userService, $cordovaImagePicker, $filter, $timeout, $stateParams, $http, $firebaseArray, $firebaseObject) {
+  function($scope, $ionicSideMenuDelegate, $ionicModal, $ionicPopup, userService, $cordovaImagePicker, $filter, $timeout, $stateParams, $http, $firebaseArray, $firebaseObject) {
     // Future work - Add child's current teacher to their parent's profile
+    $scope.isNewUser = $stateParams.isNewUser;
+    $scope.user = userService.getUser();
+    $scope.grades = { 'K': 0, '1st': 1, '2nd': 2, '3rd': 3, '4th': 4, '5th': 5, '6th': 6, '7th': 7, '8th': 8, '9th': 9, '10th': 10, '11th': 11, '12th': 12, '?': 13 };
+
     var schoolName = angular.element(document.getElementById('school-name')),
         userName = angular.element(document.getElementById('name-wrap'));
         schoolInputParent = schoolName.children().eq(0),
         ref = firebase.database().ref(),
-        schoolsRef = ref.child('schools');
-
-    $scope.isNewUser = $stateParams.isNewUser;
-    $scope.user = userService.getUser();
-    $scope.grades = { 'K': 0, '1st': 1, '2nd': 2, '3rd': 3, '4th': 4, '5th': 5, '6th': 6, '7th': 7, '8th': 8, '9th': 9, '10th': 10, '11th': 11, '12th': 12 };
+        schoolsRef = ref.child('schools')
+        childrenRef = ref.child('users/' + $scope.user.$id + '/children'),
+        childWarp = {
+          path:{ 
+              radius: 24,
+              angle: "185deg",
+              textPosition: "inside" 
+          },
+          css: "letter-spacing: 3px; font-weight: bold;",
+          targets:"#childwarp",
+          align: "center",
+        };
+    cssWarp(childWarp);
 
     // Set the width of edit-in-place input fields to fit their content for view centering 
     $scope.getTextWidth = function(font, text, angularEl, isSchoolName) {
@@ -33,6 +46,18 @@ Pta.controller('UserCtrl', [
       var metrics = context.measureText(text);
       angularEl.css('width', (metrics.width + 3) + 'px');
       angularEl.children().eq(0).css('width', (metrics.width + 3) + 'px');
+    }
+
+    $scope.hideEditIcon = function(e){
+      var nameInput = angular.element(e.currentTarget);
+      $scope.editIcon = nameInput.parent().parent().next();
+      $scope.editIcon.css('display', 'none');
+    }
+
+    $scope.showEditIcon = function(){
+      $scope.editIcon.css('display', 'inline');
+      $scope.editIcon = null;
+      delete $scope.editIcon;
     }
 
     $scope.getTextWidth(userName.attr('font'), $scope.user.name, userName);
@@ -91,10 +116,6 @@ Pta.controller('UserCtrl', [
       }
     }
 
-    $scope.editChildren = function(){
-      debugger;
-    }
-
     if($scope.user.school){ // Load the user's school
       $firebaseObject(schoolsRef.child($scope.user.school))
       .$loaded().then(function(school){
@@ -116,19 +137,47 @@ Pta.controller('UserCtrl', [
         }
       });
     }
-  
+    
+    $scope.addChild = function(){
+      childrenRef.push({
+        name: 'Child\'s name?',
+        grade: 13,
+        pic: '?'
+      });
+    }
+
+    $scope.removeChild = function(key) {
+      var child = $firebaseObject(childrenRef.child(key)),
+          childName;
+      child.$loaded()
+      .then(function(child){
+        if(child.name === "Child's name?"){
+          childName = "this child";
+        } else {
+          childName = child.name;
+        }
+        var confirmPopup = $ionicPopup.confirm({
+         title: 'Confirm Delete',
+         subTitle: 'This action cannot be undone.',
+         template: 'Are you sure you want to delete ' + childName +'?',
+         cancelType: 'button-balanced',
+         okText: 'Delete',
+         okType: 'button-assertive'
+        });
+
+        confirmPopup.then(function(res) {
+         if(res) {
+           childrenRef.child(key).remove();
+         }
+        });
+      });
+    };
+
     $ionicModal.fromTemplateUrl('templates/crop-image.html', {
       scope: $scope,
       animation: 'slide-in-up'
     }).then(function(modal) {
       $scope.modal = modal;
-    });
-
-    $ionicModal.fromTemplateUrl('templates/add-child.html', {
-      scope: $scope,
-      animation: 'slide-in-up'
-    }).then(function(modal) {
-      $scope.childModal = modal;
     });
 
     $scope.cropImageModal = function() {
@@ -141,19 +190,11 @@ Pta.controller('UserCtrl', [
     });
 
     $scope.openModal = function(name){
-      if(name === "child-modal"){
-        $scope.childModal.show();
-      } else {
-        $scope.modal.show;
-      }
+      $scope.modal.show;
     }
 
     $scope.closeModal = function(name) {
-      if(name === "child-modal"){
-        $scope.childModal.hide();
-      } else{
-        $scope.modal.hide();
-      }
+      $scope.modal.hide();
     };
   
     //image pic & crop

@@ -9756,6 +9756,28 @@ a.button {
   transition-duration: 0s; }
 
 @font-face {
+  font-family: 'ion-android-person-subtract';
+  src: url("../fonts/person-subtract/ion-android-person-subtract.ttf?qz1jmq") format("truetype"), url("../fonts/person-subtract/ion-android-person-subtract.woff?qz1jmq") format("woff"), url("../fonts/person-subtract/ion-android-person-subtract.svg?qz1jmq#ion-android-person-subtract") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+.icon {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'ion-android-person-subtract' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+.ion-android-person-subtract:before {
+  content: "\e905"; }
+
+@font-face {
   font-family: 'volunteer';
   src: url("../fonts/volunteer/volunteer.eot?qnydk3");
   src: url("../fonts/volunteer/volunteer.eot?qnydk3#iefix") format("embedded-opentype"), url("../fonts/volunteer/volunteer.ttf?qnydk3") format("truetype"), url("../fonts/volunteer/volunteer.woff?qnydk3") format("woff"), url("../fonts/volunteer/volunteer.svg?qnydk3#volunteer") format("svg");
@@ -10135,7 +10157,7 @@ ion-header-bar .calendar-form {
     left: 0; }
 
 .profile .bar-header .editable-wrap {
-  margin: 71px auto 0;
+  margin: 6px auto 0;
   height: 23px; }
   .profile .bar-header .editable-wrap .user-name {
     width: 150px;
@@ -10144,14 +10166,18 @@ ion-header-bar .calendar-form {
     color: snow;
     background-color: #B71C1C;
     font-weight: bold; }
-  .profile .bar-header .editable-wrap .xeditable-submit {
-    color: snow; }
+  .profile .bar-header .editable-wrap .editable-buttons {
+    position: relative;
+    bottom: 2px;
+    right: 12px; }
+    .profile .bar-header .editable-wrap .editable-buttons .xeditable-submit {
+      color: snow; }
 
 .profile .content-body .school-wrapper #school-name {
   background: transparent;
   display: block;
   width: 190px;
-  margin: -14px auto 0; }
+  margin: -14px auto -10px; }
   .profile .content-body .school-wrapper #school-name .layout-row {
     box-shadow: none; }
     .profile .content-body .school-wrapper #school-name .layout-row #md-school-input {
@@ -10172,9 +10198,22 @@ ion-header-bar .calendar-form {
   position: initial;
   top: initial;
   left: initial;
-  float: left;
+  float: right;
   box-shadow: 2px 1px 3px black;
-  margin-left: calc((48% - 55px)/2); }
+  margin-right: calc((48% - 40px)/2);
+  padding-top: 13px;
+  margin-top: 20px; }
+  .profile .content-body .children #add-child .ion-android-person-add {
+    color: snow;
+    font-size: 30px;
+    position: relative;
+    bottom: 8px;
+    right: 0.07em; }
+  .profile .content-body .children #add-child #childwarp {
+    position: relative;
+    color: snow;
+    bottom: 20px;
+    left: 1px; }
 
 .profile .content-body .children .child {
   box-shadow: 2px 2px 5px 0px black;
@@ -10182,7 +10221,8 @@ ion-header-bar .calendar-form {
   border: 1px solid darkgray;
   display: inline-block;
   float: left;
-  width: 163px; }
+  width: 163px;
+  margin-top: 10px; }
   .profile .content-body .children .child:nth-child(odd) {
     margin-right: 10px; }
   .profile .content-body .children .child .child-header {
@@ -10236,7 +10276,7 @@ ion-header-bar .calendar-form {
     .profile .content-body .children .child .child-body i.icon.ion-ios-camera {
       position: relative;
       left: 112px;
-      top: -4px; }
+      top: -11px; }
     .profile .content-body .children .child .child-body i.icon span {
       position: absolute;
       top: 2px;
@@ -10248,25 +10288,50 @@ ion-header-bar .calendar-form {
     margin: 10px auto -10px;
     display: block; }
   .profile .content-body .children .child .child-body .child-initial {
-    width: 65px;
-    height: 65px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     color: snow;
     background-color: #B71C1C;
     font-weight: bold;
     text-align: center;
-    font-size: 50px;
-    line-height: 70px;
-    margin: 5px auto; }
+    font-size: 70px;
+    line-height: 100px;
+    margin: 10px auto -10px; }
+  .profile .content-body .children .child .child-body .remove-child {
+    background-color: #FF8F02;
+    display: inline-block;
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    margin-bottom: 8px;
+    position: relative;
+    right: 4px;
+    box-shadow: 1px 1px 2px black; }
+    .profile .content-body .children .child .child-body .remove-child i.icon.ion-android-person-subtract {
+      color: snow;
+      font-size: 18px;
+      line-height: 32px;
+      position: relative;
+      left: 3px; }
   .profile .content-body .children .child .child-footer {
     border-top: 1px solid darkgray;
     background-color: #B71C1C;
     padding: 0 5px; }
     .profile .content-body .children .child .child-footer .editable-wrap .user-name {
       height: 23px;
-      font-size: 18px; }
-    .profile .content-body .children .child .child-footer .editable-wrap .xeditable-submit {
+      font-size: 17px;
+      width: 125px;
+      position: relative;
+      bottom: 3px;
+      background-color: #B71C1C;
       color: snow; }
+    .profile .content-body .children .child .child-footer .editable-wrap .editable-buttons {
+      position: relative;
+      bottom: 5px;
+      right: 10px; }
+      .profile .content-body .children .child .child-footer .editable-wrap .editable-buttons .xeditable-submit {
+        color: snow; }
     .profile .content-body .children .child .child-footer #name-wrap {
       margin: 7px auto 0;
       height: 23px;
