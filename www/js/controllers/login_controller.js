@@ -17,19 +17,7 @@ Pta.controller('LoginCtrl', [
   // Form data for the login view
   $scope.credentials = {};
   $scope.submitted = false;
-  var authObj = $firebaseAuth(),
-      loginEmail = $localstorage.get('email'),
-      loginPassword = $localstorage.get('password');
-
-  if (loginEmail && loginPassword) {
-    $ionicLoading.show({ template: '<ion-spinner></ion-spinner>', duration: 1000 });
-    authObj.$signInWithEmailAndPassword(loginEmail, loginPassword,
-      function(error, authData) {
-      if (error) {
-        console.log("Login Failed!", error);
-      }
-    });
-  }
+  var authObj = $firebaseAuth();
 
   // Log in using firebase's login API
   $scope.doLogin = function () {
@@ -37,13 +25,14 @@ Pta.controller('LoginCtrl', [
     $ionicLoading.show({ template: '<ion-spinner></ion-spinner>'});
     authObj.$signInWithEmailAndPassword($scope.credentials.email, $scope.credentials.password)
     .then(function(authData){
-      $ionicLoading.hide();
       if(ionic.Platform.isAndroid() || ionicPlatform.isIOS()){
         $localstorage.set('email', $scope.credentials.email);
         $localstorage.set('password', $scope.credentials.password);
       } else {
         $scope.credentials = {};
       }
+      $ionicLoading.hide();
+      $state.go('app.events');
     }).catch(function(error){
       $ionicLoading.hide();
       console.log("Login Failed!", error);

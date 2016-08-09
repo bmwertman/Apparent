@@ -5,15 +5,31 @@ Pta.controller('RoomsCtrl', [
   '$ionicModal',
   'userService',
   '$firebaseObject',
-  function ($scope, Rooms, $state, $ionicModal, userService, $firebaseObject) {
+  '$ionicPopup',
+  function ($scope, Rooms, $state, $ionicModal, userService, $firebaseObject, $ionicPopup) {
   var userRooms = Rooms.all();
   userRooms.$loaded()
   .then(function(userRooms){
     $scope.rooms = userRooms;
   });
-  // Future work - if $scope.school is null block view and redirect user to add their school to their profile
+  
   $scope.user = userService.getUser();
   $scope.school = $firebaseObject(firebase.database().ref('schools/' + $scope.user.school));
+
+  // If The user has not selected their school redirect to the profile view
+  // because we can't filter the people who they are alllowed to chat with
+  if(!$scope.user.school || $scope.user.school === ""){
+    var noSchoolAlert = $ionicPopup.alert({
+      title: 'You haven\'t set your school',
+      subTitle:"Apparent chat connects you with parents at your child's school.",
+      template: "Add your child's school on your profile to start chatting!",
+      okText: "Set School",
+      okType: "button-balanced"
+    });
+    noSchoolAlert.then(function(res){
+      $state.go('app.profile');
+    });
+  }
 
   $scope.$on('chatSubmitChanged', function(e, newValues){
     var submitSlideout = angular.element(document.getElementsByClassName('submit-slideout'));

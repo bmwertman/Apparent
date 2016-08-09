@@ -10086,7 +10086,7 @@ ion-header-bar .calendar-form {
           margin-bottom: 7px;
           width: 84%;
           margin-left: 8%; }
-      .signup-modal .signup form button {
+      .signup-modal .signup form input.submit {
         margin: 0;
         font-size: 20px;
         font-weight: bold;
@@ -10332,7 +10332,7 @@ ion-header-bar .calendar-form {
     .profile .content-body .children .child .child-footer .editable-wrap .editable-buttons {
       position: relative;
       bottom: 5px;
-      right: 10px; }
+      right: 30px; }
       .profile .content-body .children .child .child-footer .editable-wrap .editable-buttons .xeditable-submit {
         color: snow; }
     .profile .content-body .children .child .child-footer #name-wrap {
@@ -10656,7 +10656,7 @@ ion-header-bar .calendar-form {
   background-color: #228B22;
   color: white;
   border-radius: 50%;
-  padding: 2px 6px 1px;
+  padding: 2px 6px 4px;
   font-size: 16px; }
 
 .add-button {

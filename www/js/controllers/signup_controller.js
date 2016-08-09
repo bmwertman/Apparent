@@ -31,7 +31,7 @@ Pta.controller('SignupCtrl', [
           usersRef = ref.child('users').child(authData.uid);
       usersRef.update(userProfile);
       $ionicLoading.hide();
-      $state.go('app.profile', {isNewUser: true});
+      $state.go('app.profile');
     }).catch(function(error) {
       console.error("Error: ", error);
       $scope.errorMessage = error.message;

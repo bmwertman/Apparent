@@ -16,7 +16,7 @@ var Pta = angular.module('pta', [
   'angularMoment',
   angularDragula(angular)
   ])
-.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions) {
+.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $firebaseAuth) {
   // hide xeditable cancel button
   editableThemes['default'].cancelTpl = '<button type="button" class="btn btn-default" style="display:none">';
   editableThemes['default'].submitTpl = '<button type="submit" class="xeditable-submit fa fa-pencil-square-o"></button>';
@@ -56,11 +56,25 @@ var Pta = angular.module('pta', [
       if (error === 'AUTH_REQUIRED') {
         event.preventDefault();
         $state.go('login');
-      }
+    }
+  });
+  
+  var loginEmail = $localstorage.get('email'),
+      loginPassword = $localstorage.get('password');
+
+  if (loginEmail && loginPassword) {
+    $firebaseAuth().$signInWithEmailAndPassword(loginEmail, loginPassword,
+      function(error, authData) {
+        if (error) {
+          console.log("Login Failed!", error);
+        } else {
+          Auth.onAuth()
+        }
     });
+  }
 })
 // Watches for authentication event. If login occurs, then get the user's profile info and go to calender or volunteer page
-.factory('Auth', function($firebaseAuth, $timeout, $rootScope, $firebaseObject, $location, userService){
+.factory('Auth', function($firebaseAuth, $timeout, $rootScope, $firebaseObject, $state, userService){
   return {
     // helper method to login with multiple providers
     loginWithProvider: function loginWithProvider(provider) {
@@ -85,9 +99,9 @@ var Pta = angular.module('pta', [
               // After user's profile data is loaded, go to calender or volunteer page
               // depending of if they are an admin or not
               if (data.isAdmin) {
-                $location.path('/app/calendar');
+                $state.go('app.calendar');
               } else {
-                $location.path('/app/events');
+                $state.go('app.events');
               }
             }
           );

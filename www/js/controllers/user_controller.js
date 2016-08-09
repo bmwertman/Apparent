@@ -13,7 +13,6 @@ Pta.controller('UserCtrl', [
   '$firebaseObject',
   function($scope, $ionicSideMenuDelegate, $ionicModal, $ionicPopup, userService, $cordovaImagePicker, $filter, $timeout, $stateParams, $http, $firebaseArray, $firebaseObject) {
     // Future work - Add child's current teacher to their parent's profile
-    $scope.isNewUser = $stateParams.isNewUser;
     $scope.user = userService.getUser();
     $scope.grades = { 'K': 0, '1st': 1, '2nd': 2, '3rd': 3, '4th': 4, '5th': 5, '6th': 6, '7th': 7, '8th': 8, '9th': 9, '10th': 10, '11th': 11, '12th': 12, '?': 13 };
 
@@ -40,7 +39,7 @@ Pta.controller('UserCtrl', [
       var canvas = this.getTextWidth.canvas || (this.getTextWidth.canvas = document.createElement("canvas")),
       context = canvas.getContext("2d");
       context.font = font;
-      if(text.indexOf("/") > -1){
+      if(text && text.indexOf("/") > -1){
          text = text.substring(0, text.lastIndexOf('/'))
       }
       var metrics = context.measureText(text);
@@ -126,7 +125,7 @@ Pta.controller('UserCtrl', [
       });
     }
     // Make sure both users and their children have either a pic or first letter of first name placeholder
-    if(!$scope.user.pic){
+    if(!$scope.user.pic && $scope.user.name){
       $scope.editSubmit($scope.user.name.charAt(0), 'pic');
     }
     if($scope.user.children){
