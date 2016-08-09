@@ -108,7 +108,7 @@ var Pta = angular.module('pta', [
         } else {
           // If the user is not successfully authenticated, go back to login page
           $rootScope.profile = null;
-          $location.path('/login');
+          $state.go('login');
         };       
       }); // auth.$onAuth
     } // onAuth

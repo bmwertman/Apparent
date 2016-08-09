@@ -13,6 +13,7 @@ Pta.controller('UserCtrl', [
   '$firebaseObject',
   function($scope, $ionicSideMenuDelegate, $ionicModal, $ionicPopup, userService, $cordovaImagePicker, $filter, $timeout, $stateParams, $http, $firebaseArray, $firebaseObject) {
     // Future work - Add child's current teacher to their parent's profile
+                // - Figure out a way to add the edit icon to the school name while keepin it centered 
     $scope.user = userService.getUser();
     $scope.grades = { 'K': 0, '1st': 1, '2nd': 2, '3rd': 3, '4th': 4, '5th': 5, '6th': 6, '7th': 7, '8th': 8, '9th': 9, '10th': 10, '11th': 11, '12th': 12, '?': 13 };
 
@@ -60,7 +61,8 @@ Pta.controller('UserCtrl', [
     }
 
     $scope.getTextWidth(userName.attr('font'), $scope.user.name, userName);
-    schoolInputParent.append('<i id="school-name-edit" class="icon ion-edit"><span>EDIT</span></i>');
+    // See Future work above.
+    // schoolInputParent.append('<i id="school-name-edit" class="icon ion-edit"><span>EDIT</span></i>');
     
     //handle submits
     $scope.editSubmit = function(modelValue, prop){
