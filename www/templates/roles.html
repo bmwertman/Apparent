@@ -1,0 +1,54 @@
+<ion-view class="role-management" title="Edit Admin Roles">
+  <ion-content class="padding">
+    <div>
+      <table class="role-table">
+        <thead class="table-head">
+          <tr>
+            <th class="head-cell">Role</th>
+            <th class="head-cell">User</th>
+            <th class="head-cell">Remove</th>
+          </tr>
+        </thead>
+        <tbody id="role-tbody">
+          <tr class="role" ng-repeat="(key, role) in roles track by role.$id">
+            <td>
+              <input type="text"
+                     class="role-name"
+                     ng-blur="roles.$save(role)"
+                     ng-model="role.title"
+                     placeholder="ie President or Chair">
+            </td>
+            <td>
+              <select contactpicker
+                      class="role-assignees"
+                      multi="false"
+                      value-attr="email"
+                      placeholder="Role assignee">
+              </select>
+            </td>
+            <td class="remove-role">
+              <a class="remove-button button button-assertive button-small"
+                 ng-click="removeRole(role)">
+                <i class="icon ion-android-person-subtract"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <a id="add-role"
+         class="add-button"
+         ng-click="addRole()">
+        <i class="icon ion-android-person-add"></i>
+        <div id="adminwarp">Admin</div>
+      </a>
+    </div>
+    <div class="note-wrapper cf">
+      <h4 class="note-callout">Note:</h4>
+      <p class="note">Add role names here for those who you want to have admin rights.</p>
+    </div>
+    <div class="note-wrapper cf">
+      <h4 class="note-callout">Note:</h4> 
+      <p class="note">Changing the user for an existing role revokes their rights and assigns a new user</p>
+    </div> 
+  </ion-content>
+</ion-view>

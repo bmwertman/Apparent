@@ -161,6 +161,16 @@ var Pta = angular.module('pta', [
     }
   })
 
+  .state('app.roles', {
+    url: '/roles',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/roles.html',
+        controller: 'RoleCtrl'
+      }
+    }
+  })
+
   .state('app.calendar', {
     url: '/calendar',
     params:{
