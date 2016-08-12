@@ -1,23 +1,40 @@
 {
   "name": "angular-off-click",
-  "version": "0.0.10",
-  "main": "offClick.js",
+  "version": "1.0.7",
+  "main": [
+    "./dist/angular-off-click.js"
+  ],
   "ignore": [
     ".jshintrc",
     "**/*.txt"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "angular",
+    "off",
+    "click"
+  ],
+  "author": {
+    "name": "Evan Sharp",
+    "url": "https://github.com/TheSharpieOne"
+  },
+  "contributors": [
+    {
+      "name": "Ricardo Marques",
+      "url": "https://github.com/RicardoAlmeidaMarques"
+    }
   ],
   "dependencies": {
     "angular": "*"
   },
   "homepage": "https://github.com/TheSharpieOne/angular-off-click",
-  "_release": "0.0.10",
+  "_release": "1.0.7",
   "_resolution": {
     "type": "version",
-    "tag": "v0.0.10",
-    "commit": "eb64aff95aec321987903332e26a8d772f46782d"
+    "tag": "v1.0.7",
+    "commit": "ecdb81deea9a2b5e403ab9a0092e0e22cb48296e"
   },
   "_source": "https://github.com/TheSharpieOne/angular-off-click.git",
-  "_target": "^0.0.10",
-  "_originalSource": "angular-off-click",
-  "_direct": true
+  "_target": "^1.0.7",
+  "_originalSource": "angular-off-click"
 }

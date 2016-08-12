@@ -14,7 +14,6 @@ var Pta = angular.module('pta', [
   'naif.base64',
   'firebase',
   'angularMoment',
-  'selector',
   angularDragula(angular)
   ])
 .run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $firebaseAuth) {

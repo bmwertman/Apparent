@@ -9852,6 +9852,27 @@ i.icon-note {
 .side-menu .item {
   padding: 0; }
 
+.undo-actionsheet {
+  height: 0;
+  position: absolute;
+  top: calc(100% - 60px);
+  z-index: 1000; }
+  .undo-actionsheet .action-sheet {
+    position: absolute;
+    top: 0; }
+    .undo-actionsheet .action-sheet .action-sheet-group {
+      background-color: rgba(2, 2, 2, 0.8); }
+      .undo-actionsheet .action-sheet .action-sheet-group .action-sheet-title {
+        padding: 10px;
+        color: snow;
+        width: calc(100% - 54px); }
+      .undo-actionsheet .action-sheet .action-sheet-group button.button {
+        position: absolute;
+        bottom: 3px;
+        left: calc(100% - 56px);
+        color: #FF8F02;
+        background-color: transparent; }
+
 .popup {
   min-width: 300px; }
   .popup label.hidden-input {

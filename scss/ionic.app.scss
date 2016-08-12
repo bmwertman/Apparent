@@ -197,6 +197,31 @@ i.icon-note {
     padding: 0;
   }
 }
+.undo-actionsheet{
+  height: 0;
+  position: absolute;
+  top: calc(100% - 60px);
+  z-index: 1000;
+  .action-sheet{
+    position: absolute;
+    top: 0;
+    .action-sheet-group{
+      background-color: rgba(2, 2, 2, 0.8);
+      .action-sheet-title{
+        padding: 10px;
+        color: snow;
+        width: calc(100% - 54px);
+      }
+      button.button{
+        position: absolute;
+        bottom: 3px;
+        left: calc(100% - 56px);
+        color: $apparentOrange;
+        background-color: transparent;
+      }
+    }
+  } 
+}
 
 .popup{
   min-width: 300px;

@@ -12,7 +12,7 @@
           </tr>
         </thead>
         <tbody id="role-tbody">
-          <tr class="role" ng-repeat="(key, role) in roles track by role.$id">
+          <tr class="role" ng-repeat="(roleIndex, role) in roles">
             <td>
               <input type="text"
                      class="role-name"
@@ -26,13 +26,15 @@
                    ng-hide="showOptions">
               <input class="parent-search"
                       ng-model="role.user_name"
-                      ng-focus="showOptions = true"
-                      ng-blur="showOptions = false"
+                      ng-focus="showOptions = true;startRoleSearch(roleIndex)"
+                      ng-blur="showOptions = false" 
+                      off-click-filter="'.options-wrapper'"
+                      off-click="endRoleSearch()"
                       placeholder="Role assignee">
               <div ng-show="showOptions" class="options-wrapper">
                 <div class="options"
-                     ng-repeat="parent in schoolParents | limitTo: 10"
-                     ng-click="confirmChange(parent, role)">
+                     ng-repeat="(parentIndex, parent) in schoolParents | limitTo: 10"
+                     ng-click="confirmChange(parent, role, roles)">
                   <img ng-src="{{parent.pic}}">
                   <span class="parent-name">{{parent.name}}</span>
                 </div>
@@ -54,14 +56,14 @@
         <div id="adminwarp">Admin</div>
       </a>
     </div>
-    <div class="note-wrapper cf">
+    <!-- <div class="note-wrapper cf">
       <h4 class="note-callout">Note:</h4>
       <p class="note">Add role names here for those who you want to have admin rights.</p>
     </div>
     <div class="note-wrapper cf">
       <h4 class="note-callout">Note:</h4> 
       <p class="note">Changing the user for an existing role revokes their rights and assigns a new user</p>
-    </div> 
+    </div>  -->
   </ion-content>
 </ion-view>
 
