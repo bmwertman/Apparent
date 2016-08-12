@@ -95,10 +95,10 @@ Pta.controller('RoleCtrl', [
       } else {
         $scope.roles.$remove(role);
       }
-      $timeout(function(){
-         undoActionSheet();
-         $localstorage.remove('savedRole');
-      }, 5000); 
+      // $timeout(function(){
+      //    undoActionSheet();
+      //    $localstorage.remove('savedRole');
+      // }, 5000); 
     } else {
       var lastAdmin = $ionicPopup.alert({
         title: "This is the last admin on your account!",

@@ -21,7 +21,8 @@
              class="messages">
             <div class="chatter-pic-wrapper">
                 <img class="chatter-pic single-pic"
-                     ng-src="{{chat.pic}}"
+                     expire="{{30}}"
+                     cache-src="{{chat.pic}}"
                      ng-if="chat.pic.length > 1">
                 <div class="chatter-initial single-pic"
                      ng-if="chat.pic.length === 1">
