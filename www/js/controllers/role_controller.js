@@ -61,6 +61,10 @@ Pta.controller('RoleCtrl', [
     }
   }
 
+  $scope.filterParents = function(e){
+    $scope.filteredParents = userFilter($scope.schoolParents, e.currentTarget.value);
+  }
+
   $scope.removeRole = function(role){
     var adminUpdate = {};
     adminUpdate['users/' + role.user_id + '/isAdmin'] = false;
