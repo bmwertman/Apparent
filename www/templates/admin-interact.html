@@ -1,7 +1,4 @@
-<ion-view class="admin_interact">
-  <div align-title="left" class="white-font bar bar-header bar-positive">
-    <h1 class="title" style="font-weight:bold;text-align:left;">Manage Volunteers for {{thisEvent.date}}</h1>  
-  </div>
+<ion-view class="admin_interact" view-title="Manage Volunteers - {{thisEvent.date._d | date:'EEE M/d'}}">
   <div class="bar bar-subheader bar-stable">
     <div class="event-times">
       <div class="primary-green white-font event-segment"
@@ -49,7 +46,7 @@
   </ion-content>
   <div class="footer-bar">
     <div id="chatwarp">Chat</div>
-    <a class="chat-btn chat-all" ng-click="createRoom(thisHoursVolunteers, thisEvent)">
+    <a class="chat-btn chat-all" ng-click="groupChat(thisEvent)">
       <i class="icon ion-chatboxes"></i>
     </a>
     <div id="allwarp">All</div>

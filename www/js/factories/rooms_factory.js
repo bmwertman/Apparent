@@ -14,12 +14,11 @@ Pta.factory('Rooms', [
       get: function (roomId) {
         return $firebaseObject(userRoomsRef.child(roomId));
       },
-      addNewRoom: function(users, roomPath, subject){
+      addNewRoom: function(users, roomPath, subject, newRoomId){
         var chatter, firstName, lastName,
         namesArr = [],
         room = {},
-        updates = {},
-        newRoomId = roomsRef.push().key;
+        updates = {};
 
         room.chatters = [];
         users.push(user);
@@ -29,17 +28,16 @@ Pta.factory('Rooms', [
           chatter.email = value.email;
           chatter.name = value.name;
           chatter.pic = value.pic;
-          // if(!value.pic){
-          //   chatter.pic = value.name.charAt(0);// if no pic use first letter of first name
-          // } else {
-          //   chatter.pic = value.pic;
-          // }
           if(chatter.id === user.$id){
             room.owner = chatter.id;
           }
           room.chatters.push(chatter);
         });
-        if(room.chatters.length > 2){// Creating a group chat room
+        if(subject){// The room is tied to some type of event
+          room.subject = subject.title
+          updates[roomPath + subject.id + '/' + newRoomId] = room; 
+        }
+        if(room.chatters.length > 2 || subject){// Creating a group chat room
           for (var i = room.chatters.length - 1; i >= 0; i--) {
             firstName = room.chatters[i].name.split(' ')[0];
             lastName = room.chatters[i].name.split(' ')[1];
@@ -55,15 +53,11 @@ Pta.factory('Rooms', [
             updates['/user-rooms/' + room.chatters[i].id + '/' + newRoomId] = roomInstance;// Format the firebase update
             namesArr.splice(i, 0, toBeUpdated[0]);// Put that user's name back in the same place for the next title 
           }
-        } else {// Creating a one-on-one chat room
-          room.title = room.chatters[0].name;
-          if(subject){ room.subject = subject.title}
+        } else if(room.chatters.length > 1){// Creating a one-on-one chat room
           updates['/user-rooms/' + room.chatters[0].id + '/' + newRoomId] = room;
           updates['/user-rooms/' + room.chatters[1].id + '/' + newRoomId] = room;
-        }
-
-        if(subject){
-          updates[roomPath + subject.id + '/' + newRoomId] = room; 
+        } else {
+          updates['/user-rooms/' + room.chatters[0].id + '/' + newRoomId] = room;
         }
         updates['/rooms/' + newRoomId] = room;
         ref.update(updates);

@@ -10786,12 +10786,16 @@ ion-header-bar .calendar-form {
       line-height: 26px; }
       .chat-rooms .chat-room .room-pic-wrapper .multi-pic img {
         width: 24px; }
+  .chat-rooms .chat-room .room-subject {
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 5px 0; }
   .chat-rooms .chat-room .room-title {
     font-size: 16px;
     color: black;
-    height: 54px;
-    margin: 0;
-    line-height: 42px; }
+    height: 20px;
+    margin: 0; }
 
 .chat-rooms .no-rooms .ion-android-add {
   background-color: #228B22;

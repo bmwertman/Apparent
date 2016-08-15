@@ -6,16 +6,29 @@ Pta.controller('RoomsCtrl', [
   'userService',
   '$firebaseObject',
   '$ionicPopup',
-  function ($scope, Rooms, $state, $ionicModal, userService, $firebaseObject, $ionicPopup) {
+  '$filter',
+  function ($scope, Rooms, $state, $ionicModal, userService, $firebaseObject, $ionicPopup, $filter) {
   var userRooms = Rooms.all();
-  userRooms.$loaded()
-  .then(function(userRooms){
-    $scope.rooms = userRooms;
-  });
-  
+
   $scope.user = userService.getUser();
   $scope.school = $firebaseObject(firebase.database().ref('schools/' + $scope.user.school));
 
+  userRooms.$loaded()
+  .then(function(userRooms){
+    // Add room titles
+    angular.forEach(userRooms, function(userRoom, key){
+      var titleArr = [];
+      angular.forEach(userRoom.chatters, function(chatter, key){
+        if(chatter.id !== $scope.user.$id){
+          titleArr.push(' ' + chatter.name.split(' ')[0]);
+        } 
+      });
+      userRoom.title = titleArr.join();
+    });
+    // If they don't have a title the current user is the only one there
+    $scope.rooms = userRooms;
+  });
+  
   // If The user has not selected their school redirect to the profile view
   // because we can't filter the people who they are alllowed to chat with
   if(!$scope.user.school || $scope.user.school === ""){
