@@ -5,7 +5,7 @@
              ng-click="getImage()"
              encode-uri="false"
              expire="{{60}}"
-             cache-src="{{user.pic}}">
+             ng-src="{{user.pic}}">
     </div>
     <div class="profile-pic user-initial"
          ng-if="user.pic.length === 1"
@@ -77,7 +77,7 @@
                    ng-click="getImage('children/' + key + '/pic')"
                    encode-uri="false"
                    expire="{{60}}"
-                   cache-src="{{child.pic}}">
+                   ng-src="{{child.pic}}">
           </div>
           <div class="child-initial"
                ng-if="child.pic.length === 1"

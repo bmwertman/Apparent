@@ -23,7 +23,7 @@
             <td>
               <img class="role-pic"
                    expire="{{30}}"
-                   cache-src="{{role.user_pic}}"
+                   ng-src="{{role.user_pic}}"
                    ng-hide="showOptions">
               <input class="parent-search"
                       ng-keyup="filterParents($event)"
@@ -39,7 +39,7 @@
                      ng-repeat="(parentIndex, parent) in filteredParents | limitTo: 10"
                      ng-click="confirmChange(parent, role, roles)">
                   <img expire="{{30}}"
-                       cache-src="{{parent.pic}}">
+                       ng-src="{{parent.pic}}">
                   <span class="parent-name">{{parent.name}}</span>
                 </div>
               </div>
