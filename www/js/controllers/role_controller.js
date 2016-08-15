@@ -61,6 +61,10 @@ Pta.controller('RoleCtrl', [
     }
   }
 
+  $scope.filterParents = function(e){
+    $scope.filteredParents = userFilter($scope.schoolParents, e.currentTarget.value);
+  }
+
   $scope.removeRole = function(role){
     var adminUpdate = {};
     adminUpdate['users/' + role.user_id + '/isAdmin'] = false;
@@ -91,10 +95,10 @@ Pta.controller('RoleCtrl', [
       } else {
         $scope.roles.$remove(role);
       }
-      $timeout(function(){
-         undoActionSheet();
-         $localstorage.remove('savedRole');
-      }, 5000); 
+      // $timeout(function(){
+      //    undoActionSheet();
+      //    $localstorage.remove('savedRole');
+      // }, 5000); 
     } else {
       var lastAdmin = $ionicPopup.alert({
         title: "This is the last admin on your account!",

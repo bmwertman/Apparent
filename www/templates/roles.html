@@ -22,20 +22,24 @@
             </td>
             <td>
               <img class="role-pic"
-                   ng-src="{{role.user_pic}}"
+                   expire="{{30}}"
+                   cache-src="{{role.user_pic}}"
                    ng-hide="showOptions">
               <input class="parent-search"
+                      ng-keyup="filterParents($event)"
                       ng-model="role.user_name"
                       ng-focus="showOptions = true;startRoleSearch(roleIndex)"
                       ng-blur="showOptions = false" 
                       off-click-filter="'.options-wrapper'"
                       off-click="endRoleSearch()"
                       placeholder="Role assignee">
-              <div ng-show="showOptions" class="options-wrapper">
+              <div ng-show="showOptions && filteredParents.length > 0"
+                   class="options-wrapper">
                 <div class="options"
-                     ng-repeat="(parentIndex, parent) in schoolParents | limitTo: 10"
+                     ng-repeat="(parentIndex, parent) in filteredParents | limitTo: 10"
                      ng-click="confirmChange(parent, role, roles)">
-                  <img ng-src="{{parent.pic}}">
+                  <img expire="{{30}}"
+                       cache-src="{{parent.pic}}">
                   <span class="parent-name">{{parent.name}}</span>
                 </div>
               </div>

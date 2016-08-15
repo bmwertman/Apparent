@@ -33,7 +33,7 @@
                {{volunteer.start._d | date: 'ha'}} - {{volunteer.end._d | date: 'ha'}}
              </div>
            </div>
-           <img ng-src="{{volunteer.user.pic}}">
+           <img expire="{{30}}" cache-src="{{volunteer.user.pic}}">
            <a class="chat-btn"
               ng-if="volunteer.user.$id !== user.$id" 
               ng-click="createRoom(thisHoursVolunteers, thisEvent, volunteer)">

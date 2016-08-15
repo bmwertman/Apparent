@@ -10,7 +10,9 @@
                     <div ng-repeat-start="chatter in room.chatters | toArray | filter: {id: '!' + user.$id} | limitTo: 4 track by $index"
                          ng-class="room.chatters.length > 1 ? 'multi-pic' : 'single-pic'"
                          ng-if="chatter.pic.length > 1">
-                        <img class="chatter-pic" ng-src="{{chatter.pic}}">
+                        <img class="chatter-pic"
+                             expire="{{30}}"
+                             cache-src="{{chatter.pic}}">
                     </div>
                     <div class="chatter-initial"
                          ng-repeat-end

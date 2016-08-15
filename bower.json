@@ -6,8 +6,9 @@
   },
   "resolutions": {
     "angular-animate": "^1.4.8",
-    "angular": "~1.x",
-    "ionic": "1.2.4"
+    "angular": "1.5.5",
+    "ionic": "1.2.4",
+    "angular-svg-round-progressbar": "~0.2.10"
   },
   "dependencies": {
     "angular-validation-match": "^1.9.0",
@@ -18,5 +19,9 @@
     "ng-img-crop": "ngImgCrop#^0.3.2",
     "angular-moment": "^0.10.3",
     "angular-toArrayFilter": "^1.0.1"
+    "ionic-cache-src": "^0.7.3",
+    "ngstorage": "^0.3.11",
+    "ngCordova": "^0.1.27-alpha",
+    "angular-svg-round-progressbar": "^0.4.6"
   }
 }

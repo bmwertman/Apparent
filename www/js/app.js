@@ -15,6 +15,9 @@ var Pta = angular.module('pta', [
   'firebase',
   'angularMoment',
   'angular-toArrayFilter',
+  'ngStorage',
+  'angular-svg-round-progress',
+  'ionic-cache-src',
   angularDragula(angular)
   ])
 .run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $firebaseAuth) {

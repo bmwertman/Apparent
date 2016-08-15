@@ -198,23 +198,25 @@ i.icon-note {
   }
 }
 .undo-actionsheet{
-  height: 0;
+  height: 100%;
   position: absolute;
-  top: calc(100% - 60px);
-  z-index: 1000;
+  top: 0;
   .action-sheet{
+    width: 100%;
     position: absolute;
-    top: 0;
+    bottom: 0;
     .action-sheet-group{
       background-color: rgba(2, 2, 2, 0.8);
       .action-sheet-title{
-        padding: 10px;
+        height: 60px;
+        padding: 10px 10px 5px;
         color: snow;
         width: calc(100% - 54px);
       }
       button.button{
         position: absolute;
-        bottom: 3px;
+        height: 60px;
+        bottom: 0;
         left: calc(100% - 56px);
         color: $apparentOrange;
         background-color: transparent;

@@ -1,7 +1,11 @@
 <ion-view class="profile">
   <div class="tall white-font bar bar-header bar-positive">
     <div ng-if="user.pic.length > 1">
-        <img class="profile-pic" ng-click="getImage()" ng-src="{{user.pic}}">
+        <img class="profile-pic"
+             ng-click="getImage()"
+             encode-uri="false"
+             expire="{{60}}"
+             cache-src="{{user.pic}}">
     </div>
     <div class="profile-pic user-initial"
          ng-if="user.pic.length === 1"
@@ -71,7 +75,9 @@
               <img class="profile-pic child-pic"
                    ng-model="user.children[key].pic"
                    ng-click="getImage('children/' + key + '/pic')"
-                   ng-src="{{child.pic}}">
+                   encode-uri="false"
+                   expire="{{60}}"
+                   cache-src="{{child.pic}}">
           </div>
           <div class="child-initial"
                ng-if="child.pic.length === 1"
