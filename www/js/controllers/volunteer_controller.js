@@ -4,18 +4,20 @@ Pta.controller('VolunteerCtrl', [
     'Rooms',
     'userService',
     '$firebaseObject',
-    function ($scope, $state, Rooms, userService, $firebaseObject) {
+    '$firebaseArray',
+    function ($scope, $state, Rooms, userService, $firebaseObject, $firebaseArray) {
     $scope.user = userService.getUser();
     $scope.thisHoursVolunteers = $state.params.thisHoursVolunteers;
     $scope.thisEvent = $state.params.thisEvent;
-    var userRoomsRef = firebase.database().ref('user-rooms');
+
+    var eventRoomsRef = firebase.database().ref('event-rooms');
     var chatWarp = {
             path:{ 
                 radius: 14,
                 angle: "0deg" 
             },
             targets:"#chatwarp",
-            align: "center",
+            align: "center"
         },
         allWarp = {
             path:{ 
@@ -24,28 +26,37 @@ Pta.controller('VolunteerCtrl', [
                 textPosition: "inside" 
             },
             targets:"#allwarp",
-            align: "center",
+            align: "center"
         };
 
     cssWarp(chatWarp, allWarp);
 
-    $scope.createRoom = function(volunteers, event, volunteer) {
-        $firebaseObject(userRoomsRef.child(volunteer.$id).child(event.id))
-        .$loaded()
-        .then(function(){
+    $scope.groupChat = function(event){
+        $state.go('app.rooms.chat', {roomId: event.id + '-group'});
+    }
 
-        })
-        var volunteersArr = [];
-        if(volunteer){
+    // Only used to create or open one-on-one rooms.
+    // Group chat rooms are created with their corresponding event
+    $scope.createRoom = function(volunteers, event, volunteer) {
+        var newRoomId = $scope.user.$id + volunteer.user.$id,
+            eventRooms = $firebaseArray(eventRoomsRef.child(event.id)),
+            volunteersArr = [],
+            id;
+        if(eventRooms.$indexFor(newRoomId) > 0){// They have a previous room around this event
+            id = newRoomId;
+        } else {// It's a new chat around this event
             volunteersArr.push(volunteer.user);
-        } else {
-            for (var i = volunteers.length - 1; i >= 0; i--) {
-                if(volunteers[i].user.$id !== $scope.user.$id){
-                    volunteersArr.push(volunteers[i].user);
-                }
-            }
+            id = Rooms.addNewRoom(volunteersArr, '/event-rooms/', event, newRoomId);
         }
-        var id = Rooms.addNewRoom(volunteersArr, '/event-rooms/', event);
         $state.go('app.rooms.chat', {roomId: id});
     }
 }]);    
+
+
+
+
+
+
+
+
+

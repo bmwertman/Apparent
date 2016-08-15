@@ -104,7 +104,7 @@ Pta.constant('calendar2Config', {
                                 type: eventType,
                                 volunteersNeeded: this[volunteerType],
                                 color: eventColor,
-                                title: this.event_title + title,
+                                title: this.title + title,
                                 startTimeOffset: getTimeOffset(new Date(this[startType])),
                                 totalApptTime: getApptTime(new Date(this[startType]), new Date(this[endType]))
                             }
@@ -230,8 +230,8 @@ Pta.constant('calendar2Config', {
             $scope.thisEvent = {};
             fbEventRef.$loaded(function(data){
                 $scope.thisEvent.id = data.$id;
-                $scope.thisEvent.date = moment(data.event_start).format('dddd MMMM Do');
-                $scope.thisEvent.title = data.event_title;
+                $scope.thisEvent.date = moment(data.event_start);
+                $scope.thisEvent.title = data.title;
                 $scope.thisEvent.setup_start = moment(data.setup_start);
                 $scope.thisEvent.setup_end = moment(data.setup_end);
                 $scope.thisEvent.setup_total = moment(data.setup_end).diff(data.setup_start, 'minutes');
@@ -248,7 +248,7 @@ Pta.constant('calendar2Config', {
             });
             $scope.thisHoursVolunteers = [];
             function getVolunteersFromFB(){
-                if(slots[i].children[0]){
+                if(slots[i] && slots[i].children[0]){
                     child = angular.element(slots[i].children[0]);
                     volunteer = {};
                     volunteer.user = usersRef.$getRecord(child.attr('data-user-id'));
@@ -273,8 +273,9 @@ Pta.constant('calendar2Config', {
                     .catch(function(error){
                         debugger;
                     });
-                } else {
+                } else if( i >= 0){
                     i--;
+                    getVolunteersFromFB();
                 }
                 if(i < 0) {
                     $state.go('app.calendar.volunteers', {thisHoursVolunteers: $scope.thisHoursVolunteers, thisEvent: $scope.thisEvent});

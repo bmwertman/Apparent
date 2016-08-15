@@ -5,14 +5,14 @@
     </button>
     <input type="text"
            placeholder="Enter title"
-           ng-model="event.event_title"
+           ng-model="event.title"
            autofocus="true">
     <button class="button button-clear button-positive" form="eventForm" type="submit">SAVE</button>
   </ion-header-bar>
   <ion-content>
     <form class="col-md-6 add_event" 
           id="eventForm"
-          ng-submit="saveEvent(event)"
+          ng-submit="saveEvent($event, event)"
           name="newEventForm">
       <span class="event_dates">
         <i class="icon ion-android-time"></i>

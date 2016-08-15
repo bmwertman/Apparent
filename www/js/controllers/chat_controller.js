@@ -49,7 +49,14 @@ Pta.controller('ChatCtrl', [
         if (selectedRoom) {
             // Fetching Chat Records only if a Room is Selected
             $scope.$emit('subject', selectedRoom.subject)
-            $scope.roomName = selectedRoom.title;
+            // Add room titles
+            var titleArr = [];
+            angular.forEach(selectedRoom.chatters, function(chatter, key){
+                if(chatter.id !== $scope.user.$id){
+                  titleArr.push(' ' + chatter.name.split(' ')[0]);
+                } 
+            });
+            $scope.roomName = titleArr.join();
             $scope.chats = Chats.all();
         } else {
             $scope.chats = [];

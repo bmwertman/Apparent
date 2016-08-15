@@ -1,9 +1,13 @@
 <ion-view view-title="Rooms">
     <ion-content class="chat-rooms">
         <ion-list ng-show="rooms.length > 0">
-            <ion-item class="chat-room" ng-repeat="room in rooms" type="item-text-wrap" ng-click="openChatRoom(room.$id)">
+            <ion-item class="chat-room"
+                      ng-if="room.title"
+                      ng-repeat="room in rooms | filter: {title: ''}"
+                      type="item-text-wrap"
+                      ng-click="openChatRoom(room.$id)">
                 <div class="room-pic-wrapper">
-                    <div ng-repeat-start="chatter in room.chatters | filter: {id: '!' + user.$id} | limitTo: 4 track by $index"
+                    <div ng-repeat-start="chatter in room.chatters | toArray | filter: {id: '!' + user.$id} | limitTo: 4 track by $index"
                          ng-class="room.chatters.length > 1 ? 'multi-pic' : 'single-pic'"
                          ng-if="chatter.pic.length > 1">
                         <img class="chatter-pic" ng-src="{{chatter.pic}}">
@@ -15,6 +19,8 @@
                          {{chatter.pic}}
                     </div>
                 </div>
+                <p class="room-subject"
+                   ng-if="room.subject">{{room.subject}}</p>
                 <p class="room-title">{{room.title}}</p>
                 <i class="icon {{room.icon}}"></i>
                 <h2>{{room.name}}</h2>
@@ -25,6 +31,9 @@
                 Select <span class="icon ion-android-add"></span> to start a new conversation
             </ion-item>
         </ion-list>
-        <button class="add-button" ng-click="openModal()"><i class="icon ion-android-add"></i></button>
+        <button class="add-button"
+                ng-click="openModal()">
+                <i class="icon ion-android-add"></i>
+        </button>
     </ion-content>
 </ion-view>

@@ -14,12 +14,10 @@ Pta.controller('CalendarCtrl', [
   '$ionicPlatform',
   '$ionicHistory',
   'Rooms',
-  function ($scope, $ionicLoading, $timeout, $state, $ionicModal, $ionicPopup, $ionicSideMenuDelegate, $firebaseArray, $rootScope, $stateParams, $compile, $localstorage, $ionicPlatform, $ionicHistory, Rooms) {
+  'userService',
+  '$firebaseObject',
+  function ($scope, $ionicLoading, $timeout, $state, $ionicModal, $ionicPopup, $ionicSideMenuDelegate, $firebaseArray, $rootScope, $stateParams, $compile, $localstorage, $ionicPlatform, $ionicHistory, Rooms, userService, $firebaseObject) {
   'use strict';
-
-  $scope.volunteerChat = function(){
-    debugger;
-  }
 
   $scope.selectedEvent = $stateParams.selectedEvent;
   $ionicSideMenuDelegate.canDragContent(false)
@@ -35,6 +33,7 @@ Pta.controller('CalendarCtrl', [
   $scope.isAdmin = false;
   $scope.calendarTitle = "Volunteer - " + moment($scope.currentDate).format('dddd, MMMM Do');
   $scope.isVolunteerSignup = true;
+  var user = userService.getUser();
 
   if($rootScope.profile.isAdmin && $ionicHistory.backView().stateName === "app.events"){
     $scope.isAdmin = true;
@@ -60,10 +59,6 @@ Pta.controller('CalendarCtrl', [
   var ref = firebase.database().ref();
   var eventsRef = ref.child('events');
   $scope.calEvents = $firebaseArray(eventsRef);
-
-  $scope.calEvents.$loaded(function(data){
-    // This is where you have access to the data after it has loaded!!!
-  });
 
   // $ionicModal.fromTemplateUrl('templates/edit_event.html', {
   //   scope: $scope,
@@ -281,19 +276,45 @@ Pta.controller('CalendarCtrl', [
       });
     $localstorage.set('firstReminderMinutes', null);
     $localstorage.set('secondReminderMinutes', null);
-    var ref = firebase.database().ref();
-    var eventRef = ref.child('events').child($scope.selectedEvent.$id);
-    var volunteersRef = eventRef.child('volunteers');
-    var uid = JSON.parse($localstorage.get('firebase:session::sizzling-fire-7440')).uid;//get the user's id
-    var volunteer = { 
-      id: uid,
-      start: moment(startDate)._d, 
-      end: moment(endDate)._d
-    }
-    var volunteerPushId = volunteersRef.push(volunteer).key();
-    var volunteerRef = volunteersRef.child(volunteerPushId);
-    volunteerRef.update(volunteer);
+    var roomId = $scope.selectedEvent.$id + '-group',
+        eventRoomRef = ref.child('event-rooms').child($scope.selectedEvent.$id).child(roomId),
+        eventRoom = $firebaseObject(eventRoomRef),
+        eventRef = eventsRef.child($scope.selectedEvent.$id),
+        volunteer = { id: user.$id, start: moment(startDate)._d, end: moment(endDate)._d },
+        chatter = { email: user.email, id: user.$id, name: user.name, pic: user.pic },
+        volunteerKey = eventRef.child('volunteers').push().key,
+        newChatterKey = eventRoomRef.child('chatters').push().key,
+        updates = {};
+    // This adds the user as a volunteer on the event
+    updates['/events/' + $scope.selectedEvent.$id + '/volunteers/' + volunteerKey] = volunteer;
+    // This adds the volunteer to the group chat room referenced by admin interact view when the admin wants to chat all volunteers
+    updates['/event-rooms/' + $scope.selectedEvent.$id + '/' + roomId + '/chatters/' + newChatterKey] = chatter;
+    // This adds the group chatter to the group chat in the general rooms 
+    updates['/rooms/' + roomId + '/chatters/' + newChatterKey] = chatter;  
+    ref.update(updates)
+    .then(function(){
+      eventRoom.$loaded().then(function(eventRoom){
+        var updates = {};
+        angular.forEach(eventRoom.chatters, function(currentChatter, chatterKey){
+          var newChatter = { email: user.email, id: user.$id, name: user.name, pic: user.pic };
+          // Updates the current volunteers' & event organizer's user-rooms w/ the new chatter/new volunteer
+          if(currentChatter.id !== user.$id){ // This isn't the new chatter/new volunteer
+            updates['/user-rooms/' + currentChatter.id + '/' + roomId + '/chatters/' + newChatterKey ] = newChatter;
+          }
+        });
+        var newEventRoom = {
+          chatters: eventRoom.chatters,
+          owner: eventRoom.owner,
+          subject: eventRoom.subject,
+        }
+        if(eventRoom.title){
+          newEventRoom.title = eventRoom.title;
+        }
+        updates['/user-rooms/' + user.$id + '/' + roomId] = newEventRoom;
 
+        ref.update(updates);
+      });
+    });
   }
 
   $scope.confirmSignup = function() {
@@ -349,13 +370,13 @@ Pta.controller('CalendarCtrl', [
               }, 3000); 
           }
       });
-  };
+  }
 
   $scope.event = {};
   $scope.$on('timeSelected', function(eventTimes){
     $scope.event = eventTimes.targetScope.event;
     $scope.addEventModal();
-  })
+  });
 
   $scope.eventSelected = function(calEvent){
       if($scope.isCalView){// If this isn't the volunteer signup view;
@@ -398,7 +419,9 @@ Pta.controller('CalendarCtrl', [
       $scope.event.location = e.targetScope.location.formatted_address;
   });
 
-  $scope.saveEvent = function(event){
+  $scope.saveEvent = function(e, event){
+      e.preventDefault();
+      e.stopPropagation();
       $scope.event.event_start = moment(moment($scope.event.start_date).format('ddd, MMM DD, YYYY') + " " + moment($scope.event.start_time).format('hh:mm a'))._d.toString();
       $scope.event.event_end = moment(moment($scope.event.start_date).format('ddd, MMM DD, YYYY') + " " + moment($scope.event.end_time).format('hh:mm a'))._d.toString();
       if($scope.event.setup_start_date){
@@ -415,10 +438,12 @@ Pta.controller('CalendarCtrl', [
       
       // This is needed to order the events chronologically in the view
       $scope.event.date = $scope.event.start_date.getTime();
-      var ref = firebase.database().ref();
-      var eventsRef = ref.child('events');
-      eventsRef.push($scope.event);
-      $scope.saved(event.event_title, $scope.closeModal());
+      var eventId = eventsRef.push($scope.event).key;
+      // Create a group chat room unde the event-rooms/<eventId> w/ the admin who created the event in the room
+      event.id = eventId;
+      Rooms.addNewRoom([], '/event-rooms/', event, eventId + '-group');
+      $scope.saved(event.title, $scope.closeModal());
+      
       if($rootScope.profile.isAdmin){
           $state.go('app.calendar');
       } else {
