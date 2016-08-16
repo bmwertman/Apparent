@@ -41,7 +41,7 @@ Pta.controller('RoleCtrl', [
   $scope.showOptions = false;
 
   $scope.addRole = function(){
-    rolesRef.push({title: "", user_name: "", user_id: ""});
+    roles.$add({role_rank: "", title: "", user_name: "", user_id: ""});
   }
 
   $scope.startRoleSearch = function(roleIndex){
@@ -95,10 +95,10 @@ Pta.controller('RoleCtrl', [
       } else {
         $scope.roles.$remove(role);
       }
-      // $timeout(function(){
-      //    undoActionSheet();
-      //    $localstorage.remove('savedRole');
-      // }, 5000); 
+      $timeout(function(){
+         undoActionSheet;
+         $localstorage.remove('savedRole');
+      }, 5000); 
     } else {
       var lastAdmin = $ionicPopup.alert({
         title: "This is the last admin on your account!",

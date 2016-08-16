@@ -1,0 +1,12 @@
+<ion-view title="{{user.school}} PTA Board">
+  <ion-content>
+    <ion-list class="board-members">
+      <ion-item class="board-member" ng-repeat="boardmember in boardmembers">
+        <h2 class="title">{{boardmember.title}}</h2>
+        <img ng-src="{{boardmember.user_pic}}">
+        <h3 class="name">{{boardmember.user_name}}</h3>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
+ 

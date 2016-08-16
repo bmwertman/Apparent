@@ -337,6 +337,34 @@ ion-content.has-footer{
   border-bottom: none !important;
 }
 
+.board-members{
+  .board-member{
+    width: 45%;
+    background-color: $positive;
+    margin: 10px 5% 0;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 2px 2px 5px 0px black;
+    .title{
+      text-align: center;
+      font-weight: bold;
+      color: $fontColor;
+    }
+    img{
+      border-radius: 50%;
+      width: 80%;
+      max-width: 200px;
+      display: block;
+      margin: 0 auto;
+    }
+    .name{
+      text-align: center;
+      margin-top: 10px;
+      color: $fontColor;
+    }
+  }
+}
+
 .role-management{
   .role-table{
     table-layout: fixed;

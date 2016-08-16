@@ -123,18 +123,6 @@ var Pta = angular.module('pta', [
   
   $stateProvider
 
-  .state('login', {
-     url: '/login',
-     templateUrl: 'templates/login.html',
-     controller : 'LoginCtrl'
-   })
-
-  .state('signup', {
-     url: '/signup',
-     templateUrl: 'templates/signup.html',
-     controller : 'SignupCtrl'
-   })
-
   .state('app', {
     url: '/app',
     abstract: true,
@@ -142,35 +130,12 @@ var Pta = angular.module('pta', [
     templateUrl: 'templates/menu.html'
   })
 
-  .state('app.rooms', {
-    url: '/rooms',
+  .state('app.board', {
+    url: '/board',
     views: {
-      'menuContent': {
-        templateUrl: 'templates/chat-rooms.html',
-        controller: 'RoomsCtrl'
-      }
-    }
-  })
-
-  .state('app.rooms.chat', {
-    url: '/chat',
-    params:{
-      roomId: null
-    },
-    views: {
-      'menuContent@app': {
-        templateUrl: 'templates/chat-room.html',
-        controller: 'ChatCtrl'
-      }
-    }
-  })
-
-  .state('app.roles', {
-    url: '/roles',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/roles.html',
-        controller: 'RoleCtrl'
+      'menuContent':{
+        templateUrl: 'templates/pta-board.html',
+        controller: 'BoardCtrl'
       }
     }
   })
@@ -202,6 +167,49 @@ var Pta = angular.module('pta', [
     }
   })
 
+  .state('app.roles', {
+    url: '/roles',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/roles.html',
+        controller: 'RoleCtrl'
+      }
+    }
+  })
+  
+  .state('app.events', {
+    url: '/events',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/events.html',
+        controller: 'EventsCtrl'
+      }
+    }
+  })
+
+  .state('app.rooms', {
+    url: '/rooms',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/chat-rooms.html',
+        controller: 'RoomsCtrl'
+      }
+    }
+  })
+
+  .state('app.rooms.chat', {
+    url: '/chat',
+    params:{
+      roomId: null
+    },
+    views: {
+      'menuContent@app': {
+        templateUrl: 'templates/chat-room.html',
+        controller: 'ChatCtrl'
+      }
+    }
+  })
+
   .state('app.profile', {
     url: '/profile',
     params:{
@@ -215,15 +223,17 @@ var Pta = angular.module('pta', [
     }
   })
 
-  .state('app.events', {
-    url: '/events',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/events.html',
-        controller: 'EventsCtrl'
-      }
-    }
-  });
+  .state('login', {
+     url: '/login',
+     templateUrl: 'templates/login.html',
+     controller : 'LoginCtrl'
+   })
+
+  .state('signup', {
+     url: '/signup',
+     templateUrl: 'templates/signup.html',
+     controller : 'SignupCtrl'
+   });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/login');
   $ionicConfigProvider.scrolling.jsScrolling(false);

@@ -9966,6 +9966,28 @@ ion-content.has-footer {
   background-image: none !important;
   border-bottom: none !important; }
 
+.board-members .board-member {
+  width: 45%;
+  background-color: #B71C1C;
+  margin: 10px 5% 0;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 2px 2px 5px 0px black; }
+  .board-members .board-member .title {
+    text-align: center;
+    font-weight: bold;
+    color: snow; }
+  .board-members .board-member img {
+    border-radius: 50%;
+    width: 80%;
+    max-width: 200px;
+    display: block;
+    margin: 0 auto; }
+  .board-members .board-member .name {
+    text-align: center;
+    margin-top: 10px;
+    color: snow; }
+
 .role-management .role-table {
   table-layout: fixed;
   width: 100%;
