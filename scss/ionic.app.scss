@@ -1854,7 +1854,37 @@ body div.drag-element.gu-mirror{
     font-weight: bold;
     display: inline-block;
   }
+  div.no-volunteers{
+    display: inline-block;
+    width: calc(100% - 65px);
+    float: left;
+  }
+  div.hours-needed{
+    float: left;
+    display: inline-block;
+    width: calc(100% - 65px);
+    background: linear-gradient(to right, red, orange, yellow, #33cd5f);
+    border-radius: 4px;
+    div.hours-covered{
+      color: snow;
+      text-align: center;
+      background-color: blue;
+      font-weight: bold;
+      font-size: 14px;
+      height: 30px;
+      line-height: 30px;
+      border-radius: 4px;
+    }
+  }
   button {
+    width: 48px;
+    height: 48px;
+    font-weight: bold;
+    border-radius: 50%;
+    white-space: normal;
+    line-height: 16px;
+    font-size: 14px;
     float: right;
+    margin-top: -10px;
   }
 }

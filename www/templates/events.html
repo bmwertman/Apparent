@@ -8,7 +8,14 @@
              ng-src="{{event.image}}"
              ng-show="event.image"></img>
         <p class="event_description">{{event.description}}</p>
-        <h4 class="needed" ng-show="event.volunteer_hours">Uncovered Volunteer Hours: {{event.volunteer_hours}}</h4>
+        <h4 class="needed" ng-show="event.volunteer_hours">Volunteer Hours</h4>
+        <div class="no-volunteers"
+             ng-if="event.volunteers_needed && !event.covered_hours"> No volunteers yet. Be the first!</div>
+        <div class="hours-needed"
+             ng-if="event.covered_hours">
+          <div class="hours-covered"
+               ng-style="{width: ((event.covered_hours/event.volunteer_hours) * 100) + '%'}">{{event.covered_hours}}</div>
+        </div>
         <button class="button button-small button-balanced"
                 ng-show="event.volunteer_hours"
                 ng-click="showEvent(event)">

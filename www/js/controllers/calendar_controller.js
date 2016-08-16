@@ -330,7 +330,19 @@ Pta.controller('CalendarCtrl', [
       });
       confirmPopup.then(function(res){// Are they sure they want to sign up?
           if(res) {// They're sure!
-              var count = 0;
+              var volunteerHours = moment($scope.parseTime($scope.displayEnd)).diff($scope.parseTime($scope.displayStart), 'hours'),
+                  selectedEventRef = firebase.database().ref('events').child($scope.selectedEvent.$id),
+                  count = 0,
+                  coveredHours;
+              // Deduct the hours just volunteered from the total volunteer hours needed.
+              $scope.selectedEvent.volunteer_hours = $scope.selectedEvent.volunteer_hours - volunteerHours;
+              if($scope.selectedEvent.covered_hours){
+                coveredHours = $scope.selectedEvent.covered_hours + volunteerHours;
+              } else {
+                coveredHours = volunteerHours
+              }
+              selectedEventRef.update({covered_hours: coveredHours});
+
               $scope.createReminders = $ionicPopup.show({
                   title: 'Add a reminder?',
                   templateUrl: 'templates/set-notification.html',
