@@ -1,12 +1,12 @@
 Pta.factory('userService', function () {
   var service = {
     _user: null,
-    setUser: function (u) {
-      if (u && !u.error) {
-        service._user = u;
+    setUser: function (user) {
+      if (user && !user.error) {
+        service._user = user;
         return service.getUser();
       } else {
-        return u.error;
+        return user.error;
       }
     },
     getUser: function () {

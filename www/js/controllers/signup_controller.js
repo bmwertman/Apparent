@@ -1,11 +1,11 @@
 Pta.controller('SignupCtrl', [
   '$scope',
   '$ionicSideMenuDelegate',
-  '$firebaseAuth',
+  'Auth',
   '$ionicLoading',
   '$firebaseArray',
   '$state',
-  function($scope, $ionicSideMenuDelegate, $firebaseAuth, $ionicLoading, $firebaseArray, $state) {
+  function($scope, $ionicSideMenuDelegate, Auth, $ionicLoading, $firebaseArray, $state) {
 
   $ionicSideMenuDelegate.canDragContent(true);
   $scope.newUser = {};
@@ -13,10 +13,10 @@ Pta.controller('SignupCtrl', [
   $scope.signupSubmit = function() {
     $ionicLoading.show({ template: '<ion-spinner></ion-spinner>', duration: 2000});
     // Create new user in firebase
-    $firebaseAuth().$createUserWithEmailAndPassword($scope.newUser.email, $scope.newUser.password)
+    Auth.createUser($scope.newUser.email, $scope.newUser.password)
     .then(function(userData) {
       // Log in this newly created user
-      return $firebaseAuth().$signInWithEmailAndPassword($scope.newUser.email, $scope.newUser.password);
+      return Auth.login($scope.newUser.email, $scope.newUser.password);
     }).then(function(authData) {
       // If the user is now created and logged in, then add the user's
       // info into firebase

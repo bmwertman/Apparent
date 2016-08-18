@@ -10201,7 +10201,7 @@ ion-header-bar .calendar-form {
     margin-bottom: 15px; }
   .login .card .forgot-password {
     color: snow; }
-  .login .card button {
+  .login .card a.button {
     margin: 30px auto;
     background-color: #FF8F02;
     color: snow;
@@ -10627,7 +10627,7 @@ ion-header-bar .calendar-form {
   background-color: transparent; }
 
 .calendar div.btn-toolbar {
-  width: 276px;
+  width: 278px;
   margin: 10px auto;
   height: 42px; }
   .calendar div.btn-toolbar button.cal_view_btn {

@@ -134,7 +134,7 @@ Pta.directive('contactpicker', [
                     scope.searchContacts = function(){
                         // Disabled phone contacts search in favor of only searching registered users 
                         // at the parent's associated school
-                        // if(scope.isAdmin && !scope.searchSchool){
+                        // if(user.isAdmin && !scope.searchSchool){
                         //     $cordovaContacts.find({
                         //         filter: document.getElementById('contactsInput').value,
                         //         multiple: true,

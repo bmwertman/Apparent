@@ -7,6 +7,7 @@ Pta.controller('RoleCtrl', [
   '$localstorage',
   '$ionicActionSheet',
   '$timeout',
+  '$rootScope',
   function ($scope, userService, $ionicPopup, $firebaseArray, userFilter, $localstorage, $ionicActionSheet, $timeout) {
   $scope.user = userService.getUser();  
   $localstorage.remove('roleEditStart');
@@ -92,13 +93,13 @@ Pta.controller('RoleCtrl', [
         ref.update(adminUpdate);
         $localstorage.setObject('savedRole', role);
         $scope.roles.$remove(role);
+        $timeout(function(){
+           undoActionSheet();
+           $localstorage.remove('savedRole');
+        }, 5000); 
       } else {
         $scope.roles.$remove(role);
       }
-      $timeout(function(){
-         undoActionSheet;
-         $localstorage.remove('savedRole');
-      }, 5000); 
     } else {
       var lastAdmin = $ionicPopup.alert({
         title: "This is the last admin on your account!",

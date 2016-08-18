@@ -16,10 +16,10 @@
     </ion-header-bar>
     <ion-content>
       <ion-list>
-        <ion-item menu-close ng-if="isAdmin">
+        <ion-item menu-close ng-if="$root.isAdmin">
           <a class="button button-block button-clear button-dark" ui-sref="app.calendar">Calendar</a>
         </ion-item>
-        <ion-item menu-close ng-if="isAdmin">
+        <ion-item menu-close ng-if="$root.isAdmin">
           <a class="button button-block button-clear button-dark" ui-sref="app.roles">Roles</a>
         </ion-item>
         <ion-item menu-close>

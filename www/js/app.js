@@ -20,7 +20,7 @@ var Pta = angular.module('pta', [
   'ionic-cache-src',
   angularDragula(angular)
   ])
-.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $firebaseAuth) {
+.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage) {
   // hide xeditable cancel button
   editableThemes['default'].cancelTpl = '<button type="button" class="btn btn-default" style="display:none">';
   editableThemes['default'].submitTpl = '<button type="submit" class="xeditable-submit fa fa-pencil-square-o"></button>';
@@ -31,8 +31,8 @@ var Pta = angular.module('pta', [
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
-
     }
+
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
@@ -67,56 +67,68 @@ var Pta = angular.module('pta', [
       loginPassword = $localstorage.get('password');
 
   if (loginEmail && loginPassword) {
-    $firebaseAuth().$signInWithEmailAndPassword(loginEmail, loginPassword,
-      function(error, authData) {
-        if (error) {
-          console.log("Login Failed!", error);
-        } else {
-          Auth.onAuth()
-        }
-    });
+    Auth.login(loginEmail, loginPassword);
   }
 })
 // Watches for authentication event. If login occurs, then get the user's profile info and go to calender or volunteer page
-.factory('Auth', function($firebaseAuth, $timeout, $rootScope, $firebaseObject, $state, userService){
+.factory('Auth', function($firebaseAuth, $firebaseObject, $state, userService, $localstorage, $rootScope, $timeout){
+  var authObj = $firebaseAuth();
   return {
-    // helper method to login with multiple providers
-    loginWithProvider: function loginWithProvider(provider) {
-      return $firebaseAuth().$signInWithPopup(provider);
+    login: function(email, password) {
+      var self = this;
+      authObj.$signInWithEmailAndPassword(email, password)
+      .then(function(authData){
+        self.onAuth(navigator.splashscreen.hide);
+      });
     },
-    // wrapping the unauth function
-    logout: function logout() {
-      $firebaseAuth().$signOut();
+    logout: function() {
+      authObj.$signOut();
     },
-    // Watch for an authentication event
-    onAuth: function onLoggedIn(callback) {
-      $firebaseAuth().$onAuthStateChanged(function(authData) {
-        // If user is successfully authenticated, then get their profile
+    onAuth: function(callback) {
+      authObj.$onAuthStateChanged(function(authData) {
         if (authData) {
-          var ref = firebase.database().ref();
-          var userID = authData.uid;
-          var profileObjectRef = ref.child('users').child(userID);
-          $rootScope.profile = $firebaseObject(profileObjectRef);
-          userService.setUser($firebaseObject(profileObjectRef));
-          $rootScope.profile.$loaded(
-            function(data) {
-              // After user's profile data is loaded, go to calender or volunteer page
-              // depending of if they are an admin or not
-              if (data.isAdmin) {
+          var userRef = firebase.database().ref('users').child(authData.uid),
+              profile = $firebaseObject(userRef),
+              userIsAdmin = $firebaseObject(userRef.child('isAdmin'));
+          profile.$loaded(
+            function(profile) {
+              userService.setUser(profile);
+              if(callback){
+                $timeout(function(){
+                  callback();
+                }, 2000);
+              }
+              if (profile.isAdmin) {
+                $rootScope.isAdmin = true;
                 $state.go('app.calendar');
               } else {
+                $rootScope.isAdmin = false;
                 $state.go('app.events');
               }
+              function adminReset(){
+                if($rootScope.isAdmin){
+                  $rootScope.isAdmin = false;
+                  $state.go('app.events');
+                } else {
+                  $rootScope.isAdmin = true;
+                  $state.go('app.calendar');
+                }
+              }
+              userIsAdmin.$watch(adminReset);
             }
           );
         } else {
-          // If the user is not successfully authenticated, go back to login page
-          $rootScope.profile = null;
           $state.go('login');
-        };       
-      }); // auth.$onAuth
-    } // onAuth
-  };
+        }       
+      });
+    },
+    createUser: function(email, password){
+      authObj.$createUserWithEmailAndPassword(email, password)
+    },
+    passwordReset: function(email){
+      authObj.$sendPasswordResetEmail(email);
+    }
+  }
 })
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {

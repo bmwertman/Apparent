@@ -7,7 +7,6 @@ Pta.controller('CalendarCtrl', [
   '$ionicPopup',
   '$ionicSideMenuDelegate',
   '$firebaseArray',
-  '$rootScope',
   '$stateParams',
   '$compile',
   '$localstorage',
@@ -16,7 +15,7 @@ Pta.controller('CalendarCtrl', [
   'Rooms',
   'userService',
   '$firebaseObject',
-  function ($scope, $ionicLoading, $timeout, $state, $ionicModal, $ionicPopup, $ionicSideMenuDelegate, $firebaseArray, $rootScope, $stateParams, $compile, $localstorage, $ionicPlatform, $ionicHistory, Rooms, userService, $firebaseObject) {
+  function ($scope, $ionicLoading, $timeout, $state, $ionicModal, $ionicPopup, $ionicSideMenuDelegate, $firebaseArray, $stateParams, $compile, $localstorage, $ionicPlatform, $ionicHistory, Rooms, userService, $firebaseObject) {
   'use strict';
 
   $scope.selectedEvent = $stateParams.selectedEvent;
@@ -30,15 +29,11 @@ Pta.controller('CalendarCtrl', [
     $scope.currentDate = new Date();
   }
 
-  $scope.isAdmin = false;
   $scope.calendarTitle = "Volunteer - " + moment($scope.currentDate).format('dddd, MMMM Do');
   $scope.isVolunteerSignup = true;
   var user = userService.getUser();
 
-  if($rootScope.profile.isAdmin && $ionicHistory.backView().stateName === "app.events"){
-    $scope.isAdmin = true;
-  } else if($rootScope.profile.isAdmin) {
-    $scope.isAdmin = true;
+  if(user.isAdmin) {
     $scope.calendarTitle = "Calendar";
     $scope.isVolunteerSignup = false;
   } 
@@ -456,7 +451,7 @@ Pta.controller('CalendarCtrl', [
       Rooms.addNewRoom([], '/event-rooms/', event, eventId + '-group');
       $scope.saved(event.title, $scope.closeModal());
       
-      if($rootScope.profile.isAdmin){
+      if(user.isAdmin){
           $state.go('app.calendar');
       } else {
           $state.go('app.volunteer');

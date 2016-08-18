@@ -5,10 +5,9 @@ Pta.controller('LoginCtrl', [
   '$timeout',
   '$ionicLoading',
   '$localstorage',
-  '$firebaseAuth',
   'Auth',
   '$state',
-  function($scope, $ionicModal, $ionicPopup, $timeout, $ionicLoading, $localstorage, $firebaseAuth, Auth, $state) {
+  function($scope, $ionicModal, $ionicPopup, $timeout, $ionicLoading, $localstorage, Auth, $state) {
 
   $scope.openSignup = function(){
     $state.go('signup');
@@ -17,22 +16,21 @@ Pta.controller('LoginCtrl', [
   // Form data for the login view
   $scope.credentials = {};
   $scope.submitted = false;
-  var authObj = $firebaseAuth();
+  
 
   // Log in using firebase's login API
   $scope.doLogin = function () {
     $scope.errorMessage = null;
     $ionicLoading.show({ template: '<ion-spinner></ion-spinner>'});
-    authObj.$signInWithEmailAndPassword($scope.credentials.email, $scope.credentials.password)
+    Auth.login($scope.credentials.email, $scope.credentials.password)
     .then(function(authData){
-      if(ionic.Platform.isAndroid() || ionicPlatform.isIOS()){
+      if(ionic.Platform.isAndroid() || ionic.Platform.isIOS()){
         $localstorage.set('email', $scope.credentials.email);
         $localstorage.set('password', $scope.credentials.password);
       } else {
         $scope.credentials = {};
       }
-      $ionicLoading.hide();
-      $state.go('app.events');
+      Auth.onAuth($ionicLoading.hide);
     }).catch(function(error){
       $ionicLoading.hide();
       console.log("Login Failed!", error);
@@ -64,23 +62,13 @@ Pta.controller('LoginCtrl', [
               e.preventDefault();
               $scope.invalidEmail = true;
             } else {
-              authObj.$sendPasswordResetEmail($scope.data.resetEmail);
+              Auth.passwordReset($scope.data.resetEmail);
             } 
           }
         }
       ]
     });
   }
-  
-  // Logs a user out
-  $scope.logout = authObj.$signOut();
-
-  // Detect changes in authentication state
-  // when a user logs in, set them to $scope
-  Auth.onAuth(function(authData) {
-    $scope.user = authData;
-  });
-
   
 }])
 .directive('shakeThat', ['$animate', function($animate) {

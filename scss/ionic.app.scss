@@ -626,7 +626,7 @@ ion-header-bar{
     .forgot-password{
       color: snow;
     }
-    button {
+    a.button {
       margin: 30px auto;
       background-color: $apparentOrange;
       color: snow;
@@ -1150,7 +1150,7 @@ ion-header-bar{
 
 .calendar{
   div.btn-toolbar{
-    width: 276px;
+    width: 278px;
     margin: 10px auto;
     height: 42px;
     button.cal_view_btn {

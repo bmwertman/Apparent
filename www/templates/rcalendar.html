@@ -3,7 +3,7 @@
 </ion-header-bar>
 <ion-view hide-back-button="true" title="{{calendarTitle}}">
   <ion-content class="has-header calendar">
-    <div class="btn-toolbar" ng-if="isAdmin && !isVolunteerSignup">
+    <div class="btn-toolbar" ng-if="$root.isAdmin && !isVolunteerSignup">
       <button type="button" class="btn btn-default cal_view_btn" ng-class="{active:mode==='month'}" ng-click="changeMode('month')">
           Month
       </button>
@@ -17,7 +17,7 @@
           Today
       </button>
     </div>
-    <label class="item item-input item-select role-filter" ng-if="isAdmin && !isVolunteerSignup">
+    <label class="item item-input item-select role-filter" ng-if="$root.isAdmin && !isVolunteerSignup">
       <div class="input-label">
           Filter by Volunteer Role
       </div>
