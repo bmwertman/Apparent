@@ -10866,8 +10866,7 @@ ion-header-bar .calendar-form {
   display: flex !important;
   align-content: center !important;
   align-items: center !important;
-  border: none;
-  width: calc(100% + 72px); }
+  border: none; }
   .chat-room .messages .chatter-pic-wrapper {
     display: inline-block;
     width: 42px;

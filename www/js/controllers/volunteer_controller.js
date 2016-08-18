@@ -46,7 +46,7 @@ Pta.controller('VolunteerCtrl', [
             id = newRoomId;
         } else {// It's a new chat around this event
             volunteersArr.push(volunteer.user);
-            id = Rooms.addNewRoom(volunteersArr, '/event-rooms/', event, newRoomId);
+            id = Rooms.addNewRoom(volunteersArr, '/event-rooms/', newRoomId, event);
         }
         $state.go('app.rooms.chat', {roomId: id});
     }

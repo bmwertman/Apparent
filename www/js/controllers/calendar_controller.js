@@ -448,7 +448,7 @@ Pta.controller('CalendarCtrl', [
       var eventId = eventsRef.push($scope.event).key;
       // Create a group chat room unde the event-rooms/<eventId> w/ the admin who created the event in the room
       event.id = eventId;
-      Rooms.addNewRoom([], '/event-rooms/', event, eventId + '-group');
+      Rooms.addNewRoom([], '/event-rooms/', eventId + '-group', event);
       $scope.saved(event.title, $scope.closeModal());
       
       if(user.isAdmin){

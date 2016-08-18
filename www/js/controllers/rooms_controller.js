@@ -78,7 +78,8 @@ Pta.controller('RoomsCtrl', [
   }
 
   $scope.createRoom = function() {
-    var id = Rooms.addNewRoom(this.$$childHead.selectedValues, '/user-rooms/');
+    var newRoomId = firebase.database().ref('user-rooms').child($scope.user.$id).push().key,
+        id = Rooms.addNewRoom(this.$$childHead.selectedValues, '/user-rooms/', newRoomId);
     $state.go('app.rooms.chat', {roomId: id});
     $scope.closeModal();
   }

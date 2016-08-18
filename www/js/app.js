@@ -63,25 +63,41 @@ var Pta = angular.module('pta', [
     }
   });
   
-  var loginEmail = $localstorage.get('email'),
-      loginPassword = $localstorage.get('password');
+  var credentials = {
+    email: $localstorage.get('email'),
+    password: $localstorage.get('password')
+  };
 
-  if (loginEmail && loginPassword) {
-    Auth.login(loginEmail, loginPassword);
+  if (credentials.email && credentials.password) {
+    Auth.login(credentials);
   }
 })
 // Watches for authentication event. If login occurs, then get the user's profile info and go to calender or volunteer page
-.factory('Auth', function($firebaseAuth, $firebaseObject, $state, userService, $localstorage, $rootScope, $timeout){
+.factory('Auth', function($firebaseAuth, $firebaseObject, $state, userService, $localstorage, $rootScope, $timeout, $ionicLoading){
   var authObj = $firebaseAuth();
   return {
-    login: function(email, password) {
+    login: function(credentials) {
       var self = this;
-      authObj.$signInWithEmailAndPassword(email, password)
+      authObj.$signInWithEmailAndPassword(credentials.email, credentials.password)
       .then(function(authData){
-        self.onAuth(navigator.splashscreen.hide);
+        if(ionic.Platform.isAndroid() || ionic.Platform.isIOS()){
+          $localstorage.set('email', credentials.email);
+          $localstorage.set('password', credentials.password);
+        }
+        if(navigator.splashscreen){
+          self.onAuth(navigator.splashscreen.hide); 
+        } else {
+          self.onAuth($ionicLoading.hide);
+        }
+        return "success";
+      }).catch(function(error){
+        $ionicLoading.hide();
+        return error.message;
       });
     },
     logout: function() {
+      $localstorage.remove('email');
+      $localstorage.remove('password');
       authObj.$signOut();
     },
     onAuth: function(callback) {

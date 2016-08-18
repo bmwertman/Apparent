@@ -15,29 +15,15 @@ Pta.controller('LoginCtrl', [
 
   // Form data for the login view
   $scope.credentials = {};
-  $scope.submitted = false;
   
-
   // Log in using firebase's login API
   $scope.doLogin = function () {
     $scope.errorMessage = null;
     $ionicLoading.show({ template: '<ion-spinner></ion-spinner>'});
-    Auth.login($scope.credentials.email, $scope.credentials.password)
-    .then(function(authData){
-      if(ionic.Platform.isAndroid() || ionic.Platform.isIOS()){
-        $localstorage.set('email', $scope.credentials.email);
-        $localstorage.set('password', $scope.credentials.password);
-      } else {
-        $scope.credentials = {};
-      }
-      Auth.onAuth($ionicLoading.hide);
-    }).catch(function(error){
-      $ionicLoading.hide();
-      console.log("Login Failed!", error);
-      $scope.submitted = true;
-      $scope.errorMessage = error.message;
-      $scope.$apply();
-    });
+    var res = Auth.login($scope.credentials);
+    if(res !== "success"){
+      console.log(res);
+    }
   };
 
   var emailRegex = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
@@ -70,30 +56,30 @@ Pta.controller('LoginCtrl', [
     });
   }
   
-}])
-.directive('shakeThat', ['$animate', function($animate) {
-  return {
-    require: '^form',
-    scope: {
-      submit: '&',
-      submitted: '='
-    },
-    link: function(scope, element, attrs, form) {
-      // listen on submit event
-      element.on('submit', function() {
-        // tell angular to update scope
-        scope.$apply(function() {
-          // everything ok -> call submit fn from controller
-          if (form.$valid) return scope.submit();
-          // show error messages on submit
-          scope.submitted = true;
-          // shake that form
-          $animate.addClass(element, 'shake', function() {
-            $animate.removeClass(element, 'shake');
-          });
-        });
-      });
-    }
-  };
-
 }]);
+// .directive('shakeThat', ['$animate', function($animate) {
+//   return {
+//     require: '^form',
+//     scope: {
+//       submit: '&',
+//       submitted: '='
+//     },
+//     link: function(scope, element, attrs, form) {
+//       // listen on submit event
+//       element.on('submit', function() {
+//         // tell angular to update scope
+//         scope.$apply(function() {
+//           // everything ok -> call submit fn from controller
+//           if (form.$valid) return scope.submit();
+//           // show error messages on submit
+//           scope.submitted = true;
+//           // shake that form
+//           $animate.addClass(element, 'shake', function() {
+//             $animate.removeClass(element, 'shake');
+//           });
+//         });
+//       });
+//     }
+//   };
+
+// }]);
