@@ -29,14 +29,15 @@ Pta.controller('CalendarCtrl', [
     $scope.currentDate = new Date();
   }
 
-  $scope.calendarTitle = "Volunteer - " + moment($scope.currentDate).format('dddd, MMMM Do');
-  $scope.isVolunteerSignup = true;
   var user = userService.getUser();
 
-  if(user.isAdmin) {
+  if($ionicHistory.backView().stateName === "app.events") {
+    $scope.calendarTitle = "Volunteer - " + moment($scope.currentDate).format('dddd, MMMM Do');
+    $scope.isVolunteerSignup = true;
+  } else {
     $scope.calendarTitle = "Calendar";
     $scope.isVolunteerSignup = false;
-  } 
+  }
 
   $scope.itemSelected = {};
   $scope.eventTypes = [
@@ -239,49 +240,13 @@ Pta.controller('CalendarCtrl', [
       $scope.selectedTime = $scope.items[0];
   }
 
-  $scope.createCalEvent = function(){
-    var calOptions = window.plugins.calendar.getCalendarOptions(); 
-    calOptions.firstReminderMinutes = $localstorage.get('firstReminderMinutes');
-    calOptions.secondReminderMinutes = $localstorage.get('secondReminderMinutes');
-    var title = $scope.selectedEvent.event_title,
-        eventLocation = $scope.selectedEvent.location,
-        notes = null,
-        startDate = $scope.parseTime($scope.displayStart, new Date($scope.selectedEvent.date)),
-        endDate = $scope.parseTime($scope.displayEnd, new Date($scope.selectedEvent.date));
-    window.plugins.calendar.createEventWithOptions(
-        title,
-        eventLocation,
-        notes,
-        startDate,
-        endDate,
-        calOptions,
-      function (result) {
-        var alert = $ionicPopup.alert({
-           title: '<b>Thanks!</b>',
-           template: '<div style="text-align:center;">You\'re child\'s school is better because of people like you.</div>',
-           buttons: []
-        });
-        $timeout(function(){
-           alert.close();
-           $state.go('app.events');
-        }, 3000); 
-      }, 
-      function (err) {
-       console.log('Error: '+ err);
-      });
-    $localstorage.set('firstReminderMinutes', null);
-    $localstorage.set('secondReminderMinutes', null);
+  function addToChat(){
     var roomId = $scope.selectedEvent.$id + '-group',
         eventRoomRef = ref.child('event-rooms').child($scope.selectedEvent.$id).child(roomId),
         eventRoom = $firebaseObject(eventRoomRef),
-        eventRef = eventsRef.child($scope.selectedEvent.$id),
-        volunteer = { id: user.$id, start: moment(startDate)._d, end: moment(endDate)._d },
         chatter = { email: user.email, id: user.$id, name: user.name, pic: user.pic },
-        volunteerKey = eventRef.child('volunteers').push().key,
         newChatterKey = eventRoomRef.child('chatters').push().key,
         updates = {};
-    // This adds the user as a volunteer on the event
-    updates['/events/' + $scope.selectedEvent.$id + '/volunteers/' + volunteerKey] = volunteer;
     // This adds the volunteer to the group chat room referenced by admin interact view when the admin wants to chat all volunteers
     updates['/event-rooms/' + $scope.selectedEvent.$id + '/' + roomId + '/chatters/' + newChatterKey] = chatter;
     // This adds the group chatter to the group chat in the general rooms 
@@ -308,6 +273,73 @@ Pta.controller('CalendarCtrl', [
         updates['/user-rooms/' + user.$id + '/' + roomId] = newEventRoom;
 
         ref.update(updates);
+      });
+    });
+  }
+
+  $scope.createCalEvent = function(){
+    var startDate = $scope.parseTime($scope.displayStart, new Date($scope.selectedEvent.date)).toString(),
+        endDate = $scope.parseTime($scope.displayEnd, new Date($scope.selectedEvent.date)).toString(),
+        eventRef = eventsRef.child($scope.selectedEvent.$id),
+        currentVolunteers = $firebaseArray(eventRef.child('volunteers')),
+        volunteer = { id: user.$id, start: startDate, end: endDate };
+    currentVolunteers.$loaded()
+    .then(function(volunteers){
+      //Make sure a previous volunteer isn't adding more time
+      if(volunteers.length > 0){
+        for (var i = volunteers.length - 1; i >= 0; i--) {
+          if(volunteers[i].id === user.$id){//Only add them to the volunteers
+            break;
+          } else if(i <= 0){//Add them to volunteers and chat
+            addToChat();
+          }
+        }
+      } else {
+        addToChat();
+      }
+      volunteers.$add(volunteer)
+      .then(function(){
+        if($localstorage.get('firstReminderMinutes')){
+          var calOptions = window.plugins.calendar.getCalendarOptions(); 
+          calOptions.firstReminderMinutes = $localstorage.get('firstReminderMinutes');
+          calOptions.secondReminderMinutes = $localstorage.get('secondReminderMinutes');
+          var title = $scope.selectedEvent.event_title,
+              eventLocation = $scope.selectedEvent.location,
+              notes = null;
+          window.plugins.calendar.createEventWithOptions(
+              title,
+              eventLocation,
+              notes,
+              startDate,
+              endDate,
+              calOptions,
+            function (result) {
+              var alert = $ionicPopup.alert({
+                 title: '<b>Thanks!</b>',
+                 template: '<div style="text-align:center;">You\'re child\'s school is better because of people like you.</div>',
+                 buttons: []
+              });
+              $timeout(function(){
+                 alert.close();
+                 $state.go('app.events');
+              }, 3000); 
+            }, 
+            function (err) {
+             console.log('Error: '+ err);
+            });
+          $localstorage.remove('firstReminderMinutes');
+          $localstorage.remove('secondReminderMinutes');
+        } else {
+          var alert = $ionicPopup.alert({
+             title: '<b>Thanks!</b>',
+             template: '<div style="text-align:center;">You\'re child\'s school is better because of people like you.</div>',
+             buttons: []
+          });
+          $timeout(function(){
+             alert.close();
+             $state.go('app.events');
+          }, 3000); 
+        }
       });
     });
   }
@@ -348,10 +380,7 @@ Pta.controller('CalendarCtrl', [
                           onTap: function(){
                               if(count === 0){//Hack fix because onTap kept calling createEvent() twice
                                 count++;
-                                var calOptions = window.plugins.calendar.getCalendarOptions(); 
-                                calOptions.firstReminderMinutes = null;
-                                calOptions.secondReminderMinutes = null;
-                                $scope.createCalEvent(calOptions);// Add the event w/o notifications
+                                $scope.createCalEvent();// Just adds them to the chat room
                               }
                           }
                       },{
@@ -360,7 +389,7 @@ Pta.controller('CalendarCtrl', [
                           onTap: function(e){
                             if(count === 0){
                               count++
-                              $scope.createCalEvent();// Add the event w/ notifications
+                              $scope.createCalEvent();// If they setup reminders it gets them info from $localstorage
                             }
                           }
                       }

@@ -129,8 +129,8 @@ Pta.constant('calendar2Config', {
                 volunteerEnd,
                 hoursToAdd,
                 volunteerArr = [],
-                eventStart = moment(event[newObj.type + '_' + 'start']),
-                eventEnd = moment(event[newObj.type + '_' + 'end']);
+                segmentStart = moment(event[newObj.type + '_' + 'start']),
+                segmentEnd = moment(event[newObj.type + '_' + 'end']);
             // Iterate over volunteers and match the hours they volunteered
             // to the correct event segment
             angular.forEach(event.volunteers, function(value, key){
@@ -140,14 +140,25 @@ Pta.constant('calendar2Config', {
                 volunteerEnd = moment(value.end);
                 // Determine if volunteer's start or end time falls within this event segment
                 // and get the duration
-                if(volunteerStart.isBetween(eventStart, eventEnd)){// Volunteer starts during this segment
-                    volunteerDuration = eventEnd.diff(volunteerStart, 'hours');
-                } else if(volunteerEnd.isBetween(eventStart, eventEnd)) {// Volunteer finishes during this segment
-                    volunteerDuration = volunteerEnd.diff(eventStart, 'hours');
-                } else if(volunteerEnd.isSame(eventEnd) || volunteerEnd.isAfter(eventEnd)){// Volunteer is signed up for the entire segment
-                    volunteerDuration = eventEnd.diff(eventStart, 'hours');
+                if(volunteerStart.isSame(segmentStart) || volunteerStart.isBefore(segmentStart)){
+                    if(volunteerEnd.isSame(segmentEnd) || volunteerEnd.isAfter(segmentEnd)){
+                        volunteerDuration = segmentEnd.diff(segmentStart, 'hours');
+                    } else if(volunteerEnd.isBetween(segmentStart, segmentEnd)){
+                        volunteerDuration = volunteerEnd.diff(segmentStart, 'hours');
+                    } else {
+                        volunteerDuration = 0;
+                    }
+                } else if(volunteerStart.isBetween(segmentStart, segmentEnd)){
+                    if(volunteerEnd.isSame(segmentEnd) || volunteerEnd.isAfter(segmentEnd)){
+                        volunteerDuration = segmentEnd.diff(segmentStart, 'hours');
+                    } else if(volunteerEnd.isBetween(volunteerStart, segmentEnd)){
+                        volunteerDuration = volunteerEnd.diff(volunteerStart, 'hours');
+                    } else {
+                        volunteerDuration = 0;
+                    }
+                } else {
+                    volunteerDuration = 0;
                 }
-
                 // Create an array of date-times for each hour volunteered 
                 // in this event segment
                 if(volunteerDuration > 0){
@@ -155,16 +166,20 @@ Pta.constant('calendar2Config', {
                         var previousSegment = $scope.eventSource[$scope.eventSource.length - 1],//the previous segment added
                             setupSegment = $filter('filter')($scope.eventSource, {id: newObj.id, type: 'setup'});
                             volunteer.type = 'setup';
-                        // Currently adding volunteer hours for the event, the volunteer finishes during the eventSegment, setup 
-                        // volunteer hours were already added in the setup segment and we need to adjust the starting hour count
                         if(newObj.type === 'event'){
-                            hoursToAdd = moment(previousSegment.endTime).diff(previousSegment.startTime, 'hours') - 1;
+                            hoursToAdd = moment(previousSegment.endTime).diff(previousSegment.startTime, 'hours');
                             volunteer.type = 'event';
-                        //Currently adding hours to the Cleanup segment of the event and volunteer hours were added
                         } else if(newObj.type === 'cleanup') {
                             var eventSegment = $filter('filter')($scope.eventSource, {id: newObj.id, type: 'event'});
-                            hoursToAdd = (moment(setupSegment[0].endTime).diff(setupSegment[0].startTime, 'hours') + moment(eventSegment[0].endTime).diff(eventSegment[0].startTime, 'hours')) - 1;
+                            if(moment(value.start).isBetween(eventSegment[0].startTime, eventSegment[0].endTime) || moment(value.start).isSame(eventSegment[0].startTime) ){
+                                hoursToAdd = moment(eventSegment[0].endTime).diff(value.start, 'hours');
+                            } else if(moment(value.start).isBetween(setupSegment[0].startTime, setupSegment[0].endTime) || moment(value.start).isSame(setupSegment[0].startTime)){
+                                hoursToAdd = moment(setupSegment[0].endTime).diff(value.start, 'hours') + moment(eventSegment[0].endTime).diff(eventSegment[0].startTime, 'hours');
+                            }
                             volunteer.type = 'cleanup';
+                            for (var i = 0; i < volunteerDuration; i++) {
+                                volunteer.hours.push(moment(volunteerStart._d).add((i + hoursToAdd), 'hours')); 
+                            }
                         } else {
                             console.log("Error calculating volunteer hours");
                         }
@@ -172,8 +187,14 @@ Pta.constant('calendar2Config', {
                         hoursToAdd = 0;
                     }
 
-                    for (var i = 0; i < volunteerDuration; i++) {
-                        volunteer.hours.push(moment(volunteerStart._d).add((i + hoursToAdd), 'hours')); 
+                    if(previousSegment && volunteerStart.isBefore(previousSegment.endTime)){
+                        for (var i = 0; i < volunteerDuration; i++) {
+                            volunteer.hours.push(moment(volunteerStart._d).add((i + hoursToAdd), 'hours')); 
+                        }
+                    } else {
+                        for (var i = 0; i < volunteerDuration; i++) {
+                            volunteer.hours.push(moment(volunteerStart._d).add(i , 'hours')); 
+                        }
                     }
                     volunteer.id = value.id
                     volunteer.event = event.$id;
@@ -187,7 +208,7 @@ Pta.constant('calendar2Config', {
                 // Sort volunteer objects by the # of hrs volunteered in the segment in descending order
                 volunteerArr = $filter('orderBy')(volunteerArr, '-hours.length');// Pushes them further right in the view 
                 var rowArr= [],
-                    start = eventStart._i,
+                    start = segmentStart._i,
                     grid = (function(){//creates a grid w/ rows for hrs in event segment & slots for # of volunteers needed
                         for(var i = 0; i < newObj.totalApptTime; i++){
                             var row = [],
@@ -199,16 +220,35 @@ Pta.constant('calendar2Config', {
                         }
                         return rowArr;
                     })();
-                for (var x = grid.length - 1; x >= 0; x--) {//iterates over grid slots
-                    for (var i = volunteerArr.length - 1; i >= 0; i--) {//iterates over volunteers
-                        var volunteerHours = volunteerArr[i].hours;
-                        for (var y = volunteerHours.length - 1; y >= 0; y--) {//iterates a volunteer's hours
-                            if(moment.isMoment(grid[x][i]) && (grid[x][i]).isSame(volunteerHours[y])){//matches volunteer signup hr to grid slot & checks slot if available
-                                grid[x].splice(i, 1, volunteerArr[i]);
+            //  y1 = length of the job segment(ie setup, main event, cleanup) in hours
+            //  y2 = # of hours a volunteer has signed up for
+            //                      |y
+            //                      |
+            //                      |
+            //                      |
+            //                      |
+            //                      |
+            //                      |
+            // x ------------------- 
+            //  x1 = available slots for volunteers in an hour
+            //  x2 = # of volunteers
+                var match;
+                for (var y1 = grid.length - 1; y1 >= 0; y1--) {//iterates over grid rows
+                    for (var x2 = volunteerArr.length - 1; x2 >= 0; x2--) {//iterates over volunteers
+                        if(volunteerArr[x2].hours.length > 0){// Make sure this volunteer has some hours in this segment
+                            for (var y2 = volunteerArr[x2].hours.length - 1; y2 >= 0; y2--) {//iterates a volunteer's hours
+                                for (var x1 = grid[y1].length - 1; x1 >= 0; x1--) {// iterates over slots 
+                                    if(moment.isMoment(grid[y1][x1]) && (grid[y1][x1]).isSame(volunteerArr[x2].hours[y2])){//matches volunteer signup hr to grid slot & checks slot if available
+                                        grid[y1].splice(x1, 1, volunteerArr[x2]);
+                                        match = true;
+                                        break;
+                                    }
+                                }
                             }
+                        } else {
+                            continue;
                         }
                     }
-                    grid[x].reverse();// Keeps filled slots shifted right in the view
                 }
                 newObj.grid = grid;
                 if(iterations < $scope.eventSource.length){
