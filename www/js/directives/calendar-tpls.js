@@ -30,7 +30,8 @@ Pta.constant('calendar2Config', {
         '$firebaseObject',
         'userService',
         '$state',
-        function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $firebaseArray, $ionicHistory, dragulaService, $compile, $filter, $q, $ionicModal, $firebaseObject, userService, $state) {
+        '$ionicActionSheet',
+        function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $firebaseArray, $ionicHistory, dragulaService, $compile, $filter, $q, $ionicModal, $firebaseObject, userService, $state, $ionicActionSheet) {
         'use strict';
 
         $scope.user = userService.getUser();
@@ -62,7 +63,8 @@ Pta.constant('calendar2Config', {
                 }
             }
             if($scope.$parent.$parent.selectedEvent && $scope.$parent.$parent.selectedEvent.date){// If only interested in a particular event
-                data = $scope.filterEventsByDate(data, new Date($scope.$parent.$parent.selectedEvent.date), 'event_start');  
+                data = $scope.filterEventsByDate(data, new Date($scope.$parent.$parent.selectedEvent.date), 'event_start');
+                $scope.selectedEvent = data[0];  
             }
             $scope.eventSource = [];
         
@@ -446,11 +448,40 @@ Pta.constant('calendar2Config', {
         $scope.dropped = false;
         $scope.handleDrop = function(){
             $scope.dropped = true;
-            $scope.$emit('displayTimes', $scope.displayStart, $scope.displayEnd);
-            $scope.$parent.confirmSignup();
-            $scope.targetInitParent.prepend($scope.targetEl);
-            $scope.targetEl.removeClass('gu-hide gu-transit');
-            $scope.cancelSignup();
+            var doubleSignup = false,
+                doubleSignupArr = [],
+                actionsheetTitle = '';
+            angular.forEach($scope.selectedEvent.volunteers, function(value, key){
+                if(value.id === $scope.user.$id){
+                    doubleSignupArr.push(value);
+                    doubleSignup = true;
+                }
+            });
+            if(!doubleSignup){
+                $scope.$emit('displayTimes', $scope.displayStart, $scope.displayEnd);
+                $scope.$parent.confirmSignup();
+                $scope.targetInitParent.prepend($scope.targetEl);
+                $scope.targetEl.removeClass('gu-hide gu-transit');
+                $scope.cancelSignup();
+            } else {
+                for (var i = doubleSignupArr.length - 1; i >= 0; i--) {
+                    if(i === doubleSignupArr.length - 1){
+                        actionsheetTitle = moment(doubleSignupArr[i].start).format('ha') +  ' to ' + moment(doubleSignupArr[i].end).format('ha');
+                    } else if (i >= 0 && doubleSignupArr.length > 1){
+                        actionsheetTitle = actionsheetTitle + ' and from ' + moment(doubleSignupArr[i].start).format('ha') +  ' to ' + moment(doubleSignupArr[i].end).format('ha');
+                    }
+                }
+                var undoActionSheet = $ionicActionSheet.show({
+                    buttons: [],
+                    titleText: "You are already signed up from " + actionsheetTitle + ". Please choose another time." ,
+                    cssClass: 'double-signup-actionsheet',
+                    cancel: function(){
+                        $scope.targetInitParent.prepend($scope.targetEl);
+                        $scope.targetEl.removeClass('gu-hide gu-transit');
+                        $scope.cancelSignup();
+                    }
+                });
+            }
         }
 
         $scope.$on('bag.drop', function(el, target, source){
