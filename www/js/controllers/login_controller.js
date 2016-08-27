@@ -20,10 +20,8 @@ Pta.controller('LoginCtrl', [
   $scope.doLogin = function () {
     $scope.errorMessage = null;
     $ionicLoading.show({ template: '<ion-spinner></ion-spinner>'});
-    var res = Auth.login($scope.credentials);
-    if(res !== "success"){
-      console.log(res);
-    }
+    Auth.login($scope.credentials);
+    $ionicLoading.hide();
   };
 
   var emailRegex = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;

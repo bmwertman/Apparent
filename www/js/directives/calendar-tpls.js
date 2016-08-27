@@ -1,7 +1,7 @@
 Pta.constant('calendar2Config', {
         formatDay: 'dd',
         formatDayHeader: 'EEE',
-        formatDayTitle: 'MMMM dd, yyyy',
+        formatDayTitle: 'EEE MMM dd, yyyy',
         formatWeekTitle: 'MMMM yyyy, Week w',
         formatMonthTitle: 'MMMM yyyy',
         calendarMode: 'day',
@@ -873,7 +873,7 @@ Pta.constant('calendar2Config', {
                     }
 
                     var headerDate = new Date(year, month, 1);
-                    scope.$parent.title = dateFilter(headerDate, ctrl.formatMonthTitle);
+                    scope.$parent.$parent.$parent.titleDate = dateFilter(headerDate, ctrl.formatMonthTitle);
                     scope.rows = ctrl.split(days, 7);
 
                     if (scope.showWeeks) {
@@ -918,7 +918,7 @@ Pta.constant('calendar2Config', {
                     }
 
                     var headerDate = new Date(year, month, 1);
-                    scope.$parent.title = dateFilter(headerDate, ctrl.formatMonthTitle);
+                    scope.$parent.$parent.$parent.titleDate = dateFilter(headerDate, ctrl.formatMonthTitle);
                     scope.rows = ctrl.split(days, 7);
                     var filteredEvents = ctrl.filteredEvents,
                         len = filteredEvents ? filteredEvents.length : 0,
@@ -1260,16 +1260,21 @@ Pta.constant('calendar2Config', {
                         dates = getDates(firstDayOfWeek, 7),
                         weekNumberIndex,
                         weekFormatPattern = 'w',
+                        monthOne = moment(dates[0].date).format('MMM'),
+                        monthTwo = moment(dates[6].date).format('MMM'), 
+                        dateOne = moment(dates[0].date),
+                        dateTwo = moment(dates[6].date), 
                         title;
 
                     scope.rows = createDateObjects(firstDayOfWeek);
                     scope.dates = dates;
                     weekNumberIndex = ctrl.formatWeekTitle.indexOf(weekFormatPattern);
-                    title = dateFilter(firstDayOfWeek, ctrl.formatWeekTitle);
-                    if (weekNumberIndex !== -1) {
-                        title = title.replace(weekFormatPattern, getISO8601WeekNumber(firstDayOfWeek));
+                    if(monthOne === monthTwo){
+                        title = monthOne + " " + dateOne.format('Do') + " - " + dateTwo.format('Do');
+                    } else {
+                        title = dateOne.format('MMM Do') + " - " + dateTwo.format('MMM Do') ;
                     }
-                    scope.$parent.title = title;
+                    scope.$parent.$parent.$parent.titleDate = title;
                 };
 
                 ctrl._getRange = function getRange(currentDate) {
@@ -1428,7 +1433,7 @@ Pta.constant('calendar2Config', {
                     scope.rows = createDateObjects(startingDate);
                     scope.allDayEvents = [];
                     scope.dates = [startingDate];
-                    scope.$parent.title = dateFilter(startingDate, ctrl.formatDayTitle);
+                    scope.$parent.$parent.$parent.titleDate = dateFilter(startingDate, ctrl.formatDayTitle);
                 };
 
                 ctrl._getRange = function getRange(currentDate) {

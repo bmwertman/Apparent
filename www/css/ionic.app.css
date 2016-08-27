@@ -9966,27 +9966,31 @@ ion-content.has-footer {
   background-image: none !important;
   border-bottom: none !important; }
 
-.board-members .board-member {
-  width: 45%;
-  background-color: #B71C1C;
-  margin: 10px 5% 0;
-  border-radius: 8px;
-  border: none;
-  box-shadow: 2px 2px 5px 0px black; }
-  .board-members .board-member .title {
-    text-align: center;
-    font-weight: bold;
-    color: snow; }
-  .board-members .board-member img {
-    border-radius: 50%;
-    width: 80%;
-    max-width: 200px;
-    display: block;
-    margin: 0 auto; }
-  .board-members .board-member .name {
-    text-align: center;
-    margin-top: 10px;
-    color: snow; }
+.board-members .list {
+  padding: 0; }
+  .board-members .list .board-member {
+    width: calc(42%);
+    background-color: #B71C1C;
+    margin: 10px 0 0 5%;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 2px 2px 5px 0px black;
+    float: left;
+    display: inline-block; }
+    .board-members .list .board-member .title {
+      text-align: center;
+      font-weight: bold;
+      color: snow; }
+    .board-members .list .board-member img {
+      border-radius: 50%;
+      width: 80%;
+      max-width: 200px;
+      display: block;
+      margin: 0 auto; }
+    .board-members .list .board-member .name {
+      text-align: center;
+      margin-top: 10px;
+      color: snow; }
 
 .role-management .role-table {
   table-layout: fixed;
@@ -10626,6 +10630,15 @@ ion-header-bar .calendar-form {
   border: none;
   background-color: transparent; }
 
+.calendar-date .calendar-title {
+  display: inline-block;
+  color: snow;
+  margin: 10px calc((100% - 243px)/2) 0 0; }
+
+.calendar-date .calendar-subtitle {
+  display: inline-block;
+  color: snow; }
+
 .calendar div.btn-toolbar {
   width: 278px;
   margin: 10px auto;
@@ -10866,7 +10879,8 @@ ion-header-bar .calendar-form {
   display: flex !important;
   align-content: center !important;
   align-items: center !important;
-  border: none; }
+  border: none;
+  width: calc(100% + 72px); }
   .chat-room .messages .chatter-pic-wrapper {
     display: inline-block;
     width: 42px;

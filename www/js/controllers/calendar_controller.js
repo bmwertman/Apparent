@@ -32,7 +32,7 @@ Pta.controller('CalendarCtrl', [
   var user = userService.getUser();
 
   if($ionicHistory.backView().stateName === "app.events") {
-    $scope.calendarTitle = "Volunteer - " + moment($scope.currentDate).format('dddd, MMMM Do');
+    $scope.calendarTitle = "Volunteer";
     $scope.isVolunteerSignup = true;
   } else {
     $scope.calendarTitle = "Calendar";

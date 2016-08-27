@@ -338,29 +338,34 @@ ion-content.has-footer{
 }
 
 .board-members{
-  .board-member{
-    width: 45%;
-    background-color: $positive;
-    margin: 10px 5% 0;
-    border-radius: 8px;
-    border: none;
-    box-shadow: 2px 2px 5px 0px black;
-    .title{
-      text-align: center;
-      font-weight: bold;
-      color: $fontColor;
-    }
-    img{
-      border-radius: 50%;
-      width: 80%;
-      max-width: 200px;
-      display: block;
-      margin: 0 auto;
-    }
-    .name{
-      text-align: center;
-      margin-top: 10px;
-      color: $fontColor;
+  .list{
+    padding: 0;
+    .board-member{
+      width: calc(42%);
+      background-color: $positive;
+      margin: 10px 0 0 5%;
+      border-radius: 8px;
+      border: none;
+      box-shadow: 2px 2px 5px 0px black;
+      float: left;
+      display: inline-block;
+      .title{
+        text-align: center;
+        font-weight: bold;
+        color: $fontColor;
+      }
+      img{
+        border-radius: 50%;
+        width: 80%;
+        max-width: 200px;
+        display: block;
+        margin: 0 auto;
+      }
+      .name{
+        text-align: center;
+        margin-top: 10px;
+        color: $fontColor;
+      }
     }
   }
 }
@@ -1148,6 +1153,18 @@ ion-header-bar{
   background-color: transparent;
 }
 
+.calendar-date  {
+  .calendar-title{
+    display: inline-block;
+    color: snow;
+    margin: 10px calc((100% - 243px)/2) 0 0;
+  }
+  .calendar-subtitle{
+    display: inline-block;
+    color: $fontColor;
+  }
+}
+
 .calendar{
   div.btn-toolbar{
     width: 278px;
@@ -1272,6 +1289,8 @@ ion-header-bar{
     }
   }
 }
+
+
 
 .title.connections{
   font-weight: bold;

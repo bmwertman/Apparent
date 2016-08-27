@@ -89,7 +89,6 @@ var Pta = angular.module('pta', [
         } else {
           self.onAuth($ionicLoading.hide);
         }
-        return "success";
       }).catch(function(error){
         $ionicLoading.hide();
         return error.message;
