@@ -6,7 +6,8 @@ Pta.controller('ChatCtrl', [
     '$ionicScrollDelegate',
     'userService',
     'dateFilter',
-    function ($scope, Chats, $state, $timeout, $ionicScrollDelegate, userService, dateFilter) {
+    '$http',
+    function ($scope, Chats, $state, $timeout, $ionicScrollDelegate, userService, dateFilter, $http) {
     $scope.IM = { textMessage: "" };
     $scope.user =  userService.getUser();
     $scope.data = {};
@@ -40,9 +41,9 @@ Pta.controller('ChatCtrl', [
     }
 
     Chats.selectRoom($state.params.roomId);
-
     var isIOS = ionic.Platform.isWebView() && ionic.Platform.isIOS(),
-        selectedRoom = Chats.getSelectedRoomName();
+        selectedRoom = Chats.getSelectedRoomName(),
+        chatters = $state.params.chatters;
 
     selectedRoom.$loaded()
     .then(function(){
@@ -64,10 +65,30 @@ Pta.controller('ChatCtrl', [
     });
 
     $scope.sendMessage = function() {
-        Chats.send($scope.user, $scope.IM.textMessage);
-        $scope.IM.textMessage = "";
-
-        $ionicScrollDelegate.scrollBottom(true);
+        // Get the users auth jwt to verify them on our node server 
+        firebase.auth().currentUser.getToken(true)
+        .then(function(userToken){
+            $http({
+                method: 'POST',
+                url:'https://murmuring-fjord-75421.herokuapp.com/',
+                data:{ 
+                    token: userToken,
+                    message: $scope.IM.textMessage,
+                    sender_name: $scope.user.name,
+                    topic: '/topics/' + $state.params.roomId,
+                    chatters: chatters 
+                }
+            })
+            .then(function(res){
+                debugger;
+                Chats.send($scope.user, $scope.IM.textMessage);
+                $scope.IM.textMessage = "";
+                $ionicScrollDelegate.scrollBottom(true);
+            })
+            .catch(function(err){
+                debugger;
+            });
+        });
     };
 
     // $scope.inputUp = function() {

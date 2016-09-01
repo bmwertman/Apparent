@@ -7,7 +7,8 @@ Pta.controller('RoomsCtrl', [
   '$firebaseObject',
   '$ionicPopup',
   '$filter',
-  function ($scope, Rooms, $state, $ionicModal, userService, $firebaseObject, $ionicPopup, $filter) {
+  '$q',
+  function ($scope, Rooms, $state, $ionicModal, userService, $firebaseObject, $ionicPopup, $filter, $q) {
   var userRooms = Rooms.all();
 
   $scope.user = userService.getUser();
@@ -72,9 +73,38 @@ Pta.controller('RoomsCtrl', [
     $scope.modal.show();
   }
 
+  function getChatters(id){
+    var deferred = $q.defer(),
+        chatterIds = [],
+        roomIndex = $scope.rooms.map(function(room){ 
+          return room.$id 
+        }).indexOf(id),
+        chatters = $scope.rooms[roomIndex].chatters;
+    // Get ids of everyone the user is chatting
+    for (var i = chatters.length - 1; i >= 0; i--) {
+      chatters[i]
+      if(chatters[i].id !== $scope.user.$id){
+        chatterIds.push(chatters[i].id);
+      }
+    }
+    if(chatters && chatters.length > 0){
+      deferred.resolve(chatterIds);
+    } else {
+      deferred.reject('No other chatters');
+    }
+
+    return deferred.promise;
+  }
+
   $scope.openChatRoom = function (id) {
-    $state.go('app.rooms.chat', { roomId: id});
-    $scope.closeModal();
+    getChatters(id)
+    .then(function(chatters){
+      $state.go('app.rooms.chat', { 
+        roomId: id,
+        chatters: chatters
+      });
+      $scope.closeModal();
+    });
   }
 
   $scope.createRoom = function() {

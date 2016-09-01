@@ -20,10 +20,13 @@ var Pta = angular.module('pta', [
   'ionic-cache-src',
   angularDragula(angular)
   ])
-.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage) {
+.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http) {
   // hide xeditable cancel button
   editableThemes['default'].cancelTpl = '<button type="button" class="btn btn-default" style="display:none">';
   editableThemes['default'].submitTpl = '<button type="submit" class="xeditable-submit fa fa-pencil-square-o"></button>';
+
+  // // Set the Authorization Key for FCM notifications
+  // $http.defaults.headers.common.Authorization = 'key=' + ;
 
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -37,6 +40,24 @@ var Pta = angular.module('pta', [
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+    // Register a push notification listener
+    FCMPlugin.onNotification(
+      function(data){
+        if(data.wasTapped){
+          //Notification was received on device tray and tapped by the user.
+          console.log( JSON.stringify(data) );
+        } else {
+          //Notification was received in foreground. Maybe the user needs to be notified.
+          console.log( JSON.stringify(data) );
+        }
+      },
+      function(msg){
+        console.log('onNotification callback successfully registered: ' + msg);
+      },
+      function(err){
+        console.log('Error registering onNotification callback: ' + err);
+      }
+    );   
   });
 
   $rootScope.logout = function() {
@@ -227,7 +248,8 @@ var Pta = angular.module('pta', [
   .state('app.rooms.chat', {
     url: '/chat',
     params:{
-      roomId: null
+      roomId: null,
+      chatters: null
     },
     views: {
       'menuContent@app': {

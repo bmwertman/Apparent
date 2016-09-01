@@ -247,6 +247,8 @@ Pta.controller('CalendarCtrl', [
         chatter = { email: user.email, id: user.$id, name: user.name, pic: user.pic },
         newChatterKey = eventRoomRef.child('chatters').push().key,
         updates = {};
+    // Subscribe the user to push notifications for this room
+    FCMPlugin.subscribeToTopic(roomId);
     // This adds the volunteer to the group chat room referenced by admin interact view when the admin wants to chat all volunteers
     updates['/event-rooms/' + $scope.selectedEvent.$id + '/' + roomId + '/chatters/' + newChatterKey] = chatter;
     // This adds the group chatter to the group chat in the general rooms 
