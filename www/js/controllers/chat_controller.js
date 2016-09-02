@@ -65,7 +65,7 @@ Pta.controller('ChatCtrl', [
     });
 
     $scope.sendMessage = function() {
-        // Get the users auth jwt to verify them on our node server 
+        // Get the users auth jwt to verify them on the node server 
         firebase.auth().currentUser.getToken(true)
         .then(function(userToken){
             $http({
@@ -76,11 +76,13 @@ Pta.controller('ChatCtrl', [
                     message: $scope.IM.textMessage,
                     sender_name: $scope.user.name,
                     topic: '/topics/' + $state.params.roomId,
+                    state: 'app.rooms.chat',
+                    roomId: $state.params.roomId,
+                    sender_imgURL: $scope.user.pic,
                     chatters: chatters 
                 }
             })
             .then(function(res){
-                debugger;
                 Chats.send($scope.user, $scope.IM.textMessage);
                 $scope.IM.textMessage = "";
                 $ionicScrollDelegate.scrollBottom(true);

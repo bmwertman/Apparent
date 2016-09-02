@@ -81,13 +81,22 @@ Pta.controller('RoomsCtrl', [
         }).indexOf(id),
         chatters = $scope.rooms[roomIndex].chatters;
     // Get ids of everyone the user is chatting
-    for (var i = chatters.length - 1; i >= 0; i--) {
-      chatters[i]
-      if(chatters[i].id !== $scope.user.$id){
-        chatterIds.push(chatters[i].id);
+    if(typeof chatters === "object"){
+      angular.forEach(chatters, function(value, key){
+        if(value.id !== $scope.user.$id){
+          chatterIds.push(value.id);
+        }
+      });
+    } else {
+      for (var i = chatters.length - 1; i >= 0; i--) {
+        chatters[i]
+        if(chatters[i].id !== $scope.user.$id){
+          chatterIds.push(chatters[i].id);
+        }
       }
     }
-    if(chatters && chatters.length > 0){
+    
+    if(chatters && chatterIds.length > 0){
       deferred.resolve(chatterIds);
     } else {
       deferred.reject('No other chatters');

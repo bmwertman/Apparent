@@ -20,13 +20,10 @@ var Pta = angular.module('pta', [
   'ionic-cache-src',
   angularDragula(angular)
   ])
-.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http) {
+.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile) {
   // hide xeditable cancel button
   editableThemes['default'].cancelTpl = '<button type="button" class="btn btn-default" style="display:none">';
   editableThemes['default'].submitTpl = '<button type="submit" class="xeditable-submit fa fa-pencil-square-o"></button>';
-
-  // // Set the Authorization Key for FCM notifications
-  // $http.defaults.headers.common.Authorization = 'key=' + ;
 
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -40,24 +37,44 @@ var Pta = angular.module('pta', [
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+
+    $rootScope.goToChat = function(e, chatState, chatRmId){
+      angular.element(e.currentTarget).remove();
+      delete $rootScope.chatState;
+      delete $rootScope.chatRmId;
+      $state.go(chatState, {roomId: chatRmId});
+    }
     // Register a push notification listener
     FCMPlugin.onNotification(
       function(data){
-        if(data.wasTapped){
-          //Notification was received on device tray and tapped by the user.
-          console.log( JSON.stringify(data) );
+        if(!data.wasTapped){
+          //Notification was received in foreground. Check if the user is already in the room
+          if(!$state.is(data.state, { roomId: data.roomId })){
+            var body = angular.element(document.getElementsByTagName('body')[0]);
+            var imgTag = angular.element(document.createElement('img'));
+            $rootScope.chatState = data.state;
+            $rootScope.chatRmId = data.roomId;
+            imgTag.attr({
+              src: data.sender_imgUrl,
+              class: 'chat-notification',
+              'ng-click': 'goToChat($event, chatState, chatRmId)'
+            });
+            $compile(imgTag)($rootScope);
+            body.append(imgTag);
+          } 
         } else {
-          //Notification was received in foreground. Maybe the user needs to be notified.
-          console.log( JSON.stringify(data) );
+          //Notification was received on device tray and tapped by the user.
+          $localstorage.setObject('pushNotification', data);
         }
-      },
-      function(msg){
-        console.log('onNotification callback successfully registered: ' + msg);
-      },
-      function(err){
-        console.log('Error registering onNotification callback: ' + err);
+      });
+
+    $ionicPlatform.on('resume', function(){
+      if($localstorage.getObject('pushNotification')){
+        var data = $localstorage.getObject('pushNotification');
+        $state.go(data.state, {roomId: data.roomId});
+        $localstorage.remove('pushNotification');
       }
-    );   
+    });
   });
 
   $rootScope.logout = function() {

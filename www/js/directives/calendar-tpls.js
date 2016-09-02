@@ -494,7 +494,11 @@ Pta.constant('calendar2Config', {
             $scope.handleDrop();
         });
 
+
         $scope.hourTouch = function($event){
+            // Grab the date displayed in the calendar title bar
+            var title = $scope.$parent.$parent.titleDate;
+
             if(!$scope.signupShown && $scope.selectedHour.el && $scope.selectedHour.hashKey !== $event.currentTarget.$$hashKey){//selected a different hour
                 $event.currentTarget.firstElementChild.style.display = "inline-block";
                 $scope.selectedHour.el.firstElementChild.style.display = "none";
@@ -512,17 +516,17 @@ Pta.constant('calendar2Config', {
                         $scope.event.end_date = new Date(angular.element($event.target).next().html());
                         $scope.event.end_time = new Date(moment(angular.element($event.target).next().html()).add(2, 'hours'));
                     } else {// Setting a new event from the day view
-                        $scope.volunteerStart = moment(new Date($scope.title + " " +  start));
+                        $scope.volunteerStart = moment(new Date(title + " " +  start));
                         $scope.displayStart = $scope.volunteerStart.format('h:mm a');
-                        $scope.event.start_date = new Date($scope.title);
-                        $scope.event.end_date = new Date($scope.title);
-                        $scope.event.start_time = new Date($scope.title + " " + start);
-                        $scope.event.end_time = new Date($scope.title + " " + $scope.endHour(start));
+                        $scope.event.start_date = new Date(title);
+                        $scope.event.end_date = new Date(title);
+                        $scope.event.start_time = new Date(title + " " + start);
+                        $scope.event.end_time = new Date(title + " " + $scope.endHour(start));
                     }
                     $scope.$emit('timeSelected', $scope.event);  
                 } else {
                     var start = children.parent().children().eq(children.parent().children().length - 1).html();
-                    $scope.volunteerStart = moment(new Date($scope.title + " " +  start));
+                    $scope.volunteerStart = moment(new Date(title + " " +  start));
                     $scope.earliestFinish = moment($scope.volunteerStart._d).add(1, 'hours');
                     $scope.displayStart = $scope.volunteerStart.format('h:mm a');
                     $scope.selectedHour.el.firstElementChild.innerHTML = "Start: " + $scope.displayStart;
