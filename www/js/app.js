@@ -20,7 +20,7 @@ var Pta = angular.module('pta', [
   'ionic-cache-src',
   angularDragula(angular)
   ])
-.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile) {
+.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, userService) {
   // hide xeditable cancel button
   editableThemes['default'].cancelTpl = '<button type="button" class="btn btn-default" style="display:none">';
   editableThemes['default'].submitTpl = '<button type="submit" class="xeditable-submit fa fa-pencil-square-o"></button>';
@@ -40,27 +40,78 @@ var Pta = angular.module('pta', [
 
     $rootScope.goToChat = function(e, chatState, chatRmId){
       angular.element(e.currentTarget).remove();
-      delete $rootScope.chatState;
-      delete $rootScope.chatRmId;
       $state.go(chatState, {roomId: chatRmId});
     }
+
+    $rootScope.$on('chatter-bag.drop', function(e, el){
+      var index = $rootScope.queuedChatters.map(function(chatter){
+        return chatter.sender_imgUrl;
+      }).indexOf(el.sender_imgUrl);
+      $rootScope.queuedChatters.splice(index, 1);
+      $rootScope.removeDrawer.css('bottom', '-80px');
+    });
+
+    $rootScope.$on('chatter-bag.drag', function(e, el){
+      $rootScope.removeDrawer.css('bottom', '0px');
+    });
+
+    $rootScope.$on('chatter-bag.cancel', function(e, el){
+      $rootScope.removeDrawer.css('bottom', '-80px');
+    });
+
+    $rootScope.queuedChatters = [];
     // Register a push notification listener
     FCMPlugin.onNotification(
       function(data){
-        if(!data.wasTapped){
+        if(!data.wasTapped && data.sender_imgUrl !== userService.getUser().pic){// Make sure the user isn't getting notified about their own message
           //Notification was received in foreground. Check if the user is already in the room
           if(!$state.is(data.state, { roomId: data.roomId })){
-            var body = angular.element(document.getElementsByTagName('body')[0]);
-            var imgTag = angular.element(document.createElement('img'));
-            $rootScope.chatState = data.state;
-            $rootScope.chatRmId = data.roomId;
-            imgTag.attr({
-              src: data.sender_imgUrl,
-              class: 'chat-notification',
-              'ng-click': 'goToChat($event, chatState, chatRmId)'
-            });
-            $compile(imgTag)($rootScope);
-            body.append(imgTag);
+            var queue = document.getElementById('queue');
+            if(!queue){ // This is the first queued chatter
+              var body = angular.element(document.getElementsByTagName('body')[0]),
+                  messageCount = angular.element(document.createElement('span')),
+                  imgTag = angular.element(document.createElement('img')),
+                  remove = angular.element(document.createElement('div')),
+                  iconBackground = angular.element(document.createElement('div')),
+                  queue = angular.element(document.createElement('div'));
+              imgTag.attr({
+                'ng-repeat':'chatter in queuedChatters track by $index',
+                src: data.sender_imgUrl,
+                'dragula-model':'queuedChatters',
+                class: 'chat-notification',
+                'ng-click': 'goToChat($event, chatter.state, chatter.roomId)'
+              });
+              remove.attr({ 
+                id:'remove-notification',
+                dragula: '"chatter-bag"',
+                'dragula-model': 'removeBag'
+              });
+              iconBackground.attr({ class: 'icon-background icon ion-close-circled' });
+              remove.append(iconBackground);
+              queue.attr({
+                id: 'queue',
+                dragula: '"chatter-bag"',
+                'dragula-model': 'queueBag'
+              });
+              queue.append(imgTag);
+              body.append(queue);
+              body.append(remove);
+              $compile(queue)($rootScope);
+              $compile(remove)($rootScope);
+              $rootScope.removeDrawer = angular.element(document.getElementById('remove-notification'));
+            }
+            if($rootScope.queuedChatters.length > 0){
+              for (var i = $rootScope.queuedChatters.length - 1; i >= 0; i--) {
+                value = $rootScope.queuedChatters[i];
+                // If it isn't the same person in the same room sending another message, add them
+                if(value.roomId !== data.roomId && value.sender_imgUrl !== data.sender_imgUrl && i === 0){
+                  $rootScope.queuedChatters.push(data);
+                }
+              }
+            } else {
+              $rootScope.queuedChatters.push(data);
+            }
+            $rootScope.$apply();
           } 
         } else {
           //Notification was received on device tray and tapped by the user.
