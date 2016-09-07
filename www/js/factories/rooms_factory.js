@@ -2,11 +2,13 @@ Pta.factory('Rooms', [
   '$firebaseArray',
   '$firebaseObject',
   'userService',
-  function ($firebaseArray, $firebaseObject, userService) {
+  'pushSubscribe',
+  function ($firebaseArray, $firebaseObject, userService, pushSubscribe) {
   var ref = firebase.database().ref(),
       user = userService.getUser();
       userRoomsRef = firebase.database().ref('user-rooms').child(user.$id),
-      roomsRef = firebase.database().ref('/rooms');
+      roomsRef = firebase.database().ref('/rooms'),
+      userRoom = new pushSubscribe(userRoomsRef);// Subscribes the current user to push notifications for all of their user-rooms
   return {
       all: function () {
         return $firebaseArray(userRoomsRef);
