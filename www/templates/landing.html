@@ -1,0 +1,44 @@
+<ion-view class="landing" title="{{school.name}}">
+  <div ng-if="school.logo" class="tall bar bar-header">
+    <img class="school-logo" ng-src="school.logo" >
+  </div>
+  <ion-content ng-class="hasLogo">
+    <ion-list class="nav-buttons">
+      <ion-item>
+        <a class="button button-block button-clear button-dark" ui-sref="app.board">
+          PTA Board
+          <i class="icon ion-board"></i>
+        </a>
+      </ion-item>        
+      <ion-item>
+        <a class="button button-block button-clear button-dark" ui-sref="app.events">
+          Events
+          <i class="icon ion-calendar"></i>
+        </a>
+      </ion-item>
+      <ion-item>
+        <a class="button button-block button-clear button-dark" ui-sref="app.rooms">
+          Chat
+          <i class="icon ion-chatboxes"></i>
+        </a>
+      </ion-item>
+      <ion-item>
+        <a class="button button-block button-clear button-dark" ui-sref="app.profile">
+          Profile
+          <i class="icon ion-android-user-menu"></i>
+        </a>
+      </ion-item>
+      <ion-item>
+        <a class="button button-block button-clear button-dark" ng-click="logout()">
+          Logout
+          <i class="icon ion-log-out"></i>
+        </a>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+  <div class="powered-by">
+    Powered by
+    <img class="apparent-logo" src="img/apparent_noTagline.svg">
+  </div>
+</ion-view>
+ 

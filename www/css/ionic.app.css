@@ -9824,6 +9824,50 @@ i.icon-note {
   content: "\e903"; }
 
 @font-face {
+  font-family: 'board';
+  src: url("../fonts/board/board.ttf?7jn02e") format("truetype"), url("../fonts/board/board.woff?7jn02e") format("woff"), url("..fonts/board/board.svg?7jn02e#board") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+[class^="ion-"], [class*=" ion-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'board' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+.ion-board:before {
+  content: "\e935"; }
+
+@font-face {
+  font-family: 'android-user-menu';
+  src: url("../fonts/profile/android-user-menu.ttf?xmg5p8") format("truetype"), url("../fonts/profile/android-user-menu.woff?xmg5p8") format("woff"), url("../fonts/profile/android-user-menu.svg?xmg5p8#android-user-menu") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+i.ion-android-user-menu {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'android-user-menu' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+.ion-android-user-menu:before {
+  content: "\e940"; }
+
+@font-face {
   font-family: 'drive';
   src: url("../fonts/googledrive/drive.eot?olgtto");
   src: url("../fonts/googledrive/drive.eot?olgtto#iefix") format("embedded-opentype"), url("../fonts/googledrive/drive.ttf?olgtto") format("truetype"), url("../fonts/googledrive/drive.woff?olgtto") format("woff"), url("../fonts/googledrive/drive.svg?olgtto#icomoon") format("svg");
@@ -9965,6 +10009,47 @@ ion-content.has-footer {
   border-bottom-color: transparent !important;
   background-image: none !important;
   border-bottom: none !important; }
+
+.landing .tall {
+  color: snow;
+  background-color: #B71C1C; }
+
+.landing .list {
+  width: 225px;
+  margin: 0 auto; }
+  .landing .list:before, .landing .list:after {
+    content: " ";
+    display: table; }
+  .landing .list:after {
+    clear: both; }
+  .landing .list .item {
+    width: 102px;
+    padding: 10px 0 0 0;
+    height: 85px;
+    margin-top: 22px; }
+    .landing .list .item:nth-child(odd) {
+      float: left; }
+    .landing .list .item:nth-child(even) {
+      float: right; }
+    .landing .list .item:last-child {
+      margin-left: calc((100% - 102px)/2); }
+    .landing .list .item a.button {
+      margin: 0;
+      line-height: 15px; }
+      .landing .list .item a.button i.icon {
+        display: block; }
+
+.landing div.powered-by {
+  position: fixed;
+  left: calc((100% - 227px)/2);
+  bottom: 20px;
+  font-size: 16px;
+  width: 200px; }
+  .landing div.powered-by .apparent-logo {
+    width: 143px;
+    position: absolute;
+    left: 76px;
+    top: -34px; }
 
 .board-members .list {
   padding: 0; }

@@ -204,21 +204,18 @@ var Pta = angular.module('pta', [
               }
               if (profile.isAdmin) {
                 $rootScope.isAdmin = true;
-                $state.go('app.calendar');
               } else {
                 $rootScope.isAdmin = false;
-                $state.go('app.events');
               }
               function adminReset(){
                 if($rootScope.isAdmin){
                   $rootScope.isAdmin = false;
-                  $state.go('app.events');
                 } else {
                   $rootScope.isAdmin = true;
-                  $state.go('app.calendar');
                 }
               }
               userIsAdmin.$watch(adminReset);
+              $state.go('app.landing');
             }
           );
         } else {
@@ -242,16 +239,16 @@ var Pta = angular.module('pta', [
   .state('app', {
     url: '/app',
     abstract: true,
+    templateUrl: 'templates/menu.html',
     controller: 'MenuCtrl',
-    templateUrl: 'templates/menu.html'
   })
 
-  .state('app.board', {
-    url: '/board',
+  .state('app.landing', {
+    url: '/home',
     views: {
-      'menuContent':{
-        templateUrl: 'templates/pta-board.html',
-        controller: 'BoardCtrl'
+      'menuContent': {
+        templateUrl: 'templates/landing.html',
+        controller: 'HomeCtrl'
       }
     }
   })
@@ -289,6 +286,16 @@ var Pta = angular.module('pta', [
       'menuContent': {
         templateUrl: 'templates/roles.html',
         controller: 'RoleCtrl'
+      }
+    }
+  })
+
+  .state('app.board', {
+    url: '/board',
+    views: {
+      'menuContent':{
+        templateUrl: 'templates/pta-board.html',
+        controller: 'BoardCtrl'
       }
     }
   })
@@ -352,6 +359,6 @@ var Pta = angular.module('pta', [
      controller : 'SignupCtrl'
    });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/login');
+  $urlRouterProvider.otherwise('/home');
   $ionicConfigProvider.scrolling.jsScrolling(false);
 });
