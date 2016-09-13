@@ -198,7 +198,7 @@ Pta.controller('UserCtrl', [
       $scope.modal.hide();
     };
   
-    //image pic & crop
+    //image pick & crop
     $scope.getImage = function(childPath){
       if(childPath){//We're saving an image of a user's child
         $scope.childPath = childPath;

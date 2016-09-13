@@ -18,6 +18,7 @@ var Pta = angular.module('pta', [
   'ngStorage',
   'angular-svg-round-progress',
   'ionic-cache-src',
+  'ui.router.stateHelper',
   angularDragula(angular)
   ])
 .run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, userService) {
@@ -158,6 +159,7 @@ var Pta = angular.module('pta', [
   };
 
   if (credentials.email && credentials.password) {
+    Auth.onAuth();
     Auth.login(credentials);
   }
 })
@@ -215,7 +217,7 @@ var Pta = angular.module('pta', [
                 }
               }
               userIsAdmin.$watch(adminReset);
-              $state.go('app.landing');
+              $state.go('app.home');
             }
           );
         } else {
@@ -232,133 +234,114 @@ var Pta = angular.module('pta', [
   }
 })
 
-.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+.config(function(stateHelperProvider, $urlRouterProvider, $ionicConfigProvider) {
   
-  $stateProvider
+  stateHelperProvider
 
-  .state('app', {
+  .state({
+    name: 'app',
     url: '/app',
     abstract: true,
     templateUrl: 'templates/menu.html',
     controller: 'MenuCtrl',
-  })
-
-  .state('app.landing', {
-    url: '/home',
-    views: {
-      'menuContent': {
+    children: [
+      {
+        name: 'home', 
+        url: '/home',
         templateUrl: 'templates/landing.html',
-        controller: 'HomeCtrl'
-      }
-    }
-  })
-
-  .state('app.calendar', {
-    url: '/calendar',
-    params:{
-      selectedEvent: null
-    },
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/rcalendar.html',
-        controller: 'CalendarCtrl'
-      }
-    }
-  })
-
-  .state('app.calendar.volunteers', {
-    url: '/volunteers',
-    params:{
-      thisHoursVolunteers: null,
-      thisEvent: null
-    },
-    views: {
-      'menuContent@app': {
-        templateUrl: 'templates/admin-interact.html',
-        controller: 'VolunteerCtrl'
-      }
-    }
-  })
-
-  .state('app.roles', {
-    url: '/roles',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/roles.html',
-        controller: 'RoleCtrl'
-      }
-    }
-  })
-
-  .state('app.board', {
-    url: '/board',
-    views: {
-      'menuContent':{
+        controller: 'HomeCtrl',
+      },{
+        name: 'board',
+        url: '/board',
         templateUrl: 'templates/pta-board.html',
-        controller: 'BoardCtrl'
-      }
-    }
-  })
-  
-  .state('app.events', {
-    url: '/events',
-    views: {
-      'menuContent': {
+        controller: 'BoardCtrl' 
+      },{
+        name: 'events',
+        url: '/events',
         templateUrl: 'templates/events.html',
         controller: 'EventsCtrl'
-      }
-    }
-  })
-
-  .state('app.rooms', {
-    url: '/rooms',
-    views: {
-      'menuContent': {
+      },{
+        name: 'chatrooms',
+        url: '/chat-rooms',
         templateUrl: 'templates/chat-rooms.html',
-        controller: 'RoomsCtrl'
-      }
-    }
-  })
-
-  .state('app.rooms.chat', {
-    url: '/chat',
-    params:{
-      roomId: null,
-      chatters: null
-    },
-    views: {
-      'menuContent@app': {
-        templateUrl: 'templates/chat-room.html',
-        controller: 'ChatCtrl'
-      }
-    }
-  })
-
-  .state('app.profile', {
-    url: '/profile',
-    params:{
-      isNewUser: null
-    },
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/user_profile.html',
+        controller: 'RoomsCtrl',
+        children:[
+          {
+            name: 'room',
+            url: '/room',
+            params:{
+              roomId: null,
+              chatters: null
+            },
+            templateUrl: 'templates/chat-room.html',
+            controller: 'ChatCtrl'
+          }
+        ]
+      },{
+        name: 'profile',
+        url: '/profile',
+        params:{
+          isNewUser: null
+        },
+        templateUrl: 'templates/user-profile.html',
         controller: 'UserCtrl'
+      },
+      {
+        name: 'admin',
+        url: '/admin',
+        abstract: true,
+        template: '<ion-nav-view></ion-nav-view>',
+        children:[
+          {
+            name: 'calendar',
+            url: '/calendar',
+            params:{
+              selectedEvent: null,
+              calendarTitle: 'Volunteer',
+              isVolunteerSignup: true
+            },
+            templateUrl: 'templates/rcalendar.html',
+            controller: 'CalendarCtrl'
+          },
+          {
+            name: 'volunteers',
+            url: '/volunteers',
+            params:{
+              thisHoursVolunteers: null,
+              thisEvent: null
+            },
+            templateUrl: 'templates/admin-interact.html',
+            controller: 'VolunteerCtrl'
+          },
+          {
+            name: 'roles',
+            url: '/roles',
+            templateUrl: 'templates/roles.html',
+            controller: 'RoleCtrl'
+          },
+          {
+            name: 'settings',
+            url: '/settings',
+            templateUrl: 'templates/settings.html',
+            controller: 'SettingsCtrl'
+          }
+        ]
       }
-    }
+    ]
   })
-
-  .state('login', {
-     url: '/login',
-     templateUrl: 'templates/login.html',
-     controller : 'LoginCtrl'
-   })
-
-  .state('signup', {
-     url: '/signup',
-     templateUrl: 'templates/signup.html',
-     controller : 'SignupCtrl'
-   });
+  .state({
+    name: 'login', 
+    url: '/login',
+    templateUrl: 'templates/login.html',
+    controller : 'LoginCtrl'
+  })
+  .state({
+    name: 'signup',
+    url: '/signup',
+    templateUrl: 'templates/signup.html',
+    controller : 'SignupCtrl' 
+  });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/home');
+  $urlRouterProvider.otherwise('/login');
   $ionicConfigProvider.scrolling.jsScrolling(false);
 });

@@ -1,0 +1,30 @@
+<ion-view class="school-settings" title="School Settings">
+  <ion-content>
+    <div class="logo-label">School Logo</div>
+    <div ng-if="school.logo"
+         class="selected-logo"
+         ng-click="getImage()">
+      <img class="school-logo"
+           ng-src="{{school.logo}}">
+    </div>
+    <div ng-if="!school.logo"
+         class="no-logo-selected"
+         ng-click="getImage()">
+      Select an image from your photo gallery
+    </div>
+    <!-- <ion-list ng-if="colors.palette">
+      <ion-item ng-repeat="color in colors.palette track by $index">
+        <div class="swatch"
+             ng-style="{'background': 'rgb('+ color.r + ',' + color.g + ',' + color.r + ')'}">
+          <span class="rgb-value">rgb ({{color.r}}, {{color.g}}, {{color.b}})</span>
+        </div>
+      </ion-item>
+    </ion-list>
+  </ion-content> -->
+  <jm-eyedropper-canvas>
+  <div class="powered-by">
+    Powered by
+    <img class="apparent-logo" src="img/apparent_noTagline.svg">
+  </div>
+</ion-view>
+ 

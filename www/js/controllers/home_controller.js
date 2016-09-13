@@ -2,7 +2,9 @@ Pta.controller('HomeCtrl', [
   '$scope',
   'userService',
   '$firebaseObject',
-  function($scope, userService, $firebaseObject) {
+  '$timeout',
+  '$state',
+  function($scope, userService, $firebaseObject, $timeout, $state) {
     $scope.user = userService.getUser();
     var school = $firebaseObject(firebase.database().ref('schools').child($scope.user.school));
     if(school){
@@ -14,10 +16,11 @@ Pta.controller('HomeCtrl', [
       $scope.school.name = "Welcome " + nameArr[0];
     }
 
-    if(school.logo){
-      $scope.hasLogo = "has-tall-header";
+    $scope.goToState = function(state, delay, param) {
+      $timeout(function () {
+        $state.go(state, param);
+      }, delay);
     }
-   
 }]);
 
 

@@ -1,29 +1,29 @@
 <ion-view class="landing" title="{{school.name}}">
   <div ng-if="school.logo" class="tall bar bar-header">
-    <img class="school-logo" ng-src="school.logo" >
+    <img class="school-logo" ng-src="{{school.logo}}" >
   </div>
-  <ion-content ng-class="hasLogo">
+  <ion-content ng-class="{'has-tall-header': school.logo}">
     <ion-list class="nav-buttons">
       <ion-item>
-        <a class="button button-block button-clear button-dark" ui-sref="app.board">
+        <a class="button button-block button-clear button-dark" ng-click="goToState('app.board')">
           PTA Board
           <i class="icon ion-board"></i>
         </a>
       </ion-item>        
       <ion-item>
-        <a class="button button-block button-clear button-dark" ui-sref="app.events">
+        <a class="button button-block button-clear button-dark" ng-click="goToState('app.events')">
           Events
           <i class="icon ion-calendar"></i>
         </a>
       </ion-item>
       <ion-item>
-        <a class="button button-block button-clear button-dark" ui-sref="app.rooms">
+        <a class="button button-block button-clear button-dark" ng-click="goToState('app.rooms')">
           Chat
           <i class="icon ion-chatboxes"></i>
         </a>
       </ion-item>
       <ion-item>
-        <a class="button button-block button-clear button-dark" ui-sref="app.profile">
+        <a class="button button-block button-clear button-dark" ng-click="goToState('app.profile')">
           Profile
           <i class="icon ion-android-user-menu"></i>
         </a>

@@ -108,7 +108,7 @@ Pta.controller('RoomsCtrl', [
   $scope.openChatRoom = function (id) {
     getChatters(id)
     .then(function(chatters){
-      $state.go('app.rooms.chat', { 
+      $state.go('app.home.rooms.chat', { 
         roomId: id,
         chatters: chatters
       });

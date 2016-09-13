@@ -24,8 +24,7 @@
   <preference name="FadeSplashScreen" value="true"/>
   <preference name="FadeSplashScreenDuration" value="500" /> 
   <preference name="SplashMaintainAspectRatio" value="true"/>
-  <preference name="SplashScreenDelay" value="30000" />
-  <preference name="AutoHideSplashScreen" value="false" />
+  <preference name="AutoHideSplashScreen" value="true" />
   <preference name="ShowSplashScreenSpinner" value="false"/>
   <preference name="AndroidPersistentFileLocation" value="Internal" />
   <feature name="SplashScreen">

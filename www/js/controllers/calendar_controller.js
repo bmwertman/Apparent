@@ -31,13 +31,16 @@ Pta.controller('CalendarCtrl', [
 
   var user = userService.getUser();
 
-  if($ionicHistory.backView().stateName === "app.events") {
-    $scope.calendarTitle = "Volunteer";
-    $scope.isVolunteerSignup = true;
-  } else {
-    $scope.calendarTitle = "Calendar";
-    $scope.isVolunteerSignup = false;
-  }
+  $scope.calendarTitle = $stateParams.calendarTitle;
+  $scope.isVolunteerSignup = $stateParams.isVolunteerSignup;
+
+  // if($ionicHistory.backView().stateName === "app.events") {
+  //   $scope.calendarTitle = "Volunteer";
+  //   $scope.isVolunteerSignup = true;
+  // } else {
+  //   $scope.calendarTitle = "Calendar";
+  //   $scope.isVolunteerSignup = false;
+  // }
 
   $scope.itemSelected = {};
   $scope.eventTypes = [

@@ -403,6 +403,11 @@ ion-content.has-footer{
   .tall{
     color: $fontColor;
     background-color: $positive;
+    .school-logo{
+      margin-top: 82px;
+      height: 300px;
+      margin: 70px auto;
+    }
   }
   .list{
     width: 225px;
@@ -437,18 +442,41 @@ ion-content.has-footer{
       }
     }
   }
-  div.powered-by{
-    position: fixed;
-    left: calc((100% - 227px)/2);
-    bottom: 20px;
-    font-size: 16px;
+}
+
+.school-settings{
+  .logo-label{
+    font-size: 18px;
+    text-align: center;
+    margin-top: 30px;
+    font-weight: bold;
+  }
+  .selected-logo, .no-logo-selected{
     width: 200px;
-    .apparent-logo{
-      width: 143px;
-      position: absolute;
-      left: 76px;
-      top: -34px;
-    }
+    margin: 15px auto;
+  }
+  .selected-logo{
+    border: none;
+  }
+  .no-logo-selected{
+    padding: 30px 5px;
+    text-align: center;
+    border: 1px solid gainsboro;
+    border-radius: 1px;
+    font-weight: bold;
+  }
+}
+
+div.powered-by{
+  position: fixed;
+  left: calc((100% - 212px)/2);
+  bottom: 20px;
+  font-size: 16px;
+  .apparent-logo{
+    width: 143px;
+    position: absolute;
+    left: calc((100% + 53px)/2);
+    top: -34px;
   }
 }
 

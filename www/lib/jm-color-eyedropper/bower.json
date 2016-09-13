@@ -1,0 +1,23 @@
+{
+  "name": "jm-color-eyedropper",
+  "version": "1.1.1",
+  "homepage": "https://github.com/jamm/angular-color-eyedropper",
+  "authors": [
+    "Eugene OZ <normandiggs@gmail.com>"
+  ],
+  "description": "will give you color of pixel from image (canvas with image auto-scaling)",
+  "main": "directive.js",
+  "keywords": [
+    "eyedropper",
+    "angular",
+    "color"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
