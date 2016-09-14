@@ -261,7 +261,7 @@ var Pta = angular.module('pta', [
         templateUrl: 'templates/events.html',
         controller: 'EventsCtrl'
       },{
-        name: 'chatrooms',
+        name: 'rooms',
         url: '/chat-rooms',
         templateUrl: 'templates/chat-rooms.html',
         controller: 'RoomsCtrl',
