@@ -13,7 +13,6 @@ Pta.controller('UserCtrl', [
   '$firebaseObject',
   function($scope, $ionicSideMenuDelegate, $ionicModal, $ionicPopup, userService, $cordovaImagePicker, $filter, $timeout, $stateParams, $http, $firebaseArray, $firebaseObject) {
     // Future work - Add child's current teacher to their parent's profile
-                // - Figure out a way to add the edit icon to the school name while keepin it centered 
     $scope.user = userService.getUser();
     $scope.grades = { 'K': 0, '1st': 1, '2nd': 2, '3rd': 3, '4th': 4, '5th': 5, '6th': 6, '7th': 7, '8th': 8, '9th': 9, '10th': 10, '11th': 11, '12th': 12, '?': 13 };
 
@@ -61,9 +60,29 @@ Pta.controller('UserCtrl', [
     }
 
     $scope.getTextWidth(userName.attr('font'), $scope.user.name, userName);
-    // See Future work above.
-    // schoolInputParent.append('<i id="school-name-edit" class="icon ion-edit"><span>EDIT</span></i>');
     
+    if($scope.user.school){
+      $scope.hideDisplayName = false;
+    } else {
+      $scope.hideDisplayName = true;
+    }
+
+    $scope.editSchool = function(){
+      if($scope.hideDisplayName){
+        $scope.hideDisplayName = false;
+      } else {
+        $scope.hideDisplayName = true;
+      }
+    }
+    if($scope.hideDisplayName){
+      $timeout(function(){
+        var schoolAutoComplete = angular.element(document.getElementsByClassName('layout-row')[0]),
+            icon = angular.element(document.createElement('i'));
+        icon.html('<span>EDIT</span>');
+        icon.addClass('icon ion-edit');
+        schoolAutoComplete.append(icon);
+      });
+    }    
     //handle submits
     $scope.editSubmit = function(modelValue, prop){
       var userId = $scope.user.user_id,
@@ -110,11 +129,12 @@ Pta.controller('UserCtrl', [
         .$loaded().then(function(school){// Load the user's new school
           $scope.school = school;
           $scope.getTextWidth(schoolName.attr('font'), school.name, schoolName);
-        }); 
+        });
       } else if(modelValue) {
         obj[prop] = modelValue;
         userRef.update(obj);
       }
+      $scope.hideDisplayName = false;
     }
 
     if($scope.user.school){ // Load the user's school

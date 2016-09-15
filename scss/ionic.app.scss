@@ -29,6 +29,7 @@ $apparentFontColor: #E0FFFF;//lightcyan
 $edit: darkgray;
 $fontColor: snow;
 
+
 .primary-green{
  background-color: $primaryGreen;
  color: white;
@@ -78,7 +79,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   font-style: normal;
 }
 
-.icon {
+i.ion-android-person-subtract {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'ion-android-person-subtract' !important;
   speak: none;
@@ -446,10 +447,12 @@ ion-content.has-footer{
 }
 
 .school-settings{
+  .scroll{ 
+    padding-top: 30px;
+  }
   .logo-label{
     font-size: 18px;
     text-align: center;
-    margin-top: 30px;
     font-weight: bold;
   }
   .selected-logo, .no-logo-selected{
@@ -945,29 +948,39 @@ ion-header-bar{
   }
   .content-body{
     .school-wrapper{
+      #school-display-name{
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        color: $positive;
+        width: calc(100% - 35px);
+        margin-left: 35px;
+        .ion-edit{
+          font-size: 12px;
+        }
+      }
       #school-name{
         background: transparent;
         display: block;
-        width: 190px;
+        width: 210px;
         margin: -14px auto -10px;
         .layout-row{
           box-shadow: none;
           #md-school-input{
             padding: 0;
-            width: 190px;
             font-size: 20px;
             font-weight: bold;
             color: $positive;
+          }
+          .ion-edit{
+            position: relative;
+            right: 3px;
+            top: 13px;
           }
           button{
             display: none;
           }
         }
-      }
-      #school-name-edit{
-        position: absolute;
-        top: 12px;
-        width: 38px;
       }
     }
     .children{

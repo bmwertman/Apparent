@@ -9761,7 +9761,7 @@ a.button {
   font-weight: normal;
   font-style: normal; }
 
-.icon {
+i.ion-android-person-subtract {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'ion-android-person-subtract' !important;
   speak: none;
@@ -10044,10 +10044,12 @@ ion-content.has-footer {
         .landing .list .item a.button i.icon:before {
           font-size: 30px; }
 
+.school-settings .scroll {
+  padding-top: 30px; }
+
 .school-settings .logo-label {
   font-size: 18px;
   text-align: center;
-  margin-top: 30px;
   font-weight: bold; }
 
 .school-settings .selected-logo, .school-settings .no-logo-selected {
@@ -10454,26 +10456,34 @@ ion-header-bar .calendar-form {
     .profile .bar-header .editable-wrap .editable-buttons .xeditable-submit {
       color: snow; }
 
+.profile .content-body .school-wrapper #school-display-name {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #B71C1C;
+  width: calc(100% - 35px);
+  margin-left: 35px; }
+  .profile .content-body .school-wrapper #school-display-name .ion-edit {
+    font-size: 12px; }
+
 .profile .content-body .school-wrapper #school-name {
   background: transparent;
   display: block;
-  width: 190px;
+  width: 210px;
   margin: -14px auto -10px; }
   .profile .content-body .school-wrapper #school-name .layout-row {
     box-shadow: none; }
     .profile .content-body .school-wrapper #school-name .layout-row #md-school-input {
       padding: 0;
-      width: 190px;
       font-size: 20px;
       font-weight: bold;
       color: #B71C1C; }
+    .profile .content-body .school-wrapper #school-name .layout-row .ion-edit {
+      position: relative;
+      right: 3px;
+      top: 13px; }
     .profile .content-body .school-wrapper #school-name .layout-row button {
       display: none; }
-
-.profile .content-body .school-wrapper #school-name-edit {
-  position: absolute;
-  top: 12px;
-  width: 38px; }
 
 .profile .content-body .children #add-child {
   position: initial;

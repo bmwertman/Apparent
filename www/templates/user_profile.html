@@ -32,16 +32,23 @@
   </div>
   <ion-content class="content-body has-tall-header has-footer padding">
     <div class="school-wrapper">
-      <md-autocomplete
-        id="school-name"
-        placeholder="Your School Name"
-        font="bold 20px Roboto"
-        md-selected-item="school"
-        md-input-id="md-school-input"
-        md-selected-item-change="editSubmit(school)"
-        md-search-text="searchText"
-        md-items="school in querySchools(searchText)"
-        md-item-text="school.SCHNAM09">
+      <div id="school-display-name"
+           ng-if="!hideDisplayName"
+           ng-click="editSchool()"
+           >
+           {{school.name}}
+        <i class="icon ion-edit"><span>EDIT</span></i>
+      </div>
+      <md-autocomplete id="school-name"
+                       ng-if="hideDisplayName"
+                       placeholder="Your School Name"
+                       font="bold 20px Roboto"
+                       md-selected-item="school"
+                       md-input-id="md-school-input"
+                       md-selected-item-change="editSubmit(school)"
+                       md-search-text="searchText"
+                       md-items="school in querySchools(searchText)"
+                       md-item-text="school.SCHNAM09">
         <md-item-template>
           <span md-highlight-text="searchText">{{school.SCHNAM09}}</span>
         </md-item-template>
