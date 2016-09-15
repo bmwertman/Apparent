@@ -10012,7 +10012,8 @@ ion-content.has-footer {
 
 .landing .tall {
   color: snow;
-  background-color: #B71C1C; }
+  background-color: #B71C1C;
+  overflow: hidden; }
   .landing .tall .school-logo {
     margin-top: 82px;
     height: 300px;
@@ -10035,13 +10036,13 @@ ion-content.has-footer {
       float: left; }
     .landing .list .item:nth-child(even) {
       float: right; }
-    .landing .list .item:last-child {
-      margin-left: calc((100% - 102px)/2); }
     .landing .list .item a.button {
       margin: 0;
       line-height: 15px; }
       .landing .list .item a.button i.icon {
         display: block; }
+        .landing .list .item a.button i.icon:before {
+          font-size: 30px; }
 
 .school-settings .logo-label {
   font-size: 18px;

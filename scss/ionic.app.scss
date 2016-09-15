@@ -403,6 +403,7 @@ ion-content.has-footer{
   .tall{
     color: $fontColor;
     background-color: $positive;
+    overflow: hidden;
     .school-logo{
       margin-top: 82px;
       height: 300px;
@@ -430,14 +431,14 @@ ion-content.has-footer{
       &:nth-child(even){
         float: right;
       }
-      &:last-child{
-        margin-left: calc((100% - 102px)/2);
-      }
       a.button{
         margin: 0;
         line-height: 15px;
         i.icon{
           display: block;
+          &:before{
+            font-size: 30px;
+          }
         }
       }
     }

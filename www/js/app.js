@@ -283,7 +283,7 @@ var Pta = angular.module('pta', [
         params:{
           isNewUser: null
         },
-        templateUrl: 'templates/user-profile.html',
+        templateUrl: 'templates/user_profile.html',
         controller: 'UserCtrl'
       },
       {
