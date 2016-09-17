@@ -10036,6 +10036,8 @@ ion-content.has-footer {
       float: left; }
     .landing .list .item:nth-child(even) {
       float: right; }
+    .landing .list .item:last-child {
+      margin-left: calc((100% - 102px)/2); }
     .landing .list .item a.button {
       margin: 0;
       line-height: 15px; }
@@ -11101,6 +11103,96 @@ ion-header-bar .calendar-form {
   border-radius: 10px !important;
   text-align: left !important;
   max-width: 240px !important; }
+
+.parent-directory .bar.bar-subheader {
+  height: 49px;
+  margin-top: -5px; }
+  .parent-directory .bar.bar-subheader .search {
+    width: 90%;
+    min-width: 300px;
+    margin-left: 5%;
+    font-size: 13px;
+    border-radius: 6px;
+    padding-left: 5px; }
+
+.parent-directory .parent-list .parent {
+  padding: 5px 10px; }
+  .parent-directory .parent-list .parent .parent-wrapper {
+    float: left;
+    width: 50%; }
+    .parent-directory .parent-list .parent .parent-wrapper .parent-name {
+      text-align: center;
+      font-size: 20px; }
+    .parent-directory .parent-list .parent .parent-wrapper .parent-pic {
+      border-radius: 50%;
+      width: 100px;
+      margin-left: calc((100% - 100px)/2); }
+    .parent-directory .parent-list .parent .parent-wrapper .user-initial {
+      color: snow;
+      background-color: #B71C1C;
+      font-weight: bold;
+      text-align: center;
+      padding: 4px;
+      font-size: 70px;
+      line-height: 100px; }
+  .parent-directory .parent-list .parent .children {
+    float: left;
+    width: 50%; }
+    .parent-directory .parent-list .parent .children .list {
+      overflow-x: auto; }
+      .parent-directory .parent-list .parent .children .list::-webkit-scrollbar {
+        -webkit-appearance: none; }
+      .parent-directory .parent-list .parent .children .list::-webkit-scrollbar:horizontal {
+        height: 5px; }
+      .parent-directory .parent-list .parent .children .list::-webkit-scrollbar-thumb {
+        border-radius: 3px;
+        border: 4px solid #2AD4FF;
+        background-color: rgba(0, 0, 0, 0.5); }
+      .parent-directory .parent-list .parent .children .list::-webkit-scrollbar-track {
+        background-color: #1102FF;
+        border-radius: 3px; }
+      .parent-directory .parent-list .parent .children .list .child {
+        border: none;
+        display: inline-block;
+        padding: 0;
+        margin: 27px 0 0 8px;
+        width: 75px; }
+        .parent-directory .parent-list .parent .children .list .child .child-pic {
+          border-radius: 50%;
+          width: 100%;
+          margin: 0 auto; }
+        .parent-directory .parent-list .parent .children .list .child .user-initial {
+          color: snow;
+          background-color: #B71C1C;
+          font-weight: bold;
+          text-align: center;
+          font-size: 48px;
+          line-height: 75px;
+          margin-bottom: 5px; }
+        .parent-directory .parent-list .parent .children .list .child .child-name {
+          text-align: center;
+          white-space: initial;
+          line-height: 12px;
+          margin-top: -4px; }
+  .parent-directory .parent-list .parent .contact {
+    clear: both;
+    width: 50%; }
+    .parent-directory .parent-list .parent .contact .contact-btn {
+      border-radius: 50%;
+      border: 2px solid #2AD4FF;
+      background-color: #1102FF;
+      line-height: 36px;
+      font-size: 27px;
+      color: #E0FFFF;
+      width: 40px;
+      display: inline-block;
+      text-align: center;
+      float: left;
+      margin-left: calc((100% - 120px)/4); }
+    .parent-directory .parent-list .parent .contact .not-provided {
+      border: 2px solid darkgrey;
+      background-color: lightgrey;
+      color: darkgrey; }
 
 .footer-bar {
   position: fixed;

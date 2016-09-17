@@ -108,7 +108,7 @@ Pta.controller('RoomsCtrl', [
   $scope.openChatRoom = function (id) {
     getChatters(id)
     .then(function(chatters){
-      $state.go('app.home.rooms.chat', { 
+      $state.go('app.room', { 
         roomId: id,
         chatters: chatters
       });
@@ -119,7 +119,7 @@ Pta.controller('RoomsCtrl', [
   $scope.createRoom = function() {
     var newRoomId = firebase.database().ref('user-rooms').child($scope.user.$id).push().key,
         id = Rooms.addNewRoom(this.$$childHead.selectedValues, '/user-rooms/', newRoomId);
-    $state.go('app.rooms.chat', {roomId: id});
+    $state.go('app.room', {roomId: id});
     $scope.closeModal();
   }
 

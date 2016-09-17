@@ -19,6 +19,7 @@ var Pta = angular.module('pta', [
   'angular-svg-round-progress',
   'ionic-cache-src',
   'ui.router.stateHelper',
+  'ionicLazyLoad',
   angularDragula(angular)
   ])
 .run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, userService) {
@@ -264,19 +265,21 @@ var Pta = angular.module('pta', [
         name: 'rooms',
         url: '/chat-rooms',
         templateUrl: 'templates/chat-rooms.html',
-        controller: 'RoomsCtrl',
-        children:[
-          {
-            name: 'room',
-            url: '/room',
-            params:{
-              roomId: null,
-              chatters: null
-            },
-            templateUrl: 'templates/chat-room.html',
-            controller: 'ChatCtrl'
-          }
-        ]
+        controller: 'RoomsCtrl'
+      },{
+        name: 'room',
+        url: '/room',
+        params:{
+          roomId: null,
+          chatters: null
+        },
+        templateUrl: 'templates/chat-room.html',
+        controller: 'ChatCtrl'
+      },{
+        name: 'parents',
+        url: '/parents',
+        templateUrl: 'templates/parent-directory.html',
+        controller: 'ParentCtrl'
       },{
         name: 'profile',
         url: '/profile',

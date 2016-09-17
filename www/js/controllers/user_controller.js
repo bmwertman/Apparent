@@ -206,8 +206,11 @@ Pta.controller('UserCtrl', [
     };
 
     $scope.$on('$destroy', function() {
-      $scope.modal.remove();
-      $scope.childModal.remove();
+      if($scope.childModal){
+        $scope.childModal.remove();
+      } else {
+        $scope.modal.remove();
+      }
     });
 
     $scope.openModal = function(name){

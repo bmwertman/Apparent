@@ -76,7 +76,7 @@ Pta.controller('ChatCtrl', [
                     message: $scope.IM.textMessage,
                     sender_name: $scope.user.name,
                     topic: '/topics/' + $state.params.roomId,
-                    state: 'app.rooms.chat',
+                    state: 'app.room',
                     roomId: $state.params.roomId,
                     sender_imgURL: $scope.user.pic,
                     chatters: chatters 

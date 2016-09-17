@@ -32,7 +32,7 @@ Pta.controller('VolunteerCtrl', [
     cssWarp(chatWarp, allWarp);
 
     $scope.groupChat = function(event){
-        $state.go('app.rooms.chat', {roomId: event.id + '-group'});
+        $state.go('app.room', {roomId: event.id + '-group'});
     }
 
     // Only used to create or open one-on-one rooms.
@@ -42,13 +42,13 @@ Pta.controller('VolunteerCtrl', [
             eventRooms = $firebaseArray(eventRoomsRef.child(event.id)),
             volunteersArr = [],
             id;
-        if(eventRooms.$indexFor(newRoomId) > 0){// They have a previous room around this event
+        if(eventRooms.$indexFor(newRoomId) >= 0){// They have a previous room around this event
             id = newRoomId;
         } else {// It's a new chat around this event
             volunteersArr.push(volunteer.user);
             id = Rooms.addNewRoom(volunteersArr, '/event-rooms/', newRoomId, event);
         }
-        $state.go('app.rooms.chat', {roomId: id});
+        $state.go('app.room', {roomId: id});
     }
 }]);    
 

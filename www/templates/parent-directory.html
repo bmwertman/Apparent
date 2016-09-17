@@ -1,0 +1,63 @@
+<ion-view class="parent-directory" view-title="Parent Directory">
+  <ion-nav-buttons side="right"></ion-nav-buttons>
+  <div class="bar bar-subheader bar-positive">
+    <input type="text"
+           class="search" 
+           placeholder="Type child's name or grade, parent's name or email"
+           ng-keyup="filterParents()"
+           ng-model="search">
+  </div>
+  <ion-content class="has-subheader" lazy-scroll>
+    <ion-list class="parent-list">
+      <ion-item class="parent cf" ng-repeat="parent in parents">
+        <div class="parent-wrapper">
+          <h3 class="parent-name">
+            {{parent.name}}
+          </h3>
+          <img class="parent-pic"
+               ng-if="parent.pic.length > 1" 
+               image-lazy-src="{{parent.pic}}"
+               image-lazy-loader="android"
+               image-lazy-distance-from-bottom-to-load="100">
+          <div class="parent-pic user-initial"
+               ng-if="parent.pic.length === 1">
+               {{ parent.pic }}
+          </div>
+        </div>
+        <ion-list class="children"
+                  ng-if="parent.children">
+          <ion-item class="child"
+                    ng-repeat="child in parent.children">
+            <img class="child-pic"
+                 ng-if="child.pic.length > 1"
+                 image-lazy-src="{{child.pic}}"
+                 image-lazy-loader="android"
+                 image-lazy-distance-from-bottom-to-load="100">
+            <div class="child-pic user-initial"
+                 ng-if="child.pic.length === 1">
+                 {{ child.pic }}
+            </div>
+            <h4 class="child-name">
+              {{child.name}}
+            </h4>
+          </ion-item>
+        </ion-list>
+        <div class="contact cf">
+          <a class="contact-btn"
+             ng-class="(parent.phone) ? 'contact-btn' : 'not-provided'"
+             ng-click="call(parent.phone)">
+             <i class="icon ion-ios-telephone"></i>
+          </a>
+          <a class="contact-btn"
+             ng-click="email(parent.email)">
+             <i class="icon ion-email"></i>
+          </a>
+          <a class="contact-btn"
+             ng-click="openChatRoom(parent)">
+             <i class="icon ion-chatboxes"></i>
+          </a>
+        </div>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
