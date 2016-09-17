@@ -34,11 +34,13 @@ Pta.factory('userFilter', function(){
         if(typeof parsedSearch === "number") {
           options = [];
           angular.forEach(parents, function(parent){
-            for (var x = parent.children.length - 1; x >= 0; x--) {
-              //This parent has a child in the grade level searched && this child's parent isn't already in options
-              if(parent.children[x].grade === parsedSearch && options.map(function(el){ return el.$id }).indexOf(parent.$id) < 0){
-                options.push(parent);
-              }
+            if(parent.children){
+              angular.forEach(parent.children, function(child){
+                //This parent has a child in the grade level searched && this child's parent isn't already in options
+                if(child.grade === parsedSearch && options.map(function(el){ return el.$id }).indexOf(parent.$id) < 0){
+                  options.push(parent);
+                }
+              });
             }
           });
         }  
