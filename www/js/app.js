@@ -262,6 +262,16 @@ var Pta = angular.module('pta', [
         templateUrl: 'templates/events.html',
         controller: 'EventsCtrl'
       },{
+        name: 'calendar',
+        url: '/calendar',
+        params:{
+          selectedEvent: null,
+          calendarTitle: 'Volunteer',
+          isVolunteerSignup: true
+        },
+        templateUrl: 'templates/rcalendar.html',
+        controller: 'CalendarCtrl'
+      },{
         name: 'rooms',
         url: '/chat-rooms',
         templateUrl: 'templates/chat-rooms.html',
@@ -300,7 +310,7 @@ var Pta = angular.module('pta', [
             url: '/calendar',
             params:{
               selectedEvent: null,
-              calendarTitle: 'Volunteer',
+              calendarTitle: 'Calendar',
               isVolunteerSignup: true
             },
             templateUrl: 'templates/rcalendar.html',

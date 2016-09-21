@@ -376,7 +376,7 @@ Pta.constant('calendar2Config', {
         }
 
         //Determine if we're in the Calendar or Volunteer view
-        if($ionicHistory.currentView().title === 'Calendar'){
+        if($ionicHistory.currentView().stateName === 'app.admin.calendar'){
             $scope.isCalView = true;
         } else {
             $scope.isCalView = false;

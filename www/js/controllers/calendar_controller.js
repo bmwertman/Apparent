@@ -11,11 +11,10 @@ Pta.controller('CalendarCtrl', [
   '$compile',
   '$localstorage',
   '$ionicPlatform',
-  '$ionicHistory',
   'Rooms',
   'userService',
   '$firebaseObject',
-  function ($scope, $ionicLoading, $timeout, $state, $ionicModal, $ionicPopup, $ionicSideMenuDelegate, $firebaseArray, $stateParams, $compile, $localstorage, $ionicPlatform, $ionicHistory, Rooms, userService, $firebaseObject) {
+  function ($scope, $ionicLoading, $timeout, $state, $ionicModal, $ionicPopup, $ionicSideMenuDelegate, $firebaseArray, $stateParams, $compile, $localstorage, $ionicPlatform, Rooms, userService, $firebaseObject) {
   'use strict';
 
   $scope.selectedEvent = $stateParams.selectedEvent;
@@ -33,14 +32,6 @@ Pta.controller('CalendarCtrl', [
 
   $scope.calendarTitle = $stateParams.calendarTitle;
   $scope.isVolunteerSignup = $stateParams.isVolunteerSignup;
-
-  // if($ionicHistory.backView().stateName === "app.events") {
-  //   $scope.calendarTitle = "Volunteer";
-  //   $scope.isVolunteerSignup = true;
-  // } else {
-  //   $scope.calendarTitle = "Calendar";
-  //   $scope.isVolunteerSignup = false;
-  // }
 
   $scope.itemSelected = {};
   $scope.eventTypes = [
