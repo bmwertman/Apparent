@@ -4,7 +4,11 @@ Pta.controller('HomeCtrl', [
   '$firebaseObject',
   '$timeout',
   '$state',
-  function($scope, userService, $firebaseObject, $timeout, $state) {
+  '$ionicNavBarDelegate',
+  function($scope, userService, $firebaseObject, $timeout, $state, $ionicNavBarDelegate) {
+    
+    $ionicNavBarDelegate.align('center');
+
     $scope.user = userService.getUser();
     if($scope.user.school){
       var school = $firebaseObject(firebase.database().ref('schools').child($scope.user.school));

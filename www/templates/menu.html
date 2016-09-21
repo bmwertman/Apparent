@@ -6,8 +6,6 @@
       <ion-nav-buttons side="left" >
         <button ng-if="$root.isAdmin" class="button button-icon button-clear ion-navicon" menu-toggle="left">
         </button>
-        <button ng-if="!$root.isAdmin" class="button button-icon button-clear ion-home" ui-sref="app.home">
-        </button>
       </ion-nav-buttons>
       <ion-nav-buttons side="right">
         <button class="button" ng-click="logout()">Log Out</button>
@@ -26,9 +24,6 @@
         </ion-item>
         <ion-item menu-toggle>
           <a class="button button-block button-clear button-dark" ui-sref="app.admin.roles">Roles</a>
-        </ion-item>
-        <ion-item menu-toggle>
-          <a class="button button-block button-clear button-dark" ui-sref="app.home">Main Menu</a>
         </ion-item>
         <ion-item menu-toggle>
           <a class="button button-block button-clear button-dark" ui-sref="app.admin.settings">School Settings</a>
