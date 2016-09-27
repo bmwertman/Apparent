@@ -15,5 +15,5 @@ Pta.factory('$localstorage', ['$window', function ($window) {
      remove: function (key) {
       localStorage.removeItem(key);
      }
-   }
+   };
 }]);

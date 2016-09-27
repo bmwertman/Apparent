@@ -1,6 +1,8 @@
 <ion-view class="landing" title="{{school.name}}">
   <div ng-if="school.logo" class="tall bar bar-header">
-    <img class="school-logo" ng-src="{{school.logo}}" >
+    <img class="school-logo"
+         cache-src="{{school.logo}}"
+         encode-uri="false">
   </div>
   <ion-content ng-class="{'has-tall-header': school.logo}">
     <ion-list class="nav-buttons">

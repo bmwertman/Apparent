@@ -12,11 +12,6 @@ Pta.factory('Chats', [
         all: function () {
             return chats;
         },
-        remove: function (chat) {
-            chats.$remove(chat).then(function (ref) {
-                ref.key() === chat.$id; // true item has been removed
-            });
-        },
         get: function (chatId) {
             for (var i = 0; i < chats.length; i++) {
                 if (chats[i].id === parseInt(chatId)) {
@@ -27,7 +22,7 @@ Pta.factory('Chats', [
         },
         getSelectedRoomName: function () {
             var selectedRoom;
-            if (selectedRoomId && selectedRoomId != null) {
+            if (selectedRoomId && selectedRoomId !== null) {
                 return Rooms.get(selectedRoomId);
             } else {
                 return null;
@@ -44,7 +39,7 @@ Pta.factory('Chats', [
                     from: sender.name,
                     message: message,
                     createdAt: firebase.database.ServerValue.TIMESTAMP
-                }
+                };
                 chats.$loaded()
                 .then(function(){
                     var lastAdded = chats.$getRecord(chats.$keyAt(chats.length - 1));
@@ -68,5 +63,5 @@ Pta.factory('Chats', [
                 });
             }
         }
-    }
+    };
 }]);

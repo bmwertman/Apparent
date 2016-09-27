@@ -8,7 +8,8 @@ Pta.factory('Rooms', [
       user = userService.getUser();
       userRoomsRef = firebase.database().ref('user-rooms').child(user.$id),
       roomsRef = firebase.database().ref('/rooms'),
-      userRoom = new pushSubscribe(userRoomsRef);// Subscribes the current user to push notifications for all of their user-rooms
+      // Subscribes the current user to push notifications for all of their user-rooms
+      userRoom = new pushSubscribe(userRoomsRef); // jshint ignore:line
   return {
       all: function () {
         return $firebaseArray(userRoomsRef);
@@ -36,13 +37,13 @@ Pta.factory('Rooms', [
           room.chatters.push(chatter);
         });
         if(subject){// The room is tied to some type of event
-          room.subject = subject.title
+          room.subject = subject.title;
           updates[roomPath + subject.id + '/' + newRoomId] = room; 
         }
         // if(room.chatters.length > 2 || subject){// Creating a group chat room
-        for (var i = room.chatters.length - 1; i >= 0; i--) {
-          firstName = room.chatters[i].name.split(' ')[0];
-          lastName = room.chatters[i].name.split(' ')[1];
+        for (var x = room.chatters.length - 1; x >= 0; x--) {
+          firstName = room.chatters[x].name.split(' ')[0];
+          lastName = room.chatters[x].name.split(' ')[1];
           namesArr.push(firstName + " " + lastName.charAt(0));
         }
         namesArr.reverse();
@@ -51,7 +52,9 @@ Pta.factory('Rooms', [
               obj = {},
               roomInstance = angular.extend(obj, room);
           roomInstance.title = namesArr.join(', ');// Create the title
-          if(subject){ roomInstance.subject = subject.title}
+          if(subject){ 
+            roomInstance.subject = subject.title;
+          }
           updates['/user-rooms/' + room.chatters[i].id + '/' + newRoomId] = roomInstance;// Format the firebase update
           namesArr.splice(i, 0, toBeUpdated[0]);// Put that user's name back in the same place for the next title 
         }
@@ -66,5 +69,5 @@ Pta.factory('Rooms', [
         ref.update(updates);
         return newRoomId;
       } 
-  }
+  };
 }]);

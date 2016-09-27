@@ -14,7 +14,7 @@ Pta.controller('LocationCtrl', function($scope){
         if(status == google.maps.places.PlacesServiceStatus.OK){
           deferred.resolve(result);
         }else{
-          deferred.reject(status)
+          deferred.reject(status);
         }
       });
 
@@ -39,11 +39,11 @@ Pta.controller('LocationCtrl', function($scope){
       $scope.search = {};
       $scope.search.suggestions = [];
       $scope.search.query = "";
-      $ionicModal.fromTemplateUrl('templates/location_search.html', {
+      $ionicModal.fromTemplateUrl('location_search.html', {
         scope: $scope,
         focusFirstInput: true
       }).then(function(modal) {
-        $scope.modal = modal;
+        $scope.locationModal = modal;
       });
       element[0].addEventListener('focus', function(event) {
         $scope.open();
@@ -56,12 +56,15 @@ Pta.controller('LocationCtrl', function($scope){
           }, function(status){
             $scope.search.error = "There was an error :( " + status;
           });
-        };
+        }
+        $scope.$on('$destroy', function() {
+          $scope.locationModal.remove();
+        });
         $scope.open = function() {
-          $scope.modal.show();
+          $scope.locationModal.show();
         };
         $scope.close = function() {
-          $scope.modal.hide();
+          $scope.locationModal.hide();
         };
         $scope.choosePlace = function(place) {
           LocationService.getDetails(place.place_id).then(function(location) {
@@ -72,5 +75,5 @@ Pta.controller('LocationCtrl', function($scope){
         };
       });
     }
-  }
+  };
 });

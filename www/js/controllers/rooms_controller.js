@@ -54,7 +54,7 @@ Pta.controller('RoomsCtrl', [
     }
   });
 
-  $ionicModal.fromTemplateUrl('templates/new-chat.html', {
+  $ionicModal.fromTemplateUrl('new-chat.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
@@ -71,13 +71,13 @@ Pta.controller('RoomsCtrl', [
 
   $scope.openModal = function(){
     $scope.modal.show();
-  }
+  };
 
   function getChatters(id){
     var deferred = $q.defer(),
         chatterIds = [],
         roomIndex = $scope.rooms.map(function(room){ 
-          return room.$id 
+          return room.$id;
         }).indexOf(id),
         chatters = $scope.rooms[roomIndex].chatters;
     // Get ids of everyone the user is chatting
@@ -89,7 +89,6 @@ Pta.controller('RoomsCtrl', [
       });
     } else {
       for (var i = chatters.length - 1; i >= 0; i--) {
-        chatters[i]
         if(chatters[i].id !== $scope.user.$id){
           chatterIds.push(chatters[i].id);
         }
@@ -114,13 +113,13 @@ Pta.controller('RoomsCtrl', [
       });
       $scope.closeModal();
     });
-  }
+  };
 
   $scope.createRoom = function() {
     var newRoomId = firebase.database().ref('user-rooms').child($scope.user.$id).push().key,
         id = Rooms.addNewRoom(this.$$childHead.selectedValues, '/user-rooms/', newRoomId);
     $state.go('app.room', {roomId: id});
     $scope.closeModal();
-  }
+  };
 
 }]);

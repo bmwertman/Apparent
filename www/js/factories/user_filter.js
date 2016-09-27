@@ -7,11 +7,11 @@ Pta.factory('userFilter', function(){
           var madeDisplayable = [];
           angular.forEach(contactsFound, function(value, key){
               var contact = value;
-              contact.label = value.name + " " + "<" + value.email + ">"
+              contact.label = value.name + " " + "<" + value.email + ">";
               madeDisplayable.push(contact);
           });
           return madeDisplayable;
-        }
+        };
     if(search){
       if(isNaN(parsedSearch)){
         options = [];
@@ -19,13 +19,20 @@ Pta.factory('userFilter', function(){
         angular.forEach(parents, function(parent){
           for (var i = properties.length - 1; i >= 0; i--) {
             //We're not on the 'children' property && this parent has this property set && this parent's name or email was matched && This parent isn't already in options
-            if(i < properties.length - 1 && parent[properties[i]] && parent[properties[i]].indexOf(search) >= 0 && options.map(function(el){ return el.$id }).indexOf(parent.$id)< 0){
+            if(i < properties.length - 1 && parent[properties[i]] && parent[properties[i]].indexOf(search) >= 0 && options.map(
+              function(el){ 
+                return el.$id;
+              }).indexOf(parent.$id)< 0){
               options.push(parent);
             } else {
+              /*jshint loopfunc: true */
               angular.forEach(parent.children, function(value, key){
-                if(value.name.indexOf(search) >= 0 && options.map(function(el){ return el.$id }).indexOf(parent.$id) < 0){
-                  options.push(parent);
-                }
+                if(value.name.indexOf(search) >= 0 && options.map(
+                  function(el){
+                    return el.$id;
+                  }).indexOf(parent.$id) < 0){
+                    options.push(parent);
+                  }
               });
             }
           }
@@ -37,9 +44,12 @@ Pta.factory('userFilter', function(){
             if(parent.children){
               angular.forEach(parent.children, function(child){
                 //This parent has a child in the grade level searched && this child's parent isn't already in options
-                if(child.grade === parsedSearch && options.map(function(el){ return el.$id }).indexOf(parent.$id) < 0){
-                  options.push(parent);
-                }
+                if(child.grade === parsedSearch && options.map(
+                  function(el){
+                    return el.$id;
+                  }).indexOf(parent.$id) < 0){
+                    options.push(parent);
+                  }
               });
             }
           });
@@ -49,5 +59,5 @@ Pta.factory('userFilter', function(){
     } else {
       return displayableOptions(parents);
     }
-  }
+  };
 });

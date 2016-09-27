@@ -28,7 +28,7 @@ Pta.directive('dragWatch', ['$timeout', function ($timeout) {
             }
             
             scope.$watch(function () {
-                return parseInt(element.css(attrs['offsetTop']));
+                return parseInt(element.css(attrs.offsetTop));
             },  styleChangedCallBack,
             true);
             
@@ -43,7 +43,7 @@ Pta.directive('dragWatch', ['$timeout', function ($timeout) {
                 }
 
                 if (newValue !== oldValue) {
-                    function offsetChange(){
+                    var offsetChange = function(){
                         var actualPixels = newValue - oldValue,
                             obj = {};
                         if(actualPixels > 0){
@@ -57,7 +57,7 @@ Pta.directive('dragWatch', ['$timeout', function ($timeout) {
                             obj.minutes = 60;
                             return obj; //rounded Y-axis position change in pixels
                         }
-                    }
+                    };
                     // dragged down = time increase and signup time is still before latest finish time
                     if(newValue > oldValue && moment(scope.latestFinish._i).diff(scope.dateTime) > 0 ){
                         scope.dateTime.add(offsetChange());

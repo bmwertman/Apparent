@@ -20,7 +20,7 @@ Pta.controller('ParentCtrl', [
 
     $scope.filterParents = function(){
       $scope.parents = userFilter($scope.schoolParents, $scope.search);
-    }
+    };
 
     $scope.childWidth = function(children){
       if(children.length > 1){
@@ -28,7 +28,7 @@ Pta.controller('ParentCtrl', [
       } else {
         return "90%";
       }
-    }
+    };
 
     $scope.childMarginTop = function(children){
       if(children.length <= 2){
@@ -36,7 +36,7 @@ Pta.controller('ParentCtrl', [
       } else {
         return "0";
       }
-    }
+    };
 
     $scope.call = function(number){
       if(number){
@@ -48,7 +48,7 @@ Pta.controller('ParentCtrl', [
             console.log(err);
           }, number);
       }
-    }
+    };
 
     $scope.email = function(address){
       $cordovaEmailComposer.open({to: address})
@@ -56,20 +56,20 @@ Pta.controller('ParentCtrl', [
         function(){
           console.log("cancelled");
       });
-    }
+    };
 
     $scope.openChatRoom = function (chatter) {
-      var roomId = user.$id + chatter.$id;
-          chattersArr = [];
+      var roomId = user.$id + chatter.$id,
+          chattersArr = [],
           id;
       if(userRooms.$indexFor(roomId) >= 0){
         id = roomId;
       } else {
         chattersArr.push(chatter);
-        var id = Rooms.addNewRoom(chattersArr, '/user-rooms/', roomId);
+        id = Rooms.addNewRoom(chattersArr, '/user-rooms/', roomId);
       }
       $state.go('app.room', { roomId: id });
-    }
+    };
 }]);
 
 

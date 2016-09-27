@@ -33,7 +33,7 @@ Pta.controller('VolunteerCtrl', [
 
     $scope.groupChat = function(event){
         $state.go('app.room', {roomId: event.id + '-group'});
-    }
+    };
 
     // Only used to create or open one-on-one rooms.
     // Group chat rooms are created with their corresponding event
@@ -49,7 +49,7 @@ Pta.controller('VolunteerCtrl', [
             id = Rooms.addNewRoom(volunteersArr, '/event-rooms/', newRoomId, event);
         }
         $state.go('app.room', {roomId: id});
-    }
+    };
 }]);    
 
 
