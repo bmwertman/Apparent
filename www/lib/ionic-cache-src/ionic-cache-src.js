@@ -140,7 +140,7 @@
         uiOnStart: uiOnStart,
         uiOnFinish: uiOnFinish,
         uiOnProgress: uiOnProgress,
-        encodeUri: false,
+        encodeUri: true,
         expire: Infinity
     };
     var getCacheDir = function() {};

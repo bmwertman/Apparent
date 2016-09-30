@@ -11,14 +11,14 @@
   angular.module('lk-google-picker', [])
 
   .provider('lkGoogleSettings', function () {
-    this.apiKey   = 'AIzaSyB8pW24K8TWAKiP5XQHDlTNyBjjfR11wM0';
-    this.clientId = '935811502625-aq8j2t6beni45crvbt3fvu59sgsgu5in.apps.googleusercontent.com'
-    // android '935811502625-rhdtv4di319pd1dso92bpqoqormb3o9q.apps.googleusercontent.com';
-    this.clientSecret = 'KYThpRieWjatEr6ILzofhXS_';
+    this.apiKey   = null;
+    this.clientId = null;
     this.scopes   = ['https://www.googleapis.com/auth/drive'];
     this.features = ['MULTISELECT_ENABLED'];
-    this.redirectUri = 'http://localhost';
-    this.views    = ['DocsView().setIncludeFolders(true)', 'DocsUploadView().setIncludeFolders(true)'];
+    this.views    = [
+      'DocsView().setIncludeFolders(true)',
+      'DocsUploadView().setIncludeFolders(true)'
+    ];
     this.locale   = 'en'; // Default to English
 
     /**
@@ -47,12 +47,7 @@
     };
   })
 
-  .directive('lkGooglePicker', [
-    'lkGoogleSettings', 
-    '$q', 
-    '$httpParamSerializer', 
-    '$cordovaInAppBrowser',
-    function (lkGoogleSettings, $q, $httpParamSerializer, $cordovaInAppBrowser) {
+  .directive('lkGooglePicker', ['lkGoogleSettings', function (lkGoogleSettings) {
     return {
       restrict: 'A',
       scope: {
@@ -62,58 +57,6 @@
       },
       link: function (scope, element, attrs) {
         var accessToken = null;
-
-        //Extends gapi with authorization method
-        function authorize () {
-            var deferred = $q.defer();
-
-            //Build the OAuth consent page URL
-            var authUrl = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=1027095558281-cmq64mbpfukfggs0m8vbp2gt70ugcnqk.apps.googleusercontent.com&redirect_uri=http://localhost&response_type=code&scope=https://www.googleapis.com/auth/drive';
-                
-
-            //Open the OAuth consent page in the InAppBrowser
-            var appBrowserOpts = {
-              location: 'no',
-              toolbar: 'no',
-              hardwareback: 'no'
-            }
-            var authWindow = $cordovaInAppBrowser.open(authUrl, '_blank', appBrowserOpts);
-
-            //Run on the window load event
-            authWindow.addEventListiner('$cordovaInAppBrowser:loadstart', function(e) {
-
-                var url = e.originalEvent.url;
-                var code = /\?code=(.+)$/.exec(url);
-                var error = /\?error=(.+)$/.exec(url);
-
-                if (code || error) {
-                    //Always close the browser when match is found
-                    scope.authWindow.close();
-                }
-
-                if (code) {
-                    //Exchange the authorization code for an access token
-                    $http.post('https://accounts.google.com/o/oauth2/token', {
-                        code: code[1],
-                        client_id: lkGoogleSettings.clientId,
-                        // client_secret: lkGoogleSettings.clientSecret,
-                        redirect_uri: lkGoogleSettings.redirectUri,
-                        grant_type: 'authorization_code'
-                    }).then(function(data) {
-                        deferred.resolve(data);
-                    }).then(function(response) {
-                        deferred.reject(response.responseJSON);
-                    });
-                } else if (error) {
-                    //The user denied access to the app
-                    deferred.reject({
-                        error: error[1]
-                    });
-                }
-            });
-
-            return deferred.promise;
-        }
 
         /**
          * Load required modules
@@ -133,12 +76,11 @@
           if (authToken) {
             handleAuthResult(authToken);
           } else {
-            authorize()
-            .then(function(data) {
-                console.log('Access Token: ' + data.access_token);
-            }).catch(function(data) {
-                console.log(data.error);
-            });
+            gapi.auth.authorize({
+              'client_id' : lkGoogleSettings.clientId,
+              'scope'     : lkGoogleSettings.scopes,
+              'immediate' : false
+            }, handleAuthResult);
           }
         }
 

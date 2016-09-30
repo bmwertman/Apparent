@@ -14,10 +14,6 @@
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="android-minSdkVersion" value="16"/>
   <preference name="BackupWebStorage" value="none"/>
-  <preference name="xwalkVersion" value="17+"/>
-  <preference name="xwalkCommandLine" value="--disable-pull-to-refresh-effect"/>
-  <preference name="xwalkMode" value="embedded"/>
-  <preference name="xwalkMultipleApk" value="true"/>
   <preference name="ShowSplashScreen" value="true"/>
   <preference name="SplashScreen" value="screen"/>
   <preference name="SplashShowOnlyFirstTime" value="false"/>
@@ -28,6 +24,7 @@
   <preference name="AutoHideSplashScreen" value="false" />
   <preference name="ShowSplashScreenSpinner" value="false"/>
   <preference name="AndroidPersistentFileLocation" value="Internal" />
+  <preference name="iosPersistentFileLocation" value="Library" />
   <feature name="SplashScreen">
     <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen"/>
   </feature>
