@@ -109,6 +109,7 @@
 
 .calendar-event-inner {
     overflow: hidden;
+    background-color: #3a87ad;
     color: white;
     height: 100%;
     width: 100%;
@@ -118,7 +119,7 @@
 
 .calendar-cell {
     padding: 0 !important;
-    height: 40px; /*Increased from 37 to 40 px for even time calculation*/
+    height: 37px;
 }
 
 .monthview-primary-with-event {
@@ -126,13 +127,13 @@
     color: white;
 }
 
+.monthview-current {
+    background-color: lightgrey;
+}
+
 .monthview-selected {
     background-color: #009900;
     color: white;
-}
-
-.monthview-current {
-    background-color: lightgrey;
 }
 
 .monthview-eventdetail-timecolumn {

@@ -30,7 +30,7 @@ angular.module('xeditable', [])
    * @var {string} icon set
    * @memberOf editable-options
    */  
-  icon_set: 'font-awesome',
+  icon_set: 'default',
   /**
    * Whether to show buttons for single editalbe element.  
    * Possible values `right` (default), `no`.
@@ -2199,7 +2199,7 @@ angular.module('xeditable').factory('editableIcons', function() {
     },
     external: {
       'font-awesome': {
-        ok: 'fa fa-pencil',
+        ok: 'fa fa-check',
         cancel: 'fa fa-times'
       }
     }

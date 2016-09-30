@@ -3,7 +3,7 @@
 
 /* class for single editable element */
 .editable-wrap {
-  display: block;
+  display: inline-block;
   white-space: nowrap;
   margin: 0;
 }
@@ -90,11 +90,15 @@
 .editable-click,
 a.editable-click {
   text-decoration: none;
+  color: #428bca;
+  border-bottom: dashed 1px #428bca;
 }
 
 .editable-click:hover, 
 a.editable-click:hover {
   text-decoration: none;
+  color: #2a6496;
+  border-bottom-color: #2a6496;
 }
 
 /* editable-empty */

@@ -20,8 +20,12 @@
   var template = '<md-dialog class="dtp" layout="column" style="width: 300px;">'
     + '    <md-dialog-content class="dtp-content">'
     + '        <div class="dtp-date-view">'
-    + '            <header class="dtp-header" ng-show="picker.dateMode">'
-    + '                <div class="dtp-actual-day">{{picker.currentDate.format("dddd")}}</div>'
+    + '            <header class="dtp-header">'
+    + '                <div class="dtp-actual-day" ng-show="picker.dateMode">{{picker.currentDate.format("dddd")}}</div>'
+    + '                <div class="dtp-actual-day" ng-show="picker.timeMode">{{picker.params.shortTime ? picker.currentDate.format("A") : " "}}</div>'
+    + '                <div class="dtp-close text-right">'
+    + '                    <a href="#" mdc-dtp-noclick ng-click="picker.hide()">&times;</a>'
+    + '                </div>'
     + '            </header>'
     + '            <div class="dtp-date" ng-show="picker.params.date">'
     + '                <div layout="column">'
@@ -35,10 +39,7 @@
     + '                </div>'
     + '            </div>'//start time
     + '            <div class="dtp-time" ng-show="picker.params.time && !picker.params.date">'
-    + '                <div class="dtp-actual-maxtime" ng-class="{selected: picker.currentView === picker.VIEWS.HOUR}" ng-click="picker.initHours()">{{picker.currentNearest5Minute().format(picker.params.shortTime ? "hh" : "HH")}}</div>'
-    + '                <div class="dtp-actual-maxtime">:</div>'
-    + '                <div class="dtp-actual-maxtime" ng-class="{selected: picker.currentView === picker.VIEWS.MINUTE}" ng-click="picker.initMinutes()">{{picker.currentNearest5Minute().format("mm")}}</div>'
-    + '                <div class="dtp-actual-day" ng-show="picker.timeMode">{{picker.params.shortTime ? picker.currentDate.format("A") : " "}}</div>'
+    + '                <div class="dtp-actual-maxtime">{{picker.currentNearest5Minute().format(picker.params.shortTime ? "hh:mm" : "HH:mm")}}</div>'
     + '            </div>'
     + '            <div class="dtp-picker">'
     + '                <mdc-datetime-picker-calendar date="picker.currentDate" picker="picker" class="dtp-picker-calendar" ng-show="picker.currentView === picker.VIEWS.DATE"></mdc-datetime-picker-calendar>'
@@ -60,7 +61,7 @@
     + '        </div>'
     + '    </md-dialog-content>'
     + '    <md-dialog-actions class="dtp-buttons">'
-    + '            <md-button class="dtp-btn-cancel md-button" ng-click="picker.hide()"> {{picker.params.cancelText}}</md-button>'
+    + '            <md-button class="dtp-btn-cancel md-button" ng-click="picker.cancel()"> {{picker.params.cancelText}}</md-button>'
     + '            <md-button class="dtp-btn-ok md-button" ng-click="picker.ok()"> {{picker.params.okText}}</md-button>'
     + '      </md-dialog-actions>'
     + '</md-dialog>';
@@ -389,7 +390,22 @@
       }
     },
     ok: function () {
-      this.hide(true);
+      switch (this.currentView) {
+        case VIEW_STATES.DATE:
+          if (this.params.time === true) {
+            this.initHours();
+          }
+          else {
+            this.hide(true);
+          }
+          break;
+        case VIEW_STATES.HOUR:
+          this.initMinutes();
+          break;
+        case VIEW_STATES.MINUTE:
+          this.hide(true);
+          break;
+      }
     },
     cancel: function () {
       if (this.params.time) {
@@ -849,7 +865,6 @@
 
               if (!minuteMode) {
                 picker.currentDate.hour(picker.isPM() ? (val + 12) : val);
-                picker.initMinutes();
               } else {
                 picker.currentDate.minute(val);
               }

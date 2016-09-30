@@ -33,7 +33,7 @@ Default value: 'dd'
 The format of the header displayed in the month view.    
 Default value: 'EEE'
 * formatDayTitle    
-The format of the title displayed in the month view.    
+The format of the title displayed in the day view.    
 Default value: 'MMMM dd, yyyy'
 * formatWeekTitle    
 The format of the title displayed in the week view.    
@@ -96,12 +96,12 @@ The callback function triggered when an event is clicked
         };
 
 * timeSelected    
-The callback function triggered when a date is selected in the monthview
+The callback function triggered when a date is selected in the monthview. If there's no event at the selected time, the events parameter will be either undefined or empty array
 
-        <calendar ... time-selected="onTimeSelected(selectedTime)"></calendar>
+        <calendar ... time-selected="onTimeSelected(selectedTime, events)"></calendar>
         
-        $scope.onTimeSelected = function (selectedTime) {
-            console.log(event.selectedTime);
+        $scope.onTimeSelected = function (selectedTime, events) {
+            console.log('Selected time: ' + selectedTime + ', hasEvents: ' + (events !== undefined && events.length !== 0));
         };
 
 * titleChanged    
@@ -154,3 +154,8 @@ Parameter: value
 The whole event source object
 
         $scope.$broadcast('eventSourceChanged',$scope.eventSource);
+
+# i18n support
+When including the angular locale script, the viewTitle and header of the calendar will be translated to local language automatically.
+
+        <script src="http://code.angularjs.org/1.4.3/i18n/angular-locale_xx.js"></script>

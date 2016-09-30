@@ -406,9 +406,12 @@ ion-content.has-footer{
     background-color: $positive;
     overflow: hidden;
     .school-logo{
-      margin-top: 82px;
-      height: 300px;
-      margin: 70px auto;
+      background-color: white;
+      height: 100%;
+      padding: 5px;
+      max-height: 105px;
+      margin: 48px auto;
+      border-radius: 4px;
     }
   }
   .list{
