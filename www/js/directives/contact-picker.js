@@ -10,12 +10,12 @@ Pta.directive('contactpicker', [
     'userService',
     'userFilter',
     function ($q, $filter, $timeout, $window, $http, $cordovaContacts, $firebaseArray, userService, userFilter) {
-        'use strict';
+        'use strict'
         return {
             restrict: 'EAC',
             replace: true,
             transclude: true,
-            templateUrl: 'contactpicker.html',
+            templateUrl: 'templates/contactpicker.html',
             scope: {
                 name:                   '@?',
                 value:                  '=model',
@@ -160,11 +160,12 @@ Pta.directive('contactpicker', [
                         .then(function(schoolParents){
                             scope.options = userFilter(schoolParents, scope.search);
                         });
-                    };
+                    }
 
                     function getStyles(element) {
                         return !(element instanceof HTMLElement) ? {} :
-                            element.ownerDocument && element.ownerDocument.defaultView.opener ? element.ownerDocument.defaultView.getComputedStyle(element)
+                            element.ownerDocument && element.ownerDocument.defaultView.opener
+                                ? element.ownerDocument.defaultView.getComputedStyle(element)
                                 : window.getComputedStyle(element);
                     }
                     
@@ -180,7 +181,7 @@ Pta.directive('contactpicker', [
                     
                     // Options' utilities
                     scope.optionValue = function (option) {
-                        return scope.valueAttr === null ? option : option[scope.valueAttr];
+                        return scope.valueAttr == null ? option : option[scope.valueAttr];
                     };
                     scope.optionEquals = function (option, value) {
                         return angular.equals(scope.optionValue(option), angular.isDefined(value) ? value : scope.value);
@@ -190,11 +191,11 @@ Pta.directive('contactpicker', [
                     scope.setValue = function (value) {
                         var emailRegex = /<(.*?)\>/g;
                         var nameValue = emailRegex.exec(value);
-                        if (!scope.multiple) scope.value = scope.valueAttr === null ? (nameValue || {}) : (nameValue || {})[scope.valueAttr];
-                        else scope.value = scope.valueAttr === null ? (nameValue || []) : (nameValue || []).map(function (option) { return option[scope.valueAttr]; });
+                        if (!scope.multiple) scope.value = scope.valueAttr == null ? (nameValue || {}) : (nameValue || {})[scope.valueAttr];
+                        else scope.value = scope.valueAttr == null ? (nameValue || []) : (nameValue || []).map(function (option) { return option[scope.valueAttr]; });
                     };
                     scope.hasValue = function () {
-                        return scope.multiple ? (scope.value || []).length > 0 : (scope.valueAttr === null ? !angular.equals({}, scope.value) : !!scope.value);
+                        return scope.multiple ? (scope.value || []).length > 0 : (scope.valueAttr == null ? !angular.equals({}, scope.value) : !!scope.value);
                     };
                    
                     scope.fillWithHtml = function () {
@@ -345,7 +346,8 @@ Pta.directive('contactpicker', [
                         if (angular.equals(newValue, oldValue)) return;
                         scope.updateValue();
                         if (angular.isFunction(scope.change))
-                            scope.change(scope.multiple ? { newValue: newValue, oldValue: oldValue }
+                            scope.change(scope.multiple
+                                ? { newValue: newValue, oldValue: oldValue }
                                 : { newValue: newValue[0], oldValue: oldValue[0] });
                     }, true);
                     scope.$watchCollection('options', function (newValue, oldValue) {
@@ -422,7 +424,7 @@ Pta.directive('contactpicker', [
                     };
                 });
             }
-        };
+        }
 }]);
 angular.module('templates/contactpicker.html', []).run(['$templateCache', function ($templateCache) {
     $templateCache.put('templates/contactpicker.html',

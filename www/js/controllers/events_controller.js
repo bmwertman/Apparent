@@ -30,7 +30,7 @@ Pta.controller('EventsCtrl', [
   
   $scope.showEvent = function(event){
     $state.go('app.calendar',{selectedEvent: event});
-  };
+  }
   
   $scope.volunteersNeeded = [];
 
@@ -40,8 +40,7 @@ Pta.controller('EventsCtrl', [
     var role = {};
     role.name = $scope.roles[i];
     $scope.volunteersNeeded.push(role);
-  }
-  
+  };
   $scope.volunteersNeeded.unshift({name: 'All'});
   
 }]);

@@ -14,7 +14,7 @@ Pta.controller('ChatCtrl', [
 
     $scope.slide = function(e){
         var userChats = angular.element(document.getElementsByClassName('user')),
-            times = angular.element(document.getElementsByClassName('time')),
+            times = angular.element(document.getElementsByClassName('time'))
             Usertimes = angular.element(document.getElementsByClassName('user-time'));
         if(e.type === "swiperight"){
             times.css({
@@ -38,7 +38,7 @@ Pta.controller('ChatCtrl', [
                 'transition': 'all 250ms ease-in-out',
                 'transform':'translate3D(-72px, 0, 0)'});
         }
-    };
+    }
 
     Chats.selectRoom($state.params.roomId);
     var isIOS = ionic.Platform.isWebView() && ionic.Platform.isIOS(),
@@ -49,7 +49,7 @@ Pta.controller('ChatCtrl', [
     .then(function(){
         if (selectedRoom) {
             // Fetching Chat Records only if a Room is Selected
-            $scope.$emit('subject', selectedRoom.subject);
+            $scope.$emit('subject', selectedRoom.subject)
             // Add room titles
             var titleArr = [];
             angular.forEach(selectedRoom.chatters, function(chatter, key){
@@ -88,7 +88,7 @@ Pta.controller('ChatCtrl', [
                 $ionicScrollDelegate.scrollBottom(true);
             })
             .catch(function(err){
-                console.log(err);
+                debugger;
             });
         });
     };

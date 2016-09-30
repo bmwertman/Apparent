@@ -365,12 +365,9 @@ crop.service('cropEXIF', [function () {
                 }
                 http = null;
             };
-            http.responseType = 'arraybuffer';
             http.open('GET', img.src, true);
-            try {
-                http.send(null);
-            } catch(e) {
-            }
+            http.responseType = 'arraybuffer';
+            http.send(null);
         } else if (window.FileReader && (img instanceof window.Blob || img instanceof window.File)) {
             fileReader.onload = function (e) {
                 if (debug) {

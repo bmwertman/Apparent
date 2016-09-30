@@ -43,28 +43,28 @@ Pta.controller('RoleCtrl', [
 
   $scope.addRole = function(){
     roles.$add({role_rank: "", title: "", user_name: "", user_id: ""});
-  };
+  }
 
   $scope.startRoleSearch = function(roleIndex){
     if($scope.roles[roleIndex].user_id){
       $localstorage.setObject('roleEditStart', $scope.roles[roleIndex]);
       $scope.roleIndex = roleIndex;
     }
-  };
+  }
 
   $scope.endRoleSearch = function(){
     var role = $scope.roles[$scope.roleIndex],
         storedRole = $localstorage.getObject('roleEditStart');
     if(!angular.equals(role, storedRole) && role){
       angular.forEach(storedRole, function(value, key){
-        role[key] = value;
+        role[key] = value
       });
     }
-  };
+  }
 
   $scope.filterParents = function(e){
     $scope.filteredParents = userFilter($scope.schoolParents, e.currentTarget.value);
-  };
+  }
 
   $scope.removeRole = function(role){
     var adminUpdate = {};
@@ -105,9 +105,9 @@ Pta.controller('RoleCtrl', [
         title: "This is the last admin on your account!",
         template: "Deleting this admin will leave your school unable to update content. Please add another admin before deleting this admin."
       });
-      lastAdmin; // jshint ignore:line
+      lastAdmin;
     }
-  };
+  }
 
   $scope.confirmChange = function(user, role, roles){
     if($localstorage.getObject('roleEditStart')){
@@ -184,6 +184,6 @@ Pta.controller('RoleCtrl', [
         user_pic: user.pic
       });
     }
-  };
+  }
   
 }]);

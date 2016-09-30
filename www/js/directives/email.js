@@ -18,5 +18,5 @@ Pta.directive('emailBtn', [
            });
          }); 
       }
-    };
+    }
 }]);

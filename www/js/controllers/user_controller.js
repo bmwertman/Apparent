@@ -20,9 +20,9 @@ Pta.controller('UserCtrl', [
         userName = angular.element(document.getElementById('name-wrap'));
         schoolInputParent = schoolName.children().eq(0),
         ref = firebase.database().ref(),
-        schoolsRef = ref.child('schools'),
-        childrenRef = ref.child('users/' + $scope.user.$id + '/children');// jshint ignore:line
-    var childWarp = {
+        schoolsRef = ref.child('schools')
+        childrenRef = ref.child('users/' + $scope.user.$id + '/children'),
+        childWarp = {
           path:{ 
               radius: 24,
               angle: "185deg",
@@ -40,24 +40,24 @@ Pta.controller('UserCtrl', [
       context = canvas.getContext("2d");
       context.font = font;
       if(text && text.indexOf("/") > -1){
-         text = text.substring(0, text.lastIndexOf('/'));
+         text = text.substring(0, text.lastIndexOf('/'))
       }
       var metrics = context.measureText(text);
       angularEl.css('width', (metrics.width + 3) + 'px');
       angularEl.children().eq(0).css('width', (metrics.width + 3) + 'px');
-    };
+    }
 
     $scope.hideEditIcon = function(e){
       var nameInput = angular.element(e.currentTarget);
       $scope.editIcon = nameInput.parent().parent().next();
       $scope.editIcon.css('display', 'none');
-    };
+    }
 
     $scope.showEditIcon = function(){
       $scope.editIcon.css('display', 'inline');
       $scope.editIcon = null;
       delete $scope.editIcon;
-    };
+    }
 
     $scope.getTextWidth(userName.attr('font'), $scope.user.name, userName);
     
@@ -73,7 +73,7 @@ Pta.controller('UserCtrl', [
       } else {
         $scope.hideDisplayName = true;
       }
-    };
+    }
     if($scope.hideDisplayName){
       $timeout(function(){
         var schoolAutoComplete = angular.element(document.getElementsByClassName('layout-row')[0]),
@@ -90,42 +90,42 @@ Pta.controller('UserCtrl', [
           schools = $firebaseArray(schoolsRef),
           obj = {};
       if(!prop && modelValue){// We're adding a school
-        var school = schools.$getRecord(modelValue['NCESSCH']); //jshint ignore: line
+        var school = schools.$getRecord(modelValue['NCESSCH']);
         if(school){// If the school is already there
-          obj['school'] = modelValue['NCESSCH']; //jshint ignore: line
+          obj['school'] = modelValue['NCESSCH'];
         } else {
           angular.forEach(modelValue, function(value, key){
             switch(key){
               case "SCHNAM09":
-                obj['name'] = value; //jshint ignore: line
+                obj['name'] = value;
                 break;
               case "PHONE09":
-                obj['phone'] = value; //jshint ignore: line
+                obj['phone'] = value;
                 break;
               case "MSTREE09":
-                obj['street_address'] = value; //jshint ignore: line
+                obj['street_address'] = value;
                 break;
               case "MCITY09":
-                obj['city'] = value; //jshint ignore: line
+                obj['city'] = value;
                 break;
               case "MSTATE09":
-                obj['state'] = value; //jshint ignore: line
+                obj['state'] = value;
                 break;
               case "MZIP09":
-                obj['zip'] = value; //jshint ignore: line
+                obj['zip'] = value;
                 break;
               case "LATCOD09":
-                obj['lat'] = value; //jshint ignore: line
+                obj['lat'] = value;
                 break;
               case "LONCOD09":
-                obj['lon'] = value; //jshint ignore: line
+                obj['lon'] = value;
                 break;
             }
           });
         }
-        schoolsRef.child(modelValue['NCESSCH']).set(obj); //jshint ignore: line
-        userRef.update({school: modelValue['NCESSCH']}); //jshint ignore: line
-        $firebaseObject(schoolsRef.child(modelValue['NCESSCH'])) //jshint ignore: line
+        schoolsRef.child(modelValue['NCESSCH']).set(obj);
+        userRef.update({school: modelValue['NCESSCH']});
+        $firebaseObject(schoolsRef.child(modelValue['NCESSCH']))
         .$loaded().then(function(school){// Load the user's new school
           $scope.school = school;
           $scope.getTextWidth(schoolName.attr('font'), school.name, schoolName);
@@ -135,7 +135,7 @@ Pta.controller('UserCtrl', [
         userRef.update(obj);
       }
       $scope.hideDisplayName = false;
-    };
+    }
 
     if($scope.user.school){ // Load the user's school
       $firebaseObject(schoolsRef.child($scope.user.school))
@@ -165,7 +165,7 @@ Pta.controller('UserCtrl', [
         grade: 13,
         pic: '?'
       });
-    };
+    }
 
     $scope.removeChild = function(key) {
       var child = $firebaseObject(childrenRef.child(key)),
@@ -194,31 +194,31 @@ Pta.controller('UserCtrl', [
       });
     };
 
-    $ionicModal.fromTemplateUrl('crop-image.html', {
+    $ionicModal.fromTemplateUrl('templates/crop-image.html', {
       scope: $scope,
       animation: 'slide-in-up'
     }).then(function(modal) {
-      $scope.imageModal = modal;
+      $scope.modal = modal;
     });
 
     $scope.cropImageModal = function() {
-        $scope.imageModal.show();
+        $scope.modal.show();
     };
 
     $scope.$on('$destroy', function() {
       if($scope.childModal){
         $scope.childModal.remove();
       } else {
-        $scope.imageModal.remove();
+        $scope.modal.remove();
       }
     });
 
     $scope.openModal = function(name){
-      $scope.imageModal.show();
-    };
+      $scope.modal.show;
+    }
 
     $scope.closeModal = function(name) {
-      $scope.imageModal.hide();
+      $scope.modal.hide();
     };
   
     //image pick & crop
@@ -233,9 +233,9 @@ Pta.controller('UserCtrl', [
         $scope.picFile = results[0];
         $scope.cropImageModal();
       }, function(error) {
-       console.log(error);
+       console.log(error)
       });
-    };
+    }
 
     $scope.querySchools = function(searchText){
       return $http.get("https://inventory.data.gov/api/action/datastore_search",{
@@ -250,9 +250,9 @@ Pta.controller('UserCtrl', [
       })
       .catch(function(error){
         console.log(error);
-        return error;
+        return error
       });
-    };
+    }
 
     $scope.storeImage = function(file){
       var imageDataArray = file.split(','),
@@ -262,7 +262,7 @@ Pta.controller('UserCtrl', [
           urlSavePath,
           storagePath;
       for( var i = 0; i < binary.length; i++ ) { 
-        array[i] = binary.charCodeAt(i); 
+        array[i] = binary.charCodeAt(i) 
       }
       var image = new Blob([array]);
       if($scope.childPath){
@@ -271,7 +271,7 @@ Pta.controller('UserCtrl', [
         storagePath = 'profile_pics/children/' + $scope.user.user_id + childIndex +'.jpg';
       } else {
         urlSavePath = 'pic';
-        storagePath = 'profile_pics/' + $scope.user.user_id +'.jpg';
+        storagePath = 'profile_pics/' + $scope.user.user_id +  +'.jpg';
       }
       var uploadTask = storageRef.child(storagePath);
       uploadTask.getDownloadURL()
@@ -344,7 +344,7 @@ Pta.controller('UserCtrl', [
           }
         });
       });
-    };
+    }
 
     $ionicSideMenuDelegate.canDragContent(true);
 }]);

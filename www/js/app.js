@@ -20,20 +20,9 @@ var Pta = angular.module('pta', [
   'ionic-cache-src',
   'ui.router.stateHelper',
   'ionicLazyLoad',
-  'templates',
   angularDragula(angular)
   ])
-.run(['$ionicPlatform',
-      '$rootScope',
-      'Auth',
-      'editableThemes',
-      'editableOptions',
-      '$localstorage',
-      '$http',
-      '$state',
-      '$compile',
-      'userService',
-      function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, userService) {
+.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, userService) {
   // hide xeditable cancel button
   editableThemes['default'].cancelTpl = '<button type="button" class="btn btn-default" style="display:none">';
   editableThemes['default'].submitTpl = '<button type="submit" class="xeditable-submit fa fa-pencil-square-o"></button>';
@@ -54,7 +43,7 @@ var Pta = angular.module('pta', [
     $rootScope.goToChat = function(e, chatState, chatRmId){
       angular.element(e.currentTarget).remove();
       $state.go(chatState, {roomId: chatRmId});
-    };
+    }
 
     $rootScope.$on('chatter-bag.drop', function(e, el){
       var index = $rootScope.queuedChatters.map(function(chatter){
@@ -79,7 +68,6 @@ var Pta = angular.module('pta', [
         if(!data.wasTapped && data.sender_imgUrl !== userService.getUser().pic){// Make sure the user isn't getting notified about their own message
           //Notification was received in foreground. Check if the user is already in the room
           if(!$state.is(data.state, { roomId: data.roomId })){
-            /* jshint shadow:true */
             var queue = document.getElementById('queue');
             if(!queue){ // This is the first queued chatter
               var body = angular.element(document.getElementsByTagName('body')[0]),
@@ -175,18 +163,9 @@ var Pta = angular.module('pta', [
     Auth.onAuth();
     Auth.login(credentials);
   }
-}])
+})
 // Watches for authentication event. If login occurs, then get the user's profile info and go to calender or volunteer page
-.factory('Auth', [
-  '$firebaseAuth',
-  '$firebaseObject',
-  '$state',
-  'userService',
-  '$localstorage',
-  '$rootScope',
-  '$timeout',
-  '$ionicLoading',
-  function($firebaseAuth, $firebaseObject, $state, userService, $localstorage, $rootScope, $timeout, $ionicLoading){
+.factory('Auth', function($firebaseAuth, $firebaseObject, $state, userService, $localstorage, $rootScope, $timeout, $ionicLoading){
   var authObj = $firebaseAuth();
   return {
     login: function(credentials) {
@@ -248,18 +227,15 @@ var Pta = angular.module('pta', [
       });
     },
     createUser: function(email, password){
-      authObj.$createUserWithEmailAndPassword(email, password);
+      authObj.$createUserWithEmailAndPassword(email, password)
     },
     passwordReset: function(email){
       authObj.$sendPasswordResetEmail(email);
     }
-  };
-}])
+  }
+})
 
-.config(['stateHelperProvider',
-         '$urlRouterProvider',
-         '$ionicConfigProvider',
-         function(stateHelperProvider, $urlRouterProvider, $ionicConfigProvider) {
+.config(function(stateHelperProvider, $urlRouterProvider, $ionicConfigProvider) {
   
   stateHelperProvider
 
@@ -267,23 +243,23 @@ var Pta = angular.module('pta', [
     name: 'app',
     url: '/app',
     abstract: true,
-    templateUrl: 'menu.html',
+    templateUrl: 'templates/menu.html',
     controller: 'MenuCtrl',
     children: [
       {
         name: 'home', 
         url: '/home',
-        templateUrl: 'landing.html',
+        templateUrl: 'templates/landing.html',
         controller: 'HomeCtrl',
       },{
         name: 'board',
         url: '/board',
-        templateUrl: 'pta-board.html',
+        templateUrl: 'templates/pta-board.html',
         controller: 'BoardCtrl' 
       },{
         name: 'events',
         url: '/events',
-        templateUrl: 'events.html',
+        templateUrl: 'templates/events.html',
         controller: 'EventsCtrl'
       },{
         name: 'calendar',
@@ -293,12 +269,12 @@ var Pta = angular.module('pta', [
           calendarTitle: 'Volunteer',
           isVolunteerSignup: true
         },
-        templateUrl: 'rcalendar.html',
+        templateUrl: 'templates/rcalendar.html',
         controller: 'CalendarCtrl'
       },{
         name: 'rooms',
         url: '/chat-rooms',
-        templateUrl: 'chat-rooms.html',
+        templateUrl: 'templates/chat-rooms.html',
         controller: 'RoomsCtrl'
       },{
         name: 'room',
@@ -307,12 +283,12 @@ var Pta = angular.module('pta', [
           roomId: null,
           chatters: null
         },
-        templateUrl: 'chat-room.html',
+        templateUrl: 'templates/chat-room.html',
         controller: 'ChatCtrl'
       },{
         name: 'parents',
         url: '/parents',
-        templateUrl: 'parent-directory.html',
+        templateUrl: 'templates/parent-directory.html',
         controller: 'ParentCtrl'
       },{
         name: 'profile',
@@ -320,7 +296,7 @@ var Pta = angular.module('pta', [
         params:{
           isNewUser: null
         },
-        templateUrl: 'user_profile.html',
+        templateUrl: 'templates/user_profile.html',
         controller: 'UserCtrl'
       },
       {
@@ -337,7 +313,7 @@ var Pta = angular.module('pta', [
               calendarTitle: 'Calendar',
               isVolunteerSignup: true
             },
-            templateUrl: 'rcalendar.html',
+            templateUrl: 'templates/rcalendar.html',
             controller: 'CalendarCtrl'
           },
           {
@@ -347,19 +323,19 @@ var Pta = angular.module('pta', [
               thisHoursVolunteers: null,
               thisEvent: null
             },
-            templateUrl: 'admin-interact.html',
+            templateUrl: 'templates/admin-interact.html',
             controller: 'VolunteerCtrl'
           },
           {
             name: 'roles',
             url: '/roles',
-            templateUrl: 'roles.html',
+            templateUrl: 'templates/roles.html',
             controller: 'RoleCtrl'
           },
           {
             name: 'settings',
             url: '/settings',
-            templateUrl: 'settings.html',
+            templateUrl: 'templates/settings.html',
             controller: 'SettingsCtrl'
           }
         ]
@@ -369,16 +345,16 @@ var Pta = angular.module('pta', [
   .state({
     name: 'login', 
     url: '/login',
-    templateUrl: 'login.html',
+    templateUrl: 'templates/login.html',
     controller : 'LoginCtrl'
   })
   .state({
     name: 'signup',
     url: '/signup',
-    templateUrl: 'signup.html',
+    templateUrl: 'templates/signup.html',
     controller : 'SignupCtrl' 
   });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/login');
   $ionicConfigProvider.scrolling.jsScrolling(false);
-}]);
+});

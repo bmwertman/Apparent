@@ -18,7 +18,7 @@ Pta.controller('CalendarCtrl', [
   'use strict';
 
   $scope.selectedEvent = $stateParams.selectedEvent;
-  $ionicSideMenuDelegate.canDragContent(false);
+  $ionicSideMenuDelegate.canDragContent(false)
 
   if($stateParams.selectedEvent && $stateParams.selectedEvent.cleanup_start){
     $scope.currentDate = new Date($stateParams.selectedEvent.cleanup_start);
@@ -43,7 +43,7 @@ Pta.controller('CalendarCtrl', [
 
   $scope.reloadEvents = function(){
     $scope.$broadcast('eventFilter', $scope.itemSelected.type);
-  };
+  }
 
   // Get the event data from firebase as an array
   var ref = firebase.database().ref();
@@ -57,23 +57,23 @@ Pta.controller('CalendarCtrl', [
   //   $scope.modal = modal;
   // });
 
-  $ionicModal.fromTemplateUrl('add_event.html', {
+  $ionicModal.fromTemplateUrl('templates/add_event.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
-    $scope.eventModal = modal;
+    $scope.modal = modal;
   });
 
   $scope.addEventModal = function() {
-      $scope.eventModal.show();
+      $scope.modal.show();
   };
 
   $scope.$on('$destroy', function(){
-      $scope.eventModal.remove();
+      $scope.modal.remove();
   });
 
   $scope.closeModal = function() {
-      $scope.eventModal.hide();
+      $scope.modal.hide();
       $scope.event = {};
   };
 
@@ -83,7 +83,7 @@ Pta.controller('CalendarCtrl', [
       template: data + ' has been saved.',
       duration: 2300
     });
-  };
+  }
 
   //error message display
   $scope.err = function(err, lineNumber) {
@@ -91,16 +91,20 @@ Pta.controller('CalendarCtrl', [
       template: 'The save failed with error ' + err.status + '.Line ' + lineNumber + ', CheckinCtrl.',
       duration: 4000
     });
-  };
+  }
   
   $scope.deleted = function(){
     $ionicLoading.show({
       template: 'Job Succesfully Deleted',
       duration: 2300
     });
-  };
+  }
 
   $scope.isDragging = true;
+
+  $scope.$on('$destroy', function(){
+    $scope.modal.remove();
+  });
 
   $scope.mode = 'day';
 
@@ -129,19 +133,19 @@ Pta.controller('CalendarCtrl', [
     minutes = minutes < 10 ? '0'+ minutes : minutes;
     var strTime = hours + ':' + minutes + ' ' + ampm;
     return strTime;
-  }
+  };
 
   function getTimeOffset(date) {
     var minutes = date.getMinutes();
     var percentOfHour = (minutes / 60) * 100; 
     return percentOfHour;
-  }
+  };
 
   function getApptTime(startTime, endTime) {
     var totalDifference = endTime - startTime;
     var convertToMins = totalDifference / 1000 / 60 / 60;
-    return convertToMins;
-  }
+    return convertToMins
+  };
 
   $scope.parseTime = function (timeStr, dt) {
     if (!dt) {
@@ -164,7 +168,7 @@ Pta.controller('CalendarCtrl', [
     dt.setMinutes(parseInt(time[2], 10) || 0);
     dt.setSeconds(0, 0);
     return dt;
-  };
+  }
 
   $scope.$on('displayTimes', function(e, displayStart, displayEnd){
     $scope.displayStart = displayStart;
@@ -175,7 +179,7 @@ Pta.controller('CalendarCtrl', [
     if($scope.selectedTime.id === 0){
       return "hidden-input";
     }
-  };
+  }
 
   $scope.timeValue = null;
   $scope.items = [{
@@ -202,7 +206,7 @@ Pta.controller('CalendarCtrl', [
   $scope.selectedTime = $scope.items[0];
 
   var timeInputWatch = $scope.$watch('timeValue', function(newValue, oldValue) {
-      if(newValue && newValue !== 0){// The user has set a time value
+      if(newValue && newValue != 0){// The user has set a time value
           var popupTitle = angular.element(document.getElementsByClassName('popup-title'));
           // Swap the "Add Reminder?" title for an "Add another reminder?" button
           $scope.secondNotificationBtn = $compile('<button id="add-another-btn" ng-click="addAnotherNotification()">Add another reminder?</button>')($scope);
@@ -228,7 +232,7 @@ Pta.controller('CalendarCtrl', [
       $localstorage.set('firstReminderMinutes', ($scope.timeValue * $scope.selectedTime.id));
       $scope.timeValue = null;
       $scope.selectedTime = $scope.items[0];
-  };
+  }
 
   function addToChat(){
     var roomId = $scope.selectedEvent.$id + '-group',
@@ -258,7 +262,7 @@ Pta.controller('CalendarCtrl', [
           chatters: eventRoom.chatters,
           owner: eventRoom.owner,
           subject: eventRoom.subject,
-        };
+        }
         if(eventRoom.title){
           newEventRoom.title = eventRoom.title;
         }
@@ -334,7 +338,7 @@ Pta.controller('CalendarCtrl', [
         }
       });
     });
-  };
+  }
 
   $scope.confirmSignup = function() {
       var confirmPopup = $ionicPopup.confirm({
@@ -358,13 +362,13 @@ Pta.controller('CalendarCtrl', [
               if($scope.selectedEvent.covered_hours){
                 coveredHours = $scope.selectedEvent.covered_hours + volunteerHours;
               } else {
-                coveredHours = volunteerHours;
+                coveredHours = volunteerHours
               }
               selectedEventRef.update({covered_hours: coveredHours});
 
               $scope.createReminders = $ionicPopup.show({
                   title: 'Add a reminder?',
-                  templateUrl: 'set-notification.html',
+                  templateUrl: 'templates/set-notification.html',
                   buttons:[
                       { 
                           text: 'No Thanks',
@@ -380,7 +384,7 @@ Pta.controller('CalendarCtrl', [
                           type: 'button-balanced',
                           onTap: function(e){
                             if(count === 0){
-                              count++;
+                              count++
                               $scope.createCalEvent();// If they setup reminders it gets them info from $localstorage
                             }
                           }
@@ -398,7 +402,7 @@ Pta.controller('CalendarCtrl', [
               }, 3000); 
           }
       });
-  };
+  }
 
   $scope.event = {};
   $scope.$on('timeSelected', function(eventTimes){
@@ -415,27 +419,27 @@ Pta.controller('CalendarCtrl', [
           $scope.event.event_title = calEvent.event.title;
           $scope.location = {};
           $scope.location.formatted_address = calEvent.event.location;
-          $scope.eventModal.show();
+          $scope.modal.show();
       }
-  };
+  }
 
   $scope.hasSetup = function(){
-      if($scope.event.setup_volunteers_needed && $scope.event.setup_volunteers_needed !== 0){
+      if($scope.event.setup_volunteers_needed && $scope.event.setup_volunteers_needed != 0){
           $scope.event.setup_start_time = moment($scope.event.start_time).subtract(2, 'hours')._d;
           $scope.event.setup_end_time = $scope.event.start_time;
           $scope.event.setup_start_date = $scope.event.start_date;
           $scope.event.setup_end_date = $scope.event.start_date;
       }
-  };
+  }
 
   $scope.hasCleanup = function(){
-      if($scope.event.cleanup_volunteers_needed && $scope.event.setup_volunteers_needed !== 0){
+      if($scope.event.cleanup_volunteers_needed && $scope.event.setup_volunteers_needed != 0){
           $scope.event.cleanup_end_time = moment($scope.event.end_time).add(2, 'hours')._d;
           $scope.event.cleanup_start_time = $scope.event.end_time;
           $scope.event.cleanup_start_date = $scope.event.start_date;
           $scope.event.cleanup_end_date = $scope.event.start_date;
       }
-  };
+  }
 
   $ionicPlatform.onHardwareBackButton(function(){
       $scope.event.setup_volunteers_needed = null;
@@ -477,6 +481,6 @@ Pta.controller('CalendarCtrl', [
       } else {
           $state.go('app.volunteer');
       }   
-  };
+  }
 
 }]);

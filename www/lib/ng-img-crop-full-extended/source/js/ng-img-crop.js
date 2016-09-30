@@ -160,38 +160,8 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
                 };
             };
 
-            // Will get the users language settings, and return the appropriate loading text
-            var printLoadMsg = function () {
-                var language = window.navigator.userLanguage || window.navigator.language;
-
-                switch (language) {
-                    case 'nl':
-                    case 'nl_NL':
-                        return 'Aan het laden';
-
-                    case 'fr':
-                    case 'fr-FR':
-                        return 'Chargement';
-
-                    case 'es':
-                    case 'es-ES':
-                        return 'Cargando';
-
-                    case 'ca':
-                    case 'ca-ES':
-                        return 'Càrrega';
-
-                    case 'de':
-                    case 'de-DE':
-                        return 'Laden';
-
-                    default:
-                        return 'Loading';
-                }
-            };
-
-            if (!scope.chargement) {
-                scope.chargement = printLoadMsg();
+            if (scope.chargement == null) {
+                scope.chargement = 'Chargement';
             }
             var displayLoading = function () {
                 element.append('<div class="loading"><span>' + scope.chargement + '...</span></div>');
@@ -209,7 +179,6 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
                             angular.element(child).remove();
                         }
                     });
-                    updateCropject(scope);
                     scope.onLoadDone({});
                 }))
                 .on('load-error', fnSafeApply(function (scope) {

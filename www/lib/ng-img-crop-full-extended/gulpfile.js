@@ -7,7 +7,7 @@ var argv         = require('minimist')(process.argv.slice(2)),
     compass      = require('gulp-compass'),
     refresh      = require('gulp-livereload'),
     prefix       = require('gulp-autoprefixer'),
-    cleanCSS    = require('gulp-clean-css'),
+    minifyCss    = require('gulp-minify-css'),
     uglify       = require('gulp-uglify'),
     clean        = require('gulp-rimraf'),
     concat       = require('gulp-concat-util'),
@@ -132,7 +132,7 @@ gulp.task('dist:css:clean', function () {
     return gulp.src([Config.paths.compileMinified.root + '/**/*.css'], {read: false})
         .pipe(clean());
 });
-gulp.task('dist:js', ['scripts', 'dist:js:clean'], function () {
+gulp.task('dist:js', ['dist:js:clean', 'scripts'], function () {
     return gulp.src(Config.paths.compileUnminified.js + '/**/*.js')
         .pipe(ngAnnotate())
         .pipe(uglify())
@@ -141,7 +141,7 @@ gulp.task('dist:js', ['scripts', 'dist:js:clean'], function () {
 });
 gulp.task('dist:css', ['dist:css:clean', 'styles'], function () {
     return gulp.src(Config.paths.compileUnminified.css + '/**/*.css')
-        .pipe(cleanCSS())
+        .pipe(minifyCss())
         .pipe(gulp.dest(Config.paths.compileMinified.css));
 });
 
@@ -184,10 +184,9 @@ gulp.task('watch', function () {
 
 // Code linter
 gulp.task('lint', function () {
-    return gulp.src([Config.paths.source.js + '/**/*.js', '!' + Config.paths.source.js + '/3rdparty/*.js'])
-        .pipe(jshint('.jshintrc', '.jshintignore'))
-        .pipe(jshint.reporter(jshintStylish))
-        .pipe(jshint.reporter('fail'));
+    return gulp.src(Config.paths.source.js + '/**/*.js')
+        .pipe(jshint())
+        .pipe(jshint.reporter(jshintStylish));
 });
 
 // Build

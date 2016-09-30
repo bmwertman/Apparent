@@ -5,10 +5,10 @@ Pta.controller('MenuCtrl', [
   function($scope, Auth, $state) {
     $scope.logout = function(){
       Auth.logout();
-    };
+    }
     $scope.goBack = function(){
       $state.go('app.home');
-    };
+    }
 }]);
 
 

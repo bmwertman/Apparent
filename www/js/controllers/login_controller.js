@@ -11,7 +11,7 @@ Pta.controller('LoginCtrl', [
 
   $scope.openSignup = function(){
     $state.go('signup');
-  };
+  }
 
   // Form data for the login view
   $scope.credentials = {};
@@ -25,9 +25,7 @@ Pta.controller('LoginCtrl', [
   };
 
   var emailRegex = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
-  $scope.resetError = function(){ 
-    $scope.emailBlank = false; 
-  };
+  $scope.resetError = function(){ $scope.emailBlank = false; }
   $scope.invalidEmail = false;
   $scope.confirmReset = function(){
     $scope.data= {};
@@ -54,10 +52,9 @@ Pta.controller('LoginCtrl', [
         }
       ]
     });
-  };
-  if(navigator.splashscreen){
-    navigator.splashscreen.hide();
   }
+  
+  navigator.splashscreen.hide();
 
 }]);
 // .directive('shakeThat', ['$animate', function($animate) {

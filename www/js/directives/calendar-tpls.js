@@ -40,13 +40,13 @@ Pta.constant('calendar2Config', {
           var minutes = date.getMinutes();
           var percentOfHour = (minutes / 60) * 100; 
           return percentOfHour;
-        }
+        };
 
         function getApptTime(startTime, endTime) {
           var totalDifference = endTime - startTime;
           var convertToMins = totalDifference / 1000 / 60 / 60;
-          return convertToMins;
-        }
+          return convertToMins
+        };
 
         // Get the event data from firebase as an array
         var ref = firebase.database().ref();
@@ -55,7 +55,7 @@ Pta.constant('calendar2Config', {
         $scope.calEvents = $firebaseArray(eventsRef);
         
         $scope.calEvents.$loaded(function(data){
-            if($ionicHistory.backView.stateName === "app.events"){// filtering out events that don't need volunteers for volunteer signup view
+            if($ionicHistory.backView.stateName = "app.events"){// filtering out events that don't need volunteers for volunteer signup view
                 for (var i = data.length - 1; i >= 0; i--) {
                     if(!data[i].volunteer_hours){
                         data.splice(i, 1);
@@ -67,8 +67,7 @@ Pta.constant('calendar2Config', {
                 $scope.selectedEvent = data[0];  
             }
             $scope.eventSource = [];
-            
-            /*jshint loopfunc: true */
+        
             //Break the event into setup, main event and cleanup segments
             function segmentEvent(){
                 for (var i = data.length - 1; i >= 0; i--) {
@@ -94,7 +93,7 @@ Pta.constant('calendar2Config', {
                             endType = 'cleanup_end';
                             eventColor = 'primaryRed';
                             eventType = 'cleanup';
-                            title = ' Cleanup';
+                            title = ' Cleanup'
                             volunteerType = 'cleanup_volunteers_needed';
                         }
                         if(startType){
@@ -110,9 +109,9 @@ Pta.constant('calendar2Config', {
                                 title: this.title + title,
                                 startTimeOffset: getTimeOffset(new Date(this[startType])),
                                 totalApptTime: getApptTime(new Date(this[startType]), new Date(this[endType]))
-                            };
+                            }
                             if(this.volunteers){// This event has volunteers
-                                segmentObj.volunteersCount = Object.keys(this.volunteers).length;
+                                segmentObj.volunteersCount = Object.keys(this.volunteers).length
                                 // segmentObj.volunteerTitle = segmentObj.volunteersCount + ' of ' + this[volunteerType]; 
                             }
                             $scope.eventSource.push(segmentObj);
@@ -165,9 +164,9 @@ Pta.constant('calendar2Config', {
                 // Create an array of date-times for each hour volunteered 
                 // in this event segment
                 if(volunteerDuration > 0){
-                    var previousSegment = $scope.eventSource[$scope.eventSource.length - 1];//the previous segment added
                     if($scope.eventSource.length > 0 && event.$id === $scope.eventId && newObj.type !== 'setup'){ // Is either event or cleanup segment of the same event
-                        var setupSegment = $filter('filter')($scope.eventSource, {id: newObj.id, type: 'setup'});
+                        var previousSegment = $scope.eventSource[$scope.eventSource.length - 1],//the previous segment added
+                            setupSegment = $filter('filter')($scope.eventSource, {id: newObj.id, type: 'setup'});
                             volunteer.type = 'setup';
                         if(newObj.type === 'event'){
                             hoursToAdd = moment(previousSegment.endTime).diff(previousSegment.startTime, 'hours');
@@ -191,15 +190,15 @@ Pta.constant('calendar2Config', {
                     }
 
                     if(previousSegment && volunteerStart.isBefore(previousSegment.endTime)){
-                        for (var x = 0; x < volunteerDuration; x++) {
-                            volunteer.hours.push(moment(volunteerStart._d).add((x + hoursToAdd), 'hours')); 
+                        for (var i = 0; i < volunteerDuration; i++) {
+                            volunteer.hours.push(moment(volunteerStart._d).add((i + hoursToAdd), 'hours')); 
                         }
                     } else {
-                        for (var z = 0; z < volunteerDuration; z++) {
-                            volunteer.hours.push(moment(volunteerStart._d).add(z , 'hours')); 
+                        for (var i = 0; i < volunteerDuration; i++) {
+                            volunteer.hours.push(moment(volunteerStart._d).add(i , 'hours')); 
                         }
                     }
-                    volunteer.id = value.id;
+                    volunteer.id = value.id
                     volunteer.event = event.$id;
                     volunteer.fbKey = key;
                 }
@@ -255,10 +254,10 @@ Pta.constant('calendar2Config', {
                 }
                 newObj.grid = grid;
                 if(iterations < $scope.eventSource.length){
-                    $scope.arrayify(event, $scope.eventSource[$scope.eventSource.length - (iterations + 1)]);
+                    $scope.arrayify(event, $scope.eventSource[$scope.eventSource.length - (iterations + 1)])
                 }
             } 
-        };
+        }
 
         $scope.adminInteract = function(e, eventId){
             var slots = e.currentTarget.children,
@@ -314,7 +313,7 @@ Pta.constant('calendar2Config', {
                             }
                     })
                     .catch(function(error){
-                        console.log(error);
+                        debugger;
                     });
                 } else if( i >= 0){
                     i--;
@@ -324,8 +323,8 @@ Pta.constant('calendar2Config', {
                     $state.go('app.calendar.volunteers', {thisHoursVolunteers: $scope.thisHoursVolunteers, thisEvent: $scope.thisEvent});
                 }
             }
-            getVolunteersFromFB();
-        };
+            getVolunteersFromFB()
+        }
 
         $scope.setBorderStyle = function(color){
             if(color === 'primaryGreen'){
@@ -335,7 +334,7 @@ Pta.constant('calendar2Config', {
             } else {
                 return {'border-radius':'0'};
             }
-        };
+        }
 
         $scope.$on('eventFilter', function(eventType){
             var unfilteredEvents = $scope.eventSource;
@@ -351,7 +350,6 @@ Pta.constant('calendar2Config', {
 
         $scope.selectedHour = {};
 
-        /* jshint shadow:true */
         $scope.endHour = function(startHour){
             var endHour,
                 hrRegEx = /^\w+/g;
@@ -375,7 +373,7 @@ Pta.constant('calendar2Config', {
                 endHour = hour + 1 + ":00 " + meridean;
             }
             return endHour;
-        };
+        }
 
         //Determine if we're in the Calendar or Volunteer view
         if($ionicHistory.currentView().stateName === 'app.admin.calendar'){
@@ -397,7 +395,7 @@ Pta.constant('calendar2Config', {
                 $scope.signupShown = false;
                 $scope.dropped = true;
             }
-        };
+        }
 
         dragulaService.options($scope, '"bag"', {
             moves: function (el, container, handle) {
@@ -408,7 +406,7 @@ Pta.constant('calendar2Config', {
         $scope.$on('bag.cloned', function(e, el){
             el.attr('offset-top', 'top');
             el.attr('drag-watch', '');
-            $scope.targetEl = angular.element(document.getElementsByClassName('gu-transit')[0]);
+            $scope.targetEl = angular.element(document.getElementsByClassName('gu-transit')[0])
             $scope.targetEl.addClass('gu-hide');
             $compile(el)($scope);
             (function forceFeed(newValue){
@@ -422,7 +420,7 @@ Pta.constant('calendar2Config', {
         });
 
         $scope.filterEventsByDate = function(array, filterBy, prop){
-            var filteredEvents = [];
+            var filteredEvents = []
             var filter = moment(filterBy, 'DD-MM-YYYY');
             for (var i = array.length - 1; i >= 0; i--) {
                 var checkDate = moment(array[i][prop], 'DD-MM-YYYY');
@@ -431,7 +429,7 @@ Pta.constant('calendar2Config', {
                 }
             }
             return filteredEvents;
-        };
+        }
 
         $scope.$on('bag.drag', function(el, source){
                 var eventSource = $scope.filterEventsByDate(el.currentScope.eventSource, $scope.$parent.$parent.currentDate, 'startTime'),
@@ -484,7 +482,7 @@ Pta.constant('calendar2Config', {
                     }
                 });
             }
-        };
+        }
 
         $scope.$on('bag.drop', function(el, target, source){
             $scope.handleDrop();
@@ -510,7 +508,7 @@ Pta.constant('calendar2Config', {
                 var children = angular.element($scope.selectedHour.el).parent();
                 $scope.selectedHour.hashKey = null; 
                 if($scope.isCalView){
-                    $scope.event = {};
+                    $scope.event = {}
                     var start = children.children().eq(children.children().length - 1).html();
                     if(start.length > 8){//Setting a new event from the week view
                         $scope.event.start_date = new Date(angular.element($event.target).next().html());
@@ -533,7 +531,7 @@ Pta.constant('calendar2Config', {
                     $scope.displayStart = $scope.volunteerStart.format('h:mm a');
                     $scope.selectedHour.el.firstElementChild.innerHTML = "Start: " + $scope.displayStart;
                     $scope.selectedHour.el.firstElementChild.className = "volunteer-start";
-                    $scope.selectedHour.el.firstElementChild.style.display = "inline-block";
+                    $scope.selectedHour.el.firstElementChild.style.display = "inline-block"
                     $scope.displayEnd = $scope.volunteerStart.add(1, 'h').format('h:mm a');
                     var selectedHour = angular.element($scope.selectedHour.el);
                     $scope.dragEl = selectedHour.parent().next().children()[0];
@@ -546,9 +544,9 @@ Pta.constant('calendar2Config', {
             } else if(!$scope.signupShown) {//first hour selection made
                 $event.currentTarget.firstElementChild.style.display = "inline-block"; 
                 $scope.selectedHour.el = $event.currentTarget;
-                $scope.selectedHour.hashKey = $event.currentTarget.$$hashKey;
+                $scope.selectedHour.hashKey = $event.currentTarget.$$hashKey
             }
-        };
+        }
         
         var self = this,
             ngModelCtrl = {$setViewValue: angular.noop}; // nullModelCtrl;
@@ -770,7 +768,7 @@ Pta.constant('calendar2Config', {
         return {
             restrict: 'EA',
             replace: true,
-            templateUrl: 'rcalendar/calendar.html',
+            templateUrl: 'templates/rcalendar/calendar.html',
             scope: {
                 calendarMode: '=',
                 rangeChanged: '&',
@@ -797,7 +795,7 @@ Pta.constant('calendar2Config', {
         return {
             restrict: 'EA',
             replace: true,
-            templateUrl: 'rcalendar/month.html',
+            templateUrl: 'templates/rcalendar/month.html',
             require: ['^calendar', '?^ngModel'],
             link: function (scope, element, attrs, ctrls) {
                 var ctrl = ctrls[0],
@@ -926,7 +924,6 @@ Pta.constant('calendar2Config', {
                     var headerDate = new Date(year, month, 1);
                     scope.$parent.$parent.$parent.titleDate = dateFilter(headerDate, ctrl.formatMonthTitle);
                     scope.rows = ctrl.split(days, 7);
-                    /* jshint shadow:true */
                     var filteredEvents = ctrl.filteredEvents,
                         len = filteredEvents ? filteredEvents.length : 0,
                         startTime = ctrl.range.startTime,
@@ -939,7 +936,7 @@ Pta.constant('calendar2Config', {
                         eps = 0.001,
                         row,
                         date;
-                    /* jshint shadow:true */
+
                     for (var i = 0; i < len; i += 1) {
                         var event = filteredEvents[i];
                         var eventStartTime = new Date(event.startTime);
@@ -1062,7 +1059,7 @@ Pta.constant('calendar2Config', {
         return {
             restrict: 'EA',
             replace: true,
-            templateUrl: 'rcalendar/week.html',
+            templateUrl: 'templates/rcalendar/week.html',
             require: '^calendar',
             link: function (scope, element, attrs, ctrl) {
                 $timeout(function () {
@@ -1118,7 +1115,6 @@ Pta.constant('calendar2Config', {
                         weekFormatPattern = 'w',
                         title;
                     scope.rows = createDateObjects(firstDayOfWeek);
-                    /* jshint shadow:true */
                     var filteredEvents = ctrl.filteredEvents,
                         len = filteredEvents ? filteredEvents.length : 0,
                         startTime = ctrl.range.startTime,
@@ -1318,7 +1314,7 @@ Pta.constant('calendar2Config', {
         return {
             restrict: 'EA',
             replace: true,
-            templateUrl: 'rcalendar/day.html',
+            templateUrl: 'templates/rcalendar/day.html',
             require: '^calendar',
             link: function (scope, element, attrs, ctrl) {
                 

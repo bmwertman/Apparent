@@ -20,29 +20,33 @@ Pta.controller('SettingsCtrl', [
       })
       .then(function (results) {
         $scope.picFile = results[0];
-        $scope.openLogoModal();
+        $scope.cropImageModal();
       }, function(error) {
-       console.log(error);
+       console.log(error)
       });
-    };
+    }
 
-    $ionicModal.fromTemplateUrl('crop-logo.html', {
+    $ionicModal.fromTemplateUrl('templates/crop-logo.html', {
       scope: $scope,
       animation: 'slide-in-up'
     }).then(function(modal) {
-      $scope.logoModal = modal;
+      $scope.modal = modal;
     });
 
-    $scope.$on('$destroy', function() {
-      $scope.logoModal.remove();
-    });
-
-    $scope.openLogoModal = function(name){
-      $scope.logoModal.show();
+    $scope.cropImageModal = function() {
+        $scope.modal.show();
     };
 
-    $scope.closeLogoModal = function(name) {
-      $scope.logoModal.hide();
+    $scope.$on('$destroy', function() {
+      $scope.modal.remove();
+    });
+
+    $scope.openModal = function(name){
+      $scope.modal.show;
+    }
+
+    $scope.closeModal = function(name) {
+      $scope.modal.hide();
     };
 
     $scope.storeImage = function(file){
@@ -54,7 +58,7 @@ Pta.controller('SettingsCtrl', [
           storagePath = 'logo_pics/' + $scope.user.school + '.jpg',
           uploadTask = storageRef.child(storagePath);
       for( var i = 0; i < binary.length; i++ ) { 
-        array[i] = binary.charCodeAt(i); 
+        array[i] = binary.charCodeAt(i) 
       }
       var image = new Blob([array]);
       uploadTask.getDownloadURL()
@@ -88,7 +92,7 @@ Pta.controller('SettingsCtrl', [
             complete: function(){
               school.logo = uploadTask.snapshot.downloadURL;
               school.$save().then(function(){
-                $scope.closeLogoModal();
+                $scope.closeModal();
               });
             }
           });
@@ -119,12 +123,12 @@ Pta.controller('SettingsCtrl', [
           complete: function(){
             school.logo = uploadTask.snapshot.downloadURL;
             school.$save().then(function(){
-              $scope.closeLogoModal();
+              $scope.closeModal();
             });
           }
         });
       });
-    };
+    }
 }]);
 
 

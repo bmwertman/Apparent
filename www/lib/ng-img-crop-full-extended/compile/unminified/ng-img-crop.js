@@ -5,7 +5,7 @@
  * Copyright (c) 2016 Alex Kaul
  * License: MIT
  *
- * Generated at Monday, September 19th, 2016, 9:44:50 AM
+ * Generated at Thursday, September 1st, 2016, 11:13:20 AM
  */
 (function() {
 var crop = angular.module('ngImgCrop', []);
@@ -1719,12 +1719,9 @@ crop.service('cropEXIF', [function () {
                 }
                 http = null;
             };
-            http.responseType = 'arraybuffer';
             http.open('GET', img.src, true);
-            try {
-                http.send(null);
-            } catch(e) {
-            }
+            http.responseType = 'arraybuffer';
+            http.send(null);
         } else if (window.FileReader && (img instanceof window.Blob || img instanceof window.File)) {
             fileReader.onload = function (e) {
                 if (debug) {
@@ -2447,10 +2444,6 @@ crop.factory('cropHost', ['$document', '$q', 'cropAreaCircle', 'cropAreaSquare',
                         resultHeight = ris.h;
                         resultWidth = resultHeight * aspectRatio;
                     }
-
-                    // modified see https://github.com/CrackerakiUA/ngImgCropFullExtended/issues/21
-                    temp_canvas.width = resultWidth;
-                    temp_canvas.height = resultHeight;
 
                     temp_ctx.drawImage(image,
                         x,
@@ -3236,38 +3229,8 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
                 };
             };
 
-            // Will get the users language settings, and return the appropriate loading text
-            var printLoadMsg = function () {
-                var language = window.navigator.userLanguage || window.navigator.language;
-
-                switch (language) {
-                    case 'nl':
-                    case 'nl_NL':
-                        return 'Aan het laden';
-
-                    case 'fr':
-                    case 'fr-FR':
-                        return 'Chargement';
-
-                    case 'es':
-                    case 'es-ES':
-                        return 'Cargando';
-
-                    case 'ca':
-                    case 'ca-ES':
-                        return 'Càrrega';
-
-                    case 'de':
-                    case 'de-DE':
-                        return 'Laden';
-
-                    default:
-                        return 'Loading';
-                }
-            };
-
-            if (!scope.chargement) {
-                scope.chargement = printLoadMsg();
+            if (scope.chargement == null) {
+                scope.chargement = 'Chargement';
             }
             var displayLoading = function () {
                 element.append('<div class="loading"><span>' + scope.chargement + '...</span></div>');
@@ -3285,7 +3248,6 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
                             angular.element(child).remove();
                         }
                     });
-                    updateCropject(scope);
                     scope.onLoadDone({});
                 }))
                 .on('load-error', fnSafeApply(function (scope) {
