@@ -1,21 +1,194 @@
-<ion-modal-view class="add_event_modal">
-  <ion-header-bar class="add_event_header white-font bar-header bar-positive calendar-form">
-    <button class="close-calendar button button-clear button-positive" ng-click="closeModal()">
-      <i class="icon ion-close"></i>
-    </button>
-    <input type="text"
-           placeholder="Enter title"
-           ng-model="event.title"
-           autofocus="true">
-    <button class="button button-clear button-positive" form="eventForm" type="submit">SAVE</button>
-  </ion-header-bar>
-  <ion-content>
-    <form class="col-md-6 add_event" 
-          id="eventForm"
-          ng-submit="saveEvent($event, event)"
-          name="newEventForm">
+<ion-view class="add-event-view">
+  <ion-nav-title>Add a new event</ion-nav-title>
+  <div class="bar white-font bar-header bar-positive calendar-form item-input-inset"></div>
+  <ion-nav-buttons side="left"></ion-nav-buttons> 
+  <div class="bar bar-subheader" ng-form="newEventForm">
+    <label class="item-input-wrapper">
+      <input type="text"
+             placeholder="Enter an event title"
+             ng-model="event.title"
+             autofocus="true"
+             name="title"
+             required>
+    </label>
+    <a class="button bar-positive" ng-click="saveEvent($event, event)">Submit</a>
+    <div class="form-error" ng-show="submitted && newEventForm.title.$error.required">
+      An event name is required
+    </div>
+  </div> 
+  <hr class="header-hr"></hr>
+  <ion-content class="add-event-form has-subheader">
+    <span class="event_dates">
+      <i class="icon ion-android-time"></i>
+      <md-input-container>
+          <input mdc-datetime-picker
+                 date="true"
+                 time="false"
+                 type="text"
+                 class="start_date"
+                 min-date="minDate"
+                 format="ddd, MMM DD, YYYY"
+                 ng-model="event.start_date"
+                 aria-label="Start date">
+      </md-input-container>
+      <md-input-container>
+          <input mdc-datetime-picker
+                 date="true"
+                 time="false"
+                 type="text"
+                 class="end_date"
+                 min-date="minDate"
+                 format="ddd, MMM DD, YYYY"
+                 ng-model="event.end_date"
+                 aria-label="End Date">
+      </md-input-container>
+    </span>
+    <span class="event_times">
+      <md-input-container>
+          <input mdc-datetime-picker
+                 date="false"
+                 time="true"
+                 type="text"
+                 short-time="true"
+                 min-date="minDate"
+                 format="h:mm a"
+                 ng-model="event.start_time"
+                 aria-label="Start time">
+      </md-input-container>
+      <md-input-container>
+          <input mdc-datetime-picker
+                 date="false"
+                 time="true"
+                 type="text"
+                 short-time="true"
+                 min-date="minDate"
+                 format="h:mm a" 
+                 ng-model="event.end_time"
+                 aria-label="Start time">
+      </md-input-container>
+    </span>
+    
+    <hr>
+    <i class="icon ion-location"></i>
+      <input type="text" 
+             placeholder="Location" 
+             location-suggestion 
+             location="location" 
+             ng-model="location.formatted_address">
+    
+    <hr>
+    <i class="icon ion-android-people"></i>
+    <select contactpicker
+            multi="true"
+            model="invitees"
+            placeholder="Invite guests"
+            value-attr="email">
+    </select>
+
+    <hr>
+    <i class="icon ion-image"></i>
+    <input class="cover-photo"
+           type="text"
+           ng-click="getImage()"
+           ng-model="event.cover_photo_url"
+           placeholder="Event cover photo">
+    </input>
+    
+    <!-- Google Drive Integration back-burnered 10-7-2016
+    <hr class="drive_hr">
+    <div class="drive_wrapper"
+         ng-if="school.document_storage_token" >
+      <i class="icon-google-drive2"></i>
+      <a class="add-attachment" 
+         ng-click="readFiles(school)">
+         Add attachment
+      </a>
+    </div>
+    <div class="drive_wrapper"
+         ng-if="!school.document_storage_token" >
+      <i class="icon ion-document-text"></i>
+      <a class="add-attachment" 
+         ng-click="goToSettings()">Go to settings & document storage</a>
+    </div> -->
+
+    <hr class="post_drive_hr">
+    <div class="volunteers">
       <span class="event_dates">
-        <i class="icon ion-android-time"></i>
+        <i class="icon volunteer_hands"></i>
+        <label for="setup-volunteers">Set up volunteers:
+          <input class="volunteer_count"
+                 type="number"
+                 name="setup-volunteers"
+                 ng-keyup="hasSetup()"
+                 ng-model="event.setup_volunteers_needed"
+                 placeholder="How many?">
+        </label>
+        <md-input-container ng-if="event.setup_volunteers_needed">
+            <input mdc-datetime-picker
+                   date="true"
+                   time="false"
+                   type="text"
+                   class="start_date"
+                   min-date="minDate"
+                   format="ddd, MMM DD, YYYY"
+                   placeholder="Start date" 
+                   ng-model="event.setup_start_date"
+                   aria-label="Set up start date">
+        </md-input-container>
+        <md-input-container ng-if="event.setup_volunteers_needed">
+            <input mdc-datetime-picker
+                   date="true"
+                   time="false"
+                   type="text"
+                   class="end_date"
+                   min-date="minDate"
+                   format="ddd, MMM DD, YYYY"
+                   placeholder="End date" 
+                   ng-model="event.setup_end_date"
+                   aria-label="Setup end date">
+        </md-input-container>
+      </span>
+      <span class="event_times">
+        <md-input-container ng-if="event.setup_volunteers_needed">
+            <input mdc-datetime-picker
+                   date="false"
+                   time="true"
+                   type="text"
+                   short-time="true"
+                   min-date="minDate"
+                   format="hh:mm a"
+                   placeholder="Start time" 
+                   ng-model="event.setup_start_time"
+                   aria-label="Set up start time">
+        </md-input-container>
+        <md-input-container ng-if="event.setup_volunteers_needed">
+            <input mdc-datetime-picker
+                   date="false"
+                   time="true"
+                   type="text"
+                   short-time="true"
+                   min-date="minDate"
+                   format="hh:mm a"
+                   placeholder="End time" 
+                   ng-model="event.setup_end_time"
+                   aria-label="Setup end time">
+        </md-input-container>
+      </span>
+      <label for="op-volunteers">Event volunteers:
+        <input class="volunteer_count" 
+               type="number"
+               name="op-volunteers"
+               ng-model="event.volunteers_needed"
+               placeholder="How many?">
+      </label>
+      <label for="cleanup-volunteers">Clean up volunteers:</label>
+      <input class="volunteer_count"
+             type="number"
+             name="cleanup-volunteers"
+             ng-keyup="hasCleanup()"
+             ng-model="event.cleanup_volunteers_needed"
+             placeholder="How many?">
+      <span class="event_dates" ng-if="event.cleanup_volunteers_needed">
         <md-input-container>
             <input mdc-datetime-picker
                    date="true"
@@ -24,8 +197,9 @@
                    class="start_date"
                    min-date="minDate"
                    format="ddd, MMM DD, YYYY"
-                   ng-model="event.start_date"
-                   aria-label="Start date">
+                   placeholder="Start date" 
+                   ng-model="event.cleanup_start_date"
+                   aria-label="Cleanup start date">
         </md-input-container>
         <md-input-container>
             <input mdc-datetime-picker
@@ -35,11 +209,12 @@
                    class="end_date"
                    min-date="minDate"
                    format="ddd, MMM DD, YYYY"
-                   ng-model="event.end_date"
-                   aria-label="End Date">
+                   placeholder="End date" 
+                   ng-model="event.cleanup_end_date"
+                   aria-label="Cleanup end date">
         </md-input-container>
       </span>
-      <span class="event_times">
+      <span class="event_times" ng-if="event.cleanup_volunteers_needed">
         <md-input-container>
             <input mdc-datetime-picker
                    date="false"
@@ -47,9 +222,10 @@
                    type="text"
                    short-time="true"
                    min-date="minDate"
-                   format="h:mm a"
-                   ng-model="event.start_time"
-                   aria-label="Start time">
+                   format="hh:mm a"
+                   placeholder="Start time" 
+                   ng-model="event.cleanup_start_time"
+                   aria-label="Cleanup start time">
         </md-input-container>
         <md-input-container>
             <input mdc-datetime-picker
@@ -58,180 +234,20 @@
                    type="text"
                    short-time="true"
                    min-date="minDate"
-                   format="h:mm a" 
-                   ng-model="event.end_time"
-                   aria-label="Start time">
+                   format="hh:mm a"
+                   placeholder="End time"  
+                   ng-model="event.cleanup_end_time"
+                   aria-label="Cleanup end time">
         </md-input-container>
       </span>
-      
-      <hr>
-      <i class="icon ion-location"></i>
-        <input type="text" 
-               placeholder="Location" 
-               location-suggestion 
-               location="location" 
-               ng-model="location.formatted_address">
-      
-      <hr>
-      <i class="icon ion-android-people"></i>
-      <select contactpicker
-              multi="true"
-              model="invitees"
-              placeholder="Invite guests"
-              value-attr="email">
-      </select>
-
-      <hr class="drive_hr">
-      <div class="drive_wrapper">
-        <i class="icon-google-drive2"></i>
-        <a class="add-attachment" 
-           href="javascript:;" 
-           lk-google-picker 
-           on-picked="onPicked(docs)" 
-           on-loaded="onLoaded()" 
-           on-cancel="onCancel()">Add attachment</a>
-      </div>
-
-      <hr class="post_drive_hr">
-      <div class="volunteers">
-        <span class="event_dates">
-          <i class="icon volunteer_hands"></i>
-          <label for="setup-volunteers">Set up volunteers:
-            <input class="volunteer_count"
-                   type="number"
-                   name="setup-volunteers"
-                   ng-keyup="hasSetup()"
-                   ng-model="event.setup_volunteers_needed"
-                   placeholder="How many?">
-          </label>
-          <md-input-container ng-if="event.setup_volunteers_needed">
-              <input mdc-datetime-picker
-                     date="true"
-                     time="false"
-                     type="text"
-                     class="start_date"
-                     min-date="minDate"
-                     format="ddd, MMM DD, YYYY"
-                     placeholder="Start date" 
-                     ng-model="event.setup_start_date"
-                     aria-label="Set up start date">
-          </md-input-container>
-          <md-input-container ng-if="event.setup_volunteers_needed">
-              <input mdc-datetime-picker
-                     date="true"
-                     time="false"
-                     type="text"
-                     class="end_date"
-                     min-date="minDate"
-                     format="ddd, MMM DD, YYYY"
-                     placeholder="End date" 
-                     ng-model="event.setup_end_date"
-                     aria-label="Setup end date">
-          </md-input-container>
-        </span>
-        <span class="event_times">
-          <md-input-container ng-if="event.setup_volunteers_needed">
-              <input mdc-datetime-picker
-                     date="false"
-                     time="true"
-                     type="text"
-                     short-time="true"
-                     min-date="minDate"
-                     format="hh:mm a"
-                     placeholder="Start time" 
-                     ng-model="event.setup_start_time"
-                     aria-label="Set up start time">
-          </md-input-container>
-          <md-input-container ng-if="event.setup_volunteers_needed">
-              <input mdc-datetime-picker
-                     date="false"
-                     time="true"
-                     type="text"
-                     short-time="true"
-                     min-date="minDate"
-                     format="hh:mm a"
-                     placeholder="End time" 
-                     ng-model="event.setup_end_time"
-                     aria-label="Setup end time">
-          </md-input-container>
-        </span>
-        <label for="op-volunteers">Event volunteers:
-          <input class="volunteer_count" 
-                 type="number"
-                 name="op-volunteers"
-                 ng-model="event.volunteers_needed"
-                 placeholder="How many?">
-        </label>
-        <label for="cleanup-volunteers">Clean up volunteers:</label>
-        <input class="volunteer_count"
-               type="number"
-               name="cleanup-volunteers"
-               ng-keyup="hasCleanup()"
-               ng-model="event.cleanup_volunteers_needed"
-               placeholder="How many?">
-        <span class="event_dates" ng-if="event.cleanup_volunteers_needed">
-          <md-input-container>
-              <input mdc-datetime-picker
-                     date="true"
-                     time="false"
-                     type="text"
-                     class="start_date"
-                     min-date="minDate"
-                     format="ddd, MMM DD, YYYY"
-                     placeholder="Start date" 
-                     ng-model="event.cleanup_start_date"
-                     aria-label="Cleanup start date">
-          </md-input-container>
-          <md-input-container>
-              <input mdc-datetime-picker
-                     date="true"
-                     time="false"
-                     type="text"
-                     class="end_date"
-                     min-date="minDate"
-                     format="ddd, MMM DD, YYYY"
-                     placeholder="End date" 
-                     ng-model="event.cleanup_end_date"
-                     aria-label="Cleanup end date">
-          </md-input-container>
-        </span>
-        <span class="event_times" ng-if="event.cleanup_volunteers_needed">
-          <md-input-container>
-              <input mdc-datetime-picker
-                     date="false"
-                     time="true"
-                     type="text"
-                     short-time="true"
-                     min-date="minDate"
-                     format="hh:mm a"
-                     placeholder="Start time" 
-                     ng-model="event.cleanup_start_time"
-                     aria-label="Cleanup start time">
-          </md-input-container>
-          <md-input-container>
-              <input mdc-datetime-picker
-                     date="false"
-                     time="true"
-                     type="text"
-                     short-time="true"
-                     min-date="minDate"
-                     format="hh:mm a"
-                     placeholder="End time"  
-                     ng-model="event.cleanup_end_time"
-                     aria-label="Cleanup end time">
-          </md-input-container>
-        </span>
-      </div>
-      <hr>
-
+    </div>
+    <div class="note-area">
       <i class="icon-note"></i>
-      <textarea cols="30" 
-                rows="5"
+      <textarea msd-elastic
+                rows="1"
                 placeholder="Add note"
-                ng-model="event.description" 
-                required>
+                ng-model="event.description">
       </textarea>
-      <hr>
-    </form>
+    </div>      
   </ion-content>
-</ion-modal-view>
+</ion-view>

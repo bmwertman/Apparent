@@ -10060,9 +10060,6 @@ body.md-dialog-is-showing {
 ion-content.has-tall-header {
   top: 180px; }
 
-ion-content.has-footer {
-  margin-bottom: 36px; }
-
 .dtp .dtp-date-view .dtp-header {
   background-color: #B71C1C !important; }
 
@@ -10136,7 +10133,7 @@ ion-content.has-footer {
 .school-settings .scroll {
   padding-top: 30px; }
 
-.school-settings .logo-label {
+.school-settings .area-label {
   font-size: 18px;
   text-align: center;
   font-weight: bold; }
@@ -10155,16 +10152,78 @@ ion-content.has-footer {
   border-radius: 1px;
   font-weight: bold; }
 
-div.powered-by {
-  position: fixed;
-  left: calc((100% - 212px)/2);
-  bottom: 20px;
-  font-size: 16px; }
-  div.powered-by .apparent-logo {
-    width: 143px;
-    position: absolute;
-    left: calc((100% + 53px)/2);
-    top: -34px; }
+.contact {
+  text-align: center; }
+  .contact .contact-header {
+    height: 108px;
+    margin-top: 44px;
+    padding-top: 1px;
+    background-color: #FF8F02; }
+    .contact .contact-header h3 {
+      font-weight: bold;
+      font-size: 22px;
+      margin-top: 10px;
+      color: snow; }
+    .contact .contact-header .message {
+      width: 246px;
+      margin: 0 auto;
+      color: snow;
+      font-size: 15px;
+      font-weight: bold;
+      line-height: 24px; }
+  .contact ion-content {
+    top: 152px; }
+    .contact ion-content .item {
+      padding: 8px;
+      background-color: midnightblue; }
+      .contact ion-content .item:first-child h4 {
+        margin-top: 0; }
+      .contact ion-content .item h4 {
+        font-size: 18px;
+        font-weight: bold;
+        color: snow;
+        margin-top: 10px; }
+      .contact ion-content .item p {
+        color: snow; }
+      .contact ion-content .item i {
+        display: block;
+        font-size: 30px; }
+      .contact ion-content .item button {
+        color: snow;
+        border-radius: 5px;
+        width: 186px;
+        font-weight: bold;
+        line-height: 18px;
+        margin-top: 5px;
+        padding: 5px 0; }
+      .contact ion-content .item button.bug {
+        background-color: darkolivegreen;
+        border: 2px solid lime; }
+        .contact ion-content .item button.bug .ion-bug {
+          color: lime;
+          background-color: darkolivegreen; }
+      .contact ion-content .item button.idea {
+        background-color: darkorange;
+        border: 2px solid yellow; }
+        .contact ion-content .item button.idea .ion-ios-lightbulb {
+          color: yellow;
+          background-color: darkorange; }
+      .contact ion-content .item button.love {
+        background-color: darkred;
+        border: 2px solid magenta; }
+        .contact ion-content .item button.love .ion-heart {
+          color: magenta;
+          background-color: darkred; }
+
+.bar-footer .powered-by {
+  width: 168px;
+  margin: 0 auto;
+  height: 37px; }
+  .bar-footer .powered-by .apparent-logo {
+    width: 90px;
+    margin-top: 3px;
+    float: right;
+    display: inline-block; }
 
 .board-members .list {
   padding: 0; }
@@ -10311,30 +10370,6 @@ div.powered-by {
     width: calc(100% - 54px);
     margin: 0 0 0 5px;
     line-height: 15px; }
-
-ion-header-bar .calendar-form {
-  height: 60px; }
-  ion-header-bar .calendar-form input {
-    margin: 35px 0 0 30px;
-    height: 18px;
-    color: #FFF;
-    background-color: #B71C1C; }
-    ion-header-bar .calendar-form input::-webkit-input-placeholder {
-      color: #FFF; }
-  ion-header-bar .calendar-form button.button.button-clear.button-positive {
-    color: #FFF;
-    font-weight: 600;
-    font-size: 16px;
-    position: absolute;
-    right: 10px;
-    top: 0px; }
-    ion-header-bar .calendar-form button.button.button-clear.button-positive.close-calendar {
-      padding-left: 5px;
-      width: 50px;
-      left: 0;
-      text-align: left; }
-      ion-header-bar .calendar-form button.button.button-clear.button-positive.close-calendar i.icon.ion-close::before {
-        font-size: 18px; }
 
 @keyframes shake {
   0% {
@@ -11439,118 +11474,170 @@ body div.drag-element.gu-mirror {
       transform: scale(4.3, 1);
       margin-left: -97px; }
 
-.add_event_modal .add_event_header .button-clear {
-  color: #fff !important;
-  font-size: 16px !important;
-  margin-right: 15px; }
-  .add_event_modal .add_event_header .button-clear i.ion-close::before {
-    font-size: 16px;
-    float: left; }
+.add-event-view .bar-subheader {
+  border: none;
+  height: 44px; }
+  .add-event-view .bar-subheader label {
+    height: 22px; }
+    .add-event-view .bar-subheader label input {
+      background-color: transparent;
+      width: 100%; }
+  .add-event-view .bar-subheader .form-error {
+    height: 25px;
+    width: 100%;
+    position: absolute;
+    left: 6px;
+    top: 25px;
+    color: red;
+    font-weight: bold; }
+  .add-event-view .bar-subheader a.button {
+    height: 30px;
+    color: snow;
+    background-color: #B71C1C;
+    border: none; }
 
-.add_event_modal .add_event {
+.add-event-view .header-hr {
+  margin-top: 44px; }
+
+.add-event-view .add-event-form {
   margin-top: 10px; }
-  .add_event_modal .add_event i {
+  .add-event-view .add-event-form i {
     font-size: 20px;
     color: dimgrey;
     margin: 0 11px 0 11px; }
-  .add_event_modal .add_event .ion-location {
-    margin-left: 14px; }
-  .add_event_modal .add_event .ion-android-time {
+  .add-event-view .add-event-form .ion-image {
     margin-right: 5px; }
-  .add_event_modal .add_event a.add-attachment {
+  .add-event-view .add-event-form .volunteer_hands {
+    margin-right: 2px;
+    font-size: 18px; }
+  .add-event-view .add-event-form .ion-location {
+    margin-left: 14px; }
+    .add-event-view .add-event-form .ion-location input {
+      height: 22px;
+      position: relative;
+      top: 1px; }
+  .add-event-view .add-event-form .ion-android-time {
+    margin-right: 5px; }
+  .add-event-view .add-event-form a.add-attachment {
     text-decoration: none;
     color: darkgray;
     font-size: 12px;
     margin-left: -8px; }
-  .add_event_modal .add_event .drive_hr {
+  .add-event-view .add-event-form .drive_hr {
     margin-bottom: 14px; }
-  .add_event_modal .add_event .drive_wrapper {
+  .add-event-view .add-event-form .drive_wrapper {
     height: 34px; }
-    .add_event_modal .add_event .drive_wrapper i.icon-google-drive2 {
+    .add-event-view .add-event-form .drive_wrapper i.icon-google-drive2 {
       margin: 0 11px 0 9px; }
-  .add_event_modal .add_event .post_drive_hr {
-    margin-top: 2px; }
-  .add_event_modal .add_event input {
+    .add-event-view .add-event-form .drive_wrapper i.ion-document-text {
+      margin-left: 12px;
+      margin-right: 17px; }
+  .add-event-view .add-event-form input {
     display: inline-block;
     width: calc(100% - 45px);
     font-size: 12px;
     border: none;
     padding: 0; }
-  .add_event_modal .add_event .selector-container {
-    height: 33px; }
-  .add_event_modal .add_event md-input-container:not(.md-input-invalid).md-input-focused label {
+  .add-event-view .add-event-form .selector-container {
+    height: 22px;
+    top: 5px; }
+  .add-event-view .add-event-form md-input-container:not(.md-input-invalid).md-input-focused label {
     color: dimgrey; }
-  .add_event_modal .add_event md-input-container label:not(.md-no-float):not(.md-container-ignore) {
+  .add-event-view .add-event-form md-input-container label:not(.md-no-float):not(.md-container-ignore) {
     padding-left: 0; }
-  .add_event_modal .add_event md-input-container label {
+  .add-event-view .add-event-form md-input-container label {
     margin: 0;
     padding: 0; }
-  .add_event_modal .add_event span {
+  .add-event-view .add-event-form span {
     display: inline-block; }
-    .add_event_modal .add_event span md-input-container {
+    .add-event-view .add-event-form span md-input-container {
       padding: 0;
       width: 130px;
       margin: 7px 18px 8px 0px; }
-      .add_event_modal .add_event span md-input-container .md-input {
+      .add-event-view .add-event-form span md-input-container .md-input {
         padding: 0;
         border: none;
         width: initial; }
-      .add_event_modal .add_event span md-input-container .md-errors-spacer {
+      .add-event-view .add-event-form span md-input-container .md-errors-spacer {
         min-height: 0; }
-  .add_event_modal .add_event div.volunteers {
+  .add-event-view .add-event-form div.volunteers {
     max-width: 360px;
     min-width: 288px;
     width: 100%; }
-    .add_event_modal .add_event div.volunteers .volunteer_count {
+    .add-event-view .add-event-form div.volunteers .volunteer_count {
       width: 65px;
       margin-right: calc(100% - 279px); }
-    .add_event_modal .add_event div.volunteers md-input-container {
+    .add-event-view .add-event-form div.volunteers md-input-container {
       margin-top: 10px;
       margin-bottom: 10px; }
-      .add_event_modal .add_event div.volunteers md-input-container label {
+      .add-event-view .add-event-form div.volunteers md-input-container label {
         margin-left: 0; }
-    .add_event_modal .add_event div.volunteers label {
+    .add-event-view .add-event-form div.volunteers label {
       margin-left: 36px; }
-    .add_event_modal .add_event div.volunteers .event_dates {
+    .add-event-view .add-event-form div.volunteers .event_dates {
       width: 230px; }
-      .add_event_modal .add_event div.volunteers .event_dates label {
+      .add-event-view .add-event-form div.volunteers .event_dates label {
         margin-left: 0; }
-      .add_event_modal .add_event div.volunteers .event_dates i.volunteer {
+      .add-event-view .add-event-form div.volunteers .event_dates i.volunteer {
         margin: 0 2px 0 8px; }
-      .add_event_modal .add_event div.volunteers .event_dates md-input-container {
+      .add-event-view .add-event-form div.volunteers .event_dates md-input-container {
         margin-left: 36px; }
-        .add_event_modal .add_event div.volunteers .event_dates md-input-container .end_date {
+        .add-event-view .add-event-form div.volunteers .event_dates md-input-container .end_date {
           margin-left: 0; }
-    .add_event_modal .add_event div.volunteers .event_times md-input-container {
+    .add-event-view .add-event-form div.volunteers .event_times md-input-container {
       width: 65px; }
-      .add_event_modal .add_event div.volunteers .event_times md-input-container input {
+      .add-event-view .add-event-form div.volunteers .event_times md-input-container input {
         width: 54px; }
-  .add_event_modal .add_event .event_dates {
+  .add-event-view .add-event-form .event_dates {
     width: 230px; }
-    .add_event_modal .add_event .event_dates .end_date {
+    .add-event-view .add-event-form .event_dates .end_date {
       margin-left: 38px; }
-  .add_event_modal .add_event .event_times {
+  .add-event-view .add-event-form .event_times {
     width: 100px; }
-  .add_event_modal .add_event .icon-note {
-    font-size: 11px;
-    margin: 0 7px 0 8px; }
-  .add_event_modal .add_event textarea {
-    display: inline-block;
-    width: calc(100% - 45px);
-    font-size: 12px; }
+  .add-event-view .add-event-form .note-area {
+    border-top: 1px solid;
+    border-color: rgba(0, 0, 0, 0.4);
+    padding: 7px 0 10px 0; }
+    .add-event-view .add-event-form .note-area .icon-note {
+      font-size: 11px;
+      margin: 6px 9px 0 8px;
+      display: inline-block;
+      float: left; }
+    .add-event-view .add-event-form .note-area textarea {
+      display: inline-block;
+      width: calc(100% - 45px);
+      font-size: 12px;
+      resize: none;
+      box-sizing: border-box; }
 
-.events img.event_img {
+.events .event-header {
+  flex-flow: row wrap;
+  display: flex; }
+  .events .event-header h2.event-title {
+    margin-right: 6px;
+    font-weight: bold; }
+  .events .event-header h4 {
+    display: initial; }
+
+.events h4 {
+  font-weight: bold;
+  display: inline-block;
+  margin: 5px 0 -4px 0; }
+
+.events img.event-img {
   float: left;
-  width: 100px;
+  width: 40%;
+  max-width: 165px;
   margin-right: 10px; }
 
 .events p {
   white-space: normal;
   overflow: initial; }
 
-.events h4 {
-  font-weight: bold;
-  display: inline-block; }
+.events h4.location {
+  display: block;
+  clear: left;
+  margin: 5px 0; }
 
 .events div.no-volunteers {
   display: inline-block;

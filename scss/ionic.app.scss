@@ -356,10 +356,6 @@ ion-content.has-tall-header{
   top: 180px;
 }
 
-ion-content.has-footer{
-  margin-bottom: 36px;
-}
-
 .dtp {
   .dtp-date-view{
     .dtp-header{
@@ -456,7 +452,7 @@ ion-content.has-footer{
   .scroll{ 
     padding-top: 30px;
   }
-  .logo-label{
+  .area-label{
     font-size: 18px;
     text-align: center;
     font-weight: bold;
@@ -475,18 +471,134 @@ ion-content.has-footer{
     border-radius: 1px;
     font-weight: bold;
   }
+  //Google Drive Integration back-burnered 10-7-2016
+  // .accounts{
+  //   width: 90%;
+  //   margin: 0 auto;
+  //   text-align: center;
+  //   .area-sub-label{
+  //     width: 200px;
+  //     margin: 0 auto;
+  //   }
+  //   .list{
+  //     .ion-arrow-wrap{
+  //       vertical-align: initial;
+  //       &:before{
+  //         margin-top: 9px;
+  //         line-height: 20px;
+  //         font-size: 20px;
+  //       }
+  //     }
+  //     .apparent-icon{
+  //       width: 16px;
+  //     }
+  //     .item{
+  //       padding: 3px;
+  //       a{
+  //         padding-top: 3px;
+  //         margin: 0;
+  //         .drive-icon{
+  //           width: 16px;
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 }
 
-div.powered-by{
-  position: fixed;
-  left: calc((100% - 212px)/2);
-  bottom: 20px;
-  font-size: 16px;
-  .apparent-logo{
-    width: 143px;
-    position: absolute;
-    left: calc((100% + 53px)/2);
-    top: -34px;
+.contact{
+  text-align: center;
+  .contact-header{
+    height: 108px;
+    margin-top: 44px;
+    padding-top: 1px;
+    background-color: $apparentOrange;
+    h3{
+      font-weight: bold;
+      font-size: 22px;
+      margin-top: 10px;
+      color: snow;
+    }
+    .message{
+      width: 246px;
+      margin: 0 auto;
+      color: snow;
+      font-size: 15px;
+      font-weight: bold;
+      line-height: 24px;
+    }
+  }
+  ion-content{
+    top: 152px;
+    .item{
+      padding: 8px;
+      background-color: midnightblue;
+      &:first-child{
+        h4{
+          margin-top: 0;
+        }
+      }
+      h4{
+        font-size: 18px;
+        font-weight: bold;
+        color: snow;
+        margin-top: 10px;
+      }
+      p{
+        color: snow;
+      }
+      i{
+        display: block;
+        font-size: 30px;
+      }
+      button{
+        color: snow;
+        border-radius: 5px;
+        width: 186px;
+        font-weight: bold;
+        line-height: 18px;
+        margin-top: 5px;
+        padding: 5px 0;
+      }
+      button.bug{
+        background-color: darkolivegreen;
+        border: 2px solid lime;
+        .ion-bug{
+          color: lime;
+          background-color: darkolivegreen;
+        }
+      }
+      button.idea{
+        background-color: darkorange;
+        border: 2px solid yellow;
+        .ion-ios-lightbulb{
+          color: yellow;
+          background-color: darkorange;
+        }
+      }
+      button.love{
+        background-color: darkred;
+        border: 2px solid magenta;
+        .ion-heart{
+          color: magenta;
+          background-color: darkred;
+        }
+      }
+    }
+  }
+}
+
+.bar-footer{
+  .powered-by{
+    width: 168px;
+    margin: 0 auto;
+    height: 37px;
+    .apparent-logo{
+      width: 90px;
+      margin-top: 3px;
+      float: right;
+      display: inline-block;
+    }
   }
 }
 
@@ -667,39 +779,6 @@ div.powered-by{
       width: calc(100% - 54px);
       margin: 0 0 0 5px;
       line-height: 15px;
-    }
-  }
-}
-
-
-ion-header-bar{
-  .calendar-form{
-    height: 60px;
-    input{
-      margin: 35px 0 0 30px;
-      height: 18px;
-      color: #FFF;
-      background-color: $positive;
-      &::-webkit-input-placeholder{
-        color: #FFF;
-      }
-    }
-    button.button.button-clear.button-positive{
-      color: #FFF;
-      font-weight: 600;
-      font-size: 16px;
-      position: absolute;
-      right: 10px;
-      top: 0px;
-      &.close-calendar{
-        padding-left: 5px;
-        width: 50px;
-        left: 0;
-        text-align: left;
-        i.icon.ion-close::before{
-          font-size: 18px;
-        }
-      } 
     }
   }
 }
@@ -2048,25 +2127,57 @@ body div.drag-element.gu-mirror{
 }
 
 
-.add_event_modal{
-  .add_event_header .button-clear{
-    color: #fff !important;
-    font-size: 16px !important;
-    margin-right: 15px;
-    i.ion-close::before{
-      font-size: 16px;
-      float: left;
+.add-event-view{
+  .bar-subheader{
+    border: none;
+    height: 44px;
+    label{
+      height: 22px;
+      input{
+        background-color: rgba(0,0,0,0);
+        width: 100%;
+      }
+    }
+    .form-error{
+      height: 25px;
+      width: 100%;
+      position: absolute;
+      left: 6px;
+      top: 25px;
+      color: red;
+      font-weight: bold;
+    }
+    a.button{
+      height: 30px;
+      color: $fontColor;
+      background-color: $positive;
+      border: none;
     }
   }
-  .add_event{
+  .header-hr{
+    margin-top: 44px;
+  }
+  .add-event-form{
     margin-top: 10px;
     i{
       font-size: 20px;
       color: dimgrey;
       margin: 0 11px 0 11px;
     }
+    .ion-image{
+      margin-right: 5px;
+    }
+    .volunteer_hands{
+      margin-right: 2px;
+      font-size: 18px;
+    }
     .ion-location{
       margin-left: 14px;
+      input{
+        height: 22px;
+        position: relative;
+        top: 1px;
+      }
     }
     .ion-android-time{
       margin-right: 5px;
@@ -2085,9 +2196,10 @@ body div.drag-element.gu-mirror{
       i.icon-google-drive2{
         margin: 0 11px 0 9px;
       }
-    }
-    .post_drive_hr{
-      margin-top: 2px;
+      i.ion-document-text{
+        margin-left: 12px;
+        margin-right: 17px;
+      }
     }
     input{
       display: inline-block;
@@ -2096,7 +2208,10 @@ body div.drag-element.gu-mirror{
       border: none;
       padding: 0;
     }
-    .selector-container{ height: 33px;}
+    .selector-container{ 
+      height: 22px;
+      top: 5px;
+    }
     md-input-container{
       &:not(.md-input-invalid).md-input-focused label{
         color: dimgrey;
@@ -2177,30 +2292,57 @@ body div.drag-element.gu-mirror{
     .event_times{
       width: 100px;
     }
-    .icon-note{
-      font-size: 11px;
-      margin: 0 7px 0 8px;
-    }
-    textarea{
-      display: inline-block;
-      width: calc(100% - 45px);
-      font-size: 12px;
+    .note-area{
+      border-top: 1px solid;
+      border-color: rgba(0,0,0,0.4);
+      padding: 7px 0 10px 0;
+      .icon-note{
+        font-size: 11px;
+        margin: 6px 9px 0 8px;
+        display: inline-block;
+        float: left;
+      }
+      textarea{
+        display: inline-block;
+        width: calc(100% - 45px);
+        font-size: 12px;
+        resize: none;
+        box-sizing: border-box;
+      }
     }
   }
 }
 .events{
-  img.event_img{
+  .event-header{
+    flex-flow: row wrap;
+    display: flex;
+    h2.event-title{
+      margin-right: 6px;
+      font-weight: bold;
+    }
+    h4{ 
+      display: initial;
+    }
+  }
+  h4{
+    font-weight: bold;
+    display: inline-block;
+    margin: 5px 0 -4px 0;
+  }
+  img.event-img{
     float: left;
-    width: 100px;
+    width: 40%;
+    max-width: 165px;
     margin-right: 10px;
   }
   p{
     white-space: normal;
     overflow: initial;
   }
-  h4{
-    font-weight: bold;
-    display: inline-block;
+  h4.location{
+    display: block;
+    clear: left;
+    margin: 5px 0;
   }
   div.no-volunteers{
     display: inline-block;

@@ -1,21 +1,26 @@
-<ion-view title="Get Involved">
+<ion-view view-title="Get Involved">
   <ion-nav-buttons side="right"></ion-nav-buttons>
   <ion-content>
     <ion-list class="events">
       <ion-item ng-repeat="event in calEvents">
-        <h2 class="event_title">{{event.title}}</h2>
-        <img class="event_img"
-             expire="{{30}}"
-             ng-src="{{event.image}}"
-             ng-show="event.image"></img>
-        <p class="event_description">{{event.description}}</p>
+        <div class="event-header">
+          <h2 class="event-title">{{event.title}}</h2>
+          <h4>{{event.event_start | amDateFormat : 'ddd MMM Do h:mma'}} - {{event.event_end | amDateFormat : 'h:mma'}}</h4>
+        </div>
+        <div class="cf">
+          <img class="event-img"
+               ng-src="{{event.cover_photo_url}}"
+               ng-show="event.cover_photo_url"></img>
+          <p class="event_description">{{event.description}}</p>
+        </div>
+        <h4 class="location" style="display:block;"ng-show="event.location">{{event.location}}</h4>
         <h4 class="needed" ng-show="event.volunteer_hours">Volunteer Hours</h4>
         <div class="no-volunteers"
              ng-if="event.volunteers_needed && !event.covered_hours"> No volunteers yet. Be the first!</div>
         <div class="hours-needed"
              ng-if="event.covered_hours">
-          <div class="hours-covered"
-               ng-style="{width: ((event.covered_hours/event.volunteer_hours) * 100) + '%'}">{{event.covered_hours}}</div>
+        <div class="hours-covered"
+             ng-style="{width: ((event.covered_hours/event.volunteer_hours) * 100) + '%'}">{{event.covered_hours}}</div>
         </div>
         <button class="button button-small button-balanced"
                 ng-show="event.volunteer_hours"

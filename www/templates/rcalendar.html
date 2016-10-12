@@ -1,9 +1,18 @@
-<ion-view>
-  <ion-nav-buttons side="right"></ion-nav-buttons>
+<ion-view hide-back-button="!isVolunteerSignup">
   <ion-nav-title class="calendar-date">
     <h3 class="calendar-title">{{calendarTitle}}</h3>
     <h4 class="calendar-subtitle">{{titleDate}}</h4>
-  </ion-nav-title> 
+  </ion-nav-title>
+  <ion-nav-buttons side="left" >
+    <button ng-if="$root.isAdmin && user.school && calendarTitle === 'Calendar'" class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button"
+            ng-click="goHome()"
+            ng-if="!isVolunteerSignup">
+            <i class="icon ion-home"></i>
+    </button>
+  </ion-nav-buttons>
   <ion-content class="has-header calendar">
     <div class="btn-toolbar" ng-if="$root.isAdmin && !isVolunteerSignup">
       <button type="button" class="btn btn-default cal_view_btn" ng-class="{active:mode==='month'}" ng-click="changeMode('month')">

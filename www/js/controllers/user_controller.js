@@ -194,7 +194,7 @@ Pta.controller('UserCtrl', [
       });
     };
 
-    $ionicModal.fromTemplateUrl('templates/crop-image.html', {
+    $ionicModal.fromTemplateUrl('templates/circular-crop.html', {
       scope: $scope,
       animation: 'slide-in-up'
     }).then(function(modal) {

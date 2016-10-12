@@ -1,18 +1,42 @@
-<ion-view class="school-settings" title="School Settings">
-  <ion-nav-buttons side="right"></ion-nav-buttons>
+<ion-view class="school-settings" hide-back-button="true">
+  <ion-nav-title>School Settings</ion-nav-title>
+  <ion-nav-buttons side="left" >
+    <button ng-if="$root.isAdmin && user.school" class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button" ng-click="goHome()"><i class="icon ion-home"></i></button>
+  </ion-nav-buttons>
   <ion-content>
-    <div class="logo-label">School Logo</div>
+    <div class="area-label">School Logo</div>
     <div ng-if="school.logo"
          class="selected-logo"
-         ng-click="getImage()">
+         ng-click="getImage()"><!-- storageDir, imgName, imgUse -->
       <img class="school-logo"
            ng-src="{{school.logo}}">
     </div>
     <div ng-if="!school.logo"
          class="no-logo-selected"
-         ng-click="getImage()">
+         ng-click="getImage()"><!-- storageDir, imgName, imgUse, cb -->
       Select an image from your photo gallery
     </div>
+    <!-- <div class="accounts">
+      <div class="area-label">Accounts</div>
+      <div class="area-sub-label">Connect with the resources you're already using!</div>
+      <ion-list>
+        <ion-item>
+          <a class="button button-block button-clear button-dark" ng-click="gapiAuth()">
+            Google Drive 
+            <i class="icon icon-google-drive2" ng-hide="school.document_storage_token || school.storage_type !== 'googleDrive'"></i>
+            <span ng-show="school.document_storage_token && school.storage_type === 'googleDrive'">
+              <img class="drive-icon" src="img/Google_Drive_Logo.svg">
+              <i class="ion-arrow-swap"></i>
+              <img class="apparent-icon" src="img/apparent_logo.svg">
+              Apparent
+            </span>
+          </a>
+        </ion-item>
+      </ion-list>
+    </div> -->
     <!-- <ion-list ng-if="colors.palette">
       <ion-item ng-repeat="color in colors.palette track by $index">
         <div class="swatch"
@@ -23,9 +47,11 @@
     </ion-list> -->
     <jm-eyedropper-canvas>
   </ion-content>
-  <div class="powered-by">
-    Powered by
-    <img class="apparent-logo" src="img/apparent_noTagline.svg">
-  </div>
+  <ion-footer-bar>
+    <div class="powered-by">
+      Powered by
+      <img class="apparent-logo" src="img/apparent_noTagline.svg">
+    </div>
+  </ion-footer-bar>
 </ion-view>
  

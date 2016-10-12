@@ -5,7 +5,6 @@ var Pta = angular.module('pta', [
   'ngAria', 
   'ngMaterial', 
   'ngMaterialDatePicker',
-  'lk-google-picker',
   'firebase',
   'validation.match',
   'offClick',
@@ -20,9 +19,30 @@ var Pta = angular.module('pta', [
   'ionic-cache-src',
   'ui.router.stateHelper',
   'ionicLazyLoad',
+  'monospaced.elastic',
+  // 'ngCordovaOauth',
   angularDragula(angular)
   ])
-.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, userService) {
+// .constant('applicationId', '125323192420')
+// .constant('gapiApiKey', 'AIzaSyCi2ojTUERxZyYdfpgQOTdVNKAKAZtkwU0')
+// .constant('gapiClientId', '125323192420-c2nscbgoel9d0m7jv400dcfhfmtomac2.apps.googleusercontent.com')
+.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, userService, $q, $window) {
+  // Drive integration back-burnered 10-7-2016
+  // var googleApi = $q.defer(),
+  //     apis = []
+  //     loadApis = {'drive': 'v3'};
+      
+  // $window.gapi.client.setApiKey();
+
+  // angular.forEach(loadApis, function (value, key) {
+  //   apis.push($q.when(gapi.client.load(key, value)));
+  // });
+  // $q.all(apis).then(function () {
+  //   googleApi.resolve($window.gapi);
+  // });
+
+  // $rootScope.googleApi = googleApi.promise;
+
   // hide xeditable cancel button
   editableThemes['default'].cancelTpl = '<button type="button" class="btn btn-default" style="display:none">';
   editableThemes['default'].submitTpl = '<button type="submit" class="xeditable-submit fa fa-pencil-square-o"></button>';
@@ -63,63 +83,63 @@ var Pta = angular.module('pta', [
 
     $rootScope.queuedChatters = [];
     // Register a push notification listener
-    FCMPlugin.onNotification(
-      function(data){
-        if(!data.wasTapped && data.sender_imgUrl !== userService.getUser().pic){// Make sure the user isn't getting notified about their own message
-          //Notification was received in foreground. Check if the user is already in the room
-          if(!$state.is(data.state, { roomId: data.roomId })){
-            var queue = document.getElementById('queue');
-            if(!queue){ // This is the first queued chatter
-              var body = angular.element(document.getElementsByTagName('body')[0]),
-                  messageCount = angular.element(document.createElement('span')),
-                  imgTag = angular.element(document.createElement('img')),
-                  remove = angular.element(document.createElement('div')),
-                  iconBackground = angular.element(document.createElement('div')),
-                  queue = angular.element(document.createElement('div'));
-              imgTag.attr({
-                'ng-repeat':'chatter in queuedChatters track by $index',
-                src: data.sender_imgUrl,
-                'dragula-model':'queuedChatters',
-                class: 'chat-notification',
-                'ng-click': 'goToChat($event, chatter.state, chatter.roomId)'
-              });
-              remove.attr({ 
-                id:'remove-notification',
-                dragula: '"chatter-bag"',
-                'dragula-model': 'removeBag'
-              });
-              iconBackground.attr({ class: 'icon-background icon ion-close-circled' });
-              remove.append(iconBackground);
-              queue.attr({
-                id: 'queue',
-                dragula: '"chatter-bag"',
-                'dragula-model': 'queueBag'
-              });
-              queue.append(imgTag);
-              body.append(queue);
-              body.append(remove);
-              $compile(queue)($rootScope);
-              $compile(remove)($rootScope);
-              $rootScope.removeDrawer = angular.element(document.getElementById('remove-notification'));
-            }
-            if($rootScope.queuedChatters.length > 0){
-              for (var i = $rootScope.queuedChatters.length - 1; i >= 0; i--) {
-                value = $rootScope.queuedChatters[i];
-                // If it isn't the same person in the same room sending another message, add them
-                if(value.roomId !== data.roomId && value.sender_imgUrl !== data.sender_imgUrl && i === 0){
-                  $rootScope.queuedChatters.push(data);
-                }
-              }
-            } else {
-              $rootScope.queuedChatters.push(data);
-            }
-            $rootScope.$apply();
-          } 
-        } else {
-          //Notification was received on device tray and tapped by the user.
-          $localstorage.setObject('pushNotification', data);
-        }
-      });
+    // FCMPlugin.onNotification(
+    //   function(data){
+    //     if(!data.wasTapped && data.sender_imgUrl !== userService.getUser().pic){// Make sure the user isn't getting notified about their own message
+    //       //Notification was received in foreground. Check if the user is already in the room
+    //       if(!$state.is(data.state, { roomId: data.roomId })){
+    //         var queue = document.getElementById('queue');
+    //         if(!queue){ // This is the first queued chatter
+    //           var body = angular.element(document.getElementsByTagName('body')[0]),
+    //               messageCount = angular.element(document.createElement('span')),
+    //               imgTag = angular.element(document.createElement('img')),
+    //               remove = angular.element(document.createElement('div')),
+    //               iconBackground = angular.element(document.createElement('div')),
+    //               queue = angular.element(document.createElement('div'));
+    //           imgTag.attr({
+    //             'ng-repeat':'chatter in queuedChatters track by $index',
+    //             src: data.sender_imgUrl,
+    //             'dragula-model':'queuedChatters',
+    //             class: 'chat-notification',
+    //             'ng-click': 'goToChat($event, chatter.state, chatter.roomId)'
+    //           });
+    //           remove.attr({ 
+    //             id:'remove-notification',
+    //             dragula: '"chatter-bag"',
+    //             'dragula-model': 'removeBag'
+    //           });
+    //           iconBackground.attr({ class: 'icon-background icon ion-close-circled' });
+    //           remove.append(iconBackground);
+    //           queue.attr({
+    //             id: 'queue',
+    //             dragula: '"chatter-bag"',
+    //             'dragula-model': 'queueBag'
+    //           });
+    //           queue.append(imgTag);
+    //           body.append(queue);
+    //           body.append(remove);
+    //           $compile(queue)($rootScope);
+    //           $compile(remove)($rootScope);
+    //           $rootScope.removeDrawer = angular.element(document.getElementById('remove-notification'));
+    //         }
+    //         if($rootScope.queuedChatters.length > 0){
+    //           for (var i = $rootScope.queuedChatters.length - 1; i >= 0; i--) {
+    //             value = $rootScope.queuedChatters[i];
+    //             // If it isn't the same person in the same room sending another message, add them
+    //             if(value.roomId !== data.roomId && value.sender_imgUrl !== data.sender_imgUrl && i === 0){
+    //               $rootScope.queuedChatters.push(data);
+    //             }
+    //           }
+    //         } else {
+    //           $rootScope.queuedChatters.push(data);
+    //         }
+    //         $rootScope.$apply();
+    //       } 
+    //     } else {
+    //       //Notification was received on device tray and tapped by the user.
+    //       $localstorage.setObject('pushNotification', data);
+    //     }
+    //   });
 
     $ionicPlatform.on('resume', function(){
       if($localstorage.getObject('pushNotification')){
@@ -235,7 +255,13 @@ var Pta = angular.module('pta', [
   }
 })
 
-.config(function(stateHelperProvider, $urlRouterProvider, $ionicConfigProvider) {
+.config([
+  'stateHelperProvider',
+  '$urlRouterProvider',
+  '$ionicConfigProvider',
+  '$cordovaInAppBrowserProvider',
+  'msdElasticConfig',
+  function(stateHelperProvider, $urlRouterProvider, $ionicConfigProvider, $cordovaInAppBrowserProvider, msdElasticConfig) {
   
   stateHelperProvider
 
@@ -243,6 +269,7 @@ var Pta = angular.module('pta', [
     name: 'app',
     url: '/app',
     abstract: true,
+    cache: false,
     templateUrl: 'templates/menu.html',
     controller: 'MenuCtrl',
     children: [
@@ -298,11 +325,11 @@ var Pta = angular.module('pta', [
         },
         templateUrl: 'templates/user_profile.html',
         controller: 'UserCtrl'
-      },
-      {
+      },{
         name: 'admin',
         url: '/admin',
         abstract: true,
+        cache: false,
         template: '<ion-nav-view></ion-nav-view>',
         children:[
           {
@@ -315,8 +342,15 @@ var Pta = angular.module('pta', [
             },
             templateUrl: 'templates/rcalendar.html',
             controller: 'CalendarCtrl'
-          },
-          {
+          },{
+            name:'addevent',
+            url:'/event/add',
+            params:{
+              newEvent: null
+            },
+            templateUrl: 'templates/add_event.html',
+            controller: 'AddEventCtrl'
+          },{
             name: 'volunteers',
             url: '/volunteers',
             params:{
@@ -325,18 +359,21 @@ var Pta = angular.module('pta', [
             },
             templateUrl: 'templates/admin-interact.html',
             controller: 'VolunteerCtrl'
-          },
-          {
+          },{
             name: 'roles',
             url: '/roles',
             templateUrl: 'templates/roles.html',
             controller: 'RoleCtrl'
-          },
-          {
+          },{
             name: 'settings',
             url: '/settings',
             templateUrl: 'templates/settings.html',
             controller: 'SettingsCtrl'
+          },{
+            name: 'contact',
+            url: '/contact_us',
+            templateUrl: 'templates/contact_us.html',
+            controller: 'ContactCtrl'
           }
         ]
       }
@@ -354,7 +391,21 @@ var Pta = angular.module('pta', [
     templateUrl: 'templates/signup.html',
     controller : 'SignupCtrl' 
   });
+
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/login');
+  $ionicConfigProvider.backButton.previousTitleText(false);
   $ionicConfigProvider.scrolling.jsScrolling(false);
-});
+
+  msdElasticConfig.append = '\n';
+
+  //Google Drive Integration back-burnered
+  //inAppBrowser options
+  // $cordovaInAppBrowserProvider.setDefaultOptions({
+  //   location: 'no',
+  //   zoom: 'no',
+  //   hardwareback: 'no',
+  //   clearsessioncache: 'yes',
+  //   clearcache: 'yes'
+  // });
+}]);

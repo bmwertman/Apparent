@@ -53,8 +53,9 @@ Pta.controller('LoginCtrl', [
       ]
     });
   }
-  
-  navigator.splashscreen.hide();
+  if(navigator.splashscreen){
+    navigator.splashscreen.hide();
+  }
 
 }]);
 // .directive('shakeThat', ['$animate', function($animate) {

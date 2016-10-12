@@ -1,9 +1,7 @@
 Pta.controller('CalendarCtrl', [
-  '$scope', 
-  '$ionicLoading', 
+  '$scope',  
   '$timeout', 
   '$state',
-  '$ionicModal',
   '$ionicPopup',
   '$ionicSideMenuDelegate',
   '$firebaseArray',
@@ -11,10 +9,9 @@ Pta.controller('CalendarCtrl', [
   '$compile',
   '$localstorage',
   '$ionicPlatform',
-  'Rooms',
   'userService',
-  '$firebaseObject',
-  function ($scope, $ionicLoading, $timeout, $state, $ionicModal, $ionicPopup, $ionicSideMenuDelegate, $firebaseArray, $stateParams, $compile, $localstorage, $ionicPlatform, Rooms, userService, $firebaseObject) {
+  'time',
+  function ($scope, $timeout, $state, $ionicPopup, $ionicSideMenuDelegate, $firebaseArray, $stateParams, $compile, $localstorage, $ionicPlatform, userService, time) {
   'use strict';
 
   $scope.selectedEvent = $stateParams.selectedEvent;
@@ -28,7 +25,10 @@ Pta.controller('CalendarCtrl', [
     $scope.currentDate = new Date();
   }
 
-  var user = userService.getUser();
+  var user = userService.getUser(),
+      ref = firebase.database().ref(),
+      eventsRef = ref.child('events');
+  $scope.calEvents = $firebaseArray(eventsRef);
 
   $scope.calendarTitle = $stateParams.calendarTitle;
   $scope.isVolunteerSignup = $stateParams.isVolunteerSignup;
@@ -45,11 +45,6 @@ Pta.controller('CalendarCtrl', [
     $scope.$broadcast('eventFilter', $scope.itemSelected.type);
   }
 
-  // Get the event data from firebase as an array
-  var ref = firebase.database().ref();
-  var eventsRef = ref.child('events');
-  $scope.calEvents = $firebaseArray(eventsRef);
-
   // $ionicModal.fromTemplateUrl('templates/edit_event.html', {
   //   scope: $scope,
   //   animation: 'slide-in-up'
@@ -57,48 +52,36 @@ Pta.controller('CalendarCtrl', [
   //   $scope.modal = modal;
   // });
 
-  $ionicModal.fromTemplateUrl('templates/add_event.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
 
-  $scope.addEventModal = function() {
-      $scope.modal.show();
-  };
+  // Google Drive integration back-burnered 10-7-2016
+  // $scope.files = [];
+  // $scope.readFiles = function (school) {
+  //     Drive.showPicker(school.document_storage_token);
+  // };
+  // $scope.goToSettings = function(){
+  //   $state.go('app.admin.settings');
+  //   $scope.closeModal();
+  // }
+       
+  // $ionicModal.fromTemplateUrl('templates/add_event.html', {
+  //   scope: $scope,
+  //   animation: 'slide-in-up'
+  // }).then(function(modal) {
+  //   $scope.modal = modal;
+  // });
 
-  $scope.$on('$destroy', function(){
-      $scope.modal.remove();
-  });
+  // $scope.addEventModal = function() {
+  //     $scope.modal.show();
+  // };
 
-  $scope.closeModal = function() {
-      $scope.modal.hide();
-      $scope.event = {};
-  };
+  // $scope.$on('$destroy', function(){
+  //     $scope.modal.remove();
+  // });
 
-  //save confirmation post submit
-  $scope.saved = function(data, cb) {
-    $ionicLoading.show({
-      template: data + ' has been saved.',
-      duration: 2300
-    });
-  }
-
-  //error message display
-  $scope.err = function(err, lineNumber) {
-    $ionicLoading.show({
-      template: 'The save failed with error ' + err.status + '.Line ' + lineNumber + ', CheckinCtrl.',
-      duration: 4000
-    });
-  }
-  
-  $scope.deleted = function(){
-    $ionicLoading.show({
-      template: 'Job Succesfully Deleted',
-      duration: 2300
-    });
-  }
+  // $scope.closeModal = function() {
+  //     $scope.modal.hide();
+  //     $scope.event = {};
+  // }; 
 
   $scope.isDragging = true;
 
@@ -112,77 +95,19 @@ Pta.controller('CalendarCtrl', [
     $scope.mode = mode;
   };
 
-  $scope.today = function () {
-      $scope.currentDate = new Date();
-  };
-
-  $scope.isToday = function () {
-    var today = new Date(),
-    currentCalendarDate = new Date($scope.currentDate);
-    today.setHours(0, 0, 0, 0);
-    currentCalendarDate.setHours(0, 0, 0, 0);
-    return today.getTime() === currentCalendarDate.getTime();
-  };
-
-  function formatAMPM(date) {
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var ampm = hours >= 12 ? 'pm' : 'am';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? '0'+ minutes : minutes;
-    var strTime = hours + ':' + minutes + ' ' + ampm;
-    return strTime;
-  };
-
-  function getTimeOffset(date) {
-    var minutes = date.getMinutes();
-    var percentOfHour = (minutes / 60) * 100; 
-    return percentOfHour;
-  };
-
-  function getApptTime(startTime, endTime) {
-    var totalDifference = endTime - startTime;
-    var convertToMins = totalDifference / 1000 / 60 / 60;
-    return convertToMins
-  };
-
-  $scope.parseTime = function (timeStr, dt) {
-    if (!dt) {
-        dt = new Date();
-    }
-
-    var time = timeStr.match(/(\d+)(?::(\d\d))?\s*(p?)/i);
-    if (!time) {
-        return NaN;
-    }
-    var hours = parseInt(time[1], 10);
-    if (hours == 12 && !time[3]) {
-        hours = 0;
-    }
-    else {
-        hours += (hours < 12 && time[3]) ? 12 : 0;
-    }
-
-    dt.setHours(hours);
-    dt.setMinutes(parseInt(time[2], 10) || 0);
-    dt.setSeconds(0, 0);
-    return dt;
-  }
-
-  $scope.$on('displayTimes', function(e, displayStart, displayEnd){
-    $scope.displayStart = displayStart;
-    $scope.displayEnd = displayEnd;
-  });
-
   $scope.inputHidden = function(){
     if($scope.selectedTime.id === 0){
       return "hidden-input";
     }
   }
 
+  $scope.today = function () {
+      $scope.currentDate = new Date();
+  };
+
   $scope.timeValue = null;
-  $scope.items = [{
+  $scope.items = [
+    {
         id: 0,
         name: "Time unit options",
         label: "Choose a time unit"
@@ -202,7 +127,8 @@ Pta.controller('CalendarCtrl', [
         id: 10080,
         name: "Weeks",
         label: "How many weeks before?"
-  }];
+    }
+  ];
   $scope.selectedTime = $scope.items[0];
 
   var timeInputWatch = $scope.$watch('timeValue', function(newValue, oldValue) {
@@ -234,48 +160,9 @@ Pta.controller('CalendarCtrl', [
       $scope.selectedTime = $scope.items[0];
   }
 
-  function addToChat(){
-    var roomId = $scope.selectedEvent.$id + '-group',
-        eventRoomRef = ref.child('event-rooms').child($scope.selectedEvent.$id).child(roomId),
-        eventRoom = $firebaseObject(eventRoomRef),
-        chatter = { email: user.email, id: user.$id, name: user.name, pic: user.pic },
-        newChatterKey = eventRoomRef.child('chatters').push().key,
-        updates = {};
-    // Subscribe the user to push notifications for this room
-    // FCMPlugin.subscribeToTopic(roomId);
-    // This adds the volunteer to the group chat room referenced by admin interact view when the admin wants to chat all volunteers
-    updates['/event-rooms/' + $scope.selectedEvent.$id + '/' + roomId + '/chatters/' + newChatterKey] = chatter;
-    // This adds the group chatter to the group chat in the general rooms 
-    updates['/rooms/' + roomId + '/chatters/' + newChatterKey] = chatter;  
-    ref.update(updates)
-    .then(function(){
-      eventRoom.$loaded().then(function(eventRoom){
-        var updates = {};
-        angular.forEach(eventRoom.chatters, function(currentChatter, chatterKey){
-          var newChatter = { email: user.email, id: user.$id, name: user.name, pic: user.pic };
-          // Updates the current volunteers' & event organizer's user-rooms w/ the new chatter/new volunteer
-          if(currentChatter.id !== user.$id){ // This isn't the new chatter/new volunteer
-            updates['/user-rooms/' + currentChatter.id + '/' + roomId + '/chatters/' + newChatterKey ] = newChatter;
-          }
-        });
-        var newEventRoom = {
-          chatters: eventRoom.chatters,
-          owner: eventRoom.owner,
-          subject: eventRoom.subject,
-        }
-        if(eventRoom.title){
-          newEventRoom.title = eventRoom.title;
-        }
-        updates['/user-rooms/' + user.$id + '/' + roomId] = newEventRoom;
-
-        ref.update(updates);
-      });
-    });
-  }
-
   $scope.createCalEvent = function(){
-    var startDate = $scope.parseTime($scope.displayStart, new Date($scope.selectedEvent.date)).toString(),
-        endDate = $scope.parseTime($scope.displayEnd, new Date($scope.selectedEvent.date)).toString(),
+    var startDate = time.parseTime($scope.displayStart, new Date($scope.selectedEvent.date)).toString(),
+        endDate = time.parseTime($scope.displayEnd, new Date($scope.selectedEvent.date)).toString(),
         eventRef = eventsRef.child($scope.selectedEvent.$id),
         currentVolunteers = $firebaseArray(eventRef.child('volunteers')),
         volunteer = { id: user.$id, start: startDate, end: endDate };
@@ -353,7 +240,7 @@ Pta.controller('CalendarCtrl', [
       });
       confirmPopup.then(function(res){// Are they sure they want to sign up?
           if(res) {// They're sure!
-              var volunteerHours = moment($scope.parseTime($scope.displayEnd)).diff($scope.parseTime($scope.displayStart), 'hours'),
+              var volunteerHours = moment(time.parseTime($scope.displayEnd)).diff(time.parseTime($scope.displayStart), 'hours'),
                   selectedEventRef = firebase.database().ref('events').child($scope.selectedEvent.$id),
                   count = 0,
                   coveredHours;
@@ -404,10 +291,8 @@ Pta.controller('CalendarCtrl', [
       });
   }
 
-  $scope.event = {};
   $scope.$on('timeSelected', function(eventTimes){
-    $scope.event = eventTimes.targetScope.event;
-    $scope.addEventModal();
+    $state.go('app.admin.addevent', {newEvent: eventTimes.targetScope.event});
   });
 
   $scope.eventSelected = function(calEvent){
@@ -423,64 +308,10 @@ Pta.controller('CalendarCtrl', [
       }
   }
 
-  $scope.hasSetup = function(){
-      if($scope.event.setup_volunteers_needed && $scope.event.setup_volunteers_needed != 0){
-          $scope.event.setup_start_time = moment($scope.event.start_time).subtract(2, 'hours')._d;
-          $scope.event.setup_end_time = $scope.event.start_time;
-          $scope.event.setup_start_date = $scope.event.start_date;
-          $scope.event.setup_end_date = $scope.event.start_date;
-      }
-  }
-
-  $scope.hasCleanup = function(){
-      if($scope.event.cleanup_volunteers_needed && $scope.event.setup_volunteers_needed != 0){
-          $scope.event.cleanup_end_time = moment($scope.event.end_time).add(2, 'hours')._d;
-          $scope.event.cleanup_start_time = $scope.event.end_time;
-          $scope.event.cleanup_start_date = $scope.event.start_date;
-          $scope.event.cleanup_end_date = $scope.event.start_date;
-      }
-  }
-
   $ionicPlatform.onHardwareBackButton(function(){
       $scope.event.setup_volunteers_needed = null;
       $scope.event.volunteers_needed = null;
       $scope.event.cleanup_volunteers_needed = null;
   });
-
-  $scope.$on('selectedLocation', function(e){
-      $scope.event.location = e.targetScope.location.formatted_address;
-  });
-
-  $scope.saveEvent = function(e, event){
-      e.preventDefault();
-      e.stopPropagation();
-      $scope.event.event_start = moment(moment($scope.event.start_date).format('ddd, MMM DD, YYYY') + " " + moment($scope.event.start_time).format('hh:mm a'))._d.toString();
-      $scope.event.event_end = moment(moment($scope.event.start_date).format('ddd, MMM DD, YYYY') + " " + moment($scope.event.end_time).format('hh:mm a'))._d.toString();
-      if($scope.event.setup_start_date){
-          $scope.event.setup_start = moment(moment($scope.event.setup_start_date).format('ddd, MMM DD, YYYY') + " " + moment($scope.event.setup_start_time).format('hh:mm a'))._d.toString();
-          $scope.event.setup_end = moment(moment($scope.event.setup_start_date).format('ddd, MMM DD, YYYY') + " " + moment($scope.event.setup_end_time).format('hh:mm a'))._d.toString(); 
-      }
-      if($scope.event.cleanup_start_date){
-          $scope.event.cleanup_start = moment(moment($scope.event.cleanup_start_date).format('ddd, MMM DD, YYYY') + " " + moment($scope.event.cleanup_start_time).format('hh:mm a'))._d.toString();
-          $scope.event.cleanup_end = moment(moment($scope.event.cleanup_start_date).format('ddd, MMM DD, YYYY') + " " + moment($scope.event.cleanup_end_time).format('hh:mm a'))._d.toString();
-      }
-      if($scope.event.setup_volunteers_needed || $scope.event.cleanup_volunteers_needed || $scope.event.volunteers_needed){
-          $scope.event.volunteer_hours = moment($scope.event.setup_end).diff($scope.event.setup_start, 'hours') * $scope.event.setup_volunteers_needed + moment($scope.event.event_end).diff($scope.event.event_start, 'hours') * $scope.event.volunteers_needed + moment($scope.event.cleanup_end).diff($scope.event.cleanup_start, 'hours') * $scope.event.cleanup_volunteers_needed;  
-      }
-      
-      // This is needed to order the events chronologically in the view
-      $scope.event.date = $scope.event.start_date.getTime();
-      var eventId = eventsRef.push($scope.event).key;
-      // Create a group chat room unde the event-rooms/<eventId> w/ the admin who created the event in the room
-      event.id = eventId;
-      Rooms.addNewRoom([], '/event-rooms/', eventId + '-group', event);
-      $scope.saved(event.title, $scope.closeModal());
-      
-      if(user.isAdmin){
-          $state.go('app.calendar');
-      } else {
-          $state.go('app.volunteer');
-      }   
-  }
 
 }]);

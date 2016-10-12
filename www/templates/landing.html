@@ -1,4 +1,11 @@
-<ion-view class="landing" title="{{school.name}}">
+<ion-view class="landing" hide-back-button="true">
+  <ion-nav-title>{{school.name}}</ion-nav-title>
+  <ion-nav-buttons side="left" >
+    <button ng-if="$root.isAdmin && user.school" class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button" ng-click="logout()">Log Out</button>
+  </ion-nav-buttons>
   <div ng-if="school.logo" class="tall bar bar-header">
     <img class="school-logo"
          cache-src="{{school.logo}}"
@@ -38,8 +45,10 @@
       </ion-item>
     </ion-list>
   </ion-content>
-  <div class="powered-by">
-    Powered by
-    <img class="apparent-logo" src="img/apparent_noTagline.svg">
-  </div>
+  <ion-footer-bar>
+    <div class="powered-by">
+      Powered by
+      <img class="apparent-logo" src="img/apparent_noTagline.svg">
+    </div>
+  </ion-footer-bar>
 </ion-view>

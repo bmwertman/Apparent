@@ -7,7 +7,6 @@ Pta.controller('RoleCtrl', [
   '$localstorage',
   '$ionicActionSheet',
   '$timeout',
-  '$rootScope',
   function ($scope, userService, $ionicPopup, $firebaseArray, userFilter, $localstorage, $ionicActionSheet, $timeout) {
   $scope.user = userService.getUser();  
   $localstorage.remove('roleEditStart');

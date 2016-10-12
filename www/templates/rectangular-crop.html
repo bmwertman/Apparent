@@ -1,0 +1,31 @@
+<ion-modal-view class="crop_img_modal">
+  <ion-header-bar align-title="left" class="bar-positive">
+    <h1 class="title">Crop Image</h1>
+  </ion-header-bar>
+  <ion-content>
+    <form class="col-md-6 crop_img"> 
+      <div class="cropArea" style="overflow:hidden;margin:10px;">
+        <img-crop
+          image="picFile"
+          result-image="croppedDataUrl"
+          allow-crop-resize-on-corners="true"
+          area-init-is-relative-to-image="true"
+          canvas-scalemode="full-width"
+          change-on-fly="true"
+          result-image-quality="0.6"
+          result-image-format="image/jpeg"
+          area-type="rectangle"
+          init-max-area="true"
+          ng-init="croppedDataUrl=''"
+          on-load-begin="showLoading()"
+          on-load-done="hideLoading()">
+        </img-crop>
+      </div>
+      <div style="width:90%;margin-left:5%;">
+          <img ng-src="{{croppedDataUrl}}">
+      </div>           
+      <a class="button button-small"
+         ng-click="storeImage(croppedDataUrl, storageDir, imgName, imgUse, closeModal)">Submit</a> 
+    </form>
+  </ion-content>
+</ion-modal-view>

@@ -26,12 +26,11 @@ Pta.constant('calendar2Config', {
         '$compile',
         '$filter',
         '$q',
-        '$ionicModal',
         '$firebaseObject',
         'userService',
         '$state',
         '$ionicActionSheet',
-        function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $firebaseArray, $ionicHistory, dragulaService, $compile, $filter, $q, $ionicModal, $firebaseObject, userService, $state, $ionicActionSheet) {
+        function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendar2Config, $timeout, $firebaseArray, $ionicHistory, dragulaService, $compile, $filter, $q, $firebaseObject, userService, $state, $ionicActionSheet) {
         'use strict';
 
         $scope.user = userService.getUser();
