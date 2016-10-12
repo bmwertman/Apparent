@@ -82,64 +82,64 @@ var Pta = angular.module('pta', [
     });
 
     $rootScope.queuedChatters = [];
-    // Register a push notification listener
-    // FCMPlugin.onNotification(
-    //   function(data){
-    //     if(!data.wasTapped && data.sender_imgUrl !== userService.getUser().pic){// Make sure the user isn't getting notified about their own message
-    //       //Notification was received in foreground. Check if the user is already in the room
-    //       if(!$state.is(data.state, { roomId: data.roomId })){
-    //         var queue = document.getElementById('queue');
-    //         if(!queue){ // This is the first queued chatter
-    //           var body = angular.element(document.getElementsByTagName('body')[0]),
-    //               messageCount = angular.element(document.createElement('span')),
-    //               imgTag = angular.element(document.createElement('img')),
-    //               remove = angular.element(document.createElement('div')),
-    //               iconBackground = angular.element(document.createElement('div')),
-    //               queue = angular.element(document.createElement('div'));
-    //           imgTag.attr({
-    //             'ng-repeat':'chatter in queuedChatters track by $index',
-    //             src: data.sender_imgUrl,
-    //             'dragula-model':'queuedChatters',
-    //             class: 'chat-notification',
-    //             'ng-click': 'goToChat($event, chatter.state, chatter.roomId)'
-    //           });
-    //           remove.attr({ 
-    //             id:'remove-notification',
-    //             dragula: '"chatter-bag"',
-    //             'dragula-model': 'removeBag'
-    //           });
-    //           iconBackground.attr({ class: 'icon-background icon ion-close-circled' });
-    //           remove.append(iconBackground);
-    //           queue.attr({
-    //             id: 'queue',
-    //             dragula: '"chatter-bag"',
-    //             'dragula-model': 'queueBag'
-    //           });
-    //           queue.append(imgTag);
-    //           body.append(queue);
-    //           body.append(remove);
-    //           $compile(queue)($rootScope);
-    //           $compile(remove)($rootScope);
-    //           $rootScope.removeDrawer = angular.element(document.getElementById('remove-notification'));
-    //         }
-    //         if($rootScope.queuedChatters.length > 0){
-    //           for (var i = $rootScope.queuedChatters.length - 1; i >= 0; i--) {
-    //             value = $rootScope.queuedChatters[i];
-    //             // If it isn't the same person in the same room sending another message, add them
-    //             if(value.roomId !== data.roomId && value.sender_imgUrl !== data.sender_imgUrl && i === 0){
-    //               $rootScope.queuedChatters.push(data);
-    //             }
-    //           }
-    //         } else {
-    //           $rootScope.queuedChatters.push(data);
-    //         }
-    //         $rootScope.$apply();
-    //       } 
-    //     } else {
-    //       //Notification was received on device tray and tapped by the user.
-    //       $localstorage.setObject('pushNotification', data);
-    //     }
-    //   });
+    Register a push notification listener
+    FCMPlugin.onNotification(
+      function(data){
+        if(!data.wasTapped && data.sender_imgUrl !== userService.getUser().pic){// Make sure the user isn't getting notified about their own message
+          //Notification was received in foreground. Check if the user is already in the room
+          if(!$state.is(data.state, { roomId: data.roomId })){
+            var queue = document.getElementById('queue');
+            if(!queue){ // This is the first queued chatter
+              var body = angular.element(document.getElementsByTagName('body')[0]),
+                  messageCount = angular.element(document.createElement('span')),
+                  imgTag = angular.element(document.createElement('img')),
+                  remove = angular.element(document.createElement('div')),
+                  iconBackground = angular.element(document.createElement('div')),
+                  queue = angular.element(document.createElement('div'));
+              imgTag.attr({
+                'ng-repeat':'chatter in queuedChatters track by $index',
+                src: data.sender_imgUrl,
+                'dragula-model':'queuedChatters',
+                class: 'chat-notification',
+                'ng-click': 'goToChat($event, chatter.state, chatter.roomId)'
+              });
+              remove.attr({ 
+                id:'remove-notification',
+                dragula: '"chatter-bag"',
+                'dragula-model': 'removeBag'
+              });
+              iconBackground.attr({ class: 'icon-background icon ion-close-circled' });
+              remove.append(iconBackground);
+              queue.attr({
+                id: 'queue',
+                dragula: '"chatter-bag"',
+                'dragula-model': 'queueBag'
+              });
+              queue.append(imgTag);
+              body.append(queue);
+              body.append(remove);
+              $compile(queue)($rootScope);
+              $compile(remove)($rootScope);
+              $rootScope.removeDrawer = angular.element(document.getElementById('remove-notification'));
+            }
+            if($rootScope.queuedChatters.length > 0){
+              for (var i = $rootScope.queuedChatters.length - 1; i >= 0; i--) {
+                value = $rootScope.queuedChatters[i];
+                // If it isn't the same person in the same room sending another message, add them
+                if(value.roomId !== data.roomId && value.sender_imgUrl !== data.sender_imgUrl && i === 0){
+                  $rootScope.queuedChatters.push(data);
+                }
+              }
+            } else {
+              $rootScope.queuedChatters.push(data);
+            }
+            $rootScope.$apply();
+          } 
+        } else {
+          //Notification was received on device tray and tapped by the user.
+          $localstorage.setObject('pushNotification', data);
+        }
+      });
 
     $ionicPlatform.on('resume', function(){
       if($localstorage.getObject('pushNotification')){
