@@ -7,7 +7,8 @@ Pta.controller('RoleCtrl', [
   '$localstorage',
   '$ionicActionSheet',
   '$timeout',
-  function ($scope, userService, $ionicPopup, $firebaseArray, userFilter, $localstorage, $ionicActionSheet, $timeout) {
+  '$ionicHistory',
+  function ($scope, userService, $ionicPopup, $firebaseArray, userFilter, $localstorage, $ionicActionSheet, $timeout, $ionicHistory) {
   $scope.user = userService.getUser();  
   $localstorage.remove('roleEditStart');
 
@@ -37,6 +38,12 @@ Pta.controller('RoleCtrl', [
   .then(function(schoolParents){
       $scope.schoolParents = schoolParents;
   });
+
+  function checkHistory(){
+    console.log($ionicHistory.currentView());
+    debugger;
+  }
+  checkHistory();
 
   $scope.showOptions = false;
 

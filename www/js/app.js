@@ -82,7 +82,7 @@ var Pta = angular.module('pta', [
     });
 
     $rootScope.queuedChatters = [];
-    Register a push notification listener
+    // Register a push notification listener
     FCMPlugin.onNotification(
       function(data){
         if(!data.wasTapped && data.sender_imgUrl !== userService.getUser().pic){// Make sure the user isn't getting notified about their own message
@@ -144,7 +144,9 @@ var Pta = angular.module('pta', [
     $ionicPlatform.on('resume', function(){
       if($localstorage.getObject('pushNotification')){
         var data = $localstorage.getObject('pushNotification');
-        $state.go(data.state, {roomId: data.roomId});
+        if(data.state && data.roomId){
+          $state.go(data.state, {roomId: data.roomId});
+        }
         $localstorage.remove('pushNotification');
       }
     });

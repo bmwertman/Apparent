@@ -45,14 +45,6 @@ Pta.controller('CalendarCtrl', [
     $scope.$broadcast('eventFilter', $scope.itemSelected.type);
   }
 
-  // $ionicModal.fromTemplateUrl('templates/edit_event.html', {
-  //   scope: $scope,
-  //   animation: 'slide-in-up'
-  // }).then(function(modal) {
-  //   $scope.modal = modal;
-  // });
-
-
   // Google Drive integration back-burnered 10-7-2016
   // $scope.files = [];
   // $scope.readFiles = function (school) {
@@ -63,31 +55,7 @@ Pta.controller('CalendarCtrl', [
   //   $scope.closeModal();
   // }
        
-  // $ionicModal.fromTemplateUrl('templates/add_event.html', {
-  //   scope: $scope,
-  //   animation: 'slide-in-up'
-  // }).then(function(modal) {
-  //   $scope.modal = modal;
-  // });
-
-  // $scope.addEventModal = function() {
-  //     $scope.modal.show();
-  // };
-
-  // $scope.$on('$destroy', function(){
-  //     $scope.modal.remove();
-  // });
-
-  // $scope.closeModal = function() {
-  //     $scope.modal.hide();
-  //     $scope.event = {};
-  // }; 
-
   $scope.isDragging = true;
-
-  $scope.$on('$destroy', function(){
-    $scope.modal.remove();
-  });
 
   $scope.mode = 'day';
 
@@ -295,23 +263,25 @@ Pta.controller('CalendarCtrl', [
     $state.go('app.admin.addevent', {newEvent: eventTimes.targetScope.event});
   });
 
-  $scope.eventSelected = function(calEvent){
-      if($scope.isCalView){// If this isn't the volunteer signup view;
-          $scope.event.start_date = calEvent.event.start_time;
-          $scope.event.end_date = calEvent.event.end_time;
-          $scope.event.start_time = calEvent.event.start_time;
-          $scope.event.end_time = calEvent.event.end_time;
-          $scope.event.event_title = calEvent.event.title;
-          $scope.location = {};
-          $scope.location.formatted_address = calEvent.event.location;
-          $scope.modal.show();
-      }
-  }
+  // $scope.eventSelected = function(calEvent){
+  //     if($scope.isCalView){// If this isn't the volunteer signup view;
+  //         $scope.event.start_date = calEvent.event.start_time;
+  //         $scope.event.end_date = calEvent.event.end_time;
+  //         $scope.event.start_time = calEvent.event.start_time;
+  //         $scope.event.end_time = calEvent.event.end_time;
+  //         $scope.event.event_title = calEvent.event.title;
+  //         $scope.location = {};
+  //         $scope.location.formatted_address = calEvent.event.location;
+  //         $scope.modal.show();
+  //     }
+  // }
 
   $ionicPlatform.onHardwareBackButton(function(){
+    if($scope.event){
       $scope.event.setup_volunteers_needed = null;
       $scope.event.volunteers_needed = null;
       $scope.event.cleanup_volunteers_needed = null;
+    }
   });
 
 }]);

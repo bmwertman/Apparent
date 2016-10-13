@@ -5,7 +5,8 @@ Pta.controller('SettingsCtrl', [
   '$cordovaImagePicker',
   'imgStorage',
   'modalService',
-  function($scope, userService, $firebaseObject, $cordovaImagePicker, imgStorage, modalService) {
+  '$ionicHistory',
+  function($scope, userService, $firebaseObject, $cordovaImagePicker, imgStorage, modalService, $ionicHistory) {
     $scope.user = userService.getUser();
     var school = $firebaseObject(firebase.database().ref('schools').child($scope.user.school));
     if(school){
@@ -13,6 +14,12 @@ Pta.controller('SettingsCtrl', [
         $scope.school = school;
       });
     }
+
+    function checkHistory(){
+      console.log($ionicHistory.currentView());
+      debugger;
+    }
+    checkHistory();
 
     $scope.storeImage = function(file, storageDir, imgName, imgUse, closeModal) {
       storageDir = 'logo_pics';
