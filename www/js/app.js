@@ -55,9 +55,12 @@ var Pta = angular.module('pta', [
       cordova.plugins.Keyboard.disableScroll(true);
     }
 
+    ionic.Platform.fullScreen();
+
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
+      return StatusBar.hide()
     }
 
     $rootScope.goToChat = function(e, chatState, chatRmId){

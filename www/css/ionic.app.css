@@ -10091,6 +10091,9 @@ ion-content.has-tall-header {
   background-image: none !important;
   border-bottom: none !important; }
 
+.bar .buttons span.back-text {
+  display: none; }
+
 .landing .tall {
   color: snow;
   background-color: #B71C1C;
@@ -10155,14 +10158,15 @@ ion-content.has-tall-header {
 .contact {
   text-align: center; }
   .contact .contact-header {
-    height: 108px;
+    height: 90px;
     margin-top: 44px;
     padding-top: 1px;
     background-color: #FF8F02; }
     .contact .contact-header h3 {
       font-weight: bold;
       font-size: 22px;
-      margin-top: 10px;
+      margin-top: 5px;
+      margin-bottom: 5px;
       color: snow; }
     .contact .contact-header .message {
       width: 246px;
@@ -10170,9 +10174,10 @@ ion-content.has-tall-header {
       color: snow;
       font-size: 15px;
       font-weight: bold;
-      line-height: 24px; }
+      line-height: 18px;
+      font-family: "-apple-system", "Helvetica Neue", "Roboto", "Segoe UI", sans-serif; }
   .contact ion-content {
-    top: 152px; }
+    top: 132px; }
     .contact ion-content .item {
       padding: 8px;
       background-color: midnightblue; }
@@ -10509,6 +10514,9 @@ ion-content.has-tall-header {
   .profile i.ion-edit span {
     font-size: 12px; }
 
+.profile .editable-click {
+  border-bottom: none; }
+
 .profile .bar-header .profile-pic {
   top: 44px;
   width: 100px;
@@ -10580,199 +10588,195 @@ ion-content.has-tall-header {
     .profile .bar-header .editable-wrap .editable-buttons .xeditable-submit {
       color: snow; }
 
-.profile .content-body .school-wrapper #school-display-name {
-  text-align: center;
-  font-size: 20px;
-  font-weight: bold;
-  color: #B71C1C;
-  width: calc(100% - 35px);
-  margin-left: 35px; }
-  .profile .content-body .school-wrapper #school-display-name .ion-edit {
-    font-size: 12px; }
-
-.profile .content-body .school-wrapper #school-name {
-  background: transparent;
-  display: block;
-  width: 210px;
-  margin: -14px auto -10px; }
-  .profile .content-body .school-wrapper #school-name .layout-row {
-    box-shadow: none; }
-    .profile .content-body .school-wrapper #school-name .layout-row #md-school-input {
-      padding: 0;
-      font-size: 20px;
-      font-weight: bold;
-      color: #B71C1C; }
-    .profile .content-body .school-wrapper #school-name .layout-row .ion-edit {
-      position: relative;
-      right: 3px;
-      top: 13px; }
-    .profile .content-body .school-wrapper #school-name .layout-row button {
-      display: none; }
-
-.profile .content-body .children #add-child {
-  position: initial;
-  top: initial;
-  left: initial;
-  float: right;
+.profile #add-child {
+  position: fixed;
+  top: 70%;
+  left: 80%;
   box-shadow: 2px 1px 3px black;
-  margin-right: calc((48% - 40px)/2);
   padding-top: 13px;
   margin-top: 20px; }
-  .profile .content-body .children #add-child .ion-android-person-add {
+  .profile #add-child .ion-android-person-add {
     color: snow;
     font-size: 30px;
     position: relative;
     bottom: 8px;
     right: 0.07em; }
-  .profile .content-body .children #add-child #childwarp {
+  .profile #add-child #childwarp {
     position: relative;
     color: snow;
     bottom: 20px;
     left: 1px; }
 
-.profile .content-body .children .child {
-  box-shadow: 2px 2px 5px 0px black;
-  border-radius: 8px;
-  border: 1px solid darkgray;
-  display: inline-block;
-  float: left;
-  width: 163px;
-  margin-top: 10px; }
-  .profile .content-body .children .child:nth-child(odd) {
-    margin-right: 10px; }
-  .profile .content-body .children .child .child-header {
-    background-color: #B71C1C;
-    color: snow;
-    border-radius: 8px 8px 0 0; }
-    .profile .content-body .children .child .child-header .teacher {
-      position: absolute;
-      height: 22px;
-      width: calc(100% - 207px);
-      margin: 20px 0 0 0; }
-    .profile .content-body .children .child .child-header i.ion-edit {
-      transform: scaleX(-1);
-      display: inline-block;
-      margin-top: 7px;
-      font-size: 14px; }
-    .profile .content-body .children .child .child-header .grade-wrapper {
-      float: right;
-      margin: 4px;
-      height: 34px; }
-      .profile .content-body .children .child .child-header .grade-wrapper span {
-        position: relative;
-        bottom: 4px;
-        color: darkgray;
-        font-size: 12px; }
-        .profile .content-body .children .child .child-header .grade-wrapper span .ion-edit {
-          font-size: 12px; }
-      .profile .content-body .children .child .child-header .grade-wrapper .grade-number {
-        display: inline-block;
-        width: 30px;
-        border: none;
-        background-color: transparent;
-        -webkit-appearance: none;
-        color: snow;
-        font-weight: bold;
-        font-size: 20px;
-        float: right;
-        margin: 0 4px;
-        height: 20px;
-        line-height: 20px; }
-      .profile .content-body .children .child .child-header .grade-wrapper .grade {
-        margin: 0;
-        line-height: 0;
-        color: snow;
-        width: 36px;
-        position: relative;
-        left: 40px; }
-  .profile .content-body .children .child .child-body i.icon {
-    font-size: 19px;
-    color: darkgray; }
-    .profile .content-body .children .child .child-body i.icon.ion-ios-camera {
-      position: relative;
-      left: 112px;
-      top: -11px; }
-    .profile .content-body .children .child .child-body i.icon span {
-      position: absolute;
-      top: 2px;
-      left: 17px;
-      font-size: 12px; }
-  .profile .content-body .children .child .child-body .child-pic {
-    border-radius: 50%;
-    width: 100px;
-    margin: 10px auto -10px;
-    display: block; }
-  .profile .content-body .children .child .child-body .child-initial {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    color: snow;
-    background-color: #B71C1C;
-    font-weight: bold;
+.profile .content-body {
+  bottom: 67px; }
+  .profile .content-body .school-wrapper #school-display-name {
     text-align: center;
-    font-size: 70px;
-    line-height: 100px;
-    margin: 10px auto -10px; }
-  .profile .content-body .children .child .child-body .remove-child {
-    background-color: #FF8F02;
-    display: inline-block;
-    height: 32px;
-    width: 32px;
-    border-radius: 50%;
-    margin-bottom: 8px;
-    position: relative;
-    right: 4px;
-    box-shadow: 1px 1px 2px black; }
-    .profile .content-body .children .child .child-body .remove-child i.icon.ion-android-person-subtract {
-      color: snow;
-      font-size: 18px;
-      line-height: 32px;
-      position: relative;
-      left: 3px; }
-  .profile .content-body .children .child .child-footer {
-    border-top: 1px solid darkgray;
-    background-color: #B71C1C;
-    padding: 0 5px; }
-    .profile .content-body .children .child .child-footer .editable-wrap .user-name {
-      height: 23px;
-      font-size: 17px;
-      width: 125px;
-      position: relative;
-      bottom: 3px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #B71C1C;
+    width: calc(100% - 35px);
+    margin-left: 35px; }
+    .profile .content-body .school-wrapper #school-display-name .ion-edit {
+      font-size: 12px; }
+  .profile .content-body .school-wrapper #school-name {
+    background: transparent;
+    display: block;
+    width: 210px;
+    margin: -14px auto -10px; }
+    .profile .content-body .school-wrapper #school-name .layout-row {
+      box-shadow: none; }
+      .profile .content-body .school-wrapper #school-name .layout-row #md-school-input {
+        padding: 0;
+        font-size: 20px;
+        font-weight: bold;
+        color: #B71C1C; }
+      .profile .content-body .school-wrapper #school-name .layout-row .ion-edit {
+        position: relative;
+        right: 3px;
+        top: 13px; }
+      .profile .content-body .school-wrapper #school-name .layout-row button {
+        display: none; }
+  .profile .content-body .children .child {
+    box-shadow: 2px 2px 5px 0px black;
+    border-radius: 8px;
+    border: 1px solid darkgray;
+    width: 178px;
+    margin: 5px auto;
+    margin-top: 10px; }
+    .profile .content-body .children .child .child-header {
       background-color: #B71C1C;
-      color: snow; }
-    .profile .content-body .children .child .child-footer .editable-wrap .editable-buttons {
-      position: relative;
-      bottom: 5px;
-      right: 30px; }
-      .profile .content-body .children .child .child-footer .editable-wrap .editable-buttons .xeditable-submit {
-        color: snow; }
-    .profile .content-body .children .child .child-footer #name-wrap {
-      margin: 7px auto 0;
-      height: 23px;
+      color: snow;
+      border-radius: 8px 8px 0 0; }
+      .profile .content-body .children .child .child-header .teacher {
+        position: absolute;
+        height: 22px;
+        width: calc(100% - 207px);
+        margin: 20px 0 0 0; }
+      .profile .content-body .children .child .child-header i.ion-edit {
+        transform: scaleX(-1);
+        display: inline-block;
+        margin-top: 7px;
+        font-size: 14px; }
+      .profile .content-body .children .child .child-header .grade-wrapper {
+        float: right;
+        margin: 4px;
+        height: 34px; }
+        .profile .content-body .children .child .child-header .grade-wrapper span {
+          position: relative;
+          bottom: 4px;
+          color: darkgray;
+          font-size: 12px; }
+          .profile .content-body .children .child .child-header .grade-wrapper span .ion-edit {
+            font-size: 12px; }
+        .profile .content-body .children .child .child-header .grade-wrapper .grade-number {
+          display: inline-block;
+          width: 30px;
+          border: none;
+          background-color: transparent;
+          -webkit-appearance: none;
+          color: snow;
+          font-weight: bold;
+          font-size: 20px;
+          float: right;
+          margin: 0 4px;
+          height: 20px;
+          line-height: 20px; }
+        .profile .content-body .children .child .child-header .grade-wrapper .grade {
+          margin: 0;
+          line-height: 0;
+          color: snow;
+          width: 40px;
+          position: relative;
+          left: 40px; }
+    .profile .content-body .children .child .child-body i.icon {
+      font-size: 19px;
+      color: darkgray; }
+      .profile .content-body .children .child .child-body i.icon.ion-ios-camera {
+        position: relative;
+        left: 117px;
+        top: -11px; }
+      .profile .content-body .children .child .child-body i.icon span {
+        position: absolute;
+        top: 2px;
+        left: 17px;
+        font-size: 12px; }
+    .profile .content-body .children .child .child-body .child-pic {
+      border-radius: 50%;
+      width: 100px;
+      margin: 10px auto -10px;
       display: block; }
-      .profile .content-body .children .child .child-footer #name-wrap #name {
-        margin: 0 auto;
-        font-weight: normal;
+    .profile .content-body .children .child .child-body .child-initial {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      color: snow;
+      background-color: #B71C1C;
+      font-weight: bold;
+      text-align: center;
+      font-size: 70px;
+      line-height: 100px;
+      margin: 10px auto -10px; }
+    .profile .content-body .children .child .child-body .remove-child {
+      background-color: #FF8F02;
+      display: inline-block;
+      height: 32px;
+      width: 32px;
+      border-radius: 50%;
+      margin-bottom: 8px;
+      position: relative;
+      right: 4px;
+      box-shadow: 1px 1px 2px black; }
+      .profile .content-body .children .child .child-body .remove-child i.icon.ion-android-person-subtract {
+        color: snow;
+        font-size: 18px;
+        line-height: 32px;
         position: relative;
-        top: -2px;
-        height: 37px;
-        display: inline;
-        font-size: 16px;
+        left: 3px; }
+    .profile .content-body .children .child .child-footer {
+      border-top: 1px solid darkgray;
+      background-color: #B71C1C;
+      padding: 0 5px; }
+      .profile .content-body .children .child .child-footer .editable-wrap .user-name {
+        height: 23px;
+        font-size: 17px;
+        width: 125px;
+        position: relative;
+        bottom: 3px;
+        background-color: #B71C1C;
         color: snow; }
-      .profile .content-body .children .child .child-footer #name-wrap i.icon.ion-edit {
+      .profile .content-body .children .child .child-footer .editable-wrap .editable-buttons {
         position: relative;
-        font-size: 12px;
-        top: -3px;
-        left: 0; }
+        bottom: 5px;
+        right: 30px; }
+        .profile .content-body .children .child .child-footer .editable-wrap .editable-buttons .xeditable-submit {
+          color: snow; }
+      .profile .content-body .children .child .child-footer #name-wrap {
+        margin: 7px auto 0;
+        height: 23px;
+        display: block; }
+        .profile .content-body .children .child .child-footer #name-wrap #name {
+          margin: 0 auto;
+          font-weight: normal;
+          position: relative;
+          top: -2px;
+          height: 37px;
+          display: inline;
+          font-size: 16px;
+          color: snow; }
+        .profile .content-body .children .child .child-footer #name-wrap i.icon.ion-edit {
+          position: relative;
+          font-size: 12px;
+          top: -3px;
+          left: 0; }
 
 .profile .contact-info {
   padding: 5px;
   background-color: #B71C1C;
-  height: 80px; }
+  height: 67px; }
   .profile .contact-info h4 {
     color: snow;
-    margin: 0; }
+    margin: 0;
+    font-size: 16px; }
   .profile .contact-info i.icon {
     display: block;
     color: darkgray;
@@ -11670,3 +11674,12 @@ body div.drag-element.gu-mirror {
   font-size: 14px;
   float: right;
   margin-top: -10px; }
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) {
+  .title.title-center.header-item {
+    margin: 5px auto; }
+    .title.title-center.header-item .nav-bar-title {
+      white-space: initial;
+      text-align: center;
+      line-height: 18px;
+      display: inline-block; } }

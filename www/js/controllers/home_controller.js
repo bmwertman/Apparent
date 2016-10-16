@@ -5,9 +5,14 @@ Pta.controller('HomeCtrl', [
   '$timeout',
   '$state',
   '$ionicNavBarDelegate',
-  function($scope, userService, $firebaseObject, $timeout, $state, $ionicNavBarDelegate) {
+  '$rootScope',
+  function($scope, userService, $firebaseObject, $timeout, $state, $ionicNavBarDelegate, $rootScope) {
     
     $ionicNavBarDelegate.align('center');
+
+    $rootScope.goHome = function(){
+      $state.go('app.home');
+    }
 
     $scope.user = userService.getUser();
     if($scope.user.school){

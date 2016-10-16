@@ -8,9 +8,7 @@ Pta.controller('MenuCtrl', [
     $scope.logout = function(){
       Auth.logout();
     }
-    $scope.goHome = function(){
-      $state.go('app.home');
-    }
+
     $scope.user = userService.getUser();
 
     $ionicPlatform.onHardwareBackButton(function(){
