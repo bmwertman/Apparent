@@ -5,29 +5,37 @@
   </div>
   <ion-content>
     <ion-list>
-      <ion-item>
+      <!-- <ion-item>
         <h4>Found a bug?</h4>
-        <button class="button bug">
+        <a class="button bug">
           Report
           <i class="ion-bug"></i>
-        </button>
+        </a>
         <p>Let us make it right.</p>
-      </ion-item>
+      </ion-item> -->
       <ion-item>
         <h4>Know an improvement?</h4> 
-        <button class="button idea">
+        <a class="button idea"
+           ng-click="showFeedbackPopup($event)">
           Suggest
           <i class="ion-ios-lightbulb"></i>
-        </button>
+        </a>
         <p>We want to hear about it.</p>
       </ion-item>
       <ion-item>
+        <div class="coming-soon">
+          <h4>Coming Soon!
+            <i class="icon ion-android-happy"></i>
+          </h4>
+          <pre>In the mean time kick it old school and tell a friend!</pre> 
+        </div>
         <h4>Love Apparent?</h4>
-        <button class="button love">
+        <a class="button love"
+           ng-click="openPopover($event, socialPopover)">
           Share
           <i class="ion-heart"></i>
-        </button>
-        <p>Please share it!</p>
+        </a>
+        <p>Share it!</p>
       </ion-item>
     </ion-list>
   </ion-content>

@@ -1,6 +1,10 @@
 <ion-modal-view class="crop_img_modal">
   <ion-header-bar align-title="left" class="bar-positive">
     <h1 class="title">Crop Image</h1>
+    <button class="button bar-positive"
+            ng-click="closeModal()">
+      Cancel
+    </button>
   </ion-header-bar>
   <ion-content>
     <form class="col-md-6 crop_img"> 
@@ -14,10 +18,13 @@
           ng-init="croppedDataUrl=''">
         </img-crop>
       </div>
-      <div style="width:200px;margin:0 auto;">
+      <div class="cropped-container">
           <img style="border-radius:50%;"ng-src="{{croppedDataUrl}}" />
       </div>
-      <button ng-click="storeImage(croppedDataUrl)">Submit</button> 
+      <button class="button button-balanced"
+              ng-click="storeImage(croppedDataUrl)">
+        Submit
+      </button> 
     </form>
   </ion-content>
 </ion-modal-view>

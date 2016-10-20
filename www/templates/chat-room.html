@@ -15,7 +15,8 @@
         <div ng-hide="chats" class="no-messages">
             <i class="icon ion-loading-c"></i> Loading Chats
         </div>
-        <div ng-if="chats.length == 0" class="no-messages">
+        <div ng-if="chats.length == 0"
+             class="no-messages">
             <h4>No messages in this room. Send a message to get the conversation started.</h4>
         </div>
         <div ng-repeat="chat in chats"
@@ -39,15 +40,18 @@
             </div>
         </div>
     </ion-content>    
-    <div class="footer-bar">
+    <ion-footer-bar keyboard-attach class="footer-bar">
         <div class="sub-bar">
-            <input type="text" ng-model="IM.textMessage" placeholder="Write a message">
+            <input detect-focus
+                   type="text"
+                   ng-model="IM.textMessage"
+                   placeholder="Write a message">
         </div>
         <div class="sub-bar bottom">
             <button ng-click="sendMessage()" class="send-button">
                 <i class="icon ion-android-send"></i>
             </button>
         </div>
-    </div>
+    </ion-footer-bar>
 </ion-view>
 

@@ -10177,48 +10177,89 @@ ion-content.has-tall-header {
       line-height: 18px;
       font-family: "-apple-system", "Helvetica Neue", "Roboto", "Segoe UI", sans-serif; }
   .contact ion-content {
-    top: 132px; }
-    .contact ion-content .item {
-      padding: 8px;
-      background-color: midnightblue; }
-      .contact ion-content .item:first-child h4 {
-        margin-top: 0; }
-      .contact ion-content .item h4 {
-        font-size: 18px;
-        font-weight: bold;
-        color: snow;
-        margin-top: 10px; }
-      .contact ion-content .item p {
-        color: snow; }
-      .contact ion-content .item i {
-        display: block;
-        font-size: 30px; }
-      .contact ion-content .item button {
-        color: snow;
-        border-radius: 5px;
-        width: 186px;
-        font-weight: bold;
-        line-height: 18px;
-        margin-top: 5px;
-        padding: 5px 0; }
-      .contact ion-content .item button.bug {
-        background-color: darkolivegreen;
-        border: 2px solid lime; }
-        .contact ion-content .item button.bug .ion-bug {
-          color: lime;
-          background-color: darkolivegreen; }
-      .contact ion-content .item button.idea {
-        background-color: darkorange;
-        border: 2px solid yellow; }
-        .contact ion-content .item button.idea .ion-ios-lightbulb {
-          color: yellow;
-          background-color: darkorange; }
-      .contact ion-content .item button.love {
-        background-color: darkred;
-        border: 2px solid magenta; }
-        .contact ion-content .item button.love .ion-heart {
-          color: magenta;
-          background-color: darkred; }
+    top: 135px; }
+    .contact ion-content .list {
+      height: 100%;
+      padding: 0; }
+      .contact ion-content .list .item {
+        height: calc(50% + 1px);
+        background-color: midnightblue; }
+        .contact ion-content .list .item .coming-soon {
+          position: absolute;
+          z-index: 10;
+          bottom: 0;
+          left: 0;
+          background-color: rgba(255, 255, 255, 0.5);
+          color: black;
+          height: 100%;
+          width: 100%; }
+          .contact ion-content .list .item .coming-soon h4 {
+            font-size: 24px;
+            color: black;
+            margin: 0;
+            padding: 0; }
+            .contact ion-content .list .item .coming-soon h4 i {
+              display: inline; }
+          .contact ion-content .list .item .coming-soon pre {
+            position: relative;
+            top: calc(100% - 110px);
+            width: 280px;
+            margin: 0 auto;
+            font-weight: bold;
+            font-family: "-apple-system", "Helvetica Neue", "Roboto", "Segoe UI", sans-serif; }
+        .contact ion-content .list .item:first-child h4 {
+          margin-top: 0; }
+        .contact ion-content .list .item h4 {
+          font-size: 18px;
+          font-weight: bold;
+          color: snow;
+          margin-top: 10px;
+          padding-top: calc(50% - 130px); }
+        .contact ion-content .list .item p {
+          color: snow; }
+        .contact ion-content .list .item i {
+          display: block;
+          font-size: 30px; }
+        .contact ion-content .list .item a {
+          color: snow;
+          border-radius: 5px;
+          width: 186px;
+          font-weight: bold;
+          line-height: 18px;
+          margin-top: 5px;
+          padding: 5px 0; }
+        .contact ion-content .list .item a.idea {
+          background-color: darkorange;
+          border: 2px solid yellow; }
+          .contact ion-content .list .item a.idea .ion-ios-lightbulb {
+            color: yellow;
+            background-color: darkorange; }
+        .contact ion-content .list .item a.love {
+          background-color: darkred;
+          border: 2px solid magenta; }
+          .contact ion-content .list .item a.love .ion-heart {
+            color: magenta;
+            background-color: darkred; }
+
+.feedback-confirmation {
+  top: 282px;
+  width: 82%;
+  min-width: 245px;
+  text-align: center;
+  height: 194px; }
+  .feedback-confirmation h3 {
+    font-size: 16px;
+    font-weight: bold; }
+  .feedback-confirmation pre {
+    margin-bottom: 25px; }
+
+.feedback-popup .popup {
+  background-color: white; }
+  .feedback-popup .popup .popup-head {
+    font-weight: bold;
+    font-size: 16px; }
+  .feedback-popup .popup textarea {
+    resize: none; }
 
 .bar-footer .powered-by {
   width: 168px;
@@ -10508,6 +10549,21 @@ ion-content.has-tall-header {
     .signup-modal .signup img {
       display: block;
       width: 100%; }
+
+.crop_img button, .crop_img a {
+  margin: 20px auto;
+  width: 150px;
+  display: -webkit-box;
+  font-weight: bold; }
+
+.crop_img a {
+  text-align: -webkit-center; }
+
+.crop_img .cropped-container {
+  width: 150px;
+  margin: 0 auto; }
+  .crop_img .cropped-container img {
+    width: 100%; }
 
 .profile i.ion-edit {
   color: darkgray; }
@@ -10808,9 +10864,9 @@ ion-content.has-tall-header {
     .profile .contact-info .editable-wrap .ion-ios-telephone {
       margin-left: 10px; }
     .profile .contact-info .editable-wrap p {
-      display: inline-block; }
+      display: inline-block;
+      color: snow; }
       .profile .contact-info .editable-wrap p.tel {
-        color: snow;
         margin-left: 10px; }
 
 .edit-children .child {
@@ -11080,10 +11136,10 @@ ion-content.has-tall-header {
     box-shadow: 2px 2px 1px 1px green;
     padding-top: 17px; }
 
-.chat-rooms .chat-room {
+.chat-rooms .room {
   height: 56px;
   padding: 0; }
-  .chat-rooms .chat-room .room-pic-wrapper {
+  .chat-rooms .room .room-pic-wrapper {
     display: flex;
     flex-flow: row wrap;
     width: 60px;
@@ -11092,34 +11148,34 @@ ion-content.has-tall-header {
     text-align: center;
     font-weight: bold;
     margin-right: 10px; }
-    .chat-rooms .chat-room .room-pic-wrapper .chatter-pic {
+    .chat-rooms .room .room-pic-wrapper .chatter-pic {
       border-radius: 50%; }
-    .chat-rooms .chat-room .room-pic-wrapper .chatter-initial {
+    .chat-rooms .room .room-pic-wrapper .chatter-initial {
       background-color: #B71C1C;
       color: snow;
       border-radius: 50%; }
-    .chat-rooms .chat-room .room-pic-wrapper .single-pic {
+    .chat-rooms .room .room-pic-wrapper .single-pic {
       display: block;
       width: 42px;
       font-size: 28px;
       line-height: 42px; }
-      .chat-rooms .chat-room .room-pic-wrapper .single-pic img {
+      .chat-rooms .room .room-pic-wrapper .single-pic img {
         width: 42px; }
-    .chat-rooms .chat-room .room-pic-wrapper .multi-pic {
+    .chat-rooms .room .room-pic-wrapper .multi-pic {
       display: inline-block;
       width: 24px;
       font-size: 18px;
       height: 24px;
       vertical-align: top;
       line-height: 26px; }
-      .chat-rooms .chat-room .room-pic-wrapper .multi-pic img {
+      .chat-rooms .room .room-pic-wrapper .multi-pic img {
         width: 24px; }
-  .chat-rooms .chat-room .room-subject {
+  .chat-rooms .room .room-subject {
     color: black;
     font-size: 16px;
     font-weight: bold;
     margin: 5px 0; }
-  .chat-rooms .chat-room .room-title {
+  .chat-rooms .room .room-title {
     font-size: 16px;
     color: black;
     height: 20px;
@@ -11157,78 +11213,74 @@ ion-content.has-tall-header {
 .has-subject .chat-room {
   top: 54px; }
 
-.chat-room .no-messages {
-  width: 260px;
-  text-align: center;
-  margin: 0 auto;
-  border: 1px solid grey;
-  border-radius: 3px;
-  box-shadow: 2px 1px 2px -1px;
-  margin-top: 50px; }
-
-.chat-room .messages {
-  display: flex !important;
-  align-content: center !important;
-  align-items: center !important;
-  border: none;
-  width: calc(100% + 72px); }
-  .chat-room .messages .chatter-pic-wrapper {
-    display: inline-block;
-    width: 42px;
-    float: left;
+.chat-room {
+  bottom: 90px; }
+  .chat-room .no-messages {
+    width: 260px;
     text-align: center;
-    font-weight: bold;
-    margin: 0 2px 0 5px; }
-    .chat-room .messages .chatter-pic-wrapper .chatter-pic {
-      border-radius: 50%; }
-    .chat-room .messages .chatter-pic-wrapper .chatter-initial {
-      background-color: #B71C1C;
-      color: white;
-      border-radius: 50%; }
-    .chat-room .messages .chatter-pic-wrapper .single-pic {
-      display: block;
+    margin: 0 auto;
+    border: 1px solid grey;
+    border-radius: 3px;
+    box-shadow: 2px 1px 2px -1px;
+    margin-top: 50px; }
+  .chat-room .messages {
+    display: flex !important;
+    align-content: center !important;
+    align-items: center !important;
+    border: none;
+    width: calc(100% + 72px); }
+    .chat-room .messages .chatter-pic-wrapper {
+      display: inline-block;
       width: 42px;
-      font-size: 28px;
-      line-height: 42px; }
-  .chat-room .messages .message {
-    flex: 1 1 auto !important;
-    padding: 2px !important;
-    overflow: hidden !important;
-    text-align: left !important; }
-
-.chat-room .time {
-  flex: 0 1 auto !important;
-  align-self: auto !important;
-  width: 72px !important;
-  text-align: center !important;
-  padding: 0 !important; }
-
-.chat-room .messages.user .user-time {
-  flex: 0 1 auto !important;
-  align-self: auto !important;
-  width: 72px !important;
-  text-align: center !important;
-  padding: 0 !important;
-  position: relative;
-  right: -72px; }
-
-.chat-room .messages.user .chatter-pic-wrapper {
-  display: none; }
-
-.chat-room .messages.user .message {
-  text-align: right !important; }
-  .chat-room .messages.user .message span {
-    color: black !important;
-    background-color: #C7C7CC !important; }
-
-.chat-room span {
-  background: #007AFF !important;
-  display: inline-block !important;
-  color: white !important;
-  padding: 10px !important;
-  border-radius: 10px !important;
-  text-align: left !important;
-  max-width: 240px !important; }
+      float: left;
+      text-align: center;
+      font-weight: bold;
+      margin: 0 2px 0 5px; }
+      .chat-room .messages .chatter-pic-wrapper .chatter-pic {
+        border-radius: 50%; }
+      .chat-room .messages .chatter-pic-wrapper .chatter-initial {
+        background-color: #B71C1C;
+        color: white;
+        border-radius: 50%; }
+      .chat-room .messages .chatter-pic-wrapper .single-pic {
+        display: block;
+        width: 42px;
+        font-size: 28px;
+        line-height: 42px; }
+    .chat-room .messages .message {
+      flex: 1 1 auto !important;
+      padding: 2px !important;
+      overflow: hidden !important;
+      text-align: left !important; }
+  .chat-room .time {
+    flex: 0 1 auto !important;
+    align-self: auto !important;
+    width: 72px !important;
+    text-align: center !important;
+    padding: 0 !important; }
+  .chat-room .messages.user .user-time {
+    flex: 0 1 auto !important;
+    align-self: auto !important;
+    width: 72px !important;
+    text-align: center !important;
+    padding: 0 !important;
+    position: relative;
+    right: -72px; }
+  .chat-room .messages.user .chatter-pic-wrapper {
+    display: none; }
+  .chat-room .messages.user .message {
+    text-align: right !important; }
+    .chat-room .messages.user .message span {
+      color: black !important;
+      background-color: #C7C7CC !important; }
+  .chat-room span {
+    background: #007AFF !important;
+    display: inline-block !important;
+    color: white !important;
+    padding: 10px !important;
+    border-radius: 10px !important;
+    text-align: left !important;
+    max-width: 240px !important; }
 
 .parent-directory .bar.bar-subheader {
   height: 49px;
@@ -11324,11 +11376,11 @@ ion-content.has-tall-header {
   position: fixed;
   bottom: 0;
   height: 90px;
-  width: 100%; }
+  padding: 0; }
   .footer-bar .sub-bar {
+    width: 100%;
     height: 40px;
-    background-color: #e6e6e6;
-    padding-top: 2px; }
+    background-color: #e6e6e6; }
     .footer-bar .sub-bar input {
       width: 94%;
       margin-left: 3%;
@@ -11341,7 +11393,7 @@ ion-content.has-tall-header {
       height: 50px;
       position: absolute;
       bottom: 0;
-      width: 100%; }
+      left: 0; }
       .footer-bar .sub-bar.bottom .send-button {
         border-radius: 50%;
         background-color: #1102FF;
@@ -11353,7 +11405,7 @@ ion-content.has-tall-header {
         font-size: 27px;
         text-align: right;
         float: right;
-        padding-top: 3px;
+        padding: 0 6px 0 0;
         box-shadow: 3px 2px 6px -1px; }
 
 .admin_interact .bar-subheader {

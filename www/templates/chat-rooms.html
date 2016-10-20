@@ -2,7 +2,7 @@
     <ion-nav-buttons side="right"></ion-nav-buttons>
     <ion-content class="chat-rooms">
         <ion-list ng-show="rooms.length > 0">
-            <ion-item class="chat-room"
+            <ion-item class="room"
                       ng-if="room.title"
                       ng-repeat="room in rooms | filter: {title: ''}"
                       type="item-text-wrap"

@@ -27,12 +27,14 @@ Pta.controller('SettingsCtrl', [
       maximumImagesCount: 1
       })
       .then(function (results) {
-        $scope.picFile = results[0];
-        modalService
-        .init('templates/rectangular-crop.html', $scope)
-        .then(function(modal){
-          modal.show();
-        });
+        if(results.length > 0){
+          $scope.picFile = results[0];
+          modalService
+          .init('templates/rectangular-crop.html', $scope)
+          .then(function(modal){
+            modal.show();
+          });
+        }
       }, function(error) {
        console.log(error)
       });

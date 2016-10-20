@@ -539,61 +539,121 @@ ion-content.has-tall-header{
     }
   }
   ion-content{
-    top: 132px;
-    .item{
-      padding: 8px;
-      background-color: midnightblue;
-      &:first-child{
+    top: 135px;
+    .list{
+      height: 100%;
+      padding: 0;
+      .item{
+        height: calc(50% + 1px);
+        background-color: midnightblue;
+        .coming-soon{
+          position: absolute;
+          z-index: 10;
+          bottom: 0;
+          left: 0;
+          background-color: rgba(255, 255, 255, 0.5);
+          color: black;
+          height: 100%;
+          width: 100%;
+          h4{
+            font-size: 24px;
+            color: black;
+            margin: 0;
+            padding: 0;
+            i{
+              display: inline;
+            }
+          }
+          pre{
+            position: relative;
+            top: calc(100% - 110px);
+            width: 280px;
+            margin: 0 auto;
+            font-weight: bold;
+            font-family: "-apple-system", "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
+          }
+        }
+        &:first-child{
+          h4{
+            margin-top: 0;
+          }
+        }
         h4{
-          margin-top: 0;
+          font-size: 18px;
+          font-weight: bold;
+          color: snow;
+          margin-top: 10px;
+          padding-top: calc(50% - 130px);
         }
-      }
-      h4{
-        font-size: 18px;
-        font-weight: bold;
-        color: snow;
-        margin-top: 10px;
-      }
-      p{
-        color: snow;
-      }
-      i{
-        display: block;
-        font-size: 30px;
-      }
-      button{
-        color: snow;
-        border-radius: 5px;
-        width: 186px;
-        font-weight: bold;
-        line-height: 18px;
-        margin-top: 5px;
-        padding: 5px 0;
-      }
-      button.bug{
-        background-color: darkolivegreen;
-        border: 2px solid lime;
-        .ion-bug{
-          color: lime;
-          background-color: darkolivegreen;
+        p{
+          color: snow;
         }
-      }
-      button.idea{
-        background-color: darkorange;
-        border: 2px solid yellow;
-        .ion-ios-lightbulb{
-          color: yellow;
+        i{
+          display: block;
+          font-size: 30px;
+        }
+        a{
+          color: snow;
+          border-radius: 5px;
+          width: 186px;
+          font-weight: bold;
+          line-height: 18px;
+          margin-top: 5px;
+          padding: 5px 0;
+        }
+        // a.bug{
+        //   background-color: darkolivegreen;
+        //   border: 2px solid lime;
+        //   .ion-bug{
+        //     color: lime;
+        //     background-color: darkolivegreen;
+        //   }
+        // }
+        a.idea{
           background-color: darkorange;
+          border: 2px solid yellow;
+          .ion-ios-lightbulb{
+            color: yellow;
+            background-color: darkorange;
+          }
         }
-      }
-      button.love{
-        background-color: darkred;
-        border: 2px solid magenta;
-        .ion-heart{
-          color: magenta;
+        a.love{
           background-color: darkred;
+          border: 2px solid magenta;
+          .ion-heart{
+            color: magenta;
+            background-color: darkred;
+          }
         }
       }
+    }
+  }
+}
+
+.feedback-confirmation{
+  top: 282px;
+  width: 82%;
+  min-width: 245px;
+  text-align: center;
+  height: 194px;
+  h3{
+    font-size: 16px;
+    font-weight: bold;
+  }
+  pre{
+    margin-bottom: 25px;
+  }
+}
+
+.feedback-popup{
+  .popup{
+    background-color: rgba(255, 255, 255, 1);
+    .popup-head{
+      font-weight: bold;
+      font-size: 16px;
+    }
+    textarea{ 
+      resize: none;
     }
   }
 }
@@ -948,6 +1008,25 @@ ion-content.has-tall-header{
     }
     img{
       display: block;
+      width: 100%;
+    }
+  }
+}
+
+.crop_img{
+  button, a{
+    margin: 20px auto;
+    width: 150px;
+    display: -webkit-box;
+    font-weight: bold;
+  }
+  a{
+    text-align: -webkit-center;
+  }
+  .cropped-container{
+    width: 150px;
+    margin: 0 auto;
+    img{
       width: 100%;
     }
   }
@@ -1316,8 +1395,8 @@ ion-content.has-tall-header{
       }
       p{
         display: inline-block;
+        color: $fontColor;
         &.tel{
-          color: $fontColor;
           margin-left: 10px;
         }
       }
@@ -1649,7 +1728,7 @@ ion-content.has-tall-header{
 }
 
 .chat-rooms{
-  .chat-room{
+  .room{
     height: 56px;
     padding: 0;
     .room-pic-wrapper{
@@ -1746,6 +1825,7 @@ ion-content.has-tall-header{
 }
 
 .chat-room{
+  bottom: 90px;
   .no-messages{
     width: 260px;
     text-align: center;
@@ -1950,11 +2030,11 @@ ion-content.has-tall-header{
   position: fixed;
   bottom: 0;
   height: 90px;
-  width: 100%;
+  padding: 0;
   .sub-bar{
+    width: 100%;
     height: 40px;
     background-color: #e6e6e6;
-    padding-top: 2px;
     input{
       width: 94%;
       margin-left: 3%;
@@ -1968,7 +2048,7 @@ ion-content.has-tall-header{
       height: 50px;
       position: absolute;
       bottom: 0;
-      width: 100%;
+      left: 0;
       .send-button{
         border-radius: 50%;
         background-color: $apparentBlue;
@@ -1980,7 +2060,7 @@ ion-content.has-tall-header{
         font-size: 27px;
         text-align: right;
         float: right;
-        padding-top: 3px;
+        padding: 0 6px 0 0;
         box-shadow: 3px 2px 6px -1px;
       }
     }

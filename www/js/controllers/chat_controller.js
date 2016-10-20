@@ -3,14 +3,18 @@ Pta.controller('ChatCtrl', [
     'Chats',
     '$state',
     '$timeout',
-    '$ionicScrollDelegate',
     'userService',
     'dateFilter',
     '$http',
-    function ($scope, Chats, $state, $timeout, $ionicScrollDelegate, userService, dateFilter, $http) {
+    '$ionicPlatform',
+    function ($scope, Chats, $state, $timeout, userService, dateFilter, $http, $ionicPlatform) {
     $scope.IM = { textMessage: "" };
     $scope.user =  userService.getUser();
     $scope.data = {};
+
+    $scope.shouldNotFocusOnBlur = function() {
+        $focusTest.setFocusOnBlur(false);
+    };
 
     $scope.slide = function(e){
         var userChats = angular.element(document.getElementsByClassName('user')),
@@ -64,8 +68,24 @@ Pta.controller('ChatCtrl', [
         }
     });
 
+    $scope.$on('comeHome', function(e){
+        $scope.allowStateChange = true;
+    });
+
+    $scope.$on('$stateChangeStart', 
+    function(e){
+        if(!$scope.allowStateChange){
+            e.preventDefault();
+        }
+    });
+
+    $ionicPlatform.onHardwareBackButton(function(){
+        $scope.allowStateChange = true;
+        $state.go('app.rooms');
+    });
+
     $scope.sendMessage = function() {
-        // Get the users auth jwt to verify them on the node server 
+        // Get the users auth jwt to verify them on the node server
         firebase.auth().currentUser.getToken(true)
         .then(function(userToken){
             $http({
@@ -85,7 +105,6 @@ Pta.controller('ChatCtrl', [
             .then(function(res){
                 Chats.send($scope.user, $scope.IM.textMessage);
                 $scope.IM.textMessage = "";
-                $ionicScrollDelegate.scrollBottom(true);
             })
             .catch(function(err){
                 debugger;

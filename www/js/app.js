@@ -48,6 +48,10 @@ var Pta = angular.module('pta', [
   editableThemes['default'].submitTpl = '<button type="submit" class="xeditable-submit fa fa-pencil-square-o"></button>';
 
   $ionicPlatform.ready(function() {
+    if (window.hockeyapp) {
+      window.hockeyapp.start(null, null, '1c527375374f43568ff947e431f6e68a');
+    }
+
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -86,8 +90,7 @@ var Pta = angular.module('pta', [
 
     $rootScope.queuedChatters = [];
     // Register a push notification listener
-    FCMPlugin.onNotification(
-      function(data){
+    FCMPlugin.onNotification(function(data){
         if(!data.wasTapped && data.sender_imgUrl !== userService.getUser().pic){// Make sure the user isn't getting notified about their own message
           //Notification was received in foreground. Check if the user is already in the room
           if(!$state.is(data.state, { roomId: data.roomId })){
@@ -142,7 +145,7 @@ var Pta = angular.module('pta', [
           //Notification was received on device tray and tapped by the user.
           $localstorage.setObject('pushNotification', data);
         }
-      });
+    });
 
     $ionicPlatform.on('resume', function(){
       if($localstorage.getObject('pushNotification')){

@@ -10,8 +10,15 @@ Pta.controller('HomeCtrl', [
     
     $ionicNavBarDelegate.align('center');
 
+    window.screen.lockOrientation('portrait');
+
     $rootScope.goHome = function(){
-      $state.go('app.home');
+      if($state.current.name !== 'app.room'){
+        $state.go('app.home');
+      } else {
+        $rootScope.$broadcast("comeHome");
+        $state.go('app.rooms');
+      }
     }
 
     $scope.user = userService.getUser();

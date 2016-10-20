@@ -2,7 +2,9 @@ Pta.factory('Chats', [
     'Rooms',
     '$firebaseArray',
     'userService',
-    function (Rooms, $firebaseArray, userService) {
+    '$ionicScrollDelegate',
+    '$timeout',
+    function (Rooms, $firebaseArray, userService, $ionicScrollDelegate, $timeout) {
 
     var selectedRoomId,
         chats,
@@ -66,6 +68,7 @@ Pta.factory('Chats', [
                         chats.$add(chatMessage);
                     }
                 });
+                $ionicScrollDelegate.scrollBy(0, 44, true);
             }
         }
     }

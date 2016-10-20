@@ -18,7 +18,6 @@ Pta.directive('contactpicker', [
             templateUrl: 'templates/contactpicker.html',
             scope: {
                 name:                   '@?',
-                value:                  '=model',
                 disabled:               '=?disable',
                 required:               '=?require',
                 multiple:               '=?multi',
