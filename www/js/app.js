@@ -26,7 +26,7 @@ var Pta = angular.module('pta', [
 // .constant('applicationId', '125323192420')
 // .constant('gapiApiKey', 'AIzaSyCi2ojTUERxZyYdfpgQOTdVNKAKAZtkwU0')
 // .constant('gapiClientId', '125323192420-c2nscbgoel9d0m7jv400dcfhfmtomac2.apps.googleusercontent.com')
-.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, userService, $q, $window) {
+.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, userService) {
   // Drive integration back-burnered 10-7-2016
   // var googleApi = $q.defer(),
   //     apis = []
