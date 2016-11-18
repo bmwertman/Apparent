@@ -7,7 +7,8 @@ Pta.controller('ChatCtrl', [
     'dateFilter',
     '$http',
     '$ionicPlatform',
-    function ($scope, Chats, $state, $timeout, userService, dateFilter, $http, $ionicPlatform) {
+    '$localstorage',
+    function ($scope, Chats, $state, $timeout, userService, dateFilter, $http, $ionicPlatform, $localstorage) {
     $scope.IM = { textMessage: "" };
     $scope.user =  userService.getUser();
     $scope.data = {};
@@ -45,9 +46,17 @@ Pta.controller('ChatCtrl', [
     }
 
     Chats.selectRoom($state.params.roomId);
-    var isIOS = ionic.Platform.isWebView() && ionic.Platform.isIOS(),
-        selectedRoom = Chats.getSelectedRoomName(),
-        chatters = $state.params.chatters;
+
+    var selectedRoom = Chats.getSelectedRoomName(),
+        pushRegId = $localstorage.get('registrationId'),
+        chatters = $state.params.chatters,
+        platform;
+
+    if(ionic.Platform.isIOS()){
+        platform = "iOS";
+    } else {
+        platform = "Android";
+    }
 
     selectedRoom.$loaded()
     .then(function(){
@@ -84,6 +93,7 @@ Pta.controller('ChatCtrl', [
         $state.go('app.rooms');
     });
 
+
     $scope.sendMessage = function() {
         // Get the users auth jwt to verify them on the node server
         firebase.auth().currentUser.getToken(true)
@@ -91,7 +101,8 @@ Pta.controller('ChatCtrl', [
             $http({
                 method: 'POST',
                 url:'https://murmuring-fjord-75421.herokuapp.com/',
-                data:{ 
+                data:{
+                    reg_id: pushRegId,
                     token: userToken,
                     message: $scope.IM.textMessage,
                     sender_name: $scope.user.name,
@@ -99,10 +110,12 @@ Pta.controller('ChatCtrl', [
                     state: 'app.room',
                     roomId: $state.params.roomId,
                     sender_imgURL: $scope.user.pic,
-                    chatters: chatters 
+                    chatters: chatters,
+                    platform:  platform
                 }
             })
             .then(function(res){
+                console.log(res);
                 Chats.send($scope.user, $scope.IM.textMessage);
                 $scope.IM.textMessage = "";
             })
