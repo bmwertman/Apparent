@@ -26,22 +26,31 @@ var Pta = angular.module('pta', [
 // .constant('applicationId', '125323192420')
 // .constant('gapiApiKey', 'AIzaSyCi2ojTUERxZyYdfpgQOTdVNKAKAZtkwU0')
 // .constant('gapiClientId', '125323192420-c2nscbgoel9d0m7jv400dcfhfmtomac2.apps.googleusercontent.com')
-.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, userService, $cordovaPushV5) {
+.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, userService, $cordovaPushV5, $cordovaDevice) {
   // hide xeditable cancel button
   editableThemes['default'].cancelTpl = '<button type="button" class="btn btn-default" style="display:none">';
   editableThemes['default'].submitTpl = '<button type="submit" class="xeditable-submit fa fa-pencil-square-o"></button>';
 
   $ionicPlatform.ready(function() {
+    var device = $cordovaDevice.getDevice();
+    if(device.platform === "iOS"){
+      $localstorage.set('launchChat', true);
+    } else if(parseFloat(device.version) >= 7) { // Assumes Android OS
+      $localstorage.set('launchChat', false); // We're using inline reply for chat
+    } else {
+      $localstorage.set('launchChat', true); // inline reply is not supported before Android 7 Nougat
+    }
+
     $cordovaPushV5.initialize({
       "android": {
           "senderID": "125323192420"
       },
       "ios": {
           "senderID": "125323192420",
-          "alert": "true",
-          "sound": "true",
-          "vibration": "true",
-          "badge": "true",
+          "alert": true,
+          "sound": true,
+          "vibration": true,
+          "badge": true,
           "gcmSandbox": "true"
       }
     })
@@ -62,82 +71,83 @@ var Pta = angular.module('pta', [
 
     $rootScope.queuedChatters = [];
     $rootScope.goToChat = function(e, chatState, chatRmId){
+      var chatterIndex = $rootScope.queuedChatters.map(function(e){
+        return e.sender_imgUrl;
+      })[0].indexOf(e.currentTarget.src);
+      $rootScope.queuedChatters.splice(chatterIndex, 1);
       angular.element(e.currentTarget).remove();
       $state.go(chatState, {roomId: chatRmId});
+    }
+
+    window.inlineReply = function(data){
+      console.log("Replied inline");
     }
 
     // triggered every time notification received
     $rootScope.$on('$cordovaPushV5:notificationReceived',function(event, notification){
       var data = notification.additionalData;
-      if(data.sender_imgUrl !== userService.getUser().pic){// Make sure the user isn't getting notified about their own message
-        //Notification was received in foreground. Check if the user is already in the room
-        if(!$state.is(data.state, { roomId: data.roomId })){
-          var queue = document.getElementById('queue');
-          if(!queue){ // This is the first queued chatter
-            var body = angular.element(document.getElementsByTagName('body')[0]),
-                messageCount = angular.element(document.createElement('span')),
-                imgTag = angular.element(document.createElement('img')),
-                remove = angular.element(document.createElement('div')),
-                iconBackground = angular.element(document.createElement('div')),
-                queue = angular.element(document.createElement('div'));
-            imgTag.attr({
-              'ng-repeat':'chatter in queuedChatters track by $index',
-              src: data.sender_imgUrl,
-              'dragula-model':'queuedChatters',
-              class: 'chat-notification',
-              'ng-click': 'goToChat($event, chatter.state, chatter.roomId)'
-            });
-            remove.attr({ 
-              id:'remove-notification',
-              dragula: '"chatter-bag"',
-              'dragula-model': 'removeBag'
-            });
-            iconBackground.attr({ class: 'icon-background icon ion-close-circled' });
-            remove.append(iconBackground);
-            queue.attr({
-              id: 'queue',
-              dragula: '"chatter-bag"',
-              'dragula-model': 'queueBag'
-            });
-            queue.append(imgTag);
-            body.append(queue);
-            body.append(remove);
-            $compile(queue)($rootScope);
-            $compile(remove)($rootScope);
-            $rootScope.removeDrawer = angular.element(document.getElementById('remove-notification'));
-          }
-          if($rootScope.queuedChatters.length > 0){
-            for (var i = $rootScope.queuedChatters.length - 1; i >= 0; i--) {
-              value = $rootScope.queuedChatters[i];
-              // If it isn't the same person in the same room sending another message, add them
-              if(value.roomId !== data.roomId && value.sender_imgUrl !== data.sender_imgUrl && i === 0){
-                $rootScope.queuedChatters.push(data);
-              }
+      if($localstorage.get('launchChat')){
+        if(data.sender_imgUrl !== userService.getUser().pic && data.foreground){// Make sure the user isn't getting notified about their own message
+          //Notification was received in foreground. Check if the user is already in the room
+          if(!$state.is(data.state, { roomId: data.roomId })){
+            var queue = document.getElementById('queue');
+            if(!queue){ // This is the first queued chatter
+              var body = angular.element(document.getElementsByTagName('body')[0]),
+                  messageCount = angular.element(document.createElement('span')),
+                  imgTag = angular.element(document.createElement('img')),
+                  remove = angular.element(document.createElement('div')),
+                  iconBackground = angular.element(document.createElement('div')),
+                  queue = angular.element(document.createElement('div'));
+              imgTag.attr({
+                'ng-repeat':'chatter in queuedChatters track by $index',
+                src: data.sender_imgUrl,
+                'dragula-model':'queuedChatters',
+                class: 'chat-notification',
+                'ng-click': 'goToChat($event, chatter.state, chatter.roomId)'
+              });
+              remove.attr({ 
+                id:'remove-notification',
+                dragula: '"chatter-bag"',
+                'dragula-model': 'removeBag'
+              });
+              iconBackground.attr({ class: 'icon-background icon ion-close-circled' });
+              remove.append(iconBackground);
+              queue.attr({
+                id: 'queue',
+                dragula: '"chatter-bag"',
+                'dragula-model': 'queueBag'
+              });
+              queue.append(imgTag);
+              body.append(queue);
+              body.append(remove);
+              $compile(queue)($rootScope);
+              $compile(remove)($rootScope);
+              $rootScope.removeDrawer = angular.element(document.getElementById('remove-notification'));
             }
-          } else {
-            $rootScope.queuedChatters.push(data);
-          }
-          $rootScope.$apply();
-        } 
-      } else {
-        //Notification was received on device tray and tapped by the user.
-        $localstorage.setObject('pushNotification', data);
+            if($rootScope.queuedChatters.length > 0){
+              for (var i = $rootScope.queuedChatters.length - 1; i >= 0; i--) {
+                value = $rootScope.queuedChatters[i];
+                // If it isn't the same person in the same room sending another message, add them
+                if(value.roomId !== data.roomId && value.sender_imgUrl !== data.sender_imgUrl && i === 0){
+                  $rootScope.queuedChatters.push(data);
+                }
+              }
+            } else {
+              $rootScope.queuedChatters.push(data);
+            }
+            $rootScope.$apply();
+          } 
+        } else {
+          //Notification was received on device tray and tapped by the user.
+          $state.go(data.state, {roomId: data.roomId});
+        }
       }
+      $cordovaPushV5.Push.finish();
     }); 
     
     // triggered every time error occurs
     $rootScope.$on('$cordovaPushV5:errorOcurred', function(event, e){
-      console.log(e.message);
-    });
-
-    $ionicPlatform.on('resume', function(){
-      if($localstorage.getObject('pushNotification')){
-        var data = $localstorage.getObject('pushNotification');
-        if(data.state && data.roomId){
-          $state.go(data.state, {roomId: data.roomId});
-        }
-        $localstorage.remove('pushNotification');
-      }
+      console.log('$cordovaPushV5 error: ', e.message);
     });
 
     if (window.hockeyapp) {
