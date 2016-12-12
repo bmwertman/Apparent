@@ -26,7 +26,7 @@ var Pta = angular.module('pta', [
 // .constant('applicationId', '125323192420')
 // .constant('gapiApiKey', 'AIzaSyCi2ojTUERxZyYdfpgQOTdVNKAKAZtkwU0')
 // .constant('gapiClientId', '125323192420-c2nscbgoel9d0m7jv400dcfhfmtomac2.apps.googleusercontent.com')
-.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, userService) {
+.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, userService, $cordovaPushV5, $cordovaDevice) {
   // Drive integration back-burnered 10-7-2016
   // var googleApi = $q.defer(),
   //     apis = []
@@ -42,56 +42,68 @@ var Pta = angular.module('pta', [
   // });
 
   // $rootScope.googleApi = googleApi.promise;
-
+  
   // hide xeditable cancel button
   editableThemes['default'].cancelTpl = '<button type="button" class="btn btn-default" style="display:none">';
   editableThemes['default'].submitTpl = '<button type="submit" class="xeditable-submit fa fa-pencil-square-o"></button>';
 
   $ionicPlatform.ready(function() {
-    if (window.hockeyapp) {
-      window.hockeyapp.start(null, null, '1c527375374f43568ff947e431f6e68a');
+    var device = $cordovaDevice.getDevice();
+    if(device.platform === "iOS"){
+      $localstorage.set('launchChat', true);
+    } else if(parseFloat(device.version) >= 7) { // Assumes Android OS
+      $localstorage.set('launchChat', false); // We're using inline reply for chat
+    } else {
+      $localstorage.set('launchChat', true); // inline reply is not supported before Android 7 Nougat
     }
 
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if (window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      cordova.plugins.Keyboard.disableScroll(true);
-    }
+    $cordovaPushV5.initialize({
+      "android": {
+          "senderID": "125323192420"
+      },
+      "ios": {
+          "senderID": "125323192420",
+          "alert": true,
+          "sound": true,
+          "vibration": true,
+          "badge": true,
+          "gcmSandbox": "true"
+      }
+    })
+    .then(function(push){
+      $cordovaPushV5.Push = push;
+      $cordovaPushV5.onNotification();
+      $cordovaPushV5.onError();
+      $cordovaPushV5.register()
+      .then(function(regId){
+        var oldRegId = $localstorage.get('registrationId');
+        if (oldRegId !== regId) {
+          // Save new registration ID
+          $localstorage.set('registrationId', regId);
+          // Post registrationId to your app server as the value has changed
+        }
+      });
+    });
 
-    ionic.Platform.fullScreen();
-
-    if (window.StatusBar) {
-      // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
-      return StatusBar.hide()
-    }
-
+    $rootScope.queuedChatters = [];
     $rootScope.goToChat = function(e, chatState, chatRmId){
+      var chatterIndex = $rootScope.queuedChatters.map(function(e){
+        return e.sender_imgUrl;
+      })[0].indexOf(e.currentTarget.src);
+      $rootScope.queuedChatters.splice(chatterIndex, 1);
       angular.element(e.currentTarget).remove();
       $state.go(chatState, {roomId: chatRmId});
     }
 
-    $rootScope.$on('chatter-bag.drop', function(e, el){
-      var index = $rootScope.queuedChatters.map(function(chatter){
-        return chatter.sender_imgUrl;
-      }).indexOf(el.sender_imgUrl);
-      $rootScope.queuedChatters.splice(index, 1);
-      $rootScope.removeDrawer.css('bottom', '-80px');
-    });
+    window.inlineReply = function(data){
+      console.log("Replied inline");
+    }
 
-    $rootScope.$on('chatter-bag.drag', function(e, el){
-      $rootScope.removeDrawer.css('bottom', '0px');
-    });
-
-    $rootScope.$on('chatter-bag.cancel', function(e, el){
-      $rootScope.removeDrawer.css('bottom', '-80px');
-    });
-
-    $rootScope.queuedChatters = [];
-    // Register a push notification listener
-    FCMPlugin.onNotification(function(data){
-        if(!data.wasTapped && data.sender_imgUrl !== userService.getUser().pic){// Make sure the user isn't getting notified about their own message
+    // triggered every time notification received
+    $rootScope.$on('$cordovaPushV5:notificationReceived',function(event, notification){
+      var data = notification.additionalData;
+      if($localstorage.get('launchChat')){
+        if(data.sender_imgUrl !== userService.getUser().pic && data.foreground){// Make sure the user isn't getting notified about their own message
           //Notification was received in foreground. Check if the user is already in the room
           if(!$state.is(data.state, { roomId: data.roomId })){
             var queue = document.getElementById('queue');
@@ -143,18 +155,50 @@ var Pta = angular.module('pta', [
           } 
         } else {
           //Notification was received on device tray and tapped by the user.
-          $localstorage.setObject('pushNotification', data);
-        }
-    });
-
-    $ionicPlatform.on('resume', function(){
-      if($localstorage.getObject('pushNotification')){
-        var data = $localstorage.getObject('pushNotification');
-        if(data.state && data.roomId){
           $state.go(data.state, {roomId: data.roomId});
         }
-        $localstorage.remove('pushNotification');
       }
+      $cordovaPushV5.Push.finish();
+    }); 
+    
+    // triggered every time error occurs
+    $rootScope.$on('$cordovaPushV5:errorOcurred', function(event, e){
+      console.log('$cordovaPushV5 error: ', e.message);
+    });
+
+    if (window.hockeyapp) {
+      window.hockeyapp.start(null, null, '1c527375374f43568ff947e431f6e68a');
+    }
+
+    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+    // for form inputs)
+    if (window.cordova && window.cordova.plugins.Keyboard) {
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      cordova.plugins.Keyboard.disableScroll(true);
+    }
+
+    ionic.Platform.fullScreen();
+
+    if (window.StatusBar) {
+      // org.apache.cordova.statusbar required
+      StatusBar.styleDefault();
+      return StatusBar.hide()
+    }
+
+    $rootScope.$on('chatter-bag.drop', function(e, el){
+      var index = $rootScope.queuedChatters.map(function(chatter){
+        return chatter.sender_imgUrl;
+      }).indexOf(el.sender_imgUrl);
+      $rootScope.queuedChatters.splice(index, 1);
+      $rootScope.removeDrawer.css('bottom', '-80px');
+    });
+
+    $rootScope.$on('chatter-bag.drag', function(e, el){
+      $rootScope.removeDrawer.css('bottom', '0px');
+    });
+
+    $rootScope.$on('chatter-bag.cancel', function(e, el){
+      $rootScope.removeDrawer.css('bottom', '-80px');
     });
   });
 
@@ -262,7 +306,6 @@ var Pta = angular.module('pta', [
     }
   }
 })
-
 .config([
   'stateHelperProvider',
   '$urlRouterProvider',
