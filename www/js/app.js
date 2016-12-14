@@ -27,36 +27,13 @@ var Pta = angular.module('pta', [
 // .constant('gapiApiKey', 'AIzaSyCi2ojTUERxZyYdfpgQOTdVNKAKAZtkwU0')
 // .constant('gapiClientId', '125323192420-c2nscbgoel9d0m7jv400dcfhfmtomac2.apps.googleusercontent.com')
 .run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, userService, $cordovaPushV5, $cordovaDevice) {
-  // Drive integration back-burnered 10-7-2016
-  // var googleApi = $q.defer(),
-  //     apis = []
-  //     loadApis = {'drive': 'v3'};
-      
-  // $window.gapi.client.setApiKey();
-
-  // angular.forEach(loadApis, function (value, key) {
-  //   apis.push($q.when(gapi.client.load(key, value)));
-  // });
-  // $q.all(apis).then(function () {
-  //   googleApi.resolve($window.gapi);
-  // });
-
-  // $rootScope.googleApi = googleApi.promise;
-  
   // hide xeditable cancel button
   editableThemes['default'].cancelTpl = '<button type="button" class="btn btn-default" style="display:none">';
   editableThemes['default'].submitTpl = '<button type="submit" class="xeditable-submit fa fa-pencil-square-o"></button>';
 
   $ionicPlatform.ready(function() {
     var device = $cordovaDevice.getDevice();
-    if(device.platform === "iOS"){
-      $localstorage.set('launchChat', true);
-    } else if(parseFloat(device.version) >= 7) { // Assumes Android OS
-      $localstorage.set('launchChat', false); // We're using inline reply for chat
-    } else {
-      $localstorage.set('launchChat', true); // inline reply is not supported before Android 7 Nougat
-    }
-
+    
     $cordovaPushV5.initialize({
       "android": {
           "senderID": "125323192420"
@@ -95,68 +72,72 @@ var Pta = angular.module('pta', [
       $state.go(chatState, {roomId: chatRmId});
     }
 
+    $rootScope.notificationLaunch = false;
     window.inlineReply = function(data){
-      console.log("Replied inline");
+      if(parseFloat(device.version) < 7) { // Assumes Android OS
+        $rootScope.notificationLaunch = true;
+        Auth.onAuth();
+        Auth.login(credentials, data.additionalData.state, data.additionalData.roomId);// We're using inline reply for chat
+      } 
     }
 
     // triggered every time notification received
     $rootScope.$on('$cordovaPushV5:notificationReceived',function(event, notification){
       var data = notification.additionalData;
-      if($localstorage.get('launchChat')){
-        if(data.sender_imgUrl !== userService.getUser().pic && data.foreground){// Make sure the user isn't getting notified about their own message
-          //Notification was received in foreground. Check if the user is already in the room
-          if(!$state.is(data.state, { roomId: data.roomId })){
-            var queue = document.getElementById('queue');
-            if(!queue){ // This is the first queued chatter
-              var body = angular.element(document.getElementsByTagName('body')[0]),
-                  messageCount = angular.element(document.createElement('span')),
-                  imgTag = angular.element(document.createElement('img')),
-                  remove = angular.element(document.createElement('div')),
-                  iconBackground = angular.element(document.createElement('div')),
-                  queue = angular.element(document.createElement('div'));
-              imgTag.attr({
-                'ng-repeat':'chatter in queuedChatters track by $index',
-                src: data.sender_imgUrl,
-                'dragula-model':'queuedChatters',
-                class: 'chat-notification',
-                'ng-click': 'goToChat($event, chatter.state, chatter.roomId)'
-              });
-              remove.attr({ 
-                id:'remove-notification',
-                dragula: '"chatter-bag"',
-                'dragula-model': 'removeBag'
-              });
-              iconBackground.attr({ class: 'icon-background icon ion-close-circled' });
-              remove.append(iconBackground);
-              queue.attr({
-                id: 'queue',
-                dragula: '"chatter-bag"',
-                'dragula-model': 'queueBag'
-              });
-              queue.append(imgTag);
-              body.append(queue);
-              body.append(remove);
-              $compile(queue)($rootScope);
-              $compile(remove)($rootScope);
-              $rootScope.removeDrawer = angular.element(document.getElementById('remove-notification'));
-            }
-            if($rootScope.queuedChatters.length > 0){
-              for (var i = $rootScope.queuedChatters.length - 1; i >= 0; i--) {
-                value = $rootScope.queuedChatters[i];
-                // If it isn't the same person in the same room sending another message, add them
-                if(value.roomId !== data.roomId && value.sender_imgUrl !== data.sender_imgUrl && i === 0){
-                  $rootScope.queuedChatters.push(data);
-                }
+      var user = userService.getUser();
+      if(data.sender_imgUrl !== user.pic && data.foreground){// Make sure the user isn't getting notified about their own message
+        //Notification was received in foreground. Check if the user is already in the room
+        if(!$state.is(data.state, { roomId: data.roomId })){
+          var queue = document.getElementById('queue');
+          if(!queue){ // This is the first queued chatter
+            var body = angular.element(document.getElementsByTagName('body')[0]),
+                messageCount = angular.element(document.createElement('span')),
+                imgTag = angular.element(document.createElement('img')),
+                remove = angular.element(document.createElement('div')),
+                iconBackground = angular.element(document.createElement('div')),
+                queue = angular.element(document.createElement('div'));
+            imgTag.attr({
+              'ng-repeat':'chatter in queuedChatters track by $index',
+              src: data.sender_imgUrl,
+              'dragula-model':'queuedChatters',
+              class: 'chat-notification',
+              'ng-click': 'goToChat($event, chatter.state, chatter.roomId)'
+            });
+            remove.attr({ 
+              id:'remove-notification',
+              dragula: '"chatter-bag"',
+              'dragula-model': 'removeBag'
+            });
+            iconBackground.attr({ class: 'icon-background icon ion-close-circled' });
+            remove.append(iconBackground);
+            queue.attr({
+              id: 'queue',
+              dragula: '"chatter-bag"',
+              'dragula-model': 'queueBag'
+            });
+            queue.append(imgTag);
+            body.append(queue);
+            body.append(remove);
+            $compile(queue)($rootScope);
+            $compile(remove)($rootScope);
+            $rootScope.removeDrawer = angular.element(document.getElementById('remove-notification'));
+          }
+          if($rootScope.queuedChatters.length > 0){
+            for (var i = $rootScope.queuedChatters.length - 1; i >= 0; i--) {
+              value = $rootScope.queuedChatters[i];
+              // If it isn't the same person in the same room sending another message, add them
+              if(value.roomId !== data.roomId && value.sender_imgUrl !== data.sender_imgUrl && i === 0){
+                $rootScope.queuedChatters.push(data);
               }
-            } else {
-              $rootScope.queuedChatters.push(data);
             }
-            $rootScope.$apply();
-          } 
-        } else {
-          //Notification was received on device tray and tapped by the user.
-          $state.go(data.state, {roomId: data.roomId});
-        }
+          } else {
+            $rootScope.queuedChatters.push(data);
+          }
+          $rootScope.$apply();
+        } 
+      } else {
+        //Notification was received on device tray and tapped by the user.
+        $state.go(data.state, {roomId: data.roomId});
       }
       $cordovaPushV5.Push.finish();
     }); 
@@ -231,7 +212,7 @@ var Pta = angular.module('pta', [
     password: $localstorage.get('password')
   };
 
-  if (credentials.email && credentials.password) {
+  if (!$rootScope.notificationLaunch && credentials.email && credentials.password) {
     Auth.onAuth();
     Auth.login(credentials);
   }
@@ -240,7 +221,7 @@ var Pta = angular.module('pta', [
 .factory('Auth', function($firebaseAuth, $firebaseObject, $state, userService, $localstorage, $rootScope, $timeout, $ionicLoading){
   var authObj = $firebaseAuth();
   return {
-    login: function(credentials) {
+    login: function(credentials, state, roomId) {
       var self = this;
       authObj.$signInWithEmailAndPassword(credentials.email, credentials.password)
       .then(function(authData){
@@ -249,9 +230,9 @@ var Pta = angular.module('pta', [
           $localstorage.set('password', credentials.password);
         }
         if(navigator.splashscreen){
-          self.onAuth(navigator.splashscreen.hide); 
+          self.onAuth(navigator.splashscreen.hide, state, roomId); 
         } else {
-          self.onAuth($ionicLoading.hide);
+          self.onAuth($ionicLoading.hide, state, roomId);
         }
       }).catch(function(error){
         $ionicLoading.hide();
@@ -263,7 +244,7 @@ var Pta = angular.module('pta', [
       $localstorage.remove('password');
       authObj.$signOut();
     },
-    onAuth: function(callback) {
+    onAuth: function(callback, state, roomId) {
       authObj.$onAuthStateChanged(function(authData) {
         if (authData) {
           var userRef = firebase.database().ref('users').child(authData.uid),
@@ -290,7 +271,11 @@ var Pta = angular.module('pta', [
                 }
               }
               userIsAdmin.$watch(adminReset);
-              $state.go('app.home');
+              if(roomId){
+                $state.go(state, {roomId: roomId});
+              } else {
+                $state.go('app.home');
+              }
             }
           );
         } else {

@@ -95,31 +95,33 @@ Pta.controller('ChatCtrl', [
 
 
     $scope.sendMessage = function() {
-        console.log("Send chat clicked");
-        $http({
-           method: 'POST',
-           url:'https://murmuring-fjord-75421.herokuapp.com/',
-           data:{
-               reg_id: pushRegId,
-               message: $scope.IM.textMessage,
-               sender_name: $scope.user.name,
-               topic: '/topics/' + $state.params.roomId,
-               state: 'app.room',
-               roomId: $state.params.roomId,
-               sender_imgURL: $scope.user.pic,
-               chatters: chatters,
-               platform:  platform
-           }
-        })
-        .then(function(res){
-            console.log("Node server POST response: " + res);
-            Chats.send($scope.user, $scope.IM.textMessage);
-            $scope.IM.textMessage = "";
-        })
-        .catch(function(err){
-            console.log("Node server POST error: " + err);
-            debugger;
-        }); 
+        if($scope.IM.textMessage.length > 0){
+            console.log("Send chat clicked");
+            $http({
+               method: 'POST',
+               url:'https://murmuring-fjord-75421.herokuapp.com/',
+               data:{
+                   reg_id: pushRegId,
+                   message: $scope.IM.textMessage,
+                   sender_name: $scope.user.name,
+                   topic: '/topics/' + $state.params.roomId,
+                   state: 'app.room',
+                   roomId: $state.params.roomId,
+                   sender_imgURL: $scope.user.pic,
+                   chatters: chatters,
+                   platform:  platform
+               }
+            })
+            .then(function(res){
+                console.log("Node server POST response: " + res);
+                Chats.send($scope.user, $scope.IM.textMessage);
+                $scope.IM.textMessage = "";
+            })
+            .catch(function(err){
+                console.log("Node server POST error: " + err);
+                debugger;
+            }); 
+        }
     };
 
 }]);
