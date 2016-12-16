@@ -148,8 +148,10 @@ var Pta = angular.module('pta', [
     });
 
     if (window.hockeyapp) {
-      window.hockeyapp.start(null, null, '1c527375374f43568ff947e431f6e68a');
+      window.hockeyapp.start(null, null, 'com.apparenttechnologies.apparent');
     }
+
+    // previous app id passed as third param to hockeyapp.start '1c527375374f43568ff947e431f6e68a'
 
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
