@@ -8,12 +8,9 @@
       Brad Wertman
     </author>
   <content src="index.html"/>
-  <access origin="*"/>
-  <allow-intent href="http://*/*" />
-  <allow-intent href="https://*/*" />
-  <allow-navigation href="https://apis.google.com/*"/>
-  <allow-navigation href="http://maps.googleapis.com/maps/api/js?key=AIzaSyB8pW24K8TWAKiP5XQHDlTNyBjjfR11wM0&libraries=places"/>
-  <allow-navigation href="https://sizzling-fire-7440.firebaseio.com"/>
+  <access origin="*" />
+  <allow-intent href="*" />
+  <allow-navigation href="*" />
   <preference name="KeyboardDisplayRequiresUserAction" value="false"/>
   <preference name="xwalkMultipleApk" value="false"/>
   <preference name="webviewbounce" value="false"/>
