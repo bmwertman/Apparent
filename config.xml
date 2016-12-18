@@ -11,11 +11,9 @@
   <access origin="*"/>
   <allow-intent href="http://*/*" />
   <allow-intent href="https://*/*" />
-  <allow-intent href="mailto:*" />
-  <allow-intent href="geo:*" />
-  <allow-navigation href="http://*/*" />
-  <allow-navigation href="https://*/*" />
-  <allow-navigation href="data:*" />
+  <allow-navigation href="https://apis.google.com/*"/>
+  <allow-navigation href="http://maps.googleapis.com/maps/api/js?key=AIzaSyB8pW24K8TWAKiP5XQHDlTNyBjjfR11wM0&libraries=places"/>
+  <allow-navigation href="https://sizzling-fire-7440.firebaseio.com"/>
   <preference name="KeyboardDisplayRequiresUserAction" value="false"/>
   <preference name="xwalkMultipleApk" value="false"/>
   <preference name="webviewbounce" value="false"/>
