@@ -36,10 +36,10 @@ var Pta = angular.module('pta', [
     
     $cordovaPushV5.initialize({
       "android": {
-          "senderID": "125323192420"
+          "senderID": "165149993214"
       },
       "ios": {
-          "senderID": "125323192420",
+          "senderID": "165149993214",
           "alert": true,
           "sound": true,
           "vibration": true,
