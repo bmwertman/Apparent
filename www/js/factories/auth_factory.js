@@ -8,8 +8,14 @@ Pta.factory('Auth', [
    '$rootScope',
    '$timeout',
    '$ionicLoading',
-  function($firebaseAuth, $firebaseObject, $state, userService, $localstorage, $rootScope, $timeout, $ionicLoading){
-  var authObj = $firebaseAuth();
+   '$cordovaDevice',
+  function($firebaseAuth, $firebaseObject, $state, userService, $localstorage, $rootScope, $timeout, $ionicLoading, $cordovaDevice){
+  var authObj = $firebaseAuth(),
+      device = $cordovaDevice.getDevice(),
+      ref = firebase.database().ref(),
+      devicesObj = $firebaseObject(ref.child('devices')),
+      devicesRef = ref.child('devices');
+
   return {
     login: function(credentials, state, roomId) {
       var self = this;
@@ -40,6 +46,13 @@ Pta.factory('Auth', [
           var userRef = firebase.database().ref('users').child(authData.uid),
               profile = $firebaseObject(userRef),
               userIsAdmin = $firebaseObject(userRef.child('isAdmin'));
+          // Check if user is loggin in on a new device
+          devicesRef.once('value', function(snapshot) {
+            if (!snapshot.hasChild(device.uuid)) {
+              devicesObj[device.uuid] = authData.uid;
+              devicesObj.$save();
+            }
+          });
           profile.$loaded(
             function(profile) {
               userService.setUser(profile);
@@ -63,6 +76,8 @@ Pta.factory('Auth', [
               userIsAdmin.$watch(adminReset);
               if(roomId){
                 $state.go(state, {roomId: roomId});
+              } else if(!profile.school){
+                $state.go('app.profile');
               } else {
                 $state.go('app.home');
               }

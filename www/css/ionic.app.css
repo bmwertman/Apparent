@@ -10519,6 +10519,14 @@ ion-content.has-tall-header {
   .signup-modal .signup {
     top: 110px;
     padding: 0; }
+    .signup-modal .signup .current-user {
+      color: #1102FF;
+      width: 198px;
+      margin: -5px auto; }
+      .signup-modal .signup .current-user a {
+        text-decoration: none;
+        color: #FF8F02;
+        font-weight: bold; }
     .signup-modal .signup form {
       border: none;
       background-color: #1102FF;
@@ -10526,6 +10534,10 @@ ion-content.has-tall-header {
       padding: 10px 0;
       width: 80%;
       margin-left: 10%; }
+      .signup-modal .signup form p {
+        margin: -20px 0 10px 9%;
+        width: 83%;
+        color: snow; }
       .signup-modal .signup form label {
         font-weight: bold;
         color: white;
@@ -10564,6 +10576,27 @@ ion-content.has-tall-header {
   margin: 0 auto; }
   .crop_img .cropped-container img {
     width: 100%; }
+
+.add-school .popup-head {
+  width: 80%;
+  margin: 0 auto;
+  text-align: center; }
+  .add-school .popup-head h3 {
+    font-weight: bold;
+    font-size: 18px; }
+  .add-school .popup-head h5 {
+    font-size: 14px; }
+
+.add-school .popup-body p {
+  margin: 0 0 0 20%;
+  width: 60%;
+  text-align: center;
+  font-size: 15px; }
+
+.add-school .button {
+  background-color: #1102FF;
+  color: snow;
+  font-weight: bold; }
 
 .profile i.ion-edit {
   color: darkgray; }
@@ -10843,7 +10876,7 @@ ion-content.has-tall-header {
   .profile .contact-info #phone-type {
     color: snow; }
   .profile .contact-info .editable-wrap {
-    max-width: 50%;
+    min-width: calc(50% - 10px);
     float: left;
     color: snow;
     display: inline-block; }
@@ -11376,6 +11409,7 @@ ion-content.has-tall-header {
   position: fixed;
   bottom: 0;
   height: 90px;
+  width: 100%;
   padding: 0; }
   .footer-bar .sub-bar {
     width: 100%;

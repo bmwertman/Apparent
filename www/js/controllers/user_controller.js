@@ -3,7 +3,6 @@ Pta.controller('UserCtrl', [
   '$ionicSideMenuDelegate',
   '$ionicModal',
   '$ionicPopup',
-  'userService',
   '$cordovaImagePicker',
   '$filter',
   '$timeout',
@@ -11,17 +10,18 @@ Pta.controller('UserCtrl', [
   '$http',
   '$firebaseArray',
   '$firebaseObject',
-  function($scope, $ionicSideMenuDelegate, $ionicModal, $ionicPopup, userService, $cordovaImagePicker, $filter, $timeout, $stateParams, $http, $firebaseArray, $firebaseObject) {
+  'userService',
+  '$ionicHistory',
+  '$rootScope',
+  function($scope, $ionicSideMenuDelegate, $ionicModal, $ionicPopup, $cordovaImagePicker, $filter, $timeout, $stateParams, $http, $firebaseArray, $firebaseObject, userService, $ionicHistory, $rootScope) {
     // Future work - Add child's current teacher to their parent's profile
-    $scope.user = userService.getUser();
-    $scope.grades = { 'K': 0, '1st': 1, '2nd': 2, '3rd': 3, '4th': 4, '5th': 5, '6th': 6, '7th': 7, '8th': 8, '9th': 9, '10th': 10, '11th': 11, '12th': 12, '?': 13 };
-
-    var schoolName = angular.element(document.getElementById('school-name')),
-        userName = angular.element(document.getElementById('name-wrap'));
-        schoolInputParent = schoolName.children().eq(0),
+    var user = userService.getUser(),
         ref = firebase.database().ref(),
-        schoolsRef = ref.child('schools')
-        childrenRef = ref.child('users/' + $scope.user.$id + '/children'),
+        userRef = ref.child('users').child(user.user_id),
+        userObj = $firebaseObject(userRef),
+        schoolsRef = ref.child('schools'),
+        childrenRef = ref.child('users/' + user.user_id + '/children'),
+        userName = angular.element(document.getElementById('name-wrap')),
         childWarp = {
           path:{ 
               radius: 24,
@@ -32,61 +32,29 @@ Pta.controller('UserCtrl', [
           targets:"#childwarp",
           align: "center",
         };
+
+    userObj.$bindTo($scope, "user");
     cssWarp(childWarp);
+   
+    $scope.grades = { 'K': 0, '1st': 1, '2nd': 2, '3rd': 3, '4th': 4, '5th': 5, '6th': 6, '7th': 7, '8th': 8, '9th': 9, '10th': 10, '11th': 11, '12th': 12, '?': 13 };
 
-    // Set the width of edit-in-place input fields to fit their content for view centering 
-    $scope.getTextWidth = function(font, text, angularEl, isSchoolName) {
-      var canvas = this.getTextWidth.canvas || (this.getTextWidth.canvas = document.createElement("canvas")),
-      context = canvas.getContext("2d");
-      context.font = font;
-      if(text && text.indexOf("/") > -1){
-         text = text.substring(0, text.lastIndexOf('/'))
-      }
-      var metrics = context.measureText(text);
-      angularEl.css('width', (metrics.width + 3) + 'px');
-      angularEl.children().eq(0).css('width', (metrics.width + 3) + 'px');
-    }
-
-    $scope.hideEditIcon = function(e){
-      var nameInput = angular.element(e.currentTarget);
-      $scope.editIcon = nameInput.parent().parent().next();
-      $scope.editIcon.css('display', 'none');
-    }
-
-    $scope.showEditIcon = function(){
-      $scope.editIcon.css('display', 'inline');
-      $scope.editIcon = null;
-      delete $scope.editIcon;
-    }
-
-    $scope.getTextWidth(userName.attr('font'), $scope.user.name, userName);
-    
-    if($scope.user.school){
-      $scope.hideDisplayName = false;
-    } else {
-      $scope.hideDisplayName = true;
-    }
-
-    $scope.editSchool = function(){
-      if($scope.hideDisplayName){
-        $scope.hideDisplayName = false;
-      } else {
-        $scope.hideDisplayName = true;
-      }
-    }
-    if($scope.hideDisplayName){
-      $timeout(function(){
-        var schoolAutoComplete = angular.element(document.getElementsByClassName('layout-row')[0]),
-            icon = angular.element(document.createElement('i'));
-        icon.html('<span>EDIT</span>');
-        icon.addClass('icon ion-edit');
-        schoolAutoComplete.append(icon);
+    function setSchoolName(schoolId){
+      $firebaseObject(schoolsRef.child(schoolId))
+      .$loaded()
+      .then(function(school){// Load the user's new school
+        $scope.school = school;// Set the retrieved firebase school Object on local $scope
+        var schoolName = angular.element(document.getElementById('school-name'));// get the school name element
+        $scope.getTextWidth(schoolName.attr('font'), school.name, schoolName);// Adjust the input's width to fit the school name
       });
-    }    
+    };
+
+    $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
+      viewData.enableBack = true;
+    }); 
+
     //handle submits
     $scope.editSubmit = function(modelValue, prop){
-      var userId = $scope.user.user_id,
-          userRef = ref.child('users').child(userId),
+      var userId = user.user_id,
           schools = $firebaseArray(schoolsRef),
           obj = {};
       if(!prop && modelValue){// We're adding a school
@@ -122,50 +90,105 @@ Pta.controller('UserCtrl', [
                 break;
             }
           });
+          // This is the first user to add themselves to this school
+          // and by default are set as an admin
+          user.isAdmin = true;
+          $rootScope.isAdmin = true;
         }
         schoolsRef.child(modelValue['NCESSCH']).set(obj);
-        userRef.update({school: modelValue['NCESSCH']});
-        $firebaseObject(schoolsRef.child(modelValue['NCESSCH']))
-        .$loaded().then(function(school){// Load the user's new school
+        user.school = modelValue['NCESSCH'];
+        userRef.set(user);
+        setSchoolName(modelValue['NCESSCH']);
+      } else if(modelValue) {
+        user[prop] = modelValue;
+        userRef.set(user);
+      }
+    };
+
+    $timeout(function(){
+      if($scope.user.school){ // Load the user's school
+        $firebaseObject(schoolsRef.child($scope.user.school))
+        .$loaded().then(function(school){
           $scope.school = school;
+          var schoolName = angular.element(document.getElementById('school-name')), 
+          schoolInputParent = schoolName.children().eq(0),
+          name = schoolInputParent.children().eq(0);
+          name.val(school.name);
           $scope.getTextWidth(schoolName.attr('font'), school.name, schoolName);
         });
-      } else if(modelValue) {
-        obj[prop] = modelValue;
-        userRef.update(obj);
       }
-      $scope.hideDisplayName = false;
-    }
-
-    if($scope.user.school){ // Load the user's school
-      $firebaseObject(schoolsRef.child($scope.user.school))
-      .$loaded().then(function(school){
-        $scope.school = school;
-        var name = schoolInputParent.children().eq(0);
-        name.val(school.name);
-        $scope.getTextWidth(schoolName.attr('font'), school.name, schoolName);
-      });
-    }
+    });
     // Make sure both users and their children have either a pic or first letter of first name placeholder
-    if(!$scope.user.pic && $scope.user.name){
-      $scope.editSubmit($scope.user.name.charAt(0), 'pic');
+    if(!user.pic && user.name){
+      $scope.editSubmit(user.name.charAt(0), 'pic');
     }
-    if($scope.user.children){
-      angular.forEach($scope.user.children, function(child, key){
+    if(user.children){
+      angular.forEach(user.children, function(child, key){
         if(!child.pic){
           child.pic = child.name.charAt(0);
           $scope.editSubmit(child, 'children/' + key);
         }
       });
     }
-    
+
+    if(userObj.school){
+      $scope.hideDisplayName = false;
+    } else {
+      $scope.hideDisplayName = true;
+    }
+
+    $scope.editSchool = function(){
+      if($scope.hideDisplayName){
+        $scope.hideDisplayName = false;
+      } else {
+        $scope.hideDisplayName = true;
+      }
+    };
+
+    // Set the width of edit-in-place input fields to fit their content for view centering 
+    $scope.getTextWidth = function(font, text, angularEl) {
+      var canvas = this.getTextWidth.canvas || (this.getTextWidth.canvas = document.createElement("canvas")),
+      context = canvas.getContext("2d");
+      context.font = font;
+      if(text && text.indexOf("/") > -1){
+         text = text.substring(0, text.lastIndexOf('/'));
+      }
+      var metrics = context.measureText(text);
+      angularEl.css('width', (metrics.width + 3) + 'px');
+      angularEl.children().eq(0).css('width', (metrics.width + 3) + 'px');
+    };
+
+    $scope.hideEditIcon = function(e){
+      var nameInput = angular.element(e.currentTarget);
+      $scope.editIcon = nameInput.parent().parent().next();
+      $scope.editIcon.css('display', 'none');
+    };
+
+    $scope.showEditIcon = function(){
+      $scope.editIcon.css('display', 'inline');
+      $scope.editIcon = null;
+      delete $scope.editIcon;
+    };
+
+    $scope.getTextWidth(userName.attr('font'), user.name, userName); 
+
+    if($scope.hideDisplayName){
+      $timeout(function(){
+        var schoolAutoComplete = angular.element(document.getElementsByClassName('layout-row')[0]),
+            icon = angular.element(document.createElement('i'));
+        icon.html('<span>EDIT</span>');
+        icon.addClass('icon ion-edit');
+        schoolAutoComplete.append(icon);
+      });
+    }    
+
     $scope.addChild = function(){
       childrenRef.push({
         name: 'Child\'s name?',
         grade: 13,
         pic: '?'
       });
-    }
+    };
 
     $scope.removeChild = function(key) {
       var child = $firebaseObject(childrenRef.child(key)),
@@ -214,8 +237,8 @@ Pta.controller('UserCtrl', [
     });
 
     $scope.openModal = function(name){
-      $scope.modal.show;
-    }
+      $scope.modal.show();
+    };
 
     $scope.closeModal = function(name) {
       $scope.modal.hide();
@@ -235,9 +258,9 @@ Pta.controller('UserCtrl', [
           $scope.cropImageModal();
         }
       }, function(error) {
-       console.log(error)
+       console.log(error);
       });
-    }
+    };
 
     $scope.querySchools = function(searchText){
       return $http.get("https://inventory.data.gov/api/action/datastore_search",{
@@ -252,9 +275,9 @@ Pta.controller('UserCtrl', [
       })
       .catch(function(error){
         console.log(error);
-        return error
+        return error;
       });
-    }
+    };
 
     $scope.storeImage = function(file){
       var imageDataArray = file.split(','),
@@ -264,16 +287,16 @@ Pta.controller('UserCtrl', [
           urlSavePath,
           storagePath;
       for( var i = 0; i < binary.length; i++ ) { 
-        array[i] = binary.charCodeAt(i) 
+        array[i] = binary.charCodeAt(i);
       }
       var image = new Blob([array]);
       if($scope.childPath){
         var childIndex = $scope.childPath.split('/')[1];
         urlSavePath = $scope.childPath;
-        storagePath = 'profile_pics/children/' + $scope.user.user_id + childIndex +'.jpg';
+        storagePath = 'profile_pics/children/' + user.user_id + childIndex +'.jpg';
       } else {
         urlSavePath = 'pic';
-        storagePath = 'profile_pics/' + $scope.user.user_id +  +'.jpg';
+        storagePath = 'profile_pics/' + user.user_id +'.jpg';
       }
       var uploadTask = storageRef.child(storagePath);
       uploadTask.getDownloadURL()
@@ -346,7 +369,7 @@ Pta.controller('UserCtrl', [
           }
         });
       });
-    }
+    };
 
     $ionicSideMenuDelegate.canDragContent(true);
 }]);

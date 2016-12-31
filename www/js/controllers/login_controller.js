@@ -4,10 +4,20 @@ Pta.controller('LoginCtrl', [
   '$ionicPopup',
   '$timeout',
   '$ionicLoading',
-  '$localstorage',
   'Auth',
   '$state',
-  function($scope, $ionicModal, $ionicPopup, $timeout, $ionicLoading, $localstorage, Auth, $state) {
+  '$cordovaDevice',
+  function($scope, $ionicModal, $ionicPopup, $timeout, $ionicLoading, Auth, $state, $cordovaDevice) {
+  var device = $cordovaDevice.getDevice(),
+      ref = firebase.database().ref(),
+      devicesRef = ref.child('devices');
+
+  // Presume new device is new user and send to signup page
+  devicesRef.once('value', function(snapshot) {
+    if (!snapshot.hasChild(device.uuid)) {
+      $state.go('signup');
+    }
+  });
 
   $scope.openSignup = function(){
     $state.go('signup');

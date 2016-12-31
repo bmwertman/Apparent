@@ -5,21 +5,11 @@ Pta.controller('HomeCtrl', [
   '$timeout',
   '$state',
   '$ionicNavBarDelegate',
-  '$rootScope',
-  function($scope, userService, $firebaseObject, $timeout, $state, $ionicNavBarDelegate, $rootScope) {
+  function($scope, userService, $firebaseObject, $timeout, $state, $ionicNavBarDelegate) {
     
     $ionicNavBarDelegate.align('center');
 
     window.screen.lockOrientation('portrait');
-
-    $rootScope.goHome = function(){
-      if($state.current.name !== 'app.room'){
-        $state.go('app.home');
-      } else {
-        $rootScope.$broadcast("comeHome");
-        $state.go('app.rooms');
-      }
-    }
 
     $scope.user = userService.getUser();
     if($scope.user.school){

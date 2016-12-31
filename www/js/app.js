@@ -26,7 +26,7 @@ var Pta = angular.module('pta', [
 // .constant('applicationId', '125323192420')
 // .constant('gapiApiKey', 'AIzaSyCi2ojTUERxZyYdfpgQOTdVNKAKAZtkwU0')
 // .constant('gapiClientId', '125323192420-c2nscbgoel9d0m7jv400dcfhfmtomac2.apps.googleusercontent.com')
-.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, userService, $cordovaPushV5, $cordovaDevice) {
+.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, userService, $cordovaPushV5, $cordovaDevice, $ionicPopup) {
   // hide xeditable cancel button
   editableThemes['default'].cancelTpl = '<button type="button" class="btn btn-default" style="display:none">';
   editableThemes['default'].submitTpl = '<button type="submit" class="xeditable-submit fa fa-pencil-square-o"></button>';
@@ -182,6 +182,25 @@ var Pta = angular.module('pta', [
       $rootScope.removeDrawer.css('bottom', '-80px');
     });
   });
+
+  $rootScope.goHome = function(){
+    var user = userService.getUser();
+    if(user.school && $state.current.name !== 'app.room'){
+      $state.go('app.home');
+    } else if($state.current.name !== 'app.room'){
+      var addYourSchool = $ionicPopup.alert({
+        title: 'A school is required', // String. The title of the popup.
+        cssClass: 'add-school',
+        subTitle: 'In order to provide relevant news and connections.',
+        template: '<p>Please add your child\'s school to continue.</p>',
+        okType: 'button-balanced'
+      });
+      addYourSchool;
+    } else {
+      $rootScope.$broadcast("comeHome");
+      $state.go('app.rooms');
+    }
+  }
 
   $rootScope.logout = function() {
     Auth.logout(); 
