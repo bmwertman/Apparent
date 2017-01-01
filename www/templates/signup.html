@@ -3,9 +3,10 @@
     <img class="apparent" src="img/apparent_v2.svg">
   </div>
   <ion-content class="padding signup" has-subheader="true">
-    <div class="current-user">
-      <p>Already have an account?<a ui-sref="login"> Login</a></p>
-    </div>
+    <p class="current-user">
+      Already have an account?
+      <a ui-sref="login"> Login</a>
+    </p>
     <form name="signupForm" ng-submit="signupSubmit()">
       <label for="full-name">Full name
         <input type="text" name="full-name" ng-model="newUser.name" placeholder="First and last name" required="true">

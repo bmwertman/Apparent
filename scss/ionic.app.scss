@@ -976,8 +976,8 @@ ion-content.has-tall-header{
     padding: 0;
     .current-user{
       color: $apparentBlue;
-      width: 198px;
-      margin: -5px auto;
+      width: 100%;
+      text-align: center;
       a{
         text-decoration: none;
         color: $apparentOrange;
