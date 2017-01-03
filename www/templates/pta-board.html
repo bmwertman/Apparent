@@ -5,7 +5,16 @@
     <ion-list class="board-members">
       <ion-item class="board-member" ng-repeat="boardmember in boardmembers">
         <h2 class="title">{{boardmember.title}}</h2>
-        <img ng-src="{{boardmember.user_pic}}">
+        <div ng-if="boardmember.user_pic.length > 1">
+            <img class="boardmember-pic"
+                 expire="{{30}}"
+                 ng-src="{{boardmember.user_pic}}"
+                 ng-hide="showOptions">
+        </div>
+        <div class="boardmember-pic user-initial"
+             ng-if="boardmember.user_pic.length === 1">
+             {{ user.pic }}
+        </div>
         <h3 class="name">{{boardmember.user_name}}</h3>
       </ion-item>
     </ion-list>

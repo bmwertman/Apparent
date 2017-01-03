@@ -10286,12 +10286,22 @@ ion-content.has-tall-header {
       text-align: center;
       font-weight: bold;
       color: snow; }
-    .board-members .list .board-member img {
+    .board-members .list .board-member .boardmember-pic {
       border-radius: 50%;
       width: 80%;
       max-width: 200px;
       display: block;
       margin: 0 auto; }
+    .board-members .list .board-member .user-initial {
+      width: 76px;
+      height: 76px;
+      background-color: snow;
+      color: #B71C1C;
+      text-align: center;
+      font-weight: bold;
+      font-size: 60px;
+      line-height: 80px;
+      padding-left: 4px; }
     .board-members .list .board-member .name {
       text-align: center;
       margin-top: 10px;
@@ -10329,6 +10339,11 @@ ion-content.has-tall-header {
     border-radius: 50%;
     margin: 2px 0 2px 5px;
     vertical-align: middle; }
+  .role-management .role-table .role .user-initial {
+    color: snow;
+    background-color: #B71C1C;
+    width: 20px;
+    text-align: center; }
   .role-management .role-table .role .parent-search {
     width: calc(100% - 48px);
     border: none;
@@ -11129,7 +11144,7 @@ ion-content.has-tall-header {
   background-color: rgba(0, 0, 0, 0.7);
   line-height: 80px;
   text-align: center; }
-  #remove-notification ion-close-circled {
+  #remove-notification .ion-close-circled {
     background-color: white;
     width: 46px;
     margin: 0 auto;
@@ -11138,7 +11153,7 @@ ion-content.has-tall-header {
     line-height: 42px;
     border-radius: 50%;
     display: inline-block; }
-    #remove-notification ion-close-circled:before {
+    #remove-notification .ion-close-circled:before {
       line-height: 0; }
 
 .chat-options .selector-container {
@@ -11343,9 +11358,12 @@ ion-content.has-tall-header {
       background-color: #B71C1C;
       font-weight: bold;
       text-align: center;
-      padding: 4px;
-      font-size: 70px;
-      line-height: 100px; }
+      padding-left: 2px;
+      line-height: 80px;
+      height: 80px;
+      width: 80px;
+      font-size: 60px;
+      margin: 6px auto; }
   .parent-directory .parent-list .parent .children {
     float: left;
     width: 50%; }
@@ -11700,47 +11718,47 @@ body div.drag-element.gu-mirror {
       resize: none;
       box-sizing: border-box; }
 
-.events .event-header {
+.event-page .events .event-header {
   flex-flow: row wrap;
   display: flex; }
-  .events .event-header h2.event-title {
+  .event-page .events .event-header h2.event-title {
     margin-right: 6px;
     font-weight: bold; }
-  .events .event-header h4 {
+  .event-page .events .event-header h4 {
     display: initial; }
 
-.events h4 {
+.event-page .events h4 {
   font-weight: bold;
   display: inline-block;
   margin: 5px 0 -4px 0; }
 
-.events img.event-img {
+.event-page .events img.event-img {
   float: left;
   width: 40%;
   max-width: 165px;
   margin-right: 10px; }
 
-.events p {
+.event-page .events p {
   white-space: normal;
   overflow: initial; }
 
-.events h4.location {
+.event-page .events h4.location {
   display: block;
   clear: left;
   margin: 5px 0; }
 
-.events div.no-volunteers {
+.event-page .events div.no-volunteers {
   display: inline-block;
   width: calc(100% - 65px);
   float: left; }
 
-.events div.hours-needed {
+.event-page .events div.hours-needed {
   float: left;
   display: inline-block;
   width: calc(100% - 65px);
   background: linear-gradient(to right, red, orange, yellow, #33cd5f);
   border-radius: 4px; }
-  .events div.hours-needed div.hours-covered {
+  .event-page .events div.hours-needed div.hours-covered {
     color: snow;
     text-align: center;
     background-color: blue;
@@ -11750,7 +11768,7 @@ body div.drag-element.gu-mirror {
     line-height: 30px;
     border-radius: 4px; }
 
-.events button {
+.event-page .events button {
   width: 48px;
   height: 48px;
   font-weight: bold;
@@ -11760,6 +11778,20 @@ body div.drag-element.gu-mirror {
   font-size: 14px;
   float: right;
   margin-top: -10px; }
+
+.event-page .prompt {
+  width: 250px;
+  text-align: center;
+  margin: 50px auto;
+  font-size: 18px;
+  border: 1px solid;
+  padding: 15px;
+  border-radius: 2px;
+  box-shadow: 2px 2px 2px darkgray; }
+  .event-page .prompt p {
+    margin-bottom: 20px; }
+    .event-page .prompt p a {
+      font-weight: bold; }
 
 @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) {
   .title.title-center.header-item {

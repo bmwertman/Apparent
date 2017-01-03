@@ -1,7 +1,8 @@
 <ion-view view-title="Get Involved">
   <ion-nav-buttons side="right"></ion-nav-buttons>
-  <ion-content>
-    <ion-list class="events">
+  <ion-content class="event-page">
+    <ion-list class="events"
+              ng-if="calEvents.length > 0">
       <ion-item ng-repeat="event in calEvents">
         <div class="event-header">
           <h2 class="event-title">{{event.title}}</h2>
@@ -29,5 +30,15 @@
         </button>
       </ion-item>
     </ion-list>
+    <div class="prompt"
+         ng-if="calEvents.length === 0 && !$rootScope.isAdmin">
+        <p>Your organization doesn't have any events posted.</p>
+        <p><a ui-sref="app.admin.calendar">Add events</a> to keep parents involved.</p>
+    </div>
+    <div class="prompt"
+         ng-if="calEvents.length === 0 && $rootScope.isAdmin">
+        <p>Your organization hasn't posted any upcoming events.</p>
+        <p><a ui-sref="app.board">Ask a board member</a> to add some events.</p>
+    </div>
   </ion-content>
 </ion-view>
