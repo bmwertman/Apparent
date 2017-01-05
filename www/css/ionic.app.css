@@ -10302,6 +10302,20 @@ ion-content.has-tall-header {
       font-size: 60px;
       line-height: 80px;
       padding-left: 4px; }
+    .board-members .list .board-member .contact-btn {
+      border-radius: 50%;
+      border: 2px solid #2AD4FF;
+      background-color: #1102FF;
+      line-height: 32px;
+      font-size: 22px;
+      color: #E0FFFF;
+      width: 34px;
+      height: 34px;
+      display: inline-block;
+      text-align: center;
+      position: absolute;
+      right: 6px;
+      bottom: 32px; }
     .board-members .list .board-member .name {
       text-align: center;
       margin-top: 10px;
@@ -11173,16 +11187,17 @@ ion-content.has-tall-header {
   height: 95px;
   bottom: 20px; }
   .chat-options .submit-slideout .create-chat {
-    top: 0px;
-    left: 10px;
-    width: 71px;
+    top: 4px;
+    left: 5px;
+    width: 85px;
     font-weight: bold;
     font-size: 15px;
-    line-height: 19px;
+    line-height: 17px;
     border-radius: 50%;
-    height: 71px;
+    height: 85px;
     box-shadow: 2px 2px 1px 1px green;
-    padding-top: 17px; }
+    padding-top: 28px;
+    margin: 0; }
 
 .chat-rooms .room {
   height: 56px;

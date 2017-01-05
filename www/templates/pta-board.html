@@ -13,8 +13,12 @@
         </div>
         <div class="boardmember-pic user-initial"
              ng-if="boardmember.user_pic.length === 1">
-             {{ user.pic }}
+             {{ boardmember.user_pic }}
         </div>
+        <a class="contact-btn"
+           ng-click="openChatRoom(boardmember.user_id)">
+           <i class="icon ion-chatboxes"></i>
+        </a>
         <h3 class="name">{{boardmember.user_name}}</h3>
       </ion-item>
     </ion-list>

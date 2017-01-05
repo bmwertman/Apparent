@@ -26,7 +26,7 @@ Pta.factory('Rooms', [
         users.push(user);
         angular.forEach(users, function(value, key){
           chatter = {};
-          chatter.id = value.$id;
+          chatter.id = value.user_id;
           chatter.email = value.email;
           chatter.name = value.name;
           chatter.pic = value.pic;
