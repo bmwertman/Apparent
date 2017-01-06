@@ -20,7 +20,7 @@ Pta.controller('RoomsCtrl', [
     angular.forEach(userRooms, function(userRoom, key){
       var titleArr = [];
       angular.forEach(userRoom.chatters, function(chatter, key){
-        if(chatter.id !== $scope.user.$id){
+        if(chatter.id !== $scope.user.user_id){
           titleArr.push(' ' + chatter.name.split(' ')[0]);
         } 
       });
@@ -30,21 +30,6 @@ Pta.controller('RoomsCtrl', [
     $scope.rooms = userRooms;
   });
   
-  // If The user has not selected their school redirect to the profile view
-  // because we can't filter the people who they are alllowed to chat with
-  if(!$scope.user.school || $scope.user.school === ""){
-    var noSchoolAlert = $ionicPopup.alert({
-      title: 'You haven\'t set your school',
-      subTitle:"Apparent chat connects you with parents at your child's school.",
-      template: "Add your child's school on your profile to start chatting!",
-      okText: "Set School",
-      okType: "button-balanced"
-    });
-    noSchoolAlert.then(function(res){
-      $state.go('app.profile');
-    });
-  }
-
   $scope.$on('chatSubmitChanged', function(e, newValues){
     var submitSlideout = angular.element(document.getElementsByClassName('submit-slideout'));
     if(!newValues[0] && newValues[1].length > 0){
@@ -83,14 +68,14 @@ Pta.controller('RoomsCtrl', [
     // Get ids of everyone the user is chatting
     if(typeof chatters === "object"){
       angular.forEach(chatters, function(value, key){
-        if(value.id !== $scope.user.$id){
+        if(value.id !== $scope.user.user_id){
           chatterIds.push(value.id);
         }
       });
     } else {
       for (var i = chatters.length - 1; i >= 0; i--) {
         chatters[i]
-        if(chatters[i].id !== $scope.user.$id){
+        if(chatters[i].id !== $scope.user.user_id){
           chatterIds.push(chatters[i].id);
         }
       }
@@ -117,7 +102,7 @@ Pta.controller('RoomsCtrl', [
   }
 
   $scope.createRoom = function() {
-    var newRoomId = firebase.database().ref('user-rooms').child($scope.user.$id).push().key,
+    var newRoomId = firebase.database().ref('user-rooms').child($scope.user.user_id).push().key,
         id = Rooms.addNewRoom(this.$$childHead.selectedValues, '/user-rooms/', newRoomId);
     $state.go('app.room', {roomId: id});
     $scope.closeModal();

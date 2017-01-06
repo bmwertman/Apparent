@@ -36,7 +36,7 @@
            </div>
            <img expire="{{30}}" ng-src="{{volunteer.user.pic}}">
            <a class="chat-btn"
-              ng-if="volunteer.user.$id !== user.$id" 
+              ng-if="volunteer.user.$id !== user.user_id" 
               ng-click="createRoom(thisHoursVolunteers, thisEvent, volunteer)">
               <i class="icon ion-chatboxes"></i>
             </a>

@@ -13,20 +13,6 @@ Pta.controller('EventsCtrl', [
   var ref = firebase.database().ref();
   var eventsRef = ref.child('events').orderByChild('date');
   $scope.calEvents = $firebaseArray(eventsRef);
-  $scope.user = userService.getUser();
-
-  if(!$scope.user.school || $scope.user.school === ""){
-    var noSchoolAlert = $ionicPopup.alert({
-      title: 'You haven\'t set your school',
-      subTitle:"Apparent connects you with events at your child's school.",
-      template: "Add your child's school on your profile to see what is happening!",
-      okText: "Set School",
-      okType: "button-balanced"
-    });
-    noSchoolAlert.then(function(res){
-      $state.go('app.profile');
-    });
-  }
   
   $scope.showEvent = function(event){
     $state.go('app.calendar',{selectedEvent: event});

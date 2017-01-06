@@ -10,7 +10,7 @@ Pta.controller('BoardCtrl', [
         ref = firebase.database().ref(),
         boardmembers = ref.child('roles').child(user.school),
         school = $firebaseObject(ref.child('schools').child(user.school)),
-        userRoomsRef = firebase.database().ref('user-rooms').child(user.$id),
+        userRoomsRef = firebase.database().ref('user-rooms').child(user.user_id),
         userRooms = $firebaseArray(userRoomsRef);
     school.$loaded(function(userSchool){
       $scope.school = userSchool;
@@ -22,13 +22,13 @@ Pta.controller('BoardCtrl', [
     });
 
     $scope.openChatRoom = function (boardmemberId) {
-      if(user.$id !== boardmemberId){
+      if(user.user_id !== boardmemberId){
         $firebaseObject(ref.child('users').child(boardmemberId))
         .$loaded()
         .then(function(user){
           $scope.chatter = user
         });
-        var roomId = user.$id + boardmemberId,
+        var roomId = user.user_id + boardmemberId,
             chattersArr = [],
             id;
         if(userRooms.$indexFor(roomId) >= 0){

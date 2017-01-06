@@ -93,16 +93,28 @@ var Pta = angular.module('pta', [
             var body = angular.element(document.getElementsByTagName('body')[0]),
                 messageCount = angular.element(document.createElement('span')),
                 imgTag = angular.element(document.createElement('img')),
+                divTag = angular.element(document.createElement('div')),
                 remove = angular.element(document.createElement('div')),
                 iconBackground = angular.element(document.createElement('div')),
                 queue = angular.element(document.createElement('div'));
-            imgTag.attr({
-              'ng-repeat':'chatter in queuedChatters track by $index',
-              src: data.sender_imgUrl,
-              'dragula-model':'queuedChatters',
-              class: 'chat-notification',
-              'ng-click': 'goToChat($event, chatter.state, chatter.roomId)'
-            });
+            if(data.sender_imgUrl.length > 1){
+              imgTag.attr({
+                'ng-repeat':'chatter in queuedChatters track by $index',
+                src: data.sender_imgUrl,
+                'dragula-model':'queuedChatters',
+                class: 'chat-notification',
+                'ng-click': 'goToChat($event, chatter.state, chatter.roomId)'
+              });
+              queue.append(imgTag);
+            } else {
+              divTag.html(data.sender_imgUrl);
+              divTag.attr({
+                'ng-repeat':'chatter in queuedChatters track by $index',
+                'dragula-model':'queuedChatters',
+                class: 'chat-notification',
+                'ng-click': 'goToChat($event, chatter.state, chatter.roomId)'
+              });
+            }
             remove.attr({ 
               id:'remove-notification',
               dragula: '"chatter-bag"',
@@ -115,7 +127,6 @@ var Pta = angular.module('pta', [
               dragula: '"chatter-bag"',
               'dragula-model': 'queueBag'
             });
-            queue.append(imgTag);
             body.append(queue);
             body.append(remove);
             $compile(queue)($rootScope);

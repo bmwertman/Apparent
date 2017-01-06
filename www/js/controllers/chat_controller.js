@@ -66,7 +66,7 @@ Pta.controller('ChatCtrl', [
             // Add room titles
             var titleArr = [];
             angular.forEach(selectedRoom.chatters, function(chatter, key){
-                if(chatter.id !== $scope.user.$id){
+                if(chatter.id !== $scope.user.user_id){
                   titleArr.push(' ' + chatter.name.split(' ')[0]);
                 } 
             });

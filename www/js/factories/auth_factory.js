@@ -44,7 +44,6 @@ Pta.factory('Auth', [
       authObj.$onAuthStateChanged(function(authData) {
         if (authData) {
           var userRef = firebase.database().ref('users').child(authData.uid),
-              profile = $firebaseObject(userRef),
               userIsAdmin = $firebaseObject(userRef.child('isAdmin'));
           // Check if user is loggin in on a new device
           devicesRef.once('value', function(snapshot) {
@@ -53,36 +52,35 @@ Pta.factory('Auth', [
               devicesObj.$save();
             }
           });
-          profile.$loaded(
-            function(profile) {
-              userService.setUser(profile);
-              if(callback){
-                $timeout(function(){
-                  callback();
-                }, 2000);
-              }
-              if (profile.isAdmin) {
-                $rootScope.isAdmin = true;
-              } else {
+          userRef.once("value")
+          .then(function(profile){
+            userService.setUser(profile.val());
+            if(callback){
+              $timeout(function(){
+                callback();
+              }, 2000);
+            }
+            if (profile.val().isAdmin) {
+              $rootScope.isAdmin = true;
+            } else {
+              $rootScope.isAdmin = false;
+            }
+            function adminReset(){
+              if($rootScope.isAdmin){
                 $rootScope.isAdmin = false;
-              }
-              function adminReset(){
-                if($rootScope.isAdmin){
-                  $rootScope.isAdmin = false;
-                } else {
-                  $rootScope.isAdmin = true;
-                }
-              }
-              userIsAdmin.$watch(adminReset);
-              if(roomId){
-                $state.go(state, {roomId: roomId});
-              } else if(!profile.school){
-                $state.go('app.profile');
               } else {
-                $state.go('app.home');
+                $rootScope.isAdmin = true;
               }
             }
-          );
+            userIsAdmin.$watch(adminReset);
+            if(roomId){
+              $state.go(state, {roomId: roomId});
+            } else if(!profile.val().school){
+              $state.go('app.profile');
+            } else {
+              $state.go('app.home');
+            }
+          });
         } else {
           $state.go('login');
         }       

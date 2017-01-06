@@ -37,7 +37,7 @@
               <div class="role-pic user-initial"
                    ng-if="role.user_pic.length === 1"
                    ng-click="getImage()">
-                   {{ user.pic }}
+                   {{ role.user_pic }}
               </div>
               <input class="parent-search"
                       ng-keyup="filterParents($event)"
@@ -52,8 +52,14 @@
                 <div class="options"
                      ng-repeat="(parentIndex, parent) in filteredParents | limitTo: 10"
                      ng-click="confirmChange(parent, role, roles)">
-                  <img expire="{{30}}"
+                  <img class="role-pic"
+                       ng-if="parent.pic.length > 1"
+                       expire="{{30}}"
                        ng-src="{{parent.pic}}">
+                  <div class="role-pic user-initial"
+                       ng-if="parent.pic.length === 1">
+                       {{ parent.pic }}
+                  </div>
                   <span class="parent-name">{{parent.name}}</span>
                 </div>
               </div>

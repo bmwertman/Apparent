@@ -133,13 +133,13 @@ Pta.controller('CalendarCtrl', [
         endDate = time.parseTime($scope.displayEnd, new Date($scope.selectedEvent.date)).toString(),
         eventRef = eventsRef.child($scope.selectedEvent.$id),
         currentVolunteers = $firebaseArray(eventRef.child('volunteers')),
-        volunteer = { id: user.$id, start: startDate, end: endDate };
+        volunteer = { id: user.user_id, start: startDate, end: endDate };
     currentVolunteers.$loaded()
     .then(function(volunteers){
       //Make sure a previous volunteer isn't adding more time
       if(volunteers.length > 0){
         for (var i = volunteers.length - 1; i >= 0; i--) {
-          if(volunteers[i].id === user.$id){//Only add them to the volunteers
+          if(volunteers[i].id === user.user_id){//Only add them to the volunteers
             break;
           } else if(i <= 0){//Add them to volunteers and chat
             addToChat();

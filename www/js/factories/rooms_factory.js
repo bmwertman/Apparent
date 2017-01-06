@@ -6,7 +6,7 @@ Pta.factory('Rooms', [
   function ($firebaseArray, $firebaseObject, userService, pushSubscribe) {
   var ref = firebase.database().ref(),
       user = userService.getUser(),
-      userRoomsRef = ref.child('user-rooms').child(user.$id),
+      userRoomsRef = ref.child('user-rooms').child(user.user_id),
       roomsRef = firebase.database().ref('/rooms'),
       userRoom = new pushSubscribe(userRoomsRef);// Subscribes the current user to push notifications for all of their user-rooms
   return {
@@ -26,11 +26,16 @@ Pta.factory('Rooms', [
         users.push(user);
         angular.forEach(users, function(value, key){
           chatter = {};
-          chatter.id = value.user_id;
+          if(value.$id){
+            chatter.id = value.$id;
+          } else {
+            chatter.id = value.user_id;
+          }
+          
           chatter.email = value.email;
           chatter.name = value.name;
           chatter.pic = value.pic;
-          if(chatter.id === user.$id){
+          if(chatter.id === user.user_id){
             room.owner = chatter.id;
           }
           room.chatters.push(chatter);

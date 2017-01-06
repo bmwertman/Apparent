@@ -9,7 +9,7 @@ Pta.controller('ParentCtrl', [
   function($scope, userService, $state, userFilter, $firebaseArray, $cordovaEmailComposer, Rooms) {
     var user = userService.getUser(),
         users = firebase.database().ref('users'),
-        userRoomsRef = firebase.database().ref('user-rooms').child(user.$id),
+        userRoomsRef = firebase.database().ref('user-rooms').child(user.user_id),
         userRooms = $firebaseArray(userRoomsRef);
         school = $firebaseArray(users.orderByChild('school').equalTo(user.school));
     school.$loaded()
@@ -59,7 +59,7 @@ Pta.controller('ParentCtrl', [
     }
 
     $scope.openChatRoom = function (chatter) {
-      var roomId = user.$id + chatter.$id;
+      var roomId = user.user_id + chatter.$id;
           chattersArr = [];
           id;
       if(userRooms.$indexFor(roomId) >= 0){

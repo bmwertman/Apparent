@@ -38,7 +38,7 @@ Pta.controller('VolunteerCtrl', [
     // Only used to create or open one-on-one rooms.
     // Group chat rooms are created with their corresponding event
     $scope.createRoom = function(volunteers, event, volunteer) {
-        var newRoomId = $scope.user.$id + volunteer.user.$id,
+        var newRoomId = $scope.user.user_id + volunteer.user.$id,
             eventRooms = $firebaseArray(eventRoomsRef.child(event.id)),
             volunteersArr = [],
             id;

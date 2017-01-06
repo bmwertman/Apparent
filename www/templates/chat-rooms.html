@@ -8,7 +8,7 @@
                       type="item-text-wrap"
                       ng-click="openChatRoom(room.$id)">
                 <div class="room-pic-wrapper">
-                    <div ng-repeat-start="chatter in room.chatters | toArray | filter: {id: '!' + user.$id} | limitTo: 4 track by $index"
+                    <div ng-repeat-start="chatter in room.chatters | toArray | filter: {id: '!' + user.user_id} | limitTo: 4 track by $index"
                          ng-class="room.chatters.length > 1 ? 'multi-pic' : 'single-pic'"
                          ng-if="chatter.pic.length > 1">
                         <img class="chatter-pic"

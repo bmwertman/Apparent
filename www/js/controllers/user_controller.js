@@ -35,7 +35,7 @@ Pta.controller('UserCtrl', [
 
     userObj.$bindTo($scope, "user");
     cssWarp(childWarp);
-   
+
     $scope.grades = { 'K': 0, '1st': 1, '2nd': 2, '3rd': 3, '4th': 4, '5th': 5, '6th': 6, '7th': 7, '8th': 8, '9th': 9, '10th': 10, '11th': 11, '12th': 12, '?': 13 };
 
     function setSchoolName(schoolId){
@@ -55,50 +55,51 @@ Pta.controller('UserCtrl', [
     //handle submits
     $scope.editSubmit = function(modelValue, prop){
       var userId = user.user_id,
-          schools = $firebaseArray(schoolsRef),
           obj = {};
       if(!prop && modelValue){// We're adding a school
-        var school = schools.$getRecord(modelValue['NCESSCH']);
-        if(school){// If the school is already there
-          obj['school'] = modelValue['NCESSCH'];
-        } else {
-          angular.forEach(modelValue, function(value, key){
-            switch(key){
-              case "SCHNAM09":
-                obj['name'] = value;
-                break;
-              case "PHONE09":
-                obj['phone'] = value;
-                break;
-              case "MSTREE09":
-                obj['street_address'] = value;
-                break;
-              case "MCITY09":
-                obj['city'] = value;
-                break;
-              case "MSTATE09":
-                obj['state'] = value;
-                break;
-              case "MZIP09":
-                obj['zip'] = value;
-                break;
-              case "LATCOD09":
-                obj['lat'] = value;
-                break;
-              case "LONCOD09":
-                obj['lon'] = value;
-                break;
-            }
-          });
-          // This is the first user to add themselves to this school
-          // and by default are set as an admin
-          user.isAdmin = true;
-          $rootScope.isAdmin = true;
-        }
-        schoolsRef.child(modelValue['NCESSCH']).set(obj);
-        user.school = modelValue['NCESSCH'];
-        userRef.set(user);
-        setSchoolName(modelValue['NCESSCH']);
+        $firebaseArray(schoolsRef)
+        .$loaded()
+        .then(function(schools){
+          var school = schools.$getRecord(modelValue['NCESSCH']);
+          if(!school){// If this is the first user at this school
+            angular.forEach(modelValue, function(value, key){
+              switch(key){
+                case "SCHNAM09":
+                  obj['name'] = value;
+                  break;
+                case "PHONE09":
+                  obj['phone'] = value;
+                  break;
+                case "MSTREE09":
+                  obj['street_address'] = value;
+                  break;
+                case "MCITY09":
+                  obj['city'] = value;
+                  break;
+                case "MSTATE09":
+                  obj['state'] = value;
+                  break;
+                case "MZIP09":
+                  obj['zip'] = value;
+                  break;
+                case "LATCOD09":
+                  obj['lat'] = value;
+                  break;
+                case "LONCOD09":
+                  obj['lon'] = value;
+                  break;
+              }
+            });
+            schoolsRef.child(modelValue['NCESSCH']).set(obj);
+            // Make them the default admin
+            user.isAdmin = true;
+            $rootScope.isAdmin = true;
+          }
+          user.school = modelValue['NCESSCH'];
+          userRef.set(user);
+          userService.setUser(user);
+          setSchoolName(modelValue['NCESSCH']);
+        });
       } else if(modelValue) {
         user[prop] = modelValue;
         userRef.set(user);

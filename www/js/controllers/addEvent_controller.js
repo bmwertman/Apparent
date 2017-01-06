@@ -78,7 +78,7 @@ Pta.controller('AddEventCtrl', [
       var roomId = $scope.selectedEvent.$id + '-group',
           eventRoomRef = ref.child('event-rooms').child($scope.selectedEvent.$id).child(roomId),
           eventRoom = $firebaseObject(eventRoomRef),
-          chatter = { email: user.email, id: user.$id, name: user.name, pic: user.pic },
+          chatter = { email: user.email, id: user.user_id, name: user.name, pic: user.pic },
           newChatterKey = eventRoomRef.child('chatters').push().key,
           updates = {};
       // Subscribe the user to push notifications for this room
@@ -92,9 +92,9 @@ Pta.controller('AddEventCtrl', [
         eventRoom.$loaded().then(function(eventRoom){
           var updates = {};
           angular.forEach(eventRoom.chatters, function(currentChatter, chatterKey){
-            var newChatter = { email: user.email, id: user.$id, name: user.name, pic: user.pic };
+            var newChatter = { email: user.email, id: user.user_id, name: user.name, pic: user.pic };
             // Updates the current volunteers' & event organizer's user-rooms w/ the new chatter/new volunteer
-            if(currentChatter.id !== user.$id){ // This isn't the new chatter/new volunteer
+            if(currentChatter.id !== user.user_id){ // This isn't the new chatter/new volunteer
               updates['/user-rooms/' + currentChatter.id + '/' + roomId + '/chatters/' + newChatterKey ] = newChatter;
             }
           });
@@ -106,7 +106,7 @@ Pta.controller('AddEventCtrl', [
           if(eventRoom.title){
             newEventRoom.title = eventRoom.title;
           }
-          updates['/user-rooms/' + user.$id + '/' + roomId] = newEventRoom;
+          updates['/user-rooms/' + user.user_id + '/' + roomId] = newEventRoom;
 
           ref.update(updates);
         });

@@ -20,7 +20,7 @@
             <h4>No messages in this room. Send a message to get the conversation started.</h4>
         </div>
         <div ng-repeat="chat in chats"
-             ng-class="{'user': chat.userId === user.$id}"
+             ng-class="{'user': chat.userId === user.user_id}"
              class="messages">
             <div class="chatter-pic-wrapper">
                 <img class="chatter-pic single-pic"
@@ -35,7 +35,7 @@
             <div class="message">
                 <span>{{ chat.message }}</span>
             </div>
-            <div ng-class="{'user-time': chat.userId === user.$id, 'time': chat.userId !== user.$id}">
+            <div ng-class="{'user-time': chat.userId === user.user_id, 'time': chat.userId !== user.user_id}">
                 {{chat.createdAt | formatDate }}
             </div>
         </div>

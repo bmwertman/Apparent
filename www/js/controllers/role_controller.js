@@ -112,7 +112,7 @@ Pta.controller('RoleCtrl', [
     if($localstorage.getObject('roleEditStart')){
       $localstorage.remove('roleEditStart');
     }
-    var newAdminRef = 'users/' + user.$id + '/isAdmin',
+    var newAdminRef = 'users/' + user.user_id + '/isAdmin',
         duplicates = 0;
         updates = {};
     updates[newAdminRef] = true;
@@ -135,7 +135,7 @@ Pta.controller('RoleCtrl', [
               delete role.$priority;
               // Check if the user being removed holds more than one role 
               for (var i = roles.length - 1; i >= 0; i--) {
-                if(roles[i].user_id === user.$id){
+                if(roles[i].user_id === user.user_id){
                   duplicates++;
                 }
               }
@@ -146,7 +146,7 @@ Pta.controller('RoleCtrl', [
               ref.update(updates);
               // Undo the user swap in the roles $firebaseArray
               var keys = roles.map(function(e) { return e.$id; }),
-                  indexOfKey = roles.map(function(e) { return e.user_id; }).indexOf(user.$id);
+                  indexOfKey = roles.map(function(e) { return e.user_id; }).indexOf(user.user_id);
               roles.$remove(indexOfKey);
               roles.$add(role);
               $localstorage.remove('savedRole');
@@ -167,7 +167,7 @@ Pta.controller('RoleCtrl', [
       ref.update(updates);
       rolesRef.child(role.$id).update({
         user_name: user.name,
-        user_id: user.$id,
+        user_id: user.user_id,
         user_pic: user.pic
       });
       $timeout(function(){// Hide the action sheet and cleanup localstorage items related to this change
@@ -179,7 +179,7 @@ Pta.controller('RoleCtrl', [
       ref.update(updates);
       rolesRef.child(role.$id).update({
         user_name: user.name,
-        user_id: user.$id,
+        user_id: user.user_id,
         user_pic: user.pic
       });
     }

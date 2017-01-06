@@ -9,7 +9,7 @@
   </div>
   <ion-content class="has-subheader" lazy-scroll>
     <ion-list class="parent-list">
-      <ion-item class="parent cf" ng-repeat="parent in parents">
+      <ion-item class="parent cf" ng-repeat="parent in parents | filter: {$id: '!' + user.user_id}">
         <div class="parent-wrapper">
           <h3 class="parent-name">
             {{parent.name}}
