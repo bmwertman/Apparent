@@ -5,12 +5,16 @@ Pta.controller('HomeCtrl', [
   '$timeout',
   '$state',
   '$ionicNavBarDelegate',
-  function($scope, userService, $firebaseObject, $timeout, $state, $ionicNavBarDelegate) {
+  'Auth',
+  function($scope, userService, $firebaseObject, $timeout, $state, $ionicNavBarDelegate, Auth) {
     
     $ionicNavBarDelegate.align('center');
 
     window.screen.lockOrientation('portrait');
 
+    $scope.logout = function(){
+      Auth.logout();
+    }
     $scope.user = userService.getUser();
     if($scope.user.school){
       var school = $firebaseObject(firebase.database().ref('schools').child($scope.user.school));

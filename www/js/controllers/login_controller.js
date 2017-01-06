@@ -31,6 +31,7 @@ Pta.controller('LoginCtrl', [
     $scope.errorMessage = null;
     $ionicLoading.show({ template: '<ion-spinner></ion-spinner>'});
     Auth.login($scope.credentials);
+    $scope.credentials = {};
     $ionicLoading.hide();
   };
 
