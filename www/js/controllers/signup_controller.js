@@ -27,18 +27,14 @@ Pta.controller('SignupCtrl', [
         $localstorage.set('email', $scope.newUser.email);
         $localstorage.set('password', $scope.newUser.password);
       }
-      var device = $cordovaDevice.getDevice(),
-          userProfile = { name: $scope.newUser.name,
+      var userProfile = { name: $scope.newUser.name,
                           email: $scope.newUser.email,
                           user_id: authData.uid,
                           isAdmin: false 
                         },
           ref = firebase.database().ref(),
-          devicesObj = $firebaseObject(ref.child('devices')),
           usersRef = ref.child('users').child(authData.uid);
       usersRef.update(userProfile);
-      devicesObj[device.uuid] = authData.uid;
-      devicesObj.$save();
       userService.setUser(userProfile);
       $ionicLoading.hide();
       $state.go('app.profile', { user: userProfile });

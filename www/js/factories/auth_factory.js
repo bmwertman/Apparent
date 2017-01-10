@@ -40,7 +40,7 @@ Pta.factory('Auth', [
       $localstorage.remove('password');
       authObj.$signOut();
     },
-    onAuth: function(callback, state, roomId) {
+    onAuth: function() {
       authObj.$onAuthStateChanged(function(authData) {
         if (authData) {
           var userRef = firebase.database().ref('users').child(authData.uid),
@@ -55,11 +55,6 @@ Pta.factory('Auth', [
           userRef.once("value")
           .then(function(profile){
             userService.setUser(profile.val());
-            if(callback){
-              $timeout(function(){
-                callback();
-              }, 2000);
-            }
             if (profile.val().isAdmin) {
               $rootScope.isAdmin = true;
             } else {
@@ -73,9 +68,7 @@ Pta.factory('Auth', [
               }
             }
             userIsAdmin.$watch(adminReset);
-            if(roomId){
-              $state.go(state, {roomId: roomId});
-            } else if(!profile.val().school){
+            if(!profile.val().school){
               $state.go('app.profile');
             } else {
               $state.go('app.home');

@@ -1719,7 +1719,7 @@ ion-content.has-tall-header{
   }
 }
 
-#queue{
+div#queue{
   position: absolute;
   right: 0;
   top: 50%;
@@ -1728,8 +1728,16 @@ ion-content.has-tall-header{
   .chat-notification{
     width: 50px;
     height: 50px;
-    display:inline-block;
+    display: inline-block;
     border-radius: 50%;
+  }
+  .initial{
+    background-color: $positive;
+    color: $fontColor;
+    text-align: center;
+    font-size: 34px;
+    font-weight: bold;
+    line-height: 50px;
   }
 }
 

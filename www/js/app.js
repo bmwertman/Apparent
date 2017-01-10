@@ -26,7 +26,7 @@ var Pta = angular.module('pta', [
 // .constant('applicationId', '125323192420')
 // .constant('gapiApiKey', 'AIzaSyCi2ojTUERxZyYdfpgQOTdVNKAKAZtkwU0')
 // .constant('gapiClientId', '125323192420-c2nscbgoel9d0m7jv400dcfhfmtomac2.apps.googleusercontent.com')
-.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, userService, $cordovaPushV5, $cordovaDevice, $ionicPopup) {
+.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, userService, $cordovaPushV5, $cordovaDevice, $ionicPopup, $timeout) {
   // hide xeditable cancel button
   editableThemes['default'].cancelTpl = '<button type="button" class="btn btn-default" style="display:none">';
   editableThemes['default'].submitTpl = '<button type="submit" class="xeditable-submit fa fa-pencil-square-o"></button>';
@@ -41,7 +41,7 @@ var Pta = angular.module('pta', [
       "ios": {
           "senderID": "165149993214",
           "alert": true,
-          "sound": true,
+          "sound": true, 
           "vibration": true,
           "badge": true,
           "gcmSandbox": "true"
@@ -70,7 +70,7 @@ var Pta = angular.module('pta', [
       $rootScope.queuedChatters.splice(chatterIndex, 1);
       angular.element(e.currentTarget).remove();
       $state.go(chatState, {roomId: chatRmId});
-    }
+    };
 
     $rootScope.notificationLaunch = false;
     window.inlineReply = function(data){
@@ -79,7 +79,7 @@ var Pta = angular.module('pta', [
         Auth.onAuth();
         Auth.login(credentials, data.additionalData.state, data.additionalData.roomId);// We're using inline reply for chat
       } 
-    }
+    };
 
     // triggered every time notification received
     $rootScope.$on('$cordovaPushV5:notificationReceived',function(event, notification){
@@ -88,50 +88,54 @@ var Pta = angular.module('pta', [
       if(data.sender_imgUrl !== user.pic && data.foreground){// Make sure the user isn't getting notified about their own message
         //Notification was received in foreground. Check if the user is already in the room
         if(!$state.is(data.state, { roomId: data.roomId })){
-          var queue = document.getElementById('queue');
+          var queue = document.getElementById('queue'),
+              imgTag = angular.element(document.createElement('img')),
+              divTag = angular.element(document.createElement('div')),
+              chatterIcon = angular.element(document.createElement('div')),
+              body = angular.element(document.getElementsByTagName('body')[0]);
+              // messageCount = angular.element(document.createElement('span'));
           if(!queue){ // This is the first queued chatter
-            var body = angular.element(document.getElementsByTagName('body')[0]),
-                messageCount = angular.element(document.createElement('span')),
-                imgTag = angular.element(document.createElement('img')),
-                divTag = angular.element(document.createElement('div')),
-                remove = angular.element(document.createElement('div')),
-                iconBackground = angular.element(document.createElement('div')),
-                queue = angular.element(document.createElement('div'));
-            if(data.sender_imgUrl.length > 1){
-              imgTag.attr({
-                'ng-repeat':'chatter in queuedChatters track by $index',
-                src: data.sender_imgUrl,
-                'dragula-model':'queuedChatters',
-                class: 'chat-notification',
-                'ng-click': 'goToChat($event, chatter.state, chatter.roomId)'
-              });
-              queue.append(imgTag);
-            } else {
-              divTag.html(data.sender_imgUrl);
-              divTag.attr({
-                'ng-repeat':'chatter in queuedChatters track by $index',
-                'dragula-model':'queuedChatters',
-                class: 'chat-notification',
-                'ng-click': 'goToChat($event, chatter.state, chatter.roomId)'
-              });
-            }
+            var remove = angular.element(document.createElement('div')),
+            iconBackground = angular.element(document.createElement('div'));
+            queue = angular.element(document.createElement('div'));
+            queue.attr({
+              id: 'queue',
+              dragula: '"chatter-bag"',
+              'dragula-model': 'queueBag'
+            });
             remove.attr({ 
               id:'remove-notification',
               dragula: '"chatter-bag"',
               'dragula-model': 'removeBag'
             });
             iconBackground.attr({ class: 'icon-background icon ion-close-circled' });
-            remove.append(iconBackground);
-            queue.attr({
-              id: 'queue',
-              dragula: '"chatter-bag"',
-              'dragula-model': 'queueBag'
+            imgTag.attr({
+              'ng-if': "chatter.sender_imgUrl.length > 1",
+              src: data.sender_imgUrl,
+              class: 'chat-notification'
             });
+            divTag.html(data.sender_imgUrl);
+            divTag.attr({
+              'ng-if': "chatter.sender_imgUrl.length === 1",
+              class: 'chat-notification initial'
+            });
+            chatterIcon.attr({
+              'style': "display:inline-block;",
+              'dragula-model':'queuedChatters',
+              'ng-repeat':"chatter in queuedChatters track by $index",
+              'ng-click': 'goToChat($event, chatter.state, chatter.roomId)'
+            });
+            chatterIcon.append(imgTag);
+            chatterIcon.append(divTag);
+            queue.append(chatterIcon);
             body.append(queue);
+            remove.append(iconBackground);
             body.append(remove);
             $compile(queue)($rootScope);
             $compile(remove)($rootScope);
             $rootScope.removeDrawer = angular.element(document.getElementById('remove-notification'));
+          } else {
+            queue = angular.element(document.getElementById('queue'));
           }
           if($rootScope.queuedChatters.length > 0){
             for (var i = $rootScope.queuedChatters.length - 1; i >= 0; i--) {
@@ -144,7 +148,9 @@ var Pta = angular.module('pta', [
           } else {
             $rootScope.queuedChatters.push(data);
           }
-          $rootScope.$apply();
+          if(!$rootScope.$$phase){
+            $rootScope.$apply();
+          }    
         } 
       } else {
         //Notification was received on device tray and tapped by the user.
@@ -174,7 +180,7 @@ var Pta = angular.module('pta', [
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
-      return StatusBar.hide()
+      return StatusBar.hide();
     }
 
     $rootScope.$on('chatter-bag.drop', function(e, el){
@@ -211,7 +217,7 @@ var Pta = angular.module('pta', [
       $rootScope.$broadcast("comeHome");
       $state.go('app.rooms');
     }
-  }
+  };
 
   $rootScope.logout = function() {
     Auth.logout(); 

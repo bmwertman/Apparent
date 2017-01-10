@@ -11126,17 +11126,24 @@ ion-content.has-tall-header {
     height: 30px;
     text-align: left; }
 
-#queue {
+div#queue {
   position: absolute;
   right: 0;
   top: 50%;
   width: 60px;
   z-index: 99999999; }
-  #queue .chat-notification {
+  div#queue .chat-notification {
     width: 50px;
     height: 50px;
     display: inline-block;
     border-radius: 50%; }
+  div#queue .initial {
+    background-color: #B71C1C;
+    color: snow;
+    text-align: center;
+    font-size: 34px;
+    font-weight: bold;
+    line-height: 50px; }
 
 .chat-notification.activated.gu-mirror {
   width: 100px;

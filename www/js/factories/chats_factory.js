@@ -42,10 +42,14 @@ Pta.factory('Chats', [
         send: function (sender, message) {
             if (sender && message) {
                 var chatMessage = {
-                    userId: sender.$id,
                     from: sender.name,
                     message: message,
                     createdAt: firebase.database.ServerValue.TIMESTAMP
+                }
+                if(sender.$id){
+                    chatMessage.userId = sender.$id;
+                } else {
+                    chatMessage.userId = sender.user_id;
                 }
                 chats.$loaded()
                 .then(function(){
