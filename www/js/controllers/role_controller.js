@@ -7,57 +7,42 @@ Pta.controller('RoleCtrl', [
   '$localstorage',
   '$ionicActionSheet',
   '$timeout',
-  function ($scope, userService, $ionicPopup, $firebaseArray, userFilter, $localstorage, $ionicActionSheet, $timeout) {
+  '$filter',
+  function ($scope, userService, $ionicPopup, $firebaseArray, userFilter, $localstorage, $ionicActionSheet, $timeout, $filter) {
   $scope.user = userService.getUser();  
   $localstorage.remove('roleEditStart');
 
-  var ref = firebase.database().ref(),
-      rolesRef = ref.child('roles/' + $scope.user.school),
-      roles = $firebaseArray(rolesRef),
+  var user = userService.getUser(),
+      ref = firebase.database().ref(),
+      userRoomsRef = firebase.database().ref('user-rooms').child(user.user_id),
+      userRooms = $firebaseArray(userRoomsRef),
       users = firebase.database().ref('users'),
-      parents = $firebaseArray(users.orderByChild('school').equalTo($scope.user.school)),
-      adminWarp = {
-        path:{ 
-            radius: 24,
-            angle: "185deg",
-            textPosition: "inside" 
-        },
-        css: "letter-spacing: 3px; font-weight: bold;",
-        targets:"#adminwarp",
-        align: "center",
-      };
-  cssWarp(adminWarp);
-
-  roles.$loaded()
-  .then(function(userRoles){
-    $scope.roles = userRoles;
-  });
+      parents = $firebaseArray(users.orderByChild('school').equalTo(user.school));
 
   parents.$loaded()
   .then(function(schoolParents){
-      $scope.schoolParents = schoolParents;
+    $scope.schoolParents = schoolParents;
+    $scope.boardmembers = $filter('filter')(schoolParents, {isAdmin: true});
   });
-
+  
   $scope.showOptions = false;
 
-  $scope.addRole = function(){
-    roles.$add({role_rank: "", title: "", user_name: "", user_id: ""});
-  }
-
   $scope.startRoleSearch = function(roleIndex){
-    if($scope.roles[roleIndex].user_id){
+    if(roleIndex && $scope.roles[roleIndex].user_id){
       $localstorage.setObject('roleEditStart', $scope.roles[roleIndex]);
       $scope.roleIndex = roleIndex;
     }
   }
 
   $scope.endRoleSearch = function(){
-    var role = $scope.roles[$scope.roleIndex],
-        storedRole = $localstorage.getObject('roleEditStart');
-    if(!angular.equals(role, storedRole) && role){
-      angular.forEach(storedRole, function(value, key){
-        role[key] = value
-      });
+    if($scope.roleIndex){
+      var role = $scope.roles[$scope.roleIndex],
+          storedRole = $localstorage.getObject('roleEditStart');
+      if(!angular.equals(role, storedRole) && role){
+        angular.forEach(storedRole, function(value, key){
+          role[key] = value
+        });
+      }
     }
   }
 
@@ -65,40 +50,61 @@ Pta.controller('RoleCtrl', [
     $scope.filteredParents = userFilter($scope.schoolParents, e.currentTarget.value);
   }
 
+  $scope.newRole = {};
+  $scope.newRoleTitle = function(){
+    if($scope.newRole.pic){
+      $scope.schoolParents.$save($scope.newRole);
+    } else {
+      var watchRole = $scope.$watch('newRole.pic', function(){
+        if($scope.newRole.pic){
+          $scope.schoolParents.$save($scope.newRole);// Update the selected parent's role
+          $scope.newRole = {};// Reset blank role
+          watchRole();// Unregister watch
+        }
+      });
+    }
+  }
+
   $scope.removeRole = function(role){
     var adminUpdate = {};
     adminUpdate['users/' + role.user_id + '/isAdmin'] = false;
-    if($scope.roles.length > 1){
-      if(role.title.length > 0){
-        var popupTitle = role.title + " Removed",
-        undoActionSheet = $ionicActionSheet.show({
-          buttons: [
-            {text: "<b>UNDO</b>"}
-          ],
-          titleText: popupTitle,
-          cssClass: 'undo-actionsheet',
-          buttonClicked: function(){
-            var role = $localstorage.getObject('savedRole');
-            delete role.$id;
-            delete role.$$hashKey;
-            delete role.$priority;
-            rolesRef.push(role);
-            adminUpdate['users/' + role.user_id + '/isAdmin'] = true;
-            ref.update(adminUpdate);
-            $localstorage.remove('savedRole');
-            return true;
-          }
-        });
-        ref.update(adminUpdate);
-        $localstorage.setObject('savedRole', role);
-        $scope.roles.$remove(role);
-        $timeout(function(){
-           undoActionSheet();
-           $localstorage.remove('savedRole');
-        }, 5000); 
-      } else {
-        $scope.roles.$remove(role);
+    adminUpdate['users/' + role.user_id + '/title'] = null;
+    if($scope.boardmembers.length > 1){
+      var runActionsheetCb = true,
+          popupTitle;
+      if(role.title){
+        popupTitle = role.title + " Removed";
+      } else if(role.name){
+        popupTitle = role.name + " Removed";
       }
+      var undoActionSheet = $ionicActionSheet.show({
+            buttons: [
+              {text: "<b>UNDO</b>"}
+            ],
+            titleText: popupTitle,
+            cssClass: 'undo-actionsheet',
+            buttonClicked: function(){
+              if(runActionsheetCb){
+                var role = $localstorage.getObject('savedRole');
+                adminUpdate['users/' + role.user_id + '/isAdmin'] = true;
+                adminUpdate['users/' + role.user_id + '/title'] = role.title;
+                ref.update(adminUpdate);
+                $localstorage.remove('savedRole');
+                runActionsheetCb = false;
+                return true;
+              }
+            }
+          });
+      $localstorage.setObject('savedRole', {
+        name: role.name, 
+        user_id: role.user_id,
+        title: role.title
+      });
+      ref.update(adminUpdate);
+      $timeout(function(){
+         undoActionSheet();
+         $localstorage.remove('savedRole');
+      }, 5000);  
     } else {
       var lastAdmin = $ionicPopup.alert({
         title: "This is the last admin on your account!",
@@ -112,76 +118,83 @@ Pta.controller('RoleCtrl', [
     if($localstorage.getObject('roleEditStart')){
       $localstorage.remove('roleEditStart');
     }
-    var newAdminRef = 'users/' + user.user_id + '/isAdmin',
-        duplicates = 0;
+    var duplicates = 0;
         updates = {};
-    updates[newAdminRef] = true;
-    if(role.user_id && role.user_id.length > 0){
-      $localstorage.setObject('savedRole', role);
+    updates['users/' + user.user_id + '/isAdmin'] = true;
+    if(role && role.user_id && role.user_id.length > 0){
+      var localstorageRole = {
+          name: role.name, 
+          user_id: role.user_id,
+        };
+      if(role.title){
+        updates['users/' + user.user_id + '/title'] = role.title;
+        localstorageRole.title = role.title;
+      }
+      $localstorage.setObject('savedRole', localstorageRole);
       $localstorage.setObject('savedUser', user);
-      var oldAdminRef = 'users/' + role.user_id + '/isAdmin',
+      var runActionsheetCb = true,
           undoActionSheet = $ionicActionSheet.show({// Show an action sheet to let the user undo changes
             buttons: [
               {text: "<b>UNDO</b>"}
             ],
-            titleText: "Replaced " + role.user_name + " with " + user.name + " as " + role.title,
+            titleText: "Replaced " + role.name + " with " + user.name + " as " + role.title,
             cssClass: 'undo-actionsheet',
             buttonClicked: function(){
-              duplicates = 0;
-              var role = $localstorage.getObject('savedRole'),
-                  user = $localstorage.getObject('savedUser');
-              delete role.$id;
-              delete role.$$hashKey;
-              delete role.$priority;
-              // Check if the user being removed holds more than one role 
-              for (var i = roles.length - 1; i >= 0; i--) {
-                if(roles[i].user_id === user.user_id){
-                  duplicates++;
+              if(runActionsheetCb){
+                duplicates = 0;
+                var role = $localstorage.getObject('savedRole'),
+                    user = $localstorage.getObject('savedUser');
+                // Check if the user being removed holds more than one role 
+                for (var i = $scope.boardmembers.length - 1; i >= 0; i--) {
+                  if($scope.boardmembers[i].user_id === user.user_id){
+                    duplicates++;
+                  }
                 }
+                if(duplicates < 2) { // If the user doesn't then set their isAdmin to false
+                  updates['users/' + user.user_id + '/isAdmin'] = false;
+                }
+                if(role.title){
+                  updates['users/' + role.user_id + '/title'] = role.title;
+                  updates['users/' + user.user_id + '/title'] = null;
+                }
+                updates['users/' + role.user_id + '/isAdmin'] = true;
+                ref.update(updates);
+                // Undo the user swap in the roles $firebaseArray
+                var keys = $scope.boardmembers.map(function(e) { return e.$id; }),
+                    indexOfKey = $scope.boardmembers.map(function(e) { return e.user_id; }).indexOf(user.user_id);
+                $scope.boardmembers.splice(indexOfKey, 1);
+                $scope.boardmembers.push(role);
+                $localstorage.remove('savedRole');
+                $localstorage.remove('savedUser');
+                runActionsheetCb = false;
+                return true;
               }
-              if(duplicates < 2) { // If the user doesn't then set their isAdmin to false
-                updates[newAdminRef] = false;
-              }
-              updates[oldAdminRef] = true;
-              ref.update(updates);
-              // Undo the user swap in the roles $firebaseArray
-              var keys = roles.map(function(e) { return e.$id; }),
-                  indexOfKey = roles.map(function(e) { return e.user_id; }).indexOf(user.user_id);
-              roles.$remove(indexOfKey);
-              roles.$add(role);
-              $localstorage.remove('savedRole');
-              $localstorage.remove('savedUser');
-              return true;
             }
           });
       // Check if the user being removed holds more than one role 
-      for (var i = roles.length - 1; i >= 0; i--) {
-        if(roles[i].user_id === role.user_id){
+      for (var i = $scope.boardmembers.length - 1; i >= 0; i--) {
+        if($scope.boardmembers[i].user_id === role.user_id){
           duplicates++;
         }
       }
       if(duplicates < 2) { // If the user doesn't then set their isAdmin to false
-        updates[oldAdminRef] = false;
+        updates['users/' + role.user_id + '/isAdmin'] = false;
       }
+      updates['users/' + role.user_id + '/title'] = null;
       //Add the replacement user for this role
       ref.update(updates);
-      rolesRef.child(role.$id).update({
-        user_name: user.name,
-        user_id: user.user_id,
-        user_pic: user.pic
-      });
+
       $timeout(function(){// Hide the action sheet and cleanup localstorage items related to this change
          undoActionSheet();
          $localstorage.remove('savedRole');
          $localstorage.remove('savedUser');
       }, 5000); 
     } else {// This is someone adding a new role, not a change
-      ref.update(updates);
-      rolesRef.child(role.$id).update({
-        user_name: user.name,
-        user_id: user.user_id,
-        user_pic: user.pic
-      });
+      user.isAdmin = true;
+      delete user.label;
+      $scope.schoolParents.$save(user);
+      $scope.boardmembers.push(user);
+      $scope.newRole = {};// Reset blank role
     }
   }
   

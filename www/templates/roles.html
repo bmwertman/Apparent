@@ -1,7 +1,7 @@
 <ion-view class="role-management"  hide-back-button="true">
   <ion-nav-title>Admin Roles</ion-nav-title>
   <ion-nav-buttons side="left" >
-    <button ng-if="$root.isAdmin && user.school" class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
+    <button ng-if="$root.isAdmin.$value && user.school" class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
   </ion-nav-buttons>
   <ion-nav-buttons side="right">
     <button class="button" ng-click="goHome()">
@@ -19,33 +19,32 @@
           </tr>
         </thead>
         <tbody id="role-tbody">
-          <tr class="role" ng-repeat="(roleIndex, role) in roles">
+          <tr class="role" ng-repeat="(roleIndex, role) in schoolParents | filter:{ isAdmin: true }">
             <td>
               <input type="text"
                      class="role-name"
-                     ng-blur="roles.$save(role)"
+                     ng-blur="schoolParents.$save(role)"
                      ng-model="role.title"
                      placeholder="ie President or Chair">
             </td>
             <td>
-              <div ng-if="role.user_pic.length > 1">
-                  <img class="role-pic"
-                       expire="{{30}}"
-                       ng-src="{{role.user_pic}}"
-                       ng-hide="showOptions">
-              </div>
+              <img ng-if="role.pic.length > 1"
+                   class="role-pic"
+                   expire="{{30}}"
+                   ng-src="{{role.pic}}"
+                   ng-hide="showOptions">
               <div class="role-pic user-initial"
-                   ng-if="role.user_pic.length === 1"
+                   ng-if="role.pic.length === 1"
                    ng-click="getImage()">
-                   {{ role.user_pic }}
+                   {{ role.pic }}
               </div>
               <input class="parent-search"
                       ng-keyup="filterParents($event)"
-                      ng-model="role.user_name"
+                      ng-model="role.name"
                       ng-focus="showOptions = true;startRoleSearch(roleIndex)"
                       ng-blur="showOptions = false" 
                       off-click-filter="'.options-wrapper'"
-                      off-click="endRoleSearch()"
+                      off-click="endRoleSearch(roleIndex)"
                       placeholder="Role assignee">
               <div ng-show="showOptions && filteredParents.length > 0"
                    class="options-wrapper">
@@ -71,14 +70,54 @@
               </a>
             </td>
           </tr>
+          <tr class="role">
+            <td>
+              <input type="text"
+                     class="role-name"
+                     ng-blur="newRoleTitle()"
+                     ng-model="newRole.title"
+                     placeholder="ie President or Chair">
+            </td>
+            <td>
+              <img ng-if="newRole.pic.length > 1"
+                   class="role-pic"
+                   expire="{{30}}"
+                   ng-src="{{newRole.pic}}"
+                   ng-hide="showOptions">
+              <div class="role-pic user-initial"
+                   ng-if="newRole.pic.length === 1"
+                   ng-click="getImage()">
+                   {{ newRole.pic }}
+              </div>
+              <input class="parent-search"
+                      ng-keyup="filterParents($event)"
+                      ng-model="newRole.name"
+                      ng-focus="showOptions = true;startRoleSearch(roleIndex)"
+                      ng-blur="showOptions = false" 
+                      off-click-filter="'.options-wrapper'"
+                      off-click="endRoleSearch(roleIndex)"
+                      placeholder="Role assignee">
+              <div ng-show="showOptions && filteredParents.length > 0"
+                   class="options-wrapper">
+                <div class="options"
+                     ng-repeat="(parentIndex, parent) in filteredParents | limitTo: 10"
+                     ng-click="confirmChange(parent, role, roles)">
+                  <img class="role-pic"
+                       ng-if="parent.pic.length > 1"
+                       expire="{{30}}"
+                       ng-src="{{parent.pic}}">
+                  <div class="role-pic user-initial"
+                       ng-if="parent.pic.length === 1">
+                       {{ parent.pic }}
+                  </div>
+                  <span class="parent-name">{{parent.name}}</span>
+                </div>
+              </div>
+            </td>
+            <td class="remove-role"></td>
+          </tr>
         </tbody>
       </table>
-      <a id="add-role"
-         class="add-button"
-         ng-click="addRole()">
-        <i class="icon ion-android-person-add"></i>
-        <div id="adminwarp">Admin</div>
-      </a>
     </div>
     <!-- <div class="note-wrapper cf">
       <h4 class="note-callout">Note:</h4>

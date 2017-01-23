@@ -20,7 +20,8 @@
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
     "ionic-plugin-keyboard",
-    "cordova-plugin-device"
+    "cordova-plugin-device",
+    "cordova-plugin-image-picker"
   ],
   "cordovaPlatforms": [
     "ios",

@@ -8,28 +8,20 @@ Pta.factory('Auth', [
    '$rootScope',
    '$timeout',
    '$ionicLoading',
-   '$cordovaDevice',
-  function($firebaseAuth, $firebaseObject, $state, userService, $localstorage, $rootScope, $timeout, $ionicLoading, $cordovaDevice){
-  var authObj = $firebaseAuth(),
-      device = $cordovaDevice.getDevice(),
-      ref = firebase.database().ref(),
-      devicesObj = $firebaseObject(ref.child('devices')),
-      devicesRef = ref.child('devices');
+  function($firebaseAuth, $firebaseObject, $state, userService, $localstorage, $rootScope, $timeout, $ionicLoading){
+  var authObj = $firebaseAuth();
 
   return {
     login: function(credentials, state, roomId) {
       var self = this;
+      self.onAuth();
       authObj.$signInWithEmailAndPassword(credentials.email, credentials.password)
       .then(function(authData){
-        if(ionic.Platform.isAndroid() || ionic.Platform.isIOS()){
-          $localstorage.set('email', credentials.email);
-          $localstorage.set('password', credentials.password);
+        if(!firebase.auth().currentUser.emailVerified){
+          self.logout();
         }
-        if(navigator.splashscreen){
-          self.onAuth(navigator.splashscreen.hide, state, roomId); 
-        } else {
-          self.onAuth($ionicLoading.hide, state, roomId);
-        }
+        $localstorage.set('email', credentials.email);
+        $localstorage.set('password', credentials.password);
       }).catch(function(error){
         $ionicLoading.hide();
         return error.message;
@@ -42,16 +34,18 @@ Pta.factory('Auth', [
     },
     onAuth: function() {
       authObj.$onAuthStateChanged(function(authData) {
+        $rootScope.$on('$stateChangeSuccess', function(){
+          if(navigator.splashscreen){
+            $timeout(function(){
+              navigator.splashscreen.hide();
+            });
+          }
+        });
+
         if (authData) {
           var userRef = firebase.database().ref('users').child(authData.uid),
               userIsAdmin = $firebaseObject(userRef.child('isAdmin'));
-          // Check if user is loggin in on a new device
-          devicesRef.once('value', function(snapshot) {
-            if (!snapshot.hasChild(device.uuid)) {
-              devicesObj[device.uuid] = authData.uid;
-              devicesObj.$save();
-            }
-          });
+          
           userRef.once("value")
           .then(function(profile){
             userService.setUser(profile.val());
@@ -60,23 +54,29 @@ Pta.factory('Auth', [
             } else {
               $rootScope.isAdmin = false;
             }
-            function adminReset(){
-              if($rootScope.isAdmin){
-                $rootScope.isAdmin = false;
-              } else {
-                $rootScope.isAdmin = true;
-              }
-            }
-            userIsAdmin.$watch(adminReset);
+
+            userIsAdmin.$bindTo($rootScope, "isAdmin");
+
             if(!profile.val().school){
               $state.go('app.profile');
+            } else if(!$localstorage.get('password')){
+              $state.go('login');
             } else {
               $state.go('app.home');
             }
           });
+        } else if($localstorage.get('emailSent')){
+          $state.go('verify');
+          authObj.$onAuthStateChanged(function(authData) {
+            var user = firebase.auth().currentUser
+            if(user && user.emailVerified){
+              // $localstorage.remove('emailSent');
+              $state.go('app.profile');
+            }
+          });
         } else {
-          $state.go('login');
-        }       
+          $state.go('signup');
+        }      
       });
     },
     createUser: function(email, password){

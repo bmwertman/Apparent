@@ -6,19 +6,8 @@ Pta.controller('LoginCtrl', [
   '$ionicLoading',
   'Auth',
   '$state',
-  '$cordovaDevice',
-  function($scope, $ionicModal, $ionicPopup, $timeout, $ionicLoading, Auth, $state, $cordovaDevice) {
-  var device = $cordovaDevice.getDevice(),
-      ref = firebase.database().ref(),
-      devicesRef = ref.child('devices');
-
-  // Presume new device is new user and send to signup page
-  devicesRef.once('value', function(snapshot) {
-    if (!snapshot.hasChild(device.uuid)) {
-      $state.go('signup');
-    }
-  });
-
+  function($scope, $ionicModal, $ionicPopup, $timeout, $ionicLoading, Auth, $state) {
+  
   $scope.openSignup = function(){
     $state.go('signup');
   }
@@ -64,10 +53,6 @@ Pta.controller('LoginCtrl', [
       ]
     });
   }
-  if(navigator.splashscreen){
-    navigator.splashscreen.hide();
-  }
-
 }]);
 // .directive('shakeThat', ['$animate', function($animate) {
 //   return {

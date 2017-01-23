@@ -4,9 +4,9 @@
  * provides you with the $firebase service which allows you to easily keep your $scope
  * variables in sync with your Firebase backend.
  *
- * AngularFire 2.1.0
+ * AngularFire 0.0.0
  * https://github.com/firebase/angularfire/
- * Date: 10/25/2016
+ * Date: 12/21/2016
  * License: MIT
  */
 (function(exports) {
@@ -211,10 +211,12 @@
      *
      * @param {boolean} rejectIfAuthDataIsNull Determines if the returned promise should be
      * resolved or rejected upon an unauthenticated client.
+     * @param {boolean} rejectIfEmailNotVerified Determines if the returned promise should be 
+     * resolved or rejected upon a client without a verified email address.
      * @return {Promise<Object>} A promise fulfilled with the client's authentication state or
      * rejected if the client is unauthenticated and rejectIfAuthDataIsNull is true.
      */
-    _routerMethodOnAuthPromise: function(rejectIfAuthDataIsNull) {
+    _routerMethodOnAuthPromise: function(rejectIfAuthDataIsNull, rejectIfEmailNotVerified) {
       var self = this;
 
       // wait for the initial auth state to resolve; on page load we have to request auth state
@@ -226,6 +228,9 @@
         var authData = self.getAuth(), res = null;
         if (rejectIfAuthDataIsNull && authData === null) {
           res = self._q.reject("AUTH_REQUIRED");
+        }
+        else if (rejectIfEmailNotVerified && !authData.emailVerified) {
+            res = self._q.reject("EMAIL_VERIFICATION_REQUIRED");
         }
         else {
           res = self._q.when(authData);
@@ -275,11 +280,13 @@
      * Utility method which can be used in a route's resolve() method to require that a route has
      * a logged in client.
      *
+     * @param {boolean} requireEmailVerification Determines if the route requires a client with a 
+     * verified email address.
      * @returns {Promise<Object>} A promise fulfilled with the client's current authentication
      * state or rejected if the client is not authenticated.
      */
-    requireSignIn: function() {
-      return this._routerMethodOnAuthPromise(true);
+    requireSignIn: function(requireEmailVerification) {
+      return this._routerMethodOnAuthPromise(true, requireEmailVerification);
     },
 
     /**
@@ -290,10 +297,9 @@
      * state, which will be null if the client is not authenticated.
      */
     waitForSignIn: function() {
-      return this._routerMethodOnAuthPromise(false);
+      return this._routerMethodOnAuthPromise(false, false);
     },
-
-
+	
     /*********************/
     /*  User Management  */
     /*********************/
@@ -1603,11 +1609,13 @@
         var isResolved = false;
         var def = $q.defer();
         var applyUpdate = $firebaseUtils.batch(function(snap) {
-          var changed = firebaseObject.$$updated(snap);
-          if( changed ) {
-            // notifies $watch listeners and
-            // updates $scope if bound to a variable
-            firebaseObject.$$notify();
+          if (firebaseObject) {
+            var changed = firebaseObject.$$updated(snap);
+            if( changed ) {
+              // notifies $watch listeners and
+              // updates $scope if bound to a variable
+              firebaseObject.$$notify();
+            }
           }
         });
         var error = $firebaseUtils.batch(function(err) {
@@ -2261,7 +2269,7 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
           /**
            * AngularFire version number.
            */
-          VERSION: '2.1.0',
+          VERSION: '0.0.0',
 
           allPromises: $q.all.bind($q)
         };

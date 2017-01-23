@@ -1,5 +1,5 @@
 var Pta = angular.module('pta', [
-  'ionic', 
+  'ionic',
   'swipe', 
   'ngCordova', 
   'ngAria', 
@@ -26,13 +26,36 @@ var Pta = angular.module('pta', [
 // .constant('applicationId', '125323192420')
 // .constant('gapiApiKey', 'AIzaSyCi2ojTUERxZyYdfpgQOTdVNKAKAZtkwU0')
 // .constant('gapiClientId', '125323192420-c2nscbgoel9d0m7jv400dcfhfmtomac2.apps.googleusercontent.com')
-.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, userService, $cordovaPushV5, $cordovaDevice, $ionicPopup, $timeout) {
+.run(function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, $cordovaPushV5, $cordovaDevice, $ionicPopup, $timeout, userService) {
   // hide xeditable cancel button
   editableThemes['default'].cancelTpl = '<button type="button" class="btn btn-default" style="display:none">';
   editableThemes['default'].submitTpl = '<button type="submit" class="xeditable-submit fa fa-pencil-square-o"></button>';
 
   $ionicPlatform.ready(function() {
-    var device = $cordovaDevice.getDevice();
+    var device = $cordovaDevice.getDevice(),
+        credentials = {
+          email: $localstorage.get('email'),
+          password: $localstorage.get('password')
+        };
+
+    if (!$rootScope.notificationLaunch && credentials.email && credentials.password) {
+      Auth.login(credentials);
+    }
+
+    if(ionic.Platform.isAndroid()){
+      $ionicPlatform.on('resume', function(){
+        if(firebase.auth().currentUser && !firebase.auth().currentUser.emailVerified){
+          navigator.app.loadUrl("file:///android_asset/www/index.html");
+        }
+      });
+    } else {
+      document.addEventListener('active', function(){
+        if(firebase.auth().currentUser && !firebase.auth().currentUser.emailVerified){
+          navigator.splashscreen.show();
+          window.location.reload();
+        }
+      });
+    }
     
     $cordovaPushV5.initialize({
       "android": {
@@ -87,7 +110,7 @@ var Pta = angular.module('pta', [
       var user = userService.getUser();
       if(data.sender_imgUrl !== user.pic && data.foreground){// Make sure the user isn't getting notified about their own message
         //Notification was received in foreground. Check if the user is already in the room
-        if(!$state.is(data.state, { roomId: data.roomId })){
+        if($rootScope.toParams === null || $rootScope.toParams.roomId !== data.roomId){
           var queue = document.getElementById('queue'),
               imgTag = angular.element(document.createElement('img')),
               divTag = angular.element(document.createElement('div')),
@@ -200,6 +223,7 @@ var Pta = angular.module('pta', [
     });
   });
 
+  
   $rootScope.goHome = function(){
     var user = userService.getUser();
     if(user.school && $state.current.name !== 'app.room'){
@@ -212,6 +236,7 @@ var Pta = angular.module('pta', [
         template: '<p>Please add your child\'s school to continue.</p>',
         okType: 'button-balanced'
       });
+      cordova.plugins.Keyboard.close();
       addYourSchool;
     } else {
       $rootScope.$broadcast("comeHome");
@@ -226,6 +251,14 @@ var Pta = angular.module('pta', [
   $rootScope.$on('$stateChangeSuccess', function(){
     if($rootScope.subject){
       delete $rootScope.subject;
+    }
+  });
+
+  $rootScope.$on('$stateChangeStart', function(e, toState, toParams){
+    if(toState.name === 'app.room'){
+      $rootScope.toParams = toParams;
+    } else {
+      $rootScope.toParams = null;
     }
   }); 
 
@@ -242,16 +275,6 @@ var Pta = angular.module('pta', [
         $state.go('login');
     }
   });
-  
-  var credentials = {
-    email: $localstorage.get('email'),
-    password: $localstorage.get('password')
-  };
-
-  if (!$rootScope.notificationLaunch && credentials.email && credentials.password) {
-    Auth.onAuth();
-    Auth.login(credentials);
-  }
 })
 .config([
   'stateHelperProvider',
@@ -384,6 +407,12 @@ var Pta = angular.module('pta', [
     controller : 'LoginCtrl'
   })
   .state({
+    name:'verify',
+    url:'verify-email',
+    templateUrl: 'templates/verify-email.html',
+    controller: 'EmailVerifyCtrl'
+  })
+  .state({
     name: 'signup',
     url: '/signup',
     templateUrl: 'templates/signup.html',
@@ -391,7 +420,7 @@ var Pta = angular.module('pta', [
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/login');
+  $urlRouterProvider.otherwise('/signup');
   $ionicConfigProvider.backButton.previousTitleText(false);
   $ionicConfigProvider.scrolling.jsScrolling(false);
 

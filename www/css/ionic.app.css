@@ -10094,6 +10094,59 @@ ion-content.has-tall-header {
 .bar .buttons span.back-text {
   display: none; }
 
+.verify .header {
+  width: 100%; }
+  .verify .header img.apparent {
+    width: 288px;
+    display: block;
+    margin: 10px auto;
+    position: relative; }
+
+.verify .email-verify {
+  top: 100px;
+  width: 80%;
+  margin-left: 10%; }
+  .verify .email-verify h3 {
+    margin-top: 30px;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center; }
+  .verify .email-verify .verify-body {
+    text-indent: 20px; }
+    .verify .email-verify .verify-body img {
+      width: 20px;
+      position: relative;
+      top: 4px;
+      left: 2px;
+      display: inline-block; }
+    .verify .email-verify .verify-body #sending {
+      position: absolute;
+      bottom: 60px;
+      left: 30px;
+      width: 93px;
+      height: 20px; }
+      .verify .email-verify .verify-body #sending ion-spinner {
+        position: relative;
+        bottom: 41px;
+        left: 47px; }
+        .verify .email-verify .verify-body #sending ion-spinner svg {
+          width: 45px;
+          height: 45px; }
+    .verify .email-verify .verify-body button {
+      display: block;
+      width: 200px;
+      margin: 20px auto; }
+  .verify .email-verify button {
+    margin: 30px auto;
+    width: 200px;
+    display: block; }
+
+.verify img {
+  display: block;
+  width: 100%;
+  position: fixed;
+  bottom: 0; }
+
 .landing .tall {
   color: snow;
   background-color: #B71C1C;
@@ -10288,19 +10341,18 @@ ion-content.has-tall-header {
       color: snow; }
     .board-members .list .board-member .boardmember-pic {
       border-radius: 50%;
-      width: 80%;
-      max-width: 200px;
+      width: 100px;
       display: block;
       margin: 0 auto; }
     .board-members .list .board-member .user-initial {
-      width: 76px;
-      height: 76px;
+      width: 100px;
+      height: 100px;
       background-color: snow;
       color: #B71C1C;
       text-align: center;
       font-weight: bold;
       font-size: 60px;
-      line-height: 80px;
+      line-height: 100px;
       padding-left: 4px; }
     .board-members .list .board-member .contact-btn {
       border-radius: 50%;
@@ -10315,7 +10367,7 @@ ion-content.has-tall-header {
       text-align: center;
       position: absolute;
       right: 6px;
-      bottom: 32px; }
+      bottom: 6px; }
     .board-members .list .board-member .name {
       text-align: center;
       margin-top: 10px;
@@ -10349,14 +10401,15 @@ ion-content.has-tall-header {
     overflow: hidden; }
   .role-management .role-table .role .role-pic {
     display: inline-block;
-    width: 40px;
+    width: 25px;
     border-radius: 50%;
     margin: 2px 0 2px 5px;
     vertical-align: middle; }
   .role-management .role-table .role .user-initial {
     color: snow;
     background-color: #B71C1C;
-    width: 20px;
+    width: 25px;
+    line-height: 25px;
     text-align: center; }
   .role-management .role-table .role .parent-search {
     width: calc(100% - 48px);
@@ -10364,19 +10417,17 @@ ion-content.has-tall-header {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden; }
-  .role-management .role-table .role .parent-search:focus {
-    margin-left: 45px; }
   .role-management .role-table .role .options-wrapper {
     position: absolute;
     background-color: white;
     width: calc(((100% - 60px)/2) + 58px);
     z-index: 1000;
-    margin-top: 12px;
+    margin-top: 9px;
     border: 1px solid gainsboro;
     padding-left: 5px; }
     .role-management .role-table .role .options-wrapper .options img {
       display: inline-block;
-      width: 40px;
+      width: 25px;
       border-radius: 50%;
       margin: 2px 0;
       vertical-align: middle; }
@@ -10544,7 +10595,8 @@ ion-content.has-tall-header {
     .signup-modal .header img.apparent {
       width: 288px;
       display: block;
-      margin: 10px auto; }
+      margin: 10px auto;
+      position: relative; }
   .signup-modal .signup {
     top: 110px;
     padding: 0; }
@@ -10564,9 +10616,11 @@ ion-content.has-tall-header {
       width: 80%;
       margin-left: 10%; }
       .signup-modal .signup form p {
-        margin: -20px 0 10px 9%;
+        margin: 0 0 10px 9%;
         width: 83%;
-        color: snow; }
+        color: snow;
+        clear: both;
+        display: block; }
       .signup-modal .signup form label {
         font-weight: bold;
         color: white;
@@ -10577,19 +10631,35 @@ ion-content.has-tall-header {
           margin-bottom: 7px;
           width: 84%;
           margin-left: 8%; }
+      .signup-modal .signup form label:nth-child(3) {
+        display: inline-block;
+        float: left;
+        width: 40%; }
+        .signup-modal .signup form label:nth-child(3) input {
+          margin: 0;
+          width: 100%; }
+      .signup-modal .signup form label:nth-child(4) {
+        display: inline-block;
+        float: left;
+        width: 42%;
+        margin: 0 0 7px 2%; }
+        .signup-modal .signup form label:nth-child(4) input {
+          margin: 0;
+          width: 100%; }
       .signup-modal .signup form input.submit {
-        margin: 0;
+        margin: 10px 0 8px 20%;
         font-size: 20px;
         font-weight: bold;
         background-color: #FF8F02;
         color: white;
-        width: 60%;
-        margin-left: 20%; }
+        width: 60%; }
     .signup-modal .signup form:nth-child(4) input {
       margin-bottom: 0; }
-    .signup-modal .signup img {
-      display: block;
-      width: 100%; }
+  .signup-modal img {
+    display: block;
+    width: 100%;
+    position: fixed;
+    bottom: 0; }
 
 .crop_img button, .crop_img a {
   margin: 20px auto;
@@ -10712,7 +10782,7 @@ ion-content.has-tall-header {
   left: 80%;
   box-shadow: 2px 1px 3px black;
   padding-top: 13px;
-  margin-top: 20px; }
+  z-index: 1000; }
   .profile #add-child .ion-android-person-add {
     color: snow;
     font-size: 30px;
@@ -10726,7 +10796,7 @@ ion-content.has-tall-header {
     left: 1px; }
 
 .profile .content-body {
-  bottom: 67px; }
+  bottom: 100px; }
   .profile .content-body .school-wrapper #school-display-name {
     text-align: center;
     font-size: 20px;
@@ -10887,16 +10957,22 @@ ion-content.has-tall-header {
           top: -3px;
           left: 0; }
 
-.profile .contact-info {
-  padding: 5px;
+.profile .footer-label {
+  bottom: 68px;
   background-color: #B71C1C;
-  height: 67px; }
-  .profile .contact-info h4 {
+  height: 30px;
+  z-index: 1000; }
+  .profile .footer-label h4.title {
     color: snow;
-    margin: 0;
-    font-size: 16px; }
+    line-height: 30px;
+    height: 30px;
+    margin-left: 50px; }
+
+.profile .contact-info {
+  padding: 0 10px;
+  background-color: #B71C1C;
+  height: 30px; }
   .profile .contact-info i.icon {
-    display: block;
     color: darkgray;
     font-size: 14px; }
     .profile .contact-info i.icon span {
@@ -10905,16 +10981,11 @@ ion-content.has-tall-header {
   .profile .contact-info #phone-type {
     color: snow; }
   .profile .contact-info .editable-wrap {
-    min-width: calc(50% - 10px);
-    float: left;
-    color: snow;
-    display: inline-block; }
+    color: snow; }
     .profile .contact-info .editable-wrap [type="email"] {
       -webkit-appearance: textfield; }
     .profile .contact-info .editable-wrap ::-webkit-input-placeholder {
       color: snow !important; }
-    .profile .contact-info .editable-wrap:last-child {
-      margin-left: 10px; }
     .profile .contact-info .editable-wrap .xeditable-submit {
       color: snow;
       margin: 0; }
@@ -10924,12 +10995,10 @@ ion-content.has-tall-header {
       background-color: #B71C1C;
       font-weight: bold; }
     .profile .contact-info .editable-wrap .ion-ios-telephone {
-      margin-left: 10px; }
+      margin-left: 2px; }
     .profile .contact-info .editable-wrap p {
       display: inline-block;
       color: snow; }
-      .profile .contact-info .editable-wrap p.tel {
-        margin-left: 10px; }
 
 .edit-children .child {
   border: 2px solid #2AD4FF;
@@ -11283,6 +11352,22 @@ div#queue {
 .has-subject .chat-room {
   top: 54px; }
 
+#chat-feed {
+  overflow-y: auto !important; }
+  #chat-feed .disable-user-behavior {
+    -webkit-user-select: auto !important;
+    -moz-user-select: auto !important;
+    -ms-user-select: auto !important;
+    user-select: auto !important;
+    -webkit-touch-callout: auto !important;
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-user-drag: auto !important;
+    -ms-touch-action: auto !important;
+    -ms-content-zooming: auto !important; }
+  #chat-feed .disable-pointer-events {
+    pointer-events: auto !important; }
+
 .chat-room {
   bottom: 90px; }
   .chat-room .no-messages {
@@ -11298,7 +11383,8 @@ div#queue {
     align-content: center !important;
     align-items: center !important;
     border: none;
-    width: calc(100% + 72px); }
+    width: calc(100% + 85px);
+    height: 42px; }
     .chat-room .messages .chatter-pic-wrapper {
       display: inline-block;
       width: 42px;
@@ -11325,17 +11411,17 @@ div#queue {
   .chat-room .time {
     flex: 0 1 auto !important;
     align-self: auto !important;
-    width: 72px !important;
+    width: 85px !important;
     text-align: center !important;
     padding: 0 !important; }
   .chat-room .messages.user .user-time {
     flex: 0 1 auto !important;
     align-self: auto !important;
-    width: 72px !important;
+    width: 85px !important;
     text-align: center !important;
     padding: 0 !important;
     position: relative;
-    right: -72px; }
+    right: -85px; }
   .chat-room .messages.user .chatter-pic-wrapper {
     display: none; }
   .chat-room .messages.user .message {
@@ -11822,4 +11908,20 @@ body div.drag-element.gu-mirror {
       white-space: initial;
       text-align: center;
       line-height: 18px;
-      display: inline-block; } }
+      display: inline-block; }
+  .signup-modal .signup form {
+    padding: 5px 0; }
+    .signup-modal .signup form label {
+      font-size: 11px; }
+      .signup-modal .signup form label:nth-child(3) {
+        width: 38%; }
+      .signup-modal .signup form label:nth-child(4) {
+        width: 44%;
+        margin-bottom: 15px; }
+      .signup-modal .signup form label input::-webkit-input-placeholder {
+        font-size: 11px;
+        margin-bottom: 3px;
+        width: 88%;
+        margin-left: 6%; }
+  .verify .email-verify h3 {
+    margin-top: 0; } }

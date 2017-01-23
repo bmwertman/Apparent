@@ -2,7 +2,9 @@
   <div class="header">
     <img class="apparent" src="img/apparent_v2.svg">
   </div>
-  <ion-content class="padding signup" has-subheader="true">
+  <ion-scroll class="padding signup" direction="y" style="right: 0;bottom: 0;left: 0;position: absolute;" has-subheader="true">
+  <!-- ion-scroll added for ion-content see https://github.com/driftyco/ionic/issues/4849 -->
+  <!-- <ion-content class="padding signup" has-subheader="true"> -->
     <p class="current-user">
       Already have an account?
       <a ui-sref="login"> Login</a>
@@ -18,13 +20,14 @@
         <input type="password" name="password" ng-model="newUser.password" placeholder="Password" required="true">
       </label>
       <label for="confirm">Confirm password
-        <input type="password" name="confirm" ng-model="confirm_password" placeholder="Confirm password" name"confirmField" match="user.password" match-ignore-empty="true" required="true">
+        <input type="password" name="confirm" ng-model="newUser.confirm_password" placeholder="Confirm password" name"confirmField" match="newUser.password" match-ignore-empty="true" required="true">
       </label>
       <!-- This displays user error messages (automatically generated from firebase) for login (like "The specified password is incorrect") -->
-      <p ng-if="errorMessage">{{ errorMessage }}</p>  
-      <div ng-show="signupForm.confirmField.$error.match">Passwords do not match</div>
+      <p ng-if="errorMessage && !signupForm.confirmField.$error.match">{{ errorMessage }}</p>  
+      <p ng-show="signupForm.confirmField.$error.match">Password does not match confirm password. Please try again.</p>
       <input type="submit" class="button button-block button-balanced submit">
     </form>
-    <img src="img/students.jpg">
-  </ion-content>
+  <!-- </ion-content> -->
+  </ion-scroll>
+  <img src="img/students.jpg">
 </ion-view>

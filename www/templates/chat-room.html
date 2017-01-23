@@ -1,4 +1,4 @@
-<ion-view ng-class="{'has-subject': subject}">
+<ion-view ng-class="{'has-subject': subject}" can-swipe-back="false">
     <ion-nav-back-button></ion-nav-back-button>
     <ion-nav-buttons side="right"></ion-nav-buttons>
     <ion-nav-title> 
@@ -10,8 +10,10 @@
         </div>
     </ion-nav-title> 
     <ion-content class="chat-room"
+                 id="chat-feed"
                  on-swipe-left="slide($event)"
-                 on-swipe-right="slide($event)">
+                 on-swipe-right="slide($event)"
+                 delegate-handle="chatFeed">
         <div ng-hide="chats" class="no-messages">
             <i class="icon ion-loading-c"></i> Loading Chats
         </div>
@@ -22,7 +24,8 @@
         <div ng-repeat="chat in chats"
              ng-class="{'user': chat.userId === user.user_id}"
              class="messages">
-            <div class="chatter-pic-wrapper">
+            <div class="chatter-pic-wrapper"
+                 ng-show="chat.userId !== chats[$index - 1].userId">
                 <img class="chatter-pic single-pic"
                      expire="{{30}}"
                      ng-src="{{chat.pic}}"
@@ -32,7 +35,8 @@
                      {{chat.pic}}
                 </div>
             </div>
-            <div class="message">
+            <div class="message"
+                 ng-style="chat.userId !== chats[$index - 1].userId ? {'margin-left': '0px'} : {'margin-left': '50px'}">
                 <span>{{ chat.message }}</span>
             </div>
             <div ng-class="{'user-time': chat.userId === user.user_id, 'time': chat.userId !== user.user_id}">

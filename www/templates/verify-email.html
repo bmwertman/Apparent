@@ -1,0 +1,25 @@
+<ion-view class="verify" hide-back-button=true>
+  <div class="header">
+    <img class="apparent" src="img/apparent_v2.svg">
+  </div>
+  <ion-content class="padding email-verify" scroll="false">
+    <h3>Verification email sent</h3>
+    <p>Hello,</p>
+    <p class='verify-body'>Please follow the link in the email sent to verify your email and get started.
+      <br>
+      <br>
+      Happy parenting,
+      <br>
+      <br>
+      <img src='img/apparent_logo.svg'> Apparent Support Team
+    </p>
+    <div id='sending' style='display:none;'>
+      <p>Sending</p>
+      <ion-spinner icon='dots' class='spinner-dark'></ion-spinner>
+    </div>
+    <button ng-click="resend()"class="button button-calm">
+      Resend
+    </button>
+  </ion-content>
+  <img src="img/students.jpg">
+</ion-view>

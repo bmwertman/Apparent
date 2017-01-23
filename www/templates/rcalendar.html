@@ -4,7 +4,7 @@
     <h4 class="calendar-subtitle">{{titleDate}}</h4>
   </ion-nav-title>
   <ion-nav-buttons side="left" >
-    <button ng-if="$root.isAdmin && user.school && calendarTitle === 'Calendar'" class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
+    <button ng-if="$root.isAdmin.$value && user.school && calendarTitle === 'Calendar'" class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
   </ion-nav-buttons>
   <ion-nav-buttons side="right">
     <button class="button"

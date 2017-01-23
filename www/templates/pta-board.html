@@ -5,17 +5,18 @@
     <ion-list class="board-members">
       <ion-item class="board-member" ng-repeat="boardmember in boardmembers">
         <h2 class="title">{{boardmember.title}}</h2>
-        <div ng-if="boardmember.user_pic.length > 1">
+        <div ng-if="boardmember.pic.length > 1">
             <img class="boardmember-pic"
                  expire="{{30}}"
-                 ng-src="{{boardmember.user_pic}}"
+                 ng-src="{{boardmember.pic}}"
                  ng-hide="showOptions">
         </div>
         <div class="boardmember-pic user-initial"
-             ng-if="boardmember.user_pic.length === 1">
-             {{ boardmember.user_pic }}
+             ng-if="boardmember.pic.length === 1">
+             {{ boardmember.pic }}
         </div>
         <a class="contact-btn"
+           ng-if="boardmember.user_id !== currentUser.user_id"
            ng-click="openChatRoom(boardmember.user_id)">
            <i class="icon ion-chatboxes"></i>
         </a>

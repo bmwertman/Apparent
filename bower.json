@@ -31,7 +31,7 @@
     "ng-cordova-oauth": "^0.2.10",
     "angular-elastic": "^2.5.1",
     "firebase": "^3.6.4",
-    "angularfire": "^2.1.0"
+    "angularfire": "^2.2.0"
   },
   "resolutions": {
     "angular-animate": "1.5.3",

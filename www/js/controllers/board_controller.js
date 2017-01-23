@@ -5,21 +5,21 @@ Pta.controller('BoardCtrl', [
   '$firebaseObject',
   '$state',
   'Rooms',
-  function ($scope, $firebaseArray, userService, $firebaseObject, $state, Rooms) {
+  '$filter',
+  function ($scope, $firebaseArray, userService, $firebaseObject, $state, Rooms, $filter) {
+        
     var user = userService.getUser(),
         ref = firebase.database().ref(),
-        boardmembers = ref.child('roles').child(user.school),
-        school = $firebaseObject(ref.child('schools').child(user.school)),
         userRoomsRef = firebase.database().ref('user-rooms').child(user.user_id),
-        userRooms = $firebaseArray(userRoomsRef);
-    school.$loaded(function(userSchool){
-      $scope.school = userSchool;
+        userRooms = $firebaseArray(userRoomsRef),
+        users = firebase.database().ref('users'),
+        school = $firebaseArray(users.orderByChild('school').equalTo(user.school));
+    school.$loaded()
+    .then(function(schoolParents){
+        $scope.boardmembers = $filter('filter')(schoolParents, {isAdmin: true});
     });
-    $firebaseArray(boardmembers)
-    .$loaded()
-    .then(function(boardmembers){
-      $scope.boardmembers = boardmembers;
-    });
+    
+    $scope.currentUser = user;
 
     $scope.openChatRoom = function (boardmemberId) {
       if(user.user_id !== boardmemberId){

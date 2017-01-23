@@ -8,11 +8,12 @@ Pta.controller('ChatCtrl', [
     '$http',
     '$ionicPlatform',
     '$localstorage',
-    function ($scope, Chats, $state, $timeout, userService, dateFilter, $http, $ionicPlatform, $localstorage) {
+    '$ionicScrollDelegate',
+    function ($scope, Chats, $state, $timeout, userService, dateFilter, $http, $ionicPlatform, $localstorage, $ionicScrollDelegate) {
     $scope.IM = { textMessage: "" };
     $scope.user =  userService.getUser();
     $scope.data = {};
-
+    
     $scope.shouldNotFocusOnBlur = function() {
         $focusTest.setFocusOnBlur(false);
     };
@@ -24,24 +25,24 @@ Pta.controller('ChatCtrl', [
         if(e.type === "swiperight"){
             times.css({
                 'transition': 'all 250ms ease-in-out',
-                'transform':'translate3D(72px, 0, 0)'});
+                'transform':'translate3D(85px, 0, 0)'});
             Usertimes.css({
                 'transition': 'all 250ms ease-in-out',
-                'transform':'translate3D(72px, 0, 0)'});
+                'transform':'translate3D(85px, 0, 0)'});
             userChats.css({
                 'transition': 'all 250ms ease-in-out',
-                'transform':'translate3D(72px, 0, 0)'});
+                'transform':'translate3D(85px, 0, 0)'});
             userChats.attr({'style': ''});
         } else {
             times.css({
                 'transition': 'all 250ms ease-in-out',
-                'transform':'translate3D(-72px, 0, 0)'});
+                'transform':'translate3D(-85px, 0, 0)'});
             Usertimes.css({
                 'transition': 'all 250ms ease-in-out',
-                'transform':'translate3D(-72px, 0, 0)'});
+                'transform':'translate3D(-85px, 0, 0)'});
             userChats.css({
                 'transition': 'all 250ms ease-in-out',
-                'transform':'translate3D(-72px, 0, 0)'});
+                'transform':'translate3D(-85px, 0, 0)'});
         }
     }
 
@@ -50,7 +51,29 @@ Pta.controller('ChatCtrl', [
     var selectedRoom = Chats.getSelectedRoomName(),
         pushRegId = $localstorage.get('registrationId'),
         chatters = $state.params.chatters,
-        platform;
+        chatsRef = Chats.all().$ref(),
+        platform,
+        chatFeed;
+
+    window.addEventListener('native.keyboardshow', keyboardShowHandler);
+
+    function keyboardShowHandler(e){
+        chatFeed = document.getElementById('chat-feed');
+        $ionicScrollDelegate.$getByHandle('chatFeed').scrollTo(0, chatFeed.scrollHeight + e.keyboardHeight, true);
+    }
+
+
+    // Start the chat feed at the bottom
+    $timeout(function(){
+       chatFeed = document.getElementById('chat-feed');
+       $ionicScrollDelegate.$getByHandle('chatFeed').scrollTo(0, chatFeed.scrollHeight, true);
+       // Scroll down on received chat
+       chatsRef.on('child_added', function(){
+        $timeout(function(){
+           $ionicScrollDelegate.$getByHandle('chatFeed').scrollTo(0, chatFeed.scrollHeight, true);  
+        });
+       });
+    });
 
     if(ionic.Platform.isIOS()){
         platform = "iOS";
@@ -96,7 +119,6 @@ Pta.controller('ChatCtrl', [
 
     $scope.sendMessage = function() {
         if($scope.IM.textMessage.length > 0){
-            console.log("Send chat clicked");
             $http({
                method: 'POST',
                url:'https://murmuring-fjord-75421.herokuapp.com/',
@@ -113,9 +135,10 @@ Pta.controller('ChatCtrl', [
                }
             })
             .then(function(res){
-                console.log("Node server POST response: " + res);
                 Chats.send($scope.user, $scope.IM.textMessage);
                 $scope.IM.textMessage = "";
+                chatFeed = document.getElementById('chat-feed');
+                $ionicScrollDelegate.$getByHandle('chatFeed').scrollTo(0, chatFeed.scrollHeight, true); 
             })
             .catch(function(err){
                 console.log("Node server POST error: " + err);

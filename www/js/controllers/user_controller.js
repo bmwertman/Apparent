@@ -13,7 +13,8 @@ Pta.controller('UserCtrl', [
   'userService',
   '$ionicHistory',
   '$rootScope',
-  function($scope, $ionicSideMenuDelegate, $ionicModal, $ionicPopup, $cordovaImagePicker, $filter, $timeout, $stateParams, $http, $firebaseArray, $firebaseObject, userService, $ionicHistory, $rootScope) {
+  'Auth',
+  function($scope, $ionicSideMenuDelegate, $ionicModal, $ionicPopup, $cordovaImagePicker, $filter, $timeout, $stateParams, $http, $firebaseArray, $firebaseObject, userService, $ionicHistory, $rootScope, Auth) {
     // Future work - Add child's current teacher to their parent's profile
     var user = userService.getUser(),
         ref = firebase.database().ref(),
@@ -38,6 +39,15 @@ Pta.controller('UserCtrl', [
 
     $scope.grades = { 'K': 0, '1st': 1, '2nd': 2, '3rd': 3, '4th': 4, '5th': 5, '6th': 6, '7th': 7, '8th': 8, '9th': 9, '10th': 10, '11th': 11, '12th': 12, '?': 13 };
 
+    // Hack fix to prevent multiple triggers of $onAuthStateChange from redirecting back to the verify view
+    var stateChangeListener = $rootScope.$on('$stateChangeStart', function(e, toState){
+      if(toState === 'verify'){
+        e.preventDefault();
+      } else {
+        stateChangeListener();
+      }
+    });
+
     function setSchoolName(schoolId){
       $firebaseObject(schoolsRef.child(schoolId))
       .$loaded()
@@ -46,7 +56,7 @@ Pta.controller('UserCtrl', [
         var schoolName = angular.element(document.getElementById('school-name'));// get the school name element
         $scope.getTextWidth(schoolName.attr('font'), school.name, schoolName);// Adjust the input's width to fit the school name
       });
-    };
+    }
 
     $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
       viewData.enableBack = true;
@@ -54,8 +64,7 @@ Pta.controller('UserCtrl', [
 
     //handle submits
     $scope.editSubmit = function(modelValue, prop){
-      var userId = user.user_id,
-          obj = {};
+      var obj = {};
       if(!prop && modelValue){// We're adding a school
         $firebaseArray(schoolsRef)
         .$loaded()
@@ -93,12 +102,19 @@ Pta.controller('UserCtrl', [
             schoolsRef.child(modelValue['NCESSCH']).set(obj);
             // Make them the default admin
             user.isAdmin = true;
-            $rootScope.isAdmin = true;
           }
           user.school = modelValue['NCESSCH'];
-          userRef.set(user);
-          userService.setUser(user);
-          setSchoolName(modelValue['NCESSCH']);
+          userRef.set(user)
+          .then(function(){
+            userService.setUser(user);
+            setSchoolName(modelValue['NCESSCH']);
+          })
+          .catch(function(error){
+            if(error.code === "PERMISSION_DENIED"){
+              Auth.verifyEmail();
+            }
+          });
+          
         });
       } else if(modelValue) {
         user[prop] = modelValue;
