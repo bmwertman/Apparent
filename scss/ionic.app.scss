@@ -1307,6 +1307,9 @@ ion-content.has-tall-header{
       left: 1px;
     }
   }
+  .content-body.has-tall-header{
+    top: 176px;
+  }
   .content-body{
     bottom: 100px;
     .school-wrapper{
@@ -1523,7 +1526,7 @@ ion-content.has-tall-header{
   .contact-info{
     padding: 0 10px;
     background-color: $positive;
-    height: 30px;
+    height: 100px;
 
     i.icon{
       color: $edit;

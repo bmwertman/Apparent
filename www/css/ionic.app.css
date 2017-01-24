@@ -10795,6 +10795,9 @@ ion-content.has-tall-header {
     bottom: 20px;
     left: 1px; }
 
+.profile .content-body.has-tall-header {
+  top: 176px; }
+
 .profile .content-body {
   bottom: 100px; }
   .profile .content-body .school-wrapper #school-display-name {
@@ -10971,7 +10974,7 @@ ion-content.has-tall-header {
 .profile .contact-info {
   padding: 0 10px;
   background-color: #B71C1C;
-  height: 30px; }
+  height: 100px; }
   .profile .contact-info i.icon {
     color: darkgray;
     font-size: 14px; }

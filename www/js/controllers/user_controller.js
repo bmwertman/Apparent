@@ -38,6 +38,41 @@ Pta.controller('UserCtrl', [
     cssWarp(childWarp);
 
     $scope.grades = { 'K': 0, '1st': 1, '2nd': 2, '3rd': 3, '4th': 4, '5th': 5, '6th': 6, '7th': 7, '8th': 8, '9th': 9, '10th': 10, '11th': 11, '12th': 12, '?': 13 };
+    $scope.showFooter = true;
+    $scope.showEmail = true;
+    $scope.showPhone = true;
+
+    cordova.plugins.Keyboard.disableScroll(false);
+    var footer = angular.element(document.getElementById('profile-footer'));
+    $scope.hideContact = function(contact){
+      footer.css('height', '40px');
+      if(contact === 'phone'){
+        $scope.showPhone = false
+      } else if(contact === 'email'){
+        $scope.showEmail = false;
+      } else {
+        $scope.showPhone = false;
+        $scope.showEmail = false;
+        footer.css('height', '0px');
+      }
+    }
+
+    window.addEventListener('native.keyboardshow', function() {
+      $scope.showFooter = false;
+      $timeout(function(){
+        $scope.$apply();
+      });
+    });
+
+    window.addEventListener('native.keyboardhide', function() {
+      $scope.showFooter = true;
+      $scope.showEmail = true;
+      $scope.showPhone = true;
+      footer.css('height', '100px');
+      $timeout(function(){
+        $scope.$apply();
+      });
+    });
 
     // Hack fix to prevent multiple triggers of $onAuthStateChange from redirecting back to the verify view
     var stateChangeListener = $rootScope.$on('$stateChangeStart', function(e, toState){

@@ -22,7 +22,7 @@
           editable-text="user.name"
           e-class="user-name"
           onhide="showEditIcon()"
-          e-ng-focus="hideEditIcon($event)" 
+          e-ng-focus="hideEditIcon($event);hideContact()" 
           e-placeholder="Enter your full name"
           onaftersave="editSubmit(user.name, 'name')">
           {{ user.name }}
@@ -34,7 +34,8 @@
     <i class="icon ion-android-person-add"></i>
     <div id="childwarp">Child</div>
   </a> 
-  <ion-content class="content-body has-tall-header has-footer padding">
+  <ion-content class="content-body has-tall-header has-footer padding"
+               overflow-scroll="false">
     <div class="school-wrapper">
       <div id="school-display-name"
            ng-if="!hideDisplayName"
@@ -112,7 +113,7 @@
                 editable-text="user.children[key].name"
                 e-class="user-name"
                 onhide="showEditIcon()"
-                e-ng-focus="hideEditIcon($event)"
+                e-ng-focus="hideEditIcon($event);hideContact()"
                 e-placeholder="Child's full name"
                 onaftersave="editSubmit(child.name, 'children/' + key + '/name')">
                 {{ child.name }}
@@ -123,30 +124,35 @@
       </div>
     </div>
   </ion-content>
-  <ion-footer-bar class="footer-label bar-subfooter">
-    <h4 class="title">Contact</h4>
-  </ion-footer-bar>
-  <ion-footer-bar class="contact-info footer-bar upper" style="bottom:40px; "keyboard-attach>
-    <div class="editable-wrap">
+  <div id="profile-footer"
+       class="contact-info footer-bar"
+       keyboard-attach>
+    <div class="footer-label bar-subfooter"
+                    ng-if="showFooter">
+      <h4 class="title">Contact</h4>
+    </div>
+    <div class="editable-wrap" 
+         ng-if="showEmail">
       <i class="icon ion-email"><span>EDIT</span></i>
       <p editable-email="user.email"
          e-class="user-email"
+         e-ng-focus="hideContact('phone')"
          onaftersave="editSubmit(user.email, 'email')">
         {{ user.email }}
       </p>
     </div>
-  </ion-footer-bar>
-  <ion-footer-bar class="contact-info footer-bar" style="background-size:0;height:40px;"keyboard-attach>
-    <div class="editable-wrap">
+    <div class="editable-wrap"
+         ng-if="showPhone">
       <i class="icon ion-ios-telephone"><span>EDIT</span></i>
       <p class="tel"
          editable-tel="user.phone"
          e-class="user-phone"
+         e-ng-focus="hideContact('email')"
          e-placeholder="Enter your phone number"
          onaftersave="editSubmit(user.phone, 'phone')">
         {{ user.phone || 'Enter your phone number' }}
       </p>
     </div>
-  </ion-footer-bar>
+  </div>
 </ion-view>
  
