@@ -28,6 +28,7 @@ var Pta = angular.module('pta', [
 // .constant('gapiClientId', '125323192420-c2nscbgoel9d0m7jv400dcfhfmtomac2.apps.googleusercontent.com')
 .run([
   '$ionicPlatform',
+  '$cordovaPushV5',
   '$rootScope',
   'Auth',
   'editableThemes',
@@ -36,12 +37,11 @@ var Pta = angular.module('pta', [
   '$http',
   '$state',
   '$compile',
-  '$cordovaPushV5',
   '$cordovaDevice',
   '$ionicPopup',
   '$timeout',
   'userService',
-  function($ionicPlatform, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, $cordovaPushV5, $cordovaDevice, $ionicPopup, $timeout, userService) {
+  function($ionicPlatform, $cordovaPushV5, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, $cordovaDevice, $ionicPopup, $timeout, userService) {
   // hide xeditable cancel button
   editableThemes['default'].cancelTpl = '<button type="button" class="btn btn-default" style="display:none">';
   editableThemes['default'].submitTpl = '<button type="submit" class="xeditable-submit fa fa-pencil-square-o"></button>';
