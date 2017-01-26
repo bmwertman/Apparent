@@ -47,8 +47,7 @@ var Pta = angular.module('pta', [
   editableThemes['default'].submitTpl = '<button type="submit" class="xeditable-submit fa fa-pencil-square-o"></button>';
 
   $ionicPlatform.ready(function() {
-    var device = $cordovaDevice.getDevice(),
-        credentials = {
+    var credentials = {
           email: $localstorage.get('email'),
           password: $localstorage.get('password')
         };
@@ -111,6 +110,7 @@ var Pta = angular.module('pta', [
     };
 
     $rootScope.notificationLaunch = false;
+    var device = $cordovaDevice.getDevice();
     window.inlineReply = function(data){
       if(parseFloat(device.version) < 7) { // Assumes Android OS
         $rootScope.notificationLaunch = true;
