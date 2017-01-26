@@ -1008,51 +1008,92 @@ ion-content.has-tall-header{
 }
 
 .login{
-  .card{
-    width: 280px;
-    margin: 40px auto;
-    background-color: $apparentBlue;
-    color: snow;
-    border: none;
-    border-radius: 5px;
-    box-shadow: 2px 2px 4px black;
-    label{
+  background-color: #f4f5ed;
+  .header{
+    width: 100%;
+    opacity: 0;
+    img.apparent{
+      width: 288px;
       display: block;
+      margin: 0 auto;
+      padding: 10px;
+      position: relative;
+    }
+  }
+  ion-content{
+    padding: 0;
+    top: 100px;
+    .current-user{
+      color: $apparentBlue;
+      width: 100%;
       text-align: center;
-      font-size: 18px;
-      font-weight: bold;
+      a{
+        text-decoration: none;
+        color: $apparentOrange;
+        font-weight: bold;
+      }
     }
-    input{
-      width: 260px;
-      border-radius: 2px;
-      padding-left: 5px;
-      margin-bottom: 15px;
-    }
-    .forgot-password{
+    .card{
+      width: 280px;
+      margin: 15px auto;
+      background-color: $apparentBlue;
       color: snow;
+      border: none;
+      border-radius: 5px;
+      box-shadow: 2px 2px 4px black;
+      .form-group{
+        margin-top: 10px;
+        height: 56px;
+        label{
+          font-weight: bold;
+          font-size: 11px;
+          color: white;
+          margin-left: 8%;
+          input{
+            padding-left: 5px;
+            border-radius: 8px;
+            margin-bottom: 7px;
+            width: 84%;
+            margin-left: 8%;
+          }
+        }
+      }
+      .forgot-password{
+        margin: 5px 8%;
+        color: snow;
+      }
+      a.button {
+        margin: 35px auto 15px;
+        background-color: #FF8F02;
+        color: snow;
+        font-size: 22px;
+        font-weight: bold;
+        width: 140px;
+        box-shadow: 2px 2px 2px black;
+        text-shadow: 1px 1px 1px black;
+      }
+      .prompt{
+        display: inline-block;
+        color: snow;
+        width: 97px;
+        float: left;
+        margin-right: 2px;
+      }
+      .create-acct{
+        display: inline-block;
+        color: $apparentOrange;
+        font-weight: bold;
+        text-shadow: 1px 1px 1px black;
+      }
     }
-    a.button {
-      margin: 30px auto;
-      background-color: $apparentOrange;
-      color: snow;
-      font-size: 22px;
-      font-weight: bold;
-      width: 140px;
-      box-shadow: 2px 2px 2px black;
-      text-shadow: 1px 1px 1px black;
-    }
-    .prompt{
-      display: inline-block;
-      color: snow;
-      width: 97px;
-      float: left;
-      margin-right: 2px;
-    }
-    .create-acct{
-      display: inline-block;
-      color: $apparentOrange;
-      font-weight: bold;
-      text-shadow: 1px 1px 1px black;
+  }
+  ion-footer-bar{
+    padding: 0;
+    img{
+      display: block;
+      width: 100%;
+      position: fixed;
+      bottom: 0;
     }
   }
 }
@@ -1061,16 +1102,17 @@ ion-content.has-tall-header{
   background-color: #f4f5ed;
   .header{
     width: 100%;
-    background-color: #f4f5ed;
+    opacity: 0;
     img.apparent{
       width: 288px;
       display: block;
-      margin: 10px auto;
+      margin: 0 auto;
+      padding: 10px;
       position: relative;
     }
   }
   .signup{
-    top: 110px;
+    top: 100px;
     padding: 0;
     .current-user{
       color: $apparentBlue;
@@ -1128,23 +1170,28 @@ ion-content.has-tall-header{
         }
       }
       input.submit{
-        margin: 10px 0 8px 20%;
-        font-size: 20px;
+        margin: 30px auto 15px;
+        background-color: #FF8F02;
+        color: snow;
+        font-size: 22px;
         font-weight: bold;
-        background-color: $apparentOrange;
-        color: white;
-        width: 60%;
+        width: 140px;
+        box-shadow: 2px 2px 2px black;
+        text-shadow: 1px 1px 1px black;
       }
     }
     form:nth-child(4) input{
       margin-bottom: 0;
     }
   }
-  img{
-    display: block;
-    width: 100%;
-    position: fixed;
-    bottom: 0;
+  ion-footer-bar{
+    padding: 0;
+    img{
+      display: block;
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+    }
   }
 }
 

@@ -1,9 +1,15 @@
 <ion-view class="login" title="Login User" hide-back-button=true>
+  <ion-nav-bar class="header">
+    <img class="apparent" src="img/apparent_v2.svg">
+  </ion-nav-bar>
   <ion-content class="padding" scroll="false">
-    <ion-item class="card padding">
-      <form name="form" shake-that submitted="submitted">
-          <div class="form-group" ng-class="{'has-error': form.email.$invalid && submitted}">
-            <label for="email" class="control-label">Email</label>
+    <p class="current-user">
+      Not registered?
+      <a ui-sref="signup"> Create an account</a>
+    </p>
+    <form name="form" shake-that submitted="submitted" class="card">
+        <div class="form-group" ng-class="{'has-error': form.email.$invalid && submitted}">
+          <label for="email" class="control-label">Email
             <input
               type="email"
               class="form-control"
@@ -12,9 +18,10 @@
               placeholder="Email"
               ng-model="credentials.email"
               required>
-          </div>
-          <div class="form-group" ng-class="{'has-error': form.password.$invalid && submitted}">
-            <label for="password" class="control-label">Password</label>
+          </label>
+        </div>
+        <div class="form-group" ng-class="{'has-error': form.password.$invalid && submitted}">
+          <label for="password" class="control-label">Password
             <input
               type="password"
               class="form-control"
@@ -23,13 +30,14 @@
               placeholder="Password"
               ng-model="credentials.password"
               required>
-          </div>
+          </label>
           <a class="forgot-password" ng-click="confirmReset()">Forgot password?</a>
-          <a class="button button-block" ng-click="doLogin()">Login</a>
-          <p class="error" ng-if="errorMessage">{{ errorMessage }}</p>
-          <p class="prompt">Not registered? </p>
-          <a class="create-acct" ng-click="openSignup()">Create an account</a>
-      </form>
-    </ion-item>
+        </div>
+        <a class="button button-block" ng-click="doLogin()">Login</a>
+        <p class="error" ng-if="errorMessage">{{ errorMessage }}</p>
+    </form>
   </ion-content>
+  <ion-footer-bar>
+    <img src="img/students.jpg">
+  </ion-footer-bar>
 </ion-view>

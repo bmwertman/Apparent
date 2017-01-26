@@ -1,7 +1,7 @@
 <ion-view class="signup-modal" hide-back-button=true>
-  <div class="header">
+  <ion-nav-bar class="header">
     <img class="apparent" src="img/apparent_v2.svg">
-  </div>
+  </ion-nav-bar>
   <ion-scroll class="padding signup" direction="y" style="right: 0;bottom: 0;left: 0;position: absolute;" has-subheader="true">
   <!-- ion-scroll added for ion-content see https://github.com/driftyco/ionic/issues/4849 -->
   <!-- <ion-content class="padding signup" has-subheader="true"> -->
@@ -29,5 +29,7 @@
     </form>
   <!-- </ion-content> -->
   </ion-scroll>
-  <img src="img/students.jpg">
+  <ion-footer-bar>
+    <img src="img/students.jpg">
+  </ion-footer-bar>
 </ion-view>

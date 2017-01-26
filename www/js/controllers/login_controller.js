@@ -8,10 +8,6 @@ Pta.controller('LoginCtrl', [
   '$state',
   function($scope, $ionicModal, $ionicPopup, $timeout, $ionicLoading, Auth, $state) {
   
-  $scope.openSignup = function(){
-    $state.go('signup');
-  }
-
   // Form data for the login view
   $scope.credentials = {};
   
