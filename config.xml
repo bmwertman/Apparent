@@ -15,6 +15,7 @@
   <access origin="https://apparent-2a054.firebaseio.com" subdomains="true" />
   <access origin="https://apparent-2a054.appspot.com" subdomains="true" />
   <access origin="https://rink.hockeyapp.net" />
+  <access origin="https://github.com" />
   <allow-intent href="*" />
   <allow-navigation href="*" />
   <preference name="KeyboardDisplayRequiresUserAction" value="false"/>
