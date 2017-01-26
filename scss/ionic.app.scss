@@ -2757,12 +2757,24 @@ body div.drag-element.gu-mirror{
         width: 44%;
         margin-bottom: 15px;
       }
-      input::-webkit-input-placeholder{
-        font-size: 11px;
-        margin-bottom: 3px;
-        width: 88%;
-        margin-left: 6%;
+      input{
+        padding: 0px 5px;
+        border-radius: 5px;
+        margin-bottom: 5px;
+        height: 25px;
+        &::-webkit-input-placeholder{
+          font-size: 11px;
+          margin-bottom: 3px;
+          width: 88%;
+          margin-left: 6%;
+        }
       }
+    }
+    input[type=submit]{
+      margin: 0 auto 5px;
+      min-height: 35px;
+      height:35px;
+      line-height:35px;
     }
   }
   .verify .email-verify h3{
