@@ -29,7 +29,10 @@
     "cordova-plugin-calendar",
     "cordova-plugin-compat",
     "cordova-plugin-device",
-    "cordova-plugin-image-picker"
+    "cordova-plugin-image-picker",
+    "https://github.com/whiteoctober/cordova-plugin-app-version.git",
+    "https://github.com/crosswalk-project/cordova-plugin-crosswalk-webview",
+    "https://github.com/bmwertman/phonegap-plugin-push/"
   ],
   "cordovaPlatforms": [
     "ios",
