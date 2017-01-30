@@ -11422,8 +11422,8 @@ div#queue {
     margin-top: 50px; }
   .chat-room .messages {
     display: flex !important;
-    align-content: center !important;
-    align-items: center !important;
+    align-content: flex-start !important;
+    align-items: flex-start !important;
     border: none;
     width: calc(100% + 85px);
     height: 42px; }
@@ -11970,5 +11970,10 @@ body div.drag-element.gu-mirror {
           margin-bottom: 3px;
           width: 88%;
           margin-left: 6%; }
+    .signup-modal .signup form input[type=submit] {
+      margin: 0 auto 5px;
+      min-height: 35px;
+      height: 35px;
+      line-height: 35px; }
   .verify .email-verify h3 {
     margin-top: 0; } }

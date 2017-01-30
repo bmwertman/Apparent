@@ -2078,8 +2078,8 @@ div#queue{
   //These are messages sent to the user
   .messages {
     display: flex !important;
-    align-content: center !important;
-    align-items: center !important;
+    align-content: flex-start !important;
+    align-items: flex-start !important;
     border: none;
     width: calc(100% + 85px);
     height: 42px;
