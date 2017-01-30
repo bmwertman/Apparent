@@ -99,7 +99,8 @@ Pta.controller('UserCtrl', [
 
     //handle submits
     $scope.editSubmit = function(modelValue, prop){
-      var obj = {};
+      var obj = {},
+          propArr = prop.split('/');
       if(!prop && modelValue){// We're adding a school
         $firebaseArray(schoolsRef)
         .$loaded()
@@ -152,7 +153,11 @@ Pta.controller('UserCtrl', [
           
         });
       } else if(modelValue) {
-        user[prop] = modelValue;
+        if(propArr[0] === "children"){
+          user[propArr[0]][propArr[1]][propArr[2]] = modelValue;
+        } else {
+          user[prop] = modelValue;
+        } 
         userRef.set(user);
       }
     };
@@ -331,6 +336,41 @@ Pta.controller('UserCtrl', [
       });
     };
 
+    function imageSave(ref, path, img, urlPath){
+      var uploadTask = ref.child(path).put(img);
+      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, {
+        next: function(snapshot){
+          var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          switch (snapshot.state) {
+            case firebase.storage.TaskState.PAUSED: // or 'paused'
+              console.log('Upload is paused');
+              break;
+            case firebase.storage.TaskState.RUNNING: // or 'running'
+              console.log('Uploading ' + progress + "% complete");
+              break;
+          }
+        }, 
+        error: function(error){
+          switch (error.code) {
+             case 'storage/unauthorized':
+               console.log("You don't have permission to access this image");
+               break;
+
+             case 'storage/canceled':
+               console.log("Upload was canceled");
+               break;
+          }
+        },
+        complete: function(){
+            $scope.editSubmit(uploadTask.snapshot.downloadURL, urlPath);
+            $scope.closeModal();
+            if($scope.childPath){// Cleanup the path of the saved child
+              delete $scope.childPath;
+            }
+        }
+      });
+    }
+
     $scope.storeImage = function(file){
       var imageDataArray = file.split(','),
           binary = window.atob(imageDataArray[1]),
@@ -355,40 +395,11 @@ Pta.controller('UserCtrl', [
       .then(function(onResolved){// Ensure we're only storing one profile pic per user
         uploadTask.delete()
         .then(function(){
-          var uploadTask = storageRef.child(storagePath).put(image);
-          uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, {
-            next: function(snapshot){
-              var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-              switch (snapshot.state) {
-                case firebase.storage.TaskState.PAUSED: // or 'paused'
-                  console.log('Upload is paused');
-                  break;
-                case firebase.storage.TaskState.RUNNING: // or 'running'
-                  console.log('Uploading ' + progress + "% complete");
-                  break;
-              }
-            }, 
-            error: function(error){
-              switch (error.code) {
-                 case 'storage/unauthorized':
-                   console.log("You don't have permission to access this image");
-                   break;
-
-                 case 'storage/canceled':
-                   console.log("Upload was canceled");
-                   break;
-              }
-            },
-            complete: function(){
-                $scope.editSubmit(uploadTask.snapshot.downloadURL, urlSavePath);
-                $scope.closeModal();
-                if($scope.childPath){// Cleanup the path of the saved child
-                  delete $scope.childPath;
-                }
-            }
-          });
+          imageSave(storageRef, storagePath, image, urlSavePath);
         }).catch(function(error){
-          console.log(error);
+          if(error.code === "storage/object-not-found"){
+            imageSave(storageRef, storagePath, image, urlSavePath);
+          }
         });
       }).catch(function(onReject){
         var uploadTask = storageRef.child(storagePath).put(image);
