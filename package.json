@@ -32,7 +32,8 @@
     "https://github.com/whiteoctober/cordova-plugin-app-version.git",
     "https://github.com/crosswalk-project/cordova-plugin-crosswalk-webview",
     "https://github.com/bmwertman/phonegap-plugin-push/",
-    "https://github.com/bmwertman/cordova-imagePicker/"
+    "https://github.com/bmwertman/cordova-imagePicker/",
+    "cordova-plugin-code-push@latest"
   ],
   "cordovaPlatforms": [
     "ios",

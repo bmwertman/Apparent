@@ -142,7 +142,6 @@ Pta.controller('ChatCtrl', [
             })
             .catch(function(err){
                 console.log("Node server POST error: " + err);
-                debugger;
             }); 
         }
     };

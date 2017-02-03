@@ -13,7 +13,18 @@
 # Update this, if you use features of a newer version
 fastlane_version "2.12.0"
 
-# default_platform :ios
+private_lane :commit do |options|
+  if options[:m] # There was a commit message 
+    sh("git add -A")
+    sh("git commit -a -m " +"'"+ options[:m] +"'")
+    if options[:b] # specify a branch to push to
+      push_to_git_remote(local_branch: options[:b])
+    else # or default branch is master
+      push_to_git_remote
+    end
+    desc "Pushed commit to branch " + options[:b]
+  end
+end
 
 platform :android do
 
@@ -25,28 +36,46 @@ platform :android do
     # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."
   end
 
-  lane :beta do
+  lane :testLocal do
+    desc "Compiling a new build for Android ..."
+    cordova(
+    platform: 'android',
+    release: false
+    )
 
-  # increment_version_code()
-
-  desc "Compile a new build for Android"
-  cordova(
-  platform: 'android',
-  release: false
-  )
-
-  desc "Submit a new Beta Build to Hockeyapp"
-  # upload to HockeyApp
+    desc "Uploading to HockeyApp..."
     hockey(
       api_token: "3c3d04181db14d419d0bbca848c4cf49",
       apk: './platforms/android/build/outputs/apk/android-debug.apk',
       notify: "1",
       status: "2",
-      teams: "88995"
+      teams: "89901"
     )
+  end
+
+  lane :beta do |options|
     
-  rocket
-  say "Brad you rocked another android deployment"
+    commit(options)
+
+    # increment_version_code()
+
+    desc "Compiling a new build for Android ..."
+    cordova(
+      platform: 'android',
+      release: false
+    )
+
+    desc "Uploading to HockeyApp..."
+      hockey(
+        api_token: "3c3d04181db14d419d0bbca848c4cf49",
+        apk: './platforms/android/build/outputs/apk/android-debug.apk',
+        notify: "1",
+        status: "2",
+        teams: "88995"
+      )
+      
+    rocket
+    say "Brad you rocked another android deployment"
   end
 end
 
@@ -63,9 +92,30 @@ platform :ios do
     )
   end
 
-  desc "Runs all the tests"
-  lane :test do
-    scan
+  lane :testLocal do
+    app_name_sanitized = 'Apparent'
+
+    desc "Building your iOS app ..."
+    cert
+    sigh(
+    adhoc: true,
+    force:true
+    )
+    gym(
+    workspace: "platforms/ios/#{app_name_sanitized}.xcworkspace",
+    clean: true,
+    export_method: "development",
+    scheme: app_name_sanitized
+    )
+
+    desc "Uploading to HockeyApp..."
+    hockey(
+      api_token: "3c3d04181db14d419d0bbca848c4cf49",
+      apk: './platforms/android/build/outputs/apk/android-debug.apk',
+      notify: "1",
+      status: "2",
+      teams: "89901"
+    )
   end
 
   desc "Submit a new Beta Build to Hockeyapp"

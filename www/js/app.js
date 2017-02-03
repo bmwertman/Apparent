@@ -41,7 +41,8 @@ var Pta = angular.module('pta', [
   '$ionicPopup',
   '$timeout',
   'userService',
-  function($ionicPlatform, $cordovaPushV5, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, $cordovaDevice, $ionicPopup, $timeout, userService) {
+  '$http',
+  function($ionicPlatform, $cordovaPushV5, $rootScope, Auth, editableThemes, editableOptions, $localstorage, $http, $state, $compile, $cordovaDevice, $ionicPopup, $timeout, userService, $http) {
   // hide xeditable cancel button
   editableThemes['default'].cancelTpl = '<button type="button" class="btn btn-default" style="display:none">';
   editableThemes['default'].submitTpl = '<button type="submit" class="xeditable-submit fa fa-pencil-square-o"></button>';
@@ -50,25 +51,31 @@ var Pta = angular.module('pta', [
     var credentials = {
           email: $localstorage.get('email'),
           password: $localstorage.get('password')
-        };
+        },
+        platform;
 
     if (!$rootScope.notificationLaunch && credentials.email && credentials.password) {
       Auth.login(credentials);
     }
 
-    if(ionic.Platform.isAndroid()){
-      $ionicPlatform.on('resume', function(){
-        if(firebase.auth().currentUser && !firebase.auth().currentUser.emailVerified){
-          navigator.app.loadUrl("file:///android_asset/www/index.html");
-        }
-      });
-    } else {
-      document.addEventListener('active', function(){
-        if(firebase.auth().currentUser && !firebase.auth().currentUser.emailVerified){
-          navigator.splashscreen.show();
-          window.location.reload();
-        }
-      });
+    function syncStatus(status){
+      var pushRegId = $localstorage.get('registrationId');
+      if(syncStatus.UPDATE_INSTALLED){
+        $http({
+           method: 'POST',
+           url:'https://murmuring-fjord-75421.herokuapp.com/',
+           data:{
+               reg_id: pushRegId,
+               message: $scope.IM.textMessage,
+               topic: '/topics/' + platform,
+               sender_imgURL: $scope.user.pic,
+               platform:  platform
+           }
+        })
+        .catch(function(err){
+            console.log("Node server POST error: " + err);
+        });
+      }
     }
     
     $cordovaPushV5.initialize({
@@ -95,6 +102,37 @@ var Pta = angular.module('pta', [
           // Save new registration ID
           $localstorage.set('registrationId', regId);
           // Post registrationId to your app server as the value has changed
+        }
+
+        function updatesSubcribe(platform){
+          $cordovaPushV5.Push.subscribe(platform, 
+            function(success){
+              console.log('success: ', success);
+          },
+          function(err){
+            console.log('Error: ', err);
+          });
+        }
+
+        if(ionic.Platform.isAndroid()){
+          platform = "androidUpdates";
+          updatesSubcribe(platform);
+          $ionicPlatform.on('resume', function(){
+            codePush.sync(syncStatus); // check for updates
+            if(firebase.auth().currentUser && !firebase.auth().currentUser.emailVerified){
+              navigator.app.loadUrl("file:///android_asset/www/index.html");
+            }
+          });
+        } else {
+          platform = "iosUpdates";
+          updatesSubcribe(platform);
+          document.addEventListener('active', function(){
+            codePush.sync(syncStatus); // check for updates
+            if(firebase.auth().currentUser && !firebase.auth().currentUser.emailVerified){
+              navigator.splashscreen.show();
+              window.location.reload();
+            }
+          });
         }
       });
     });
