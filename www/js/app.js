@@ -63,12 +63,10 @@ var Pta = angular.module('pta', [
       if(syncStatus.UPDATE_INSTALLED){
         $http({
            method: 'POST',
-           url:'https://murmuring-fjord-75421.herokuapp.com/',
+           url:'https://murmuring-fjord-75421.herokuapp.com/updates',
            data:{
                reg_id: pushRegId,
-               message: $scope.IM.textMessage,
                topic: '/topics/' + platform,
-               sender_imgURL: $scope.user.pic,
                platform:  platform
            }
         })
@@ -115,7 +113,7 @@ var Pta = angular.module('pta', [
         }
 
         if(ionic.Platform.isAndroid()){
-          platform = "androidUpdates";
+          platform = "android";
           updatesSubcribe(platform);
           $ionicPlatform.on('resume', function(){
             codePush.sync(syncStatus); // check for updates
@@ -124,7 +122,7 @@ var Pta = angular.module('pta', [
             }
           });
         } else {
-          platform = "iosUpdates";
+          platform = "ios";
           updatesSubcribe(platform);
           document.addEventListener('active', function(){
             codePush.sync(syncStatus); // check for updates
@@ -228,6 +226,8 @@ var Pta = angular.module('pta', [
             $rootScope.$apply();
           }    
         } 
+      } else if(data.state === "app.updates"){
+        $state.go(data.state);
       } else {
         //Notification was received on device tray and tapped by the user.
         $state.go(data.state, {roomId: data.roomId});
@@ -470,6 +470,12 @@ var Pta = angular.module('pta', [
     url: '/signup',
     templateUrl: 'templates/signup.html',
     controller : 'SignupCtrl' 
+  })
+  .state({
+    name: 'updates',
+    url: '/updates',
+    templateUrl: 'templates/updates.html',
+    controller: 'UpdatesCtrl'
   });
 
   // if none of the above states are matched, use this as the fallback

@@ -14,7 +14,7 @@
 fastlane_version "2.12.0"
 
 private_lane :commit do |options|
-  if options[:m] # There was a commit message 
+  if options[:m] # There was a commit message
     sh("git add -A")
     sh("git commit -a -m '" + options[:m] +"'")
     if options[:b] # specify a branch to push to
@@ -57,6 +57,8 @@ platform :android do
     
     commit(options)
 
+    changelog = read_changelog
+
     # increment_version_code()
 
     desc "Compiling a new build for Android ..."
@@ -64,6 +66,8 @@ platform :android do
       platform: 'android',
       release: false
     )
+
+    emojified_changelog = emojify_changelog 
 
     desc "Uploading to HockeyApp..."
       hockey(
