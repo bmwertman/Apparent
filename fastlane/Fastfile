@@ -47,7 +47,7 @@ platform :android do
     hockey(
       api_token: "3c3d04181db14d419d0bbca848c4cf49",
       apk: './platforms/android/build/outputs/apk/android-debug.apk',
-      notify: "1",
+      notify: false,
       status: "2",
       teams: "89901"
     )
@@ -70,6 +70,7 @@ platform :android do
         api_token: "3c3d04181db14d419d0bbca848c4cf49",
         apk: './platforms/android/build/outputs/apk/android-debug.apk',
         status: "2",
+        notify: false,
         teams: "88995"
       )
       
@@ -112,6 +113,7 @@ platform :ios do
       api_token: "3c3d04181db14d419d0bbca848c4cf49",
       apk: './platforms/android/build/outputs/apk/android-debug.apk',
       status: "2",
+      notify: false,
       teams: "89901"
     )
   end
