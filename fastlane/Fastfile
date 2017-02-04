@@ -22,7 +22,7 @@ private_lane :commit do |options|
     else # or default branch is master
       push_to_git_remote
     end
-    desc "Pushed commit to branch " + options[:b]
+    desc "Pushed commit to branch options[:b]"
   end
 end
 
