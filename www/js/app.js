@@ -102,19 +102,19 @@ var Pta = angular.module('pta', [
           // Post registrationId to your app server as the value has changed
         }
 
-        function updatesSubcribe(platform){
-          $cordovaPushV5.Push.subscribe(platform, 
-            function(success){
-              console.log('success: ', success);
-          },
-          function(err){
-            console.log('Error: ', err);
-          });
-        }
+        // function updatesSubcribe(platform){
+        //   $cordovaPushV5.Push.subscribe(platform, 
+        //     function(success){
+        //       console.log('success: ', success);
+        //   },
+        //   function(err){
+        //     console.log('Error: ', err);
+        //   });
+        // }
 
         if(ionic.Platform.isAndroid()){
           platform = "android";
-          updatesSubcribe(platform);
+          // updatesSubcribe(platform);
           $ionicPlatform.on('resume', function(){
             codePush.sync(syncStatus); // check for updates
             if(firebase.auth().currentUser && !firebase.auth().currentUser.emailVerified){
@@ -123,7 +123,7 @@ var Pta = angular.module('pta', [
           });
         } else {
           platform = "ios";
-          updatesSubcribe(platform);
+          // updatesSubcribe(platform);
           document.addEventListener('active', function(){
             codePush.sync(syncStatus); // check for updates
             if(firebase.auth().currentUser && !firebase.auth().currentUser.emailVerified){
