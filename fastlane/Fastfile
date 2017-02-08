@@ -101,8 +101,8 @@ platform :ios do
     # ensure_git_status_clean
     # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."  
     cocoapods(
-    use_bundle_exec: false,
-    podfile: "./platforms/ios/Podfile"
+      use_bundle_exec: false,
+      podfile: "./platforms/ios/Podfile"
     )
   end
 
@@ -112,14 +112,14 @@ platform :ios do
     desc "Building your iOS app ..."
     cert
     sigh(
-    adhoc: true,
-    force:true
+      adhoc: true,
+      force:true
     )
     gym(
-    workspace: "platforms/ios/#{app_name_sanitized}.xcworkspace",
-    clean: true,
-    export_method: "development",
-    scheme: app_name_sanitized
+      workspace: "platforms/ios/#{app_name_sanitized}.xcworkspace",
+      clean: true,
+      export_method: "development",
+      scheme: app_name_sanitized
     )
 
     desc "Uploading to HockeyApp..."
