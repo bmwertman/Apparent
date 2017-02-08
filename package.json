@@ -33,7 +33,8 @@
     "https://github.com/crosswalk-project/cordova-plugin-crosswalk-webview",
     "https://github.com/bmwertman/phonegap-plugin-push/",
     "https://github.com/bmwertman/cordova-imagePicker/",
-    "cordova-plugin-code-push@latest"
+    "cordova-plugin-code-push@latest",
+    "cordova-fabric-plugin"
   ],
   "cordovaPlatforms": [
     "ios",
