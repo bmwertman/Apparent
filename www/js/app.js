@@ -240,9 +240,9 @@ var Pta = angular.module('pta', [
       console.log('$cordovaPushV5 error: ', e.message);
     });
 
-    if (window.hockeyapp) {
-      window.hockeyapp.start(null, null, '1c527375374f43568ff947e431f6e68a');
-    }
+    // if (window.hockeyapp) {
+    //   window.hockeyapp.start(null, null, '1c527375374f43568ff947e431f6e68a');
+    // }
 
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)

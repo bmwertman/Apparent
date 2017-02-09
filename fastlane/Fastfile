@@ -1,11 +1,3 @@
-# Customise this file, documentation can be found here:
-# https://github.com/fastlane/fastlane/tree/master/fastlane/docs
-# All available actions: https://docs.fastlane.tools/actions
-# can also be listed using the `fastlane actions` command
-
-# Change the syntax highlighting to Ruby
-# All lines starting with a # are ignored when running `fastlane`
-
 # If you want to automatically update fastlane if a new version is available:
 # update_fastlane
 
@@ -36,42 +28,11 @@ platform :android do
     # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."
   end
 
-  lane :testLocal do
-    desc "Compiling a new build for Android ..."
-    cordova(
-    platform: 'android',
-    release: false
-    )
-
-    desc "Uploading to HockeyApp..."
-    hockey(
-      api_token: "3c3d04181db14d419d0bbca848c4cf49",
-      apk: './platforms/android/build/outputs/apk/android-debug.apk',
-      notify: false,
-      status: "2",
-      teams: "89901"
-    )
-  end
 
   lane :beta do |options|
     if options[:m]
       commit(options)
-      # changelog_from_git_commits(
-      #   # pretty: "- (%ae) %s", # Optional, lets you provide a custom format to apply to each commit when generating the changelog text
-      #   match_lightweight_tag: false, # Optional, lets you ignore lightweight (non-annotated) tags when searching for the last tag
-      #   include_merges: false # Optional, lets you filter out merge commits
-      # )
-
-      # stamp_changelog( section_identifier: this_commit[:abbreviated_commit_hash] )
-
     end
-
-    # commit = last_git_commit
-    # crashlytics(notes: commit[:message]) # message of commit
-    # author = commit[:author] # author of the commit
-    # hash = commit[:commit_hash] # long sha of commit
-    # short_hash = commit[:abbreviated_commit_hash] # short sha of commit
-    # increment_version_code()
 
     desc "Compiling a new build for Android ..."
     cordova(
@@ -86,15 +47,6 @@ platform :android do
       notifications: true,
       debug: true
     )
-
-    # desc "Uploading to HockeyApp..."
-    #   hockey(
-    #     api_token: "3c3d04181db14d419d0bbca848c4cf49",
-    #     apk: './platforms/android/build/outputs/apk/android-debug.apk',
-    #     status: "2",
-    #     notify: false,
-    #     teams: "88995"
-    #   )
       
     rocket
     say "Brad you rocked another android deployment"
@@ -111,32 +63,6 @@ platform :ios do
     cocoapods(
       use_bundle_exec: false,
       podfile: "./platforms/ios/Podfile"
-    )
-  end
-
-  lane :testLocal do
-    app_name_sanitized = 'Apparent'
-
-    desc "Building your iOS app ..."
-    cert
-    sigh(
-      adhoc: true,
-      force:true
-    )
-    gym(
-      workspace: "platforms/ios/#{app_name_sanitized}.xcworkspace",
-      clean: true,
-      export_method: "development",
-      scheme: app_name_sanitized
-    )
-
-    desc "Uploading to HockeyApp..."
-    hockey(
-      api_token: "3c3d04181db14d419d0bbca848c4cf49",
-      apk: './platforms/android/build/outputs/apk/android-debug.apk',
-      status: "2",
-      notify: false,
-      teams: "89901"
     )
   end
 
@@ -182,27 +108,5 @@ platform :ios do
     # frameit
   end
 
-  # You can define as many lanes as you want
-
-  after_all do |lane|
-    # This block is called, only if the executed lane was successful
-
-    # slack(
-    #   message: "Successfully deployed new App Update."
-    # )
-  end
-
-  error do |lane, exception|
-    # slack(
-    #   message: exception.message,
-    #   success: false
-    # )
-  end
 end
 
-
-# More information about multiple platforms in fastlane: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Platforms.md
-# All available actions: https://docs.fastlane.tools/actions
-
-# fastlane reports which actions are used
-# No personal data is recorded. Learn more at https://github.com/fastlane/enhancer
