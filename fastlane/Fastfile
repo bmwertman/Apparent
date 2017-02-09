@@ -79,14 +79,22 @@ platform :android do
       release: false
     )
 
-    desc "Uploading to HockeyApp..."
-      hockey(
-        api_token: "3c3d04181db14d419d0bbca848c4cf49",
-        apk: './platforms/android/build/outputs/apk/android-debug.apk',
-        status: "2",
-        notify: false,
-        teams: "88995"
-      )
+    crashlytics(
+      apk_path: './platforms/android/build/outputs/apk/android-debug.apk',
+      api_token: "b0510b6b26fe11d43115f7fb04d744bacc44a0f9",
+      build_secret: "942d313429ea10c092669c1e842932e401f7d21448acc7fec67975475a9c1df1",
+      notifications: true,
+      debug: true
+    )
+
+    # desc "Uploading to HockeyApp..."
+    #   hockey(
+    #     api_token: "3c3d04181db14d419d0bbca848c4cf49",
+    #     apk: './platforms/android/build/outputs/apk/android-debug.apk',
+    #     status: "2",
+    #     notify: false,
+    #     teams: "88995"
+    #   )
       
     rocket
     say "Brad you rocked another android deployment"
