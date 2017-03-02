@@ -42,15 +42,6 @@ platform :android do
     platform: 'android',
     release: false
     )
-
-    desc "Uploading to HockeyApp..."
-    hockey(
-      api_token: "3c3d04181db14d419d0bbca848c4cf49",
-      apk: './platforms/android/build/outputs/apk/android-debug.apk',
-      notify: false,
-      status: "2",
-      teams: "89901"
-    )
   end
 
   lane :beta do |options|
@@ -86,15 +77,6 @@ platform :android do
       notifications: true,
       debug: true
     )
-
-    # desc "Uploading to HockeyApp..."
-    #   hockey(
-    #     api_token: "3c3d04181db14d419d0bbca848c4cf49",
-    #     apk: './platforms/android/build/outputs/apk/android-debug.apk',
-    #     status: "2",
-    #     notify: false,
-    #     teams: "88995"
-    #   )
       
     rocket
     say "Brad you rocked another android deployment"
@@ -130,17 +112,9 @@ platform :ios do
       scheme: app_name_sanitized
     )
 
-    desc "Uploading to HockeyApp..."
-    hockey(
-      api_token: "3c3d04181db14d419d0bbca848c4cf49",
-      apk: './platforms/android/build/outputs/apk/android-debug.apk',
-      status: "2",
-      notify: false,
-      teams: "89901"
-    )
   end
 
-  desc "Submit a new Beta Build to Hockeyapp"
+  desc "Submit a new Beta Build to Fabric Beta"
   desc "This will also make sure the profile is up to date"
   lane :beta do
     app_name_sanitized = 'Apparent'
@@ -150,10 +124,25 @@ platform :ios do
     )
 
     # build your iOS app
-    cert
-    sigh(
-      adhoc: true,
-      force:true
+    match(
+      git_url: "https://github.com/bmwertman/certificates",
+      git_branch: "master",
+      type: "adhoc",
+      app_identifier: "com.apparenttechnologies.apparent",
+      verbose: true,
+      username: 'bwertman1223@gmail.com',
+      team_id: 'LEEF3YHU35',
+      team_name: 'Apparent Technologies LLC',
+      force_for_new_devices: true,
+      platform: "ios"
+    )
+    pem(
+      generate_p12: true,
+      app_identifier: 'com.apparenttechnologies.apparent',
+      username: 'bwertman1223@gmail.com',
+      p12_password: 'apparent',
+      pem_name: 'certificate',
+      output_path: 'apparent/pem'
     )
     gym(
       workspace: "platforms/ios/#{app_name_sanitized}.xcworkspace",
@@ -169,7 +158,6 @@ platform :ios do
       debug: true
     )
 
-    rocket
     say "Brad you rocked another i o s deployment"
   end
 
