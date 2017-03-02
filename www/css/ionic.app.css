@@ -11425,8 +11425,7 @@ div#queue {
     align-content: flex-start !important;
     align-items: flex-start !important;
     border: none;
-    width: calc(100% + 85px);
-    height: 42px; }
+    width: calc(100% + 85px); }
     .chat-room .messages .chatter-pic-wrapper {
       display: inline-block;
       width: 42px;
