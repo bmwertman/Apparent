@@ -62,18 +62,18 @@ var Pta = angular.module('pta', [
       var pushRegId = $localstorage.get('registrationId');
       if(syncStatus.UPDATE_INSTALLED){
         debugger;
-        // $http({
-        //    method: 'POST',
-        //    url:'https://murmuring-fjord-75421.herokuapp.com/updates',
-        //    data:{
-        //        reg_id: pushRegId,
-        //        topic: '/topics/' + platform,
-        //        platform:  platform
-        //    }
-        // })
-        // .catch(function(err){
-        //     console.log("Node server POST error: " + err);
-        // });
+        $http({
+           method: 'POST',
+           url:'https://murmuring-fjord-75421.herokuapp.com/updates',
+           data:{
+               reg_id: pushRegId,
+               topic: '/topics/' + platform,
+               platform:  platform
+           }
+        })
+        .catch(function(err){
+            console.log("Node server POST error: " + err);
+        });
       }
     }
     
