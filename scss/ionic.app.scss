@@ -2459,6 +2459,14 @@ body div.drag-element.gu-mirror{
   }
 }
 
+md-dialog-actions.dtp-buttons{
+  &:first-child{
+    display: none !important;
+  }
+  button.md-button{
+    margin-right: 11% !important;
+  }   
+}
 
 .add-event-view{
   .bar-subheader{

@@ -53,7 +53,8 @@
                  min-date="minDate"
                  format="h:mm a"
                  ng-model="event.start_time"
-                 aria-label="Start time">
+                 aria-label="Start time"
+                 ng-change="endUpdate(event.start_time)">
       </md-input-container>
       <md-input-container>
           <input mdc-datetime-picker
@@ -64,7 +65,8 @@
                  min-date="minDate"
                  format="h:mm a" 
                  ng-model="event.end_time"
-                 aria-label="Start time">
+                 aria-label="Start time"
+                 ng-change="startUpdate(event.end_time)">
       </md-input-container>
     </span>
     

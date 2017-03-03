@@ -30,6 +30,20 @@ Pta.controller('AddEventCtrl', [
         $scope.event.location = e.targetScope.location.formatted_address;
     });
 
+    $scope.endUpdate = function(time){
+      var momentTime = moment(time);
+      if($scope.event.end_time <= momentTime._d){
+        $scope.event.end_time = momentTime.add(1, 'hour');
+      }
+    }
+
+    $scope.startUpdate = function(time){
+      var momentTime = moment(time);
+      if($scope.event.start_time >= momentTime._d){
+        $scope.event.start_time = momentTime.subtract(1, 'hour');
+      }
+    }
+
     //image pick & crop
     $scope.getImage = function(){
       $cordovaImagePicker.getPictures({
