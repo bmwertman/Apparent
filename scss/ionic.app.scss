@@ -616,22 +616,23 @@ ion-content.has-tall-header{
           z-index: 10;
           bottom: 0;
           left: 0;
-          background-color: rgba(255, 255, 255, 0.5);
+          background-color: rgba(255, 255, 255, 0.7);
           color: black;
           height: 100%;
           width: 100%;
           h4{
             font-size: 24px;
             color: black;
-            margin: 0;
+            margin: -3px 0 0 0;
             padding: 0;
+            line-height: 31px;
             i{
               display: inline;
             }
           }
           pre{
             position: relative;
-            top: calc(100% - 110px);
+            bottom: 4px;
             width: 280px;
             margin: 0 auto;
             font-weight: bold;
