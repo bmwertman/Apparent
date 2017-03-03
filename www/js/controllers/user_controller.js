@@ -98,7 +98,7 @@ Pta.controller('UserCtrl', [
     }); 
 
     //handle submits
-    $scope.editSubmit = function(modelValue, prop){
+    $scope.editSubmit = function(modelValue, prop, user){
       var obj = {},
           propArr = prop.split('/');
       if(!prop && modelValue){// We're adding a school
@@ -150,7 +150,6 @@ Pta.controller('UserCtrl', [
               Auth.verifyEmail();
             }
           });
-          
         });
       } else if(modelValue) {
         if(propArr[0] === "children"){
@@ -158,7 +157,7 @@ Pta.controller('UserCtrl', [
         } else {
           user[prop] = modelValue;
         } 
-        userRef.set(user);
+        user.$save();
       }
     };
 
@@ -362,7 +361,7 @@ Pta.controller('UserCtrl', [
           }
         },
         complete: function(){
-            $scope.editSubmit(uploadTask.snapshot.downloadURL, urlPath);
+            $scope.editSubmit(uploadTask.snapshot.downloadURL, urlPath, userObj);
             $scope.closeModal();
             if($scope.childPath){// Cleanup the path of the saved child
               delete $scope.childPath;
@@ -423,7 +422,7 @@ Pta.controller('UserCtrl', [
             }
           },
           complete: function(){
-            $scope.editSubmit(uploadTask.snapshot.downloadURL, urlSavePath);
+            $scope.editSubmit(uploadTask.snapshot.downloadURL, urlSavePath, userObj);
             $scope.closeModal();
             if($scope.childPath){// Cleanup the path of the saved child
               delete $scope.childPath;
