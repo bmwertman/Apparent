@@ -61,7 +61,6 @@ var Pta = angular.module('pta', [
     function syncStatus(status){
       var pushRegId = $localstorage.get('registrationId');
       if(syncStatus.UPDATE_INSTALLED){
-        debugger;
         $http({
            method: 'POST',
            url:'https://murmuring-fjord-75421.herokuapp.com/updates',
@@ -112,8 +111,8 @@ var Pta = angular.module('pta', [
         //     console.log('Error: ', err);
         //   });
         // }
-
-        if(ionic.Platform.isAndroid()){
+        
+        if(ionic.Platform.isAndroid() && firebase.app().options.authDomain === "apparent-2a054.firebaseapp.com"){
           platform = "android";
           // updatesSubcribe(platform);
           $ionicPlatform.on('resume', function(){
@@ -122,7 +121,7 @@ var Pta = angular.module('pta', [
               navigator.app.loadUrl("file:///android_asset/www/index.html");
             }
           });
-        } else {
+        } else if(firebase.app().options.authDomain === "apparent-2a054.firebaseapp.com"){
           platform = "ios";
           // updatesSubcribe(platform);
           document.addEventListener('active', function(){

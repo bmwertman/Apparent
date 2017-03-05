@@ -10,18 +10,22 @@ Pta.controller('UserCtrl', [
   '$http',
   '$firebaseArray',
   '$firebaseObject',
-  'userService',
   '$ionicHistory',
   '$rootScope',
   'Auth',
-  function($scope, $ionicSideMenuDelegate, $ionicModal, $ionicPopup, $cordovaImagePicker, $filter, $timeout, $stateParams, $http, $firebaseArray, $firebaseObject, userService, $ionicHistory, $rootScope, Auth) {
+  'userService',
+  function($scope, $ionicSideMenuDelegate, $ionicModal, $ionicPopup, $cordovaImagePicker, $filter, $timeout, $stateParams, $http, $firebaseArray, $firebaseObject, $ionicHistory, $rootScope, Auth, userService) {
     // Future work - Add child's current teacher to their parent's profile
-    var user = userService.getUser(),
-        ref = firebase.database().ref(),
-        userRef = ref.child('users').child(user.user_id),
-        userObj = $firebaseObject(userRef),
+    var ref = firebase.database().ref(),
+        userId = firebase.auth().currentUser.uid,
+        userRef = ref.child('users').child(userId),
+        userObj = $firebaseObject(userRef);
+        user = userObj.$loaded(function(loadedUser){
+          loadedUser.$bindTo($scope, "user");
+          return loadedUser;
+        }),
         schoolsRef = ref.child('schools'),
-        childrenRef = ref.child('users/' + user.user_id + '/children'),
+        childrenRef = ref.child('users/' + userId + '/children'),
         userName = angular.element(document.getElementById('name-wrap')),
         childWarp = {
           path:{ 
@@ -33,8 +37,6 @@ Pta.controller('UserCtrl', [
           targets:"#childwarp",
           align: "center",
         };
-
-    userObj.$bindTo($scope, "user");
     cssWarp(childWarp);
 
     $scope.grades = { 'K': 0, '1st': 1, '2nd': 2, '3rd': 3, '4th': 4, '5th': 5, '6th': 6, '7th': 7, '8th': 8, '9th': 9, '10th': 10, '11th': 11, '12th': 12, '?': 13 };
@@ -100,7 +102,7 @@ Pta.controller('UserCtrl', [
     //handle submits
     $scope.editSubmit = function(modelValue, prop, user){
       var obj = {},
-          propArr = prop.split('/');
+          user;
       if(!prop && modelValue){// We're adding a school
         $firebaseArray(schoolsRef)
         .$loaded()
@@ -137,9 +139,12 @@ Pta.controller('UserCtrl', [
             });
             schoolsRef.child(modelValue['NCESSCH']).set(obj);
             // Make them the default admin
-            user.isAdmin = true;
+            $scope.user.isAdmin = true;
           }
-          user.school = modelValue['NCESSCH'];
+          $scope.user.school = modelValue['NCESSCH'];
+          user = $scope.user;
+          delete user.$id;
+          delete user.$priority
           userRef.set(user)
           .then(function(){
             userService.setUser(user);
@@ -152,12 +157,16 @@ Pta.controller('UserCtrl', [
           });
         });
       } else if(modelValue) {
+        var propArr = prop.split('/');
         if(propArr[0] === "children"){
-          user[propArr[0]][propArr[1]][propArr[2]] = modelValue;
+          $scope.user[propArr[0]][propArr[1]][propArr[2]] = modelValue;
         } else {
-          user[prop] = modelValue;
-        } 
-        user.$save();
+          $scope.user[prop] = modelValue;
+        }
+        user = $scope.user;
+        delete user.$id;
+        delete user.$priority
+        userRef.set(user);
       }
     };
 
@@ -175,11 +184,11 @@ Pta.controller('UserCtrl', [
       }
     });
     // Make sure both users and their children have either a pic or first letter of first name placeholder
-    if(!user.pic && user.name){
-      $scope.editSubmit(user.name.charAt(0), 'pic');
+    if(!$scope.user.pic && $scope.user.name){
+      $scope.editSubmit($scope.user.name.charAt(0), 'pic');
     }
-    if(user.children){
-      angular.forEach(user.children, function(child, key){
+    if($scope.user.children){
+      angular.forEach($scope.user.children, function(child, key){
         if(!child.pic){
           child.pic = child.name.charAt(0);
           $scope.editSubmit(child, 'children/' + key);
@@ -187,7 +196,7 @@ Pta.controller('UserCtrl', [
       });
     }
 
-    if(userObj.school){
+    if($scope.user.school){
       $scope.hideDisplayName = false;
     } else {
       $scope.hideDisplayName = true;
@@ -361,7 +370,7 @@ Pta.controller('UserCtrl', [
           }
         },
         complete: function(){
-            $scope.editSubmit(uploadTask.snapshot.downloadURL, urlPath, userObj);
+            $scope.editSubmit(uploadTask.snapshot.downloadURL, urlPath);
             $scope.closeModal();
             if($scope.childPath){// Cleanup the path of the saved child
               delete $scope.childPath;
@@ -384,10 +393,10 @@ Pta.controller('UserCtrl', [
       if($scope.childPath){
         var childIndex = $scope.childPath.split('/')[1];
         urlSavePath = $scope.childPath;
-        storagePath = 'profile_pics/children/' + user.user_id + childIndex +'.jpg';
+        storagePath = 'profile_pics/children/' + userId + childIndex +'.jpg';
       } else {
         urlSavePath = 'pic';
-        storagePath = 'profile_pics/' + user.user_id +'.jpg';
+        storagePath = 'profile_pics/' + userId +'.jpg';
       }
       var uploadTask = storageRef.child(storagePath);
       uploadTask.getDownloadURL()
@@ -422,7 +431,7 @@ Pta.controller('UserCtrl', [
             }
           },
           complete: function(){
-            $scope.editSubmit(uploadTask.snapshot.downloadURL, urlSavePath, userObj);
+            $scope.editSubmit(uploadTask.snapshot.downloadURL, urlSavePath);
             $scope.closeModal();
             if($scope.childPath){// Cleanup the path of the saved child
               delete $scope.childPath;
