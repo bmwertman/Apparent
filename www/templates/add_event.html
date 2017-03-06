@@ -68,8 +68,7 @@
                  aria-label="Start time"
                  ng-change="startUpdate(event.end_time)">
       </md-input-container>
-    </span>
-    
+    </span> 
     <hr>
     <i class="icon ion-location"></i>
       <input type="text" 
@@ -77,7 +76,6 @@
              location-suggestion 
              location="location" 
              ng-model="location.formatted_address">
-    
     <hr>
     <i class="icon ion-android-people"></i>
     <select contactpicker
@@ -86,7 +84,6 @@
             placeholder="Invite guests"
             value-attr="email">
     </select>
-
     <hr>
     <i class="icon ion-image"></i>
     <input class="cover-photo"
@@ -94,8 +91,7 @@
            ng-click="getImage()"
            ng-model="event.cover_photo_url"
            placeholder="Event cover photo">
-    </input>
-    
+    </input>   
     <!-- Google Drive Integration back-burnered 10-7-2016
     <hr class="drive_hr">
     <div class="drive_wrapper"
@@ -112,7 +108,6 @@
       <a class="add-attachment" 
          ng-click="goToSettings()">Go to settings & document storage</a>
     </div> -->
-
     <hr class="post_drive_hr">
     <div class="volunteers">
       <span class="event_dates">

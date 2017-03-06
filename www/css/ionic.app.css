@@ -11872,6 +11872,7 @@ md-dialog-actions.dtp-buttons button.md-button {
       width: calc(100% - 45px);
       font-size: 12px;
       resize: none;
+      min-height: 100px;
       box-sizing: border-box; }
 
 .event-page .events .event-header {
