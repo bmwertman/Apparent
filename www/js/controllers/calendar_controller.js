@@ -41,6 +41,11 @@ Pta.controller('CalendarCtrl', [
     {type: 'cleanup', label: 'Cleanup'}
   ];
 
+  $scope.$on('displayTimes', function(e, displayStart, displayEnd){
+    $scope.displayStart = displayStart;
+    $scope.displayEnd = displayEnd;
+  });
+
   $scope.reloadEvents = function(){
     $scope.$broadcast('eventFilter', $scope.itemSelected.type);
   }
