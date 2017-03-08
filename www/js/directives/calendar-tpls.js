@@ -439,6 +439,7 @@ Pta.constant('calendar2Config', {
         $scope.$on('bag.drag', function(el, source){
                 var eventSource = $scope.filterEventsByDate(el.currentScope.eventSource, $scope.$parent.$parent.currentDate, 'startTime'),
                 latestFinish;
+                angular.element(source[0]).css('width', '190px');
             $scope.latestFinish = (function(){// Set the latest a volunteer may finish
                 if(eventSource.length === 3){// Check if the event has cleanup or not
                     latestFinish = moment($filter('filter')(eventSource, {type: 'cleanup'})[0].endTime);// Cleanup end time
@@ -490,6 +491,7 @@ Pta.constant('calendar2Config', {
         }
 
         $scope.$on('bag.drop', function(el, target, source){
+            angular.element(target[0]).css('width', '');
             $scope.handleDrop();
         });
         
@@ -619,7 +621,7 @@ Pta.constant('calendar2Config', {
         self.onEventSourceChanged = function (value) {
             self.filteredEvents = value;
             if (self._onDataLoaded) {
-                self._onDataLoaded();
+                self._onData.Loaded();
             }
         };
 
@@ -732,7 +734,7 @@ Pta.constant('calendar2Config', {
             while (i < len) {
                 event = orderedEvents[i];
                 if (!event.overlapNumber) {
-                    var overlapNumber = event.position + 1;
+                    var overlapNumber = event.position;
                     event.overlapNumber = overlapNumber;
                     var eventQueue = [event];
                     while ((event = eventQueue.shift())) {
