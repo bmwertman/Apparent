@@ -88,45 +88,6 @@ Pta.controller('AddEventCtrl', [
         }
     }
 
-    function addToChat(){
-      var roomId = $scope.selectedEvent.$id + '-group',
-          eventRoomRef = ref.child('event-rooms').child($scope.selectedEvent.$id).child(roomId),
-          eventRoom = $firebaseObject(eventRoomRef),
-          chatter = { email: user.email, id: user.user_id, name: user.name, pic: user.pic },
-          newChatterKey = eventRoomRef.child('chatters').push().key,
-          updates = {};
-      // Subscribe the user to push notifications for this room
-      // FCMPlugin.subscribeToTopic(roomId);
-      // This adds the volunteer to the group chat room referenced by admin interact view when the admin wants to chat all volunteers
-      updates['/event-rooms/' + $scope.selectedEvent.$id + '/' + roomId + '/chatters/' + newChatterKey] = chatter;
-      // This adds the group chatter to the group chat in the general rooms 
-      updates['/rooms/' + roomId + '/chatters/' + newChatterKey] = chatter;  
-      ref.update(updates)
-      .then(function(){
-        eventRoom.$loaded().then(function(eventRoom){
-          var updates = {};
-          angular.forEach(eventRoom.chatters, function(currentChatter, chatterKey){
-            var newChatter = { email: user.email, id: user.user_id, name: user.name, pic: user.pic };
-            // Updates the current volunteers' & event organizer's user-rooms w/ the new chatter/new volunteer
-            if(currentChatter.id !== user.user_id){ // This isn't the new chatter/new volunteer
-              updates['/user-rooms/' + currentChatter.id + '/' + roomId + '/chatters/' + newChatterKey ] = newChatter;
-            }
-          });
-          var newEventRoom = {
-            chatters: eventRoom.chatters,
-            owner: eventRoom.owner,
-            subject: eventRoom.subject,
-          }
-          if(eventRoom.title){
-            newEventRoom.title = eventRoom.title;
-          }
-          updates['/user-rooms/' + user.user_id + '/' + roomId] = newEventRoom;
-
-          ref.update(updates);
-        });
-      });
-    }
-
     //save confirmation post submit
     $scope.saving = function(data, cb) {
       $ionicLoading.show({

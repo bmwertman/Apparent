@@ -33,7 +33,7 @@
                             <div class="calendar-event-inner"
                                  ng-style="setBorderStyle(displayEvent.event.color)"
                                  ng-if="isCalView || displayEvent.event.volunteersNeeded"
-                                 ng-class="{'primaryGreen':'primary-green-border', 'primaryBlue':'primary-blue-border', 'primaryRed':'primary-red-border'}[displayEvent.event.color]">
+                                 ng-class="{'primaryGreen':'primary-green-border, primary-green', 'primaryBlue':'primary-blue-border, primary-blue', 'primaryRed':'primary-red-border, primary-red'}[displayEvent.event.color]">
                                     <div class="event-title">{{displayEvent.event.title}}</div>
                                 <table class="volunteers-wrapper">
                                     <tbody>

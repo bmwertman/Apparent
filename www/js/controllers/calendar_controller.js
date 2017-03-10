@@ -5,13 +5,14 @@ Pta.controller('CalendarCtrl', [
   '$ionicPopup',
   '$ionicSideMenuDelegate',
   '$firebaseArray',
+  '$firebaseObject',
   '$stateParams',
   '$compile',
   '$localstorage',
   '$ionicPlatform',
   'userService',
   'time',
-  function ($scope, $timeout, $state, $ionicPopup, $ionicSideMenuDelegate, $firebaseArray, $stateParams, $compile, $localstorage, $ionicPlatform, userService, time) {
+  function ($scope, $timeout, $state, $ionicPopup, $ionicSideMenuDelegate, $firebaseArray, $firebaseObject, $stateParams, $compile, $localstorage, $ionicPlatform, userService, time) {
   'use strict';
 
   $scope.selectedEvent = $stateParams.selectedEvent;
@@ -133,9 +134,48 @@ Pta.controller('CalendarCtrl', [
       $scope.selectedTime = $scope.items[0];
   }
 
+  function addToChat(){
+    var roomId = $scope.selectedEvent.$id + '-group',
+        eventRoomRef = ref.child('event-rooms').child($scope.selectedEvent.$id).child(roomId),
+        eventRoom = $firebaseObject(eventRoomRef),
+        chatter = { email: user.email, id: user.user_id, name: user.name, pic: user.pic },
+        newChatterKey = eventRoomRef.child('chatters').push().key,
+        updates = {};
+    // Subscribe the user to push notifications for this room
+    // FCMPlugin.subscribeToTopic(roomId);
+    // This adds the volunteer to the group chat room referenced by admin interact view when the admin wants to chat all volunteers
+    updates['/event-rooms/' + $scope.selectedEvent.$id + '/' + roomId + '/chatters/' + newChatterKey] = chatter;
+    // This adds the group chatter to the group chat in the general rooms 
+    updates['/rooms/' + roomId + '/chatters/' + newChatterKey] = chatter;  
+    ref.update(updates)
+    .then(function(){
+      eventRoom.$loaded().then(function(eventRoom){
+        var updates = {};
+        angular.forEach(eventRoom.chatters, function(currentChatter, chatterKey){
+          var newChatter = { email: user.email, id: user.user_id, name: user.name, pic: user.pic };
+          // Updates the current volunteers' & event organizer's user-rooms w/ the new chatter/new volunteer
+          if(currentChatter.id !== user.user_id){ // This isn't the new chatter/new volunteer
+            updates['/user-rooms/' + currentChatter.id + '/' + roomId + '/chatters/' + newChatterKey ] = newChatter;
+          }
+        });
+        var newEventRoom = {
+          chatters: eventRoom.chatters,
+          owner: eventRoom.owner,
+          subject: eventRoom.subject,
+        }
+        if(eventRoom.title){
+          newEventRoom.title = eventRoom.title;
+        }
+        updates['/user-rooms/' + user.user_id + '/' + roomId] = newEventRoom;
+
+        ref.update(updates);
+      });
+    });
+  }
+
   $scope.createCalEvent = function(){
-    var startDate = time.parseTime($scope.displayStart, new Date($scope.selectedEvent.date)).toString(),
-        endDate = time.parseTime($scope.displayEnd, new Date($scope.selectedEvent.date)).toString(),
+    var startDate = time.parseTime($scope.displayStart, new Date($scope.selectedEvent.date)),
+        endDate = time.parseTime($scope.displayEnd, new Date($scope.selectedEvent.date)),
         eventRef = eventsRef.child($scope.selectedEvent.$id),
         currentVolunteers = $firebaseArray(eventRef.child('volunteers')),
         volunteer = { id: user.user_id, start: startDate, end: endDate };
@@ -159,9 +199,14 @@ Pta.controller('CalendarCtrl', [
           var calOptions = window.plugins.calendar.getCalendarOptions(); 
           calOptions.firstReminderMinutes = $localstorage.get('firstReminderMinutes');
           calOptions.secondReminderMinutes = $localstorage.get('secondReminderMinutes');
-          var title = $scope.selectedEvent.event_title,
+          var title = $scope.selectedEvent.title,
               eventLocation = $scope.selectedEvent.location,
-              notes = null;
+              notes;
+          if( $scope.selectedEvent.description){
+            notes = $scope.selectedEvent.description;
+          } else {
+            notes = null;
+          }
           window.plugins.calendar.createEventWithOptions(
               title,
               eventLocation,

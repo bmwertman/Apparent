@@ -734,7 +734,7 @@ Pta.constant('calendar2Config', {
             while (i < len) {
                 event = orderedEvents[i];
                 if (!event.overlapNumber) {
-                    var overlapNumber = event.position;
+                    var overlapNumber = event.position + 1;
                     event.overlapNumber = overlapNumber;
                     var eventQueue = [event];
                     while ((event = eventQueue.shift())) {

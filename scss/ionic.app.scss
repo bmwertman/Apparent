@@ -1794,8 +1794,9 @@ ion-content.has-tall-header{
             top: 2px;
             left: 3px;
             font-weight: bold;
-            text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+            // text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
             z-index: 1000;
+            color: snow;
           }
           .volunteers-wrapper{
             position:absolute;
