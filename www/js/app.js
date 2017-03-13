@@ -59,21 +59,22 @@ var Pta = angular.module('pta', [
     }
 
     function syncStatus(status){
-      var pushRegId = $localstorage.get('registrationId');
-      if(syncStatus.UPDATE_INSTALLED){
-        $http({
-           method: 'POST',
-           url:'https://murmuring-fjord-75421.herokuapp.com/updates',
-           data:{
-               reg_id: pushRegId,
-               topic: '/topics/' + platform,
-               platform:  platform
-           }
-        })
-        .catch(function(err){
-            console.log("Node server POST error: " + err);
-        });
-      }
+      debugger;
+      // var pushRegId = $localstorage.get('registrationId');
+      // if(syncStatus.UPDATE_INSTALLED){
+      //   $http({
+      //      method: 'POST',
+      //      url:'https://murmuring-fjord-75421.herokuapp.com/updates',
+      //      data:{
+      //          reg_id: pushRegId,
+      //          topic: '/topics/' + platform,
+      //          platform:  platform
+      //      }
+      //   })
+      //   .catch(function(err){
+      //       console.log("Node server POST error: " + err);
+      //   });
+      // }
     }
     
     $cordovaPushV5.initialize({
@@ -115,7 +116,7 @@ var Pta = angular.module('pta', [
         if(ionic.Platform.isAndroid() && firebase.app().options.authDomain === "apparent-2a054.firebaseapp.com"){
           platform = "android";
           // updatesSubcribe(platform);
-          codePush.sync() && $ionicPlatform.on('resume', function(){
+          $ionicPlatform.on('resume', function(){
             codePush.sync(syncStatus, {installMode: InstallMode.IMMEDIATE}); // check for updates
             if(firebase.auth().currentUser && !firebase.auth().currentUser.emailVerified){
               navigator.app.loadUrl("file:///android_asset/www/index.html");
@@ -124,7 +125,7 @@ var Pta = angular.module('pta', [
         } else if(firebase.app().options.authDomain === "apparent-2a054.firebaseapp.com"){
           platform = "ios";
           // updatesSubcribe(platform);
-          codePush.sync() && document.addEventListener('active', function(){
+          document.addEventListener('active', function(){
             codePush.sync(syncStatus, {installMode: InstallMode.IMMEDIATE}); // check for updates
             if(firebase.auth().currentUser && !firebase.auth().currentUser.emailVerified){
               navigator.splashscreen.show();
