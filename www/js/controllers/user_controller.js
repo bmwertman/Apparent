@@ -328,7 +328,7 @@ Pta.controller('UserCtrl', [
     };
 
     $scope.querySchools = function(searchText){
-      return $http.get("https://inventory.data.gov/api/action/datastore_search",{
+      return $http.jsonp("https://inventory.data.gov/api/action/datastore_search",{
         params:({
           resource_id: "102fd9bd-4737-401b-b88f-5c5b0fab94ec",
           limit: 10,
