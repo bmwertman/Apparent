@@ -10374,129 +10374,132 @@ ion-content.has-tall-header {
       margin-top: 10px;
       color: snow; }
 
-.role-management .role-table {
-  table-layout: fixed;
-  width: 100%;
-  margin-bottom: 20px;
-  border: 2px solid darkgrey; }
-  .role-management .role-table td, .role-management .role-table th {
-    border: 1px solid gainsboro; }
-  .role-management .role-table th {
-    border-bottom: none;
-    padding: 10px 0;
-    font-weight: bold; }
-  .role-management .role-table td {
-    white-space: nowrap;
-    text-overflow: ellipsis; }
-    .role-management .role-table td input {
-      padding-left: 5px; }
-  .role-management .role-table .table-head {
-    border-bottom: 2px solid darkgrey; }
-    .role-management .role-table .table-head th:nth-child(3) {
-      width: 60px; }
-  .role-management .role-table .role .role-name {
+.role-management ion-content.padding {
+  padding: 0; }
+  .role-management ion-content.padding .role-table {
+    table-layout: fixed;
     width: 100%;
-    text-align: center;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden; }
-  .role-management .role-table .role .role-pic {
-    display: inline-block;
-    width: 25px;
-    border-radius: 50%;
-    margin: 2px 0 2px 5px;
-    vertical-align: middle; }
-  .role-management .role-table .role .user-initial {
-    color: snow;
-    background-color: #B71C1C;
-    width: 25px;
-    line-height: 25px;
-    text-align: center; }
-  .role-management .role-table .role .parent-search {
-    width: calc(100% - 48px);
-    border: none;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden; }
-  .role-management .role-table .role .options-wrapper {
-    position: absolute;
-    background-color: white;
-    width: calc(((100% - 60px)/2) + 58px);
-    z-index: 1000;
-    margin-top: 9px;
-    border: 1px solid gainsboro;
-    padding-left: 5px; }
-    .role-management .role-table .role .options-wrapper .options img {
+    margin-bottom: 20px;
+    border-top: 2px solid darkgrey;
+    border-bottom: 2px solid darkgrey; }
+    .role-management ion-content.padding .role-table .table-head {
+      border-bottom: 2px solid darkgrey; }
+      .role-management ion-content.padding .role-table .table-head th {
+        border-bottom: none;
+        border-right: 1px solid gainsboro;
+        padding: 10px 0;
+        font-weight: bold; }
+      .role-management ion-content.padding .role-table .table-head th:nth-child(3) {
+        width: 60px;
+        border-right: none; }
+    .role-management ion-content.padding .role-table #role-tbody:last-child input {
+      padding-left: 5px; }
+    .role-management ion-content.padding .role-table #role-tbody td {
+      border-right: 1px solid gainsboro;
+      border-bottom: 1px solid gainsboro; }
+    .role-management ion-content.padding .role-table #role-tbody td {
+      white-space: nowrap;
+      text-overflow: ellipsis; }
+    .role-management ion-content.padding .role-table #role-tbody .role .role-name {
+      width: 100%;
+      text-align: center;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden; }
+    .role-management ion-content.padding .role-table #role-tbody .role .role-pic {
       display: inline-block;
       width: 25px;
       border-radius: 50%;
-      margin: 2px 0;
+      margin: 2px 0 2px 5px;
       vertical-align: middle; }
-  .role-management .role-table .role .remove-role {
-    padding: 5px 0; }
-    .role-management .role-table .role .remove-role .remove-button {
-      display: block;
-      height: 32px;
-      width: 32px;
-      border-radius: 50%;
-      margin: 0 auto;
-      box-shadow: 1px 1px 2px black; }
-      .role-management .role-table .role .remove-role .remove-button i.icon.ion-android-person-subtract {
-        color: snow;
-        font-size: 18px;
-        line-height: 32px;
-        position: relative;
-        right: 0.09em;
-        top: 1px; }
-
-.role-management .update-button {
-  position: relative;
-  left: calc(100% - 199px);
-  bottom: 9px;
-  height: 55px;
-  font-weight: bold;
-  color: snow;
-  line-height: 52px;
-  background-color: #228B22;
-  box-shadow: 2px 1px 4px black; }
-
-.role-management #add-role {
-  position: relative;
-  bottom: 10px;
-  left: initial;
-  float: right;
-  box-shadow: 2px 1px 3px black;
-  padding-top: 13px;
-  margin-right: 4px; }
-  .role-management #add-role .ion-android-person-add {
-    color: snow;
-    font-size: 30px;
+    .role-management ion-content.padding .role-table #role-tbody .role .user-initial {
+      color: snow;
+      background-color: #B71C1C;
+      width: 25px;
+      line-height: 25px;
+      text-align: center; }
+    .role-management ion-content.padding .role-table #role-tbody .role .parent-search {
+      width: calc(100% - 48px);
+      border: none;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden; }
+    .role-management ion-content.padding .role-table #role-tbody .role .options-wrapper {
+      position: absolute;
+      background-color: white;
+      width: calc(((100% - 60px)/2) + 58px);
+      z-index: 1000;
+      margin-top: 9px;
+      border: 1px solid gainsboro;
+      padding-left: 5px; }
+      .role-management ion-content.padding .role-table #role-tbody .role .options-wrapper .options img {
+        display: inline-block;
+        width: 25px;
+        border-radius: 50%;
+        margin: 2px 0;
+        vertical-align: middle; }
+    .role-management ion-content.padding .role-table #role-tbody .role .remove-role {
+      padding: 5px 0; }
+      .role-management ion-content.padding .role-table #role-tbody .role .remove-role .remove-button {
+        display: block;
+        height: 32px;
+        width: 32px;
+        border-radius: 50%;
+        margin: 0 auto;
+        box-shadow: 1px 1px 2px black; }
+        .role-management ion-content.padding .role-table #role-tbody .role .remove-role .remove-button i.icon.ion-android-person-subtract {
+          color: snow;
+          font-size: 18px;
+          line-height: 32px;
+          position: relative;
+          right: 0.09em;
+          top: 1px; }
+  .role-management ion-content.padding .update-button {
     position: relative;
-    bottom: 8px;
-    right: 0.07em; }
-  .role-management #add-role #adminwarp {
-    position: relative;
+    left: calc(100% - 199px);
+    bottom: 9px;
+    height: 55px;
+    font-weight: bold;
     color: snow;
-    bottom: 20px;
-    left: 1px; }
-
-.role-management .note-wrapper {
-  margin-top: 2px;
-  width: calc(100% - 60px);
-  max-height: 32px; }
-  .role-management .note-wrapper .note-callout {
-    float: left;
-    display: inline-block;
-    font-size: 14px;
-    width: 34px;
-    margin: 0; }
-  .role-management .note-wrapper .note {
-    float: left;
-    display: inline-block;
-    font-size: 12px;
-    width: calc(100% - 54px);
-    margin: 0 0 0 5px;
-    line-height: 15px; }
+    line-height: 52px;
+    background-color: #228B22;
+    box-shadow: 2px 1px 4px black; }
+  .role-management ion-content.padding #add-role {
+    position: relative;
+    bottom: 10px;
+    left: initial;
+    float: right;
+    box-shadow: 2px 1px 3px black;
+    padding-top: 13px;
+    margin-right: 4px; }
+    .role-management ion-content.padding #add-role .ion-android-person-add {
+      color: snow;
+      font-size: 30px;
+      position: relative;
+      bottom: 8px;
+      right: 0.07em; }
+    .role-management ion-content.padding #add-role #adminwarp {
+      position: relative;
+      color: snow;
+      bottom: 20px;
+      left: 1px; }
+  .role-management ion-content.padding .note-wrapper {
+    margin-top: 2px;
+    width: calc(100% - 60px);
+    max-height: 32px; }
+    .role-management ion-content.padding .note-wrapper .note-callout {
+      float: left;
+      display: inline-block;
+      font-size: 14px;
+      width: 34px;
+      margin: 0; }
+    .role-management ion-content.padding .note-wrapper .note {
+      float: left;
+      display: inline-block;
+      font-size: 12px;
+      width: calc(100% - 54px);
+      margin: 0 0 0 5px;
+      line-height: 15px; }
 
 @keyframes shake {
   0% {

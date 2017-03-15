@@ -31,22 +31,21 @@
               <img ng-if="role.pic.length > 1"
                    class="role-pic"
                    expire="{{30}}"
-                   ng-src="{{role.pic}}"
-                   ng-hide="showOptions">
+                   ng-src="{{role.pic}}">
               <div class="role-pic user-initial"
                    ng-if="role.pic.length === 1"
                    ng-click="getImage()">
                    {{ role.pic }}
               </div>
               <input class="parent-search"
-                      ng-keyup="filterParents($event)"
-                      ng-model="role.name"
-                      ng-focus="showOptions = true;startRoleSearch(roleIndex)"
-                      ng-blur="showOptions = false" 
-                      off-click-filter="'.options-wrapper'"
-                      off-click="endRoleSearch(roleIndex)"
-                      placeholder="Role assignee">
-              <div ng-show="showOptions && filteredParents.length > 0"
+                     ng-keyup="filterParents($event)"
+                     ng-model="role.name"
+                     ng-focus="showOptions = $index;startRoleSearch(roleIndex)"
+                     ng-blur="showOptions = null" 
+                     off-click-filter="'.options-wrapper'"
+                     off-click="endRoleSearch(roleIndex)"
+                     placeholder="Role assignee">
+              <div ng-show="showOptions === roleIndex && filteredParents.length > 0"
                    class="options-wrapper">
                 <div class="options"
                      ng-repeat="(parentIndex, parent) in filteredParents | limitTo: 10"
@@ -82,22 +81,21 @@
               <img ng-if="newRole.pic.length > 1"
                    class="role-pic"
                    expire="{{30}}"
-                   ng-src="{{newRole.pic}}"
-                   ng-hide="showOptions">
+                   ng-src="{{newRole.pic}}">
               <div class="role-pic user-initial"
                    ng-if="newRole.pic.length === 1"
                    ng-click="getImage()">
                    {{ newRole.pic }}
               </div>
               <input class="parent-search"
-                      ng-keyup="filterParents($event)"
-                      ng-model="newRole.name"
-                      ng-focus="showOptions = true;startRoleSearch(roleIndex)"
-                      ng-blur="showOptions = false" 
-                      off-click-filter="'.options-wrapper'"
-                      off-click="endRoleSearch(roleIndex)"
-                      placeholder="Role assignee">
-              <div ng-show="showOptions && filteredParents.length > 0"
+                     ng-keyup="filterParents($event)"
+                     ng-model="newRole.name"
+                     ng-focus="showOptions = 'addRole';startRoleSearch()"
+                     ng-blur="showOptions = null;" 
+                     off-click-filter="'.options-wrapper'"
+                     off-click="endRoleSearch()"
+                     placeholder="Role assignee">
+              <div ng-show="showOptions === 'addRole' && filteredParents.length > 0"
                    class="options-wrapper">
                 <div class="options"
                      ng-repeat="(parentIndex, parent) in filteredParents | limitTo: 10"

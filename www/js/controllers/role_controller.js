@@ -25,18 +25,16 @@ Pta.controller('RoleCtrl', [
     $scope.boardmembers = $filter('filter')(schoolParents, {isAdmin: true});
   });
   
-  $scope.showOptions = false;
-
   $scope.startRoleSearch = function(roleIndex){
-    if(roleIndex && $scope.roles[roleIndex].user_id){
-      $localstorage.setObject('roleEditStart', $scope.roles[roleIndex]);
+    if(roleIndex && $scope.boardmembers[roleIndex].user_id){
+      $localstorage.setObject('roleEditStart', $scope.boardmembers[roleIndex]);
       $scope.roleIndex = roleIndex;
     }
   }
 
   $scope.endRoleSearch = function(){
     if($scope.roleIndex){
-      var role = $scope.roles[$scope.roleIndex],
+      var role = $scope.boardmembers[$scope.roleIndex],
           storedRole = $localstorage.getObject('roleEditStart');
       if(!angular.equals(role, storedRole) && role){
         angular.forEach(storedRole, function(value, key){

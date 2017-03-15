@@ -798,155 +798,166 @@ ion-content.has-tall-header{
 }
 
 .role-management{
-  .role-table{
-    table-layout: fixed;
-    width: 100%;
-    margin-bottom: 20px;
-    border: 2px solid darkgrey;
-    td, th {
-      border: 1px solid gainsboro;
-    }
-    th {
-      border-bottom: none;
-      padding: 10px 0;
-      font-weight: bold;
-    }
-    td {
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      input{
-        padding-left: 5px;
-      }
-    }
-    .table-head{
+  ion-content.padding{
+    padding: 0;
+    .role-table{
+      table-layout: fixed;
+      width: 100%;
+      margin-bottom: 20px;
+      border-top: 2px solid darkgrey;
       border-bottom: 2px solid darkgrey;
-      & th:nth-child(3){
-        width: 60px ;
+      .table-head{
+        border-bottom: 2px solid darkgrey;
+        th {
+          border-bottom: none;
+          border-right: 1px solid gainsboro;
+          padding: 10px 0;
+          font-weight: bold;
+        }
+        & th:nth-child(3){
+          width: 60px ;
+          border-right: none;
+        }
       }
-    }
-    .role{
-      .role-name{
-        width: 100%;
-        text-align: center;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-      }
-      .role-pic{
-        display: inline-block;
-        width: 25px;
-        border-radius: 50%;
-        margin: 2px 0 2px 5px;
-        vertical-align: middle;
-      }
-      .user-initial{
-        color: $fontColor;
-        background-color: $positive;
-        width: 25px;
-        line-height: 25px;
-        text-align: center;
-      }
-      .parent-search{
-        width: calc(100% - 48px);
-        border: none;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-      }
-
-      // .parent-search:focus{
-      //   margin-left: 45px;
-      // }
-      .options-wrapper{
-        position: absolute;
-        background-color: white;
-        width: calc(((100% - 60px)/2) + 58px);
-        z-index: 1000;
-        margin-top: 9px;
-        border: 1px solid gainsboro;
-        padding-left: 5px;
-        .options{
-          img{
+      #role-tbody{
+        &:last-child{
+          input{
+            padding-left: 5px;
+          }
+        }
+        td{
+          border-right: 1px solid gainsboro;
+          border-bottom: 1px solid gainsboro;
+        }
+        td {
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        .role{
+          .role-name{
+            width: 100%;
+            text-align: center;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+          }
+          .role-pic{
             display: inline-block;
             width: 25px;
             border-radius: 50%;
-            margin: 2px 0;
+            margin: 2px 0 2px 5px;
             vertical-align: middle;
           }
-        }
-      }
-      .remove-role{
-        padding: 5px 0;
-        .remove-button{
-          display: block;
-          height: 32px;
-          width: 32px;
-          border-radius: 50%;
-          margin: 0 auto;
-          box-shadow: 1px 1px 2px black;
-          i.icon.ion-android-person-subtract{
-            color: snow;
-            font-size: 18px;
-            line-height: 32px;
-            position: relative;
-            right: 0.09em;
-            top: 1px;
+          .user-initial{
+            color: $fontColor;
+            background-color: $positive;
+            width: 25px;
+            line-height: 25px;
+            text-align: center;
+          }
+          .parent-search{
+            width: calc(100% - 48px);
+            border: none;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+          }
+
+          // .parent-search:focus{
+          //   margin-left: 45px;
+          // }
+          .options-wrapper{
+            position: absolute;
+            background-color: white;
+            width: calc(((100% - 60px)/2) + 58px);
+            z-index: 1000;
+            margin-top: 9px;
+            border: 1px solid gainsboro;
+            padding-left: 5px;
+            .options{
+              img{
+                display: inline-block;
+                width: 25px;
+                border-radius: 50%;
+                margin: 2px 0;
+                vertical-align: middle;
+              }
+            }
+          }
+          .remove-role{
+            padding: 5px 0;
+            .remove-button{
+              display: block;
+              height: 32px;
+              width: 32px;
+              border-radius: 50%;
+              margin: 0 auto;
+              box-shadow: 1px 1px 2px black;
+              i.icon.ion-android-person-subtract{
+                color: snow;
+                font-size: 18px;
+                line-height: 32px;
+                position: relative;
+                right: 0.09em;
+                top: 1px;
+              }
+            }
           }
         }
       }
     }
-  }
-  .update-button{
-    position: relative;
-    left: calc(100% - 199px);
-    bottom: 9px;
-    height: 55px;
-    font-weight: bold;
-    color: snow;
-    line-height: 52px;
-    background-color: #228B22;
-    box-shadow: 2px 1px 4px black;
-  }
-  #add-role{
-    position: relative;
-    bottom: 10px;
-    left: initial;
-    float: right;
-    box-shadow: 2px 1px 3px black;
-    padding-top: 13px;
-    margin-right: 4px;
-    .ion-android-person-add{
-      color: snow;
-      font-size: 30px;
+    .update-button{
       position: relative;
-      bottom: 8px;
-      right: 0.07em;
-    }
-    #adminwarp{
-      position: relative;
+      left: calc(100% - 199px);
+      bottom: 9px;
+      height: 55px;
+      font-weight: bold;
       color: snow;
-      bottom: 20px;
-      left: 1px;
+      line-height: 52px;
+      background-color: #228B22;
+      box-shadow: 2px 1px 4px black;
     }
-  }
-  .note-wrapper {
-    margin-top: 2px;
-    width: calc(100% - 60px);
-    max-height: 32px;
-    .note-callout{
-      float: left;
-      display: inline-block;
-      font-size: 14px;
-      width: 34px;
-      margin: 0;
+    #add-role{
+      position: relative;
+      bottom: 10px;
+      left: initial;
+      float: right;
+      box-shadow: 2px 1px 3px black;
+      padding-top: 13px;
+      margin-right: 4px;
+      .ion-android-person-add{
+        color: snow;
+        font-size: 30px;
+        position: relative;
+        bottom: 8px;
+        right: 0.07em;
+      }
+      #adminwarp{
+        position: relative;
+        color: snow;
+        bottom: 20px;
+        left: 1px;
+      }
     }
-    .note{
-      float: left;
-      display: inline-block;
-      font-size: 12px;
-      width: calc(100% - 54px);
-      margin: 0 0 0 5px;
-      line-height: 15px;
+    .note-wrapper {
+      margin-top: 2px;
+      width: calc(100% - 60px);
+      max-height: 32px;
+      .note-callout{
+        float: left;
+        display: inline-block;
+        font-size: 14px;
+        width: 34px;
+        margin: 0;
+      }
+      .note{
+        float: left;
+        display: inline-block;
+        font-size: 12px;
+        width: calc(100% - 54px);
+        margin: 0 0 0 5px;
+        line-height: 15px;
+      }
     }
   }
 }
