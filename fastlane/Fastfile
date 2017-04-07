@@ -1,17 +1,5 @@
-# Customise this file, documentation can be found here:
-# https://github.com/fastlane/fastlane/tree/master/fastlane/docs
-# All available actions: https://docs.fastlane.tools/actions
-# can also be listed using the `fastlane actions` command
-
-# Change the syntax highlighting to Ruby
-# All lines starting with a # are ignored when running `fastlane`
-
 # If you want to automatically update fastlane if a new version is available:
-# update_fastlane
-
-# This is the minimum version number required.
-# Update this, if you use features of a newer version
-fastlane_version "2.12.0"
+update_fastlane
 
 private_lane :commit do |options|
   if options[:m] # There was a commit message
@@ -32,15 +20,27 @@ platform :android do
     # Make sure no debugger statements were left in our code 
     # ensure_no_debug_code
     # Make sure there are not uncommitted changes
-    # ensure_git_status_clean
+    ensure_git_status_clean
     # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."
   end
 
   lane :testLocal do
-    desc "Compiling a new build for Android ..."
+
     cordova(
-    platform: 'android',
-    release: false
+      platform: 'android',
+      release: false
+    )
+
+    #Push changes to dev team
+    sh(" cd .. code-push release-cordova Apparent-Android android --deploymentName Staging")
+
+    crashlytics(
+      apk_path: './platforms/android/build/outputs/apk/android-debug.apk',
+      api_token: "b0510b6b26fe11d43115f7fb04d744bacc44a0f9",
+      build_secret: "942d313429ea10c092669c1e842932e401f7d21448acc7fec67975475a9c1df1",
+      notifications: true,
+      groups: "android-local-development",
+      debug: true
     )
   end
 
@@ -54,7 +54,6 @@ platform :android do
       # )
 
       # stamp_changelog( section_identifier: this_commit[:abbreviated_commit_hash] )
-
     end
 
     # commit = last_git_commit
@@ -64,21 +63,24 @@ platform :android do
     # short_hash = commit[:abbreviated_commit_hash] # short sha of commit
     # increment_version_code()
 
-    desc "Compiling a new build for Android ..."
     cordova(
       platform: 'android',
       release: false
     )
 
+    #Push new release to existing Beta testers
+    sh("cd .. code-push release-cordova Apparent-Android android --deploymentName Beta")
+
+    #Push new release for initial install to new Android Developer devices
     crashlytics(
       apk_path: './platforms/android/build/outputs/apk/android-debug.apk',
       api_token: "b0510b6b26fe11d43115f7fb04d744bacc44a0f9",
       build_secret: "942d313429ea10c092669c1e842932e401f7d21448acc7fec67975475a9c1df1",
       notifications: true,
+      groups: "android-beta",
       debug: true
     )
       
-    rocket
     say "Brad you rocked another android deployment"
   end
 end
@@ -88,7 +90,7 @@ platform :ios do
     # Make sure no debugger statements were left in our code 
     # ensure_no_debug_code
     # Make sure there are not uncommitted changes
-    # ensure_git_status_clean
+    ensure_git_status_clean
     # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."  
     cocoapods(
       use_bundle_exec: false,
@@ -99,12 +101,19 @@ platform :ios do
   lane :testLocal do
     app_name_sanitized = 'Apparent'
 
-    desc "Building your iOS app ..."
-    cert
-    sigh(
-      adhoc: true,
-      force:true
+    match(
+      git_url: "https://github.com/bmwertman/certificates",
+      git_branch: "development",
+      type: "development",
+      app_identifier: "com.apparenttechnologies.apparent",
+      verbose: true,
+      username: 'bwertman1223@gmail.com',
+      team_id: 'LEEF3YHU35',
+      team_name: 'Apparent Technologies LLC',
+      force_for_new_devices: true,
+      platform: "ios"
     )
+
     gym(
       workspace: "platforms/ios/#{app_name_sanitized}.xcworkspace",
       clean: true,
@@ -112,10 +121,19 @@ platform :ios do
       scheme: app_name_sanitized
     )
 
+    #Push changes to dev team
+    sh(" cd .. code-push release-cordova Apparent-iOS ios --deploymentName Staging")
+
+    #Push new release for initial install to new iOS Developer devices
+    crashlytics(
+      api_token: "b0510b6b26fe11d43115f7fb04d744bacc44a0f9",
+      build_secret: "942d313429ea10c092669c1e842932e401f7d21448acc7fec67975475a9c1df1",
+      notifications: true,
+      groups: "ios-local-development",
+      debug: true
+    )
   end
 
-  desc "Submit a new Beta Build to Fabric Beta"
-  desc "This will also make sure the profile is up to date"
   lane :beta do
     app_name_sanitized = 'Apparent'
     ios_project_path = "platforms/ios/#{app_name_sanitized}.xcodeproj"
@@ -123,7 +141,6 @@ platform :ios do
       xcodeproj: ios_project_path
     )
 
-    # build your iOS app
     match(
       git_url: "https://github.com/bmwertman/certificates",
       git_branch: "master",
@@ -136,6 +153,7 @@ platform :ios do
       force_for_new_devices: true,
       platform: "ios"
     )
+
     pem(
       generate_p12: true,
       app_identifier: 'com.apparenttechnologies.apparent',
@@ -144,6 +162,7 @@ platform :ios do
       pem_name: 'certificate',
       output_path: 'apparent/pem'
     )
+
     gym(
       workspace: "platforms/ios/#{app_name_sanitized}.xcworkspace",
       clean: true,
@@ -151,10 +170,15 @@ platform :ios do
       scheme: app_name_sanitized
     )
 
+    #Push new release to existing iOS Beta testers
+    sh(" cd .. code-push release-cordova Apparent-iOS ios --deploymentName Beta")
+
+    #Make new iOS release available for new Beta testers to install
     crashlytics(
       api_token: "b0510b6b26fe11d43115f7fb04d744bacc44a0f9",
       build_secret: "942d313429ea10c092669c1e842932e401f7d21448acc7fec67975475a9c1df1",
       notifications: true,
+      groups: "ios-beta-1",
       debug: true
     )
 
@@ -169,8 +193,6 @@ platform :ios do
     deliver(force: true)
     # frameit
   end
-
-  # You can define as many lanes as you want
 
   after_all do |lane|
     # This block is called, only if the executed lane was successful
@@ -187,10 +209,3 @@ platform :ios do
     # )
   end
 end
-
-
-# More information about multiple platforms in fastlane: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Platforms.md
-# All available actions: https://docs.fastlane.tools/actions
-
-# fastlane reports which actions are used
-# No personal data is recorded. Learn more at https://github.com/fastlane/enhancer
