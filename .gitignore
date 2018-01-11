@@ -7,6 +7,9 @@ plugins/
 css/
 *.zip
 *.ipa
+*.app.dSYM.zip
+*.dSYM.zip
+*.dSYM
 
 # fastlane specific
 fastlane/report.xml
