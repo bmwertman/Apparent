@@ -10904,7 +10904,7 @@ ion-content.has-tall-header {
             font-size: 12px; }
         .profile .content-body .children .child .child-header .grade-wrapper .grade-number {
           display: inline-block;
-          width: 30px;
+          width: 45px;
           border: none;
           background-color: transparent;
           -webkit-appearance: none;
@@ -10914,12 +10914,12 @@ ion-content.has-tall-header {
           float: right;
           margin: 0 4px;
           height: 20px;
-          line-height: 20px; }
+          line-height: 20px;
+          padding: 0; }
         .profile .content-body .children .child .child-header .grade-wrapper .grade {
-          margin: 0;
+          margin: 0 0 0 calc(100% - 85px);
           line-height: 0;
           color: snow;
-          width: 40px;
           position: relative;
           left: 40px; }
     .profile .content-body .children .child .child-body i.icon {
