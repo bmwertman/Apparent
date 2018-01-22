@@ -2,8 +2,8 @@
 #
 # Ensure this file is checked in to source control!
 
-gem 'fastlane-plugin-increment_version_code'
-gem 'fastlane-plugin-branding'
+# gem 'fastlane-plugin-increment_version_code'
+# gem 'fastlane-plugin-branding'
 gem 'fastlane-plugin-cordova'
-gem 'fastlane-plugin-changelog'
-gem 'fastlane-plugin-ftp'
+# gem 'fastlane-plugin-changelog'
+# gem 'fastlane-plugin-ftp'
