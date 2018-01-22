@@ -14,76 +14,76 @@ private_lane :commit do |options|
   end
 end
 
-platform :android do
+# platform :android do
 
-  before_all do
-    # Make sure no debugger statements were left in our code 
-    # ensure_no_debug_code
-    # Make sure there are not uncommitted changes
-    ensure_git_status_clean
-    # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."
-  end
+#   before_all do
+#     # Make sure no debugger statements were left in our code 
+#     # ensure_no_debug_code
+#     # Make sure there are not uncommitted changes
+#     ensure_git_status_clean
+#     # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."
+#   end
 
-  lane :testLocal do
+#   lane :testLocal do
 
-    cordova(
-      platform: 'android',
-      release: false
-    )
+#     cordova(
+#       platform: 'android',
+#       release: false
+#     )
 
-    #Push changes to dev team
-    sh(" cd .. code-push release-cordova Apparent-Android android --deploymentName Staging")
+#     #Push changes to dev team
+#     sh(" cd .. code-push release-cordova Apparent-Android android --deploymentName Staging")
 
-    crashlytics(
-      apk_path: './platforms/android/build/outputs/apk/android-debug.apk',
-      api_token: "b0510b6b26fe11d43115f7fb04d744bacc44a0f9",
-      build_secret: "942d313429ea10c092669c1e842932e401f7d21448acc7fec67975475a9c1df1",
-      notifications: true,
-      groups: "android-local-development",
-      debug: true
-    )
-  end
+#     crashlytics(
+#       apk_path: './platforms/android/build/outputs/apk/android-debug.apk',
+#       api_token: "b0510b6b26fe11d43115f7fb04d744bacc44a0f9",
+#       build_secret: "942d313429ea10c092669c1e842932e401f7d21448acc7fec67975475a9c1df1",
+#       notifications: true,
+#       groups: "android-local-development",
+#       debug: true
+#     )
+#   end
 
-  lane :beta do |options|
-    if options[:m]
-      commit(options)
-      # changelog_from_git_commits(
-      #   # pretty: "- (%ae) %s", # Optional, lets you provide a custom format to apply to each commit when generating the changelog text
-      #   match_lightweight_tag: false, # Optional, lets you ignore lightweight (non-annotated) tags when searching for the last tag
-      #   include_merges: false # Optional, lets you filter out merge commits
-      # )
+#   lane :beta do |options|
+#     if options[:m]
+#       commit(options)
+#       # changelog_from_git_commits(
+#       #   # pretty: "- (%ae) %s", # Optional, lets you provide a custom format to apply to each commit when generating the changelog text
+#       #   match_lightweight_tag: false, # Optional, lets you ignore lightweight (non-annotated) tags when searching for the last tag
+#       #   include_merges: false # Optional, lets you filter out merge commits
+#       # )
 
-      # stamp_changelog( section_identifier: this_commit[:abbreviated_commit_hash] )
-    end
+#       # stamp_changelog( section_identifier: this_commit[:abbreviated_commit_hash] )
+#     end
 
-    # commit = last_git_commit
-    # crashlytics(notes: commit[:message]) # message of commit
-    # author = commit[:author] # author of the commit
-    # hash = commit[:commit_hash] # long sha of commit
-    # short_hash = commit[:abbreviated_commit_hash] # short sha of commit
-    # increment_version_code()
+#     # commit = last_git_commit
+#     # crashlytics(notes: commit[:message]) # message of commit
+#     # author = commit[:author] # author of the commit
+#     # hash = commit[:commit_hash] # long sha of commit
+#     # short_hash = commit[:abbreviated_commit_hash] # short sha of commit
+#     # increment_version_code()
 
-    cordova(
-      platform: 'android',
-      release: false
-    )
+#     cordova(
+#       platform: 'android',
+#       release: false
+#     )
 
-    #Push new release to existing Beta testers
-    sh("cd .. code-push release-cordova Apparent-Android android --deploymentName Beta")
+#     #Push new release to existing Beta testers
+#     sh("cd .. code-push release-cordova Apparent-Android android --deploymentName Beta")
 
-    #Push new release for initial install to new Android Developer devices
-    crashlytics(
-      apk_path: './platforms/android/build/outputs/apk/android-debug.apk',
-      api_token: "b0510b6b26fe11d43115f7fb04d744bacc44a0f9",
-      build_secret: "942d313429ea10c092669c1e842932e401f7d21448acc7fec67975475a9c1df1",
-      notifications: true,
-      groups: "android-beta",
-      debug: true
-    )
+#     #Push new release for initial install to new Android Developer devices
+#     crashlytics(
+#       apk_path: './platforms/android/build/outputs/apk/android-debug.apk',
+#       api_token: "b0510b6b26fe11d43115f7fb04d744bacc44a0f9",
+#       build_secret: "942d313429ea10c092669c1e842932e401f7d21448acc7fec67975475a9c1df1",
+#       notifications: true,
+#       groups: "android-beta",
+#       debug: true
+#     )
       
-    say "Brad you rocked another android deployment"
-  end
-end
+#     say "Brad you rocked another android deployment"
+#   end
+# end
 
 platform :ios do
   before_all do
