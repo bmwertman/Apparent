@@ -1,4 +1,4 @@
-git_url "https://BradWertman@bitbucket.org/BradWertman/certificates.git"
+git_url "https://github.com/bmwertman/certificates"
 
 type "development" # The default type, can be: appstore, adhoc or development
 
