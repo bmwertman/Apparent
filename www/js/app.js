@@ -58,7 +58,14 @@ var Pta = angular.module('pta', [
       Auth.login(credentials);
     }
 
-    codePush.sync();
+    var attributes = {
+        foo: "data",
+        bar: true,
+    };
+
+    window.fabric.Answers.sendSignUp("Facebook", true, attributes);
+    
+    // codePush.sync();
 
     // function syncStatus(status){
     //   var pushRegId = $localstorage.get('registrationId');
@@ -272,6 +279,7 @@ var Pta = angular.module('pta', [
     $rootScope.$on('chatter-bag.cancel', function(e, el){
       $rootScope.removeDrawer.css('bottom', '-80px');
     });
+
   });
 
   
