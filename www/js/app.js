@@ -62,8 +62,6 @@ var Pta = angular.module('pta', [
         foo: "data",
         bar: true,
     };
-
-    window.fabric.Answers.sendSignUp("Facebook", true, attributes);
     
     // codePush.sync();
 

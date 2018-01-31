@@ -20,10 +20,10 @@ Pta.factory('Answers', [
     sendRatedContent: function(rating, contentName, contentType, contentId, attributes) {
       window.fabric.core.execPlugin('sendRatedContent', [rating, contentName, contentType, contentId, attributes]);
     },
-    sendSignUp: function(method, success, attributes) {
+    sendSignup: function(method, success, attributes) {
       window.fabric.core.execPlugin('sendSignUp', [method, success, attributes]);
     },
-    sendLogIn: function(method, success, attributes) {
+    sendLogin: function(method, success, attributes) {
       window.fabric.core.execPlugin('sendLogIn', [method, success, attributes]);
     },
     sendInvite: function(method, attributes) {
