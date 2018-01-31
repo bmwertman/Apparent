@@ -8,7 +8,8 @@ Pta.factory('Auth', [
    '$rootScope',
    '$timeout',
    '$ionicLoading',
-  function($firebaseAuth, $firebaseObject, $state, userService, $localstorage, $rootScope, $timeout, $ionicLoading){
+   'Answers',
+  function($firebaseAuth, $firebaseObject, $state, userService, $localstorage, $rootScope, $timeout, $ionicLoading, Answers){
   var authObj = $firebaseAuth();
 
   return {
@@ -23,6 +24,7 @@ Pta.factory('Auth', [
         $localstorage.set('email', credentials.email);
         $localstorage.set('password', credentials.password);
       }).catch(function(error){
+        Answers.sendLogin('Email', false, error);
         $ionicLoading.hide();
         return error.message;
       });
@@ -64,6 +66,9 @@ Pta.factory('Auth', [
             } else {
               $state.go('app.home');
             }
+
+            Answers.sendLogin('Email', true);
+
           });
         } else if($localstorage.get('emailSent')){
           $state.go('verify');

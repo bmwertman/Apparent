@@ -10,7 +10,8 @@ Pta.controller('SignupCtrl', [
   '$cordovaDevice',
   '$firebaseObject',
   '$timeout',
-  function($scope, $ionicSideMenuDelegate, Auth, $ionicLoading, $firebaseArray, $state, userService, $localstorage, $cordovaDevice, $firebaseObject, $timeout) {
+  'Answers',
+  function($scope, $ionicSideMenuDelegate, Auth, $ionicLoading, $firebaseArray, $state, userService, $localstorage, $cordovaDevice, $firebaseObject, $timeout, Answers) {
 
   $ionicSideMenuDelegate.canDragContent(true);
   $scope.newUser = {};
@@ -46,11 +47,16 @@ Pta.controller('SignupCtrl', [
           usersRef.update(userProfile);
           userService.setUser(userProfile);
           $scope.newUser = {};
+
+          Answers.sendSignup('Email', true);
+
           $state.go('verify');
         }, function(error){
+          Answers.sendSignup('Email', false, error);
           console.log('Error: ' + error.message);
         });
       }).catch(function(error) {
+        Answers.sendSignup('Email', false, error);
         console.error("Error: ", error);
         $scope.errorMessage = error.message;
       });
