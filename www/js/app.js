@@ -48,21 +48,20 @@ var Pta = angular.module('pta', [
   editableThemes['default'].submitTpl = '<button type="submit" class="xeditable-submit fa fa-pencil-square-o"></button>';
 
   $ionicPlatform.ready(function() {
+
     var credentials = {
           email: $localstorage.get('email'),
           password: $localstorage.get('password')
         },
-        platform;
-
-    if (!$rootScope.notificationLaunch && credentials.email && credentials.password) {
-      Auth.login(credentials);
-    }
-
-    var attributes = {
-        foo: "data",
-        bar: true,
-    };
+        platform,
+        fbUser = JSON.parse($localstorage.get('firebase:authUser:AIzaSyCqFHdSGIab4VtdYra_H-EiDo4ovMTwlTk:[DEFAULT]'));
     
+    // Only log the user in if they have verified their email
+    if(fbUser.emailVerified && !$rootScope.notificationLaunch && credentials.email && credentials.password){
+      Auth.login(credentials);
+    } else if(!fbUser.emailVerified){
+      $state.go('verify');
+    }
     // codePush.sync();
 
     // function syncStatus(status){

@@ -18,7 +18,7 @@ Pta.factory('Auth', [
       self.onAuth();
       authObj.$signInWithEmailAndPassword(credentials.email, credentials.password)
       .then(function(authData){
-        if(!firebase.auth().currentUser.emailVerified){
+        if (!firebase.auth().currentUser.emailVerified) {
           self.logout();
         }
         $localstorage.set('email', credentials.email);
@@ -37,7 +37,7 @@ Pta.factory('Auth', [
     onAuth: function() {
       authObj.$onAuthStateChanged(function(authData) {
         $rootScope.$on('$stateChangeSuccess', function(){
-          if(navigator.splashscreen){
+          if (navigator.splashscreen) {
             $timeout(function(){
               navigator.splashscreen.hide();
             });
@@ -59,9 +59,9 @@ Pta.factory('Auth', [
 
             userIsAdmin.$bindTo($rootScope, "isAdmin");
 
-            if(!profile.val().school){
+            if (!profile.val().school) {
               $state.go('app.profile');
-            } else if(!$localstorage.get('password')){
+            } else if (!$localstorage.get('password')) {
               $state.go('login');
             } else {
               $state.go('app.home');
@@ -70,11 +70,11 @@ Pta.factory('Auth', [
             Answers.sendLogin('Email', true);
 
           });
-        } else if($localstorage.get('emailSent')){
+        } else if ($localstorage.get('emailSent')) {
           $state.go('verify');
           authObj.$onAuthStateChanged(function(authData) {
             var user = firebase.auth().currentUser
-            if(user && user.emailVerified){
+            if (user && user.emailVerified) {
               // $localstorage.remove('emailSent');
               $state.go('app.profile');
             }

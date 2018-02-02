@@ -16,6 +16,13 @@ Pta.controller('UserCtrl', [
   'userService',
   function($scope, $ionicSideMenuDelegate, $ionicModal, $ionicPopup, $cordovaImagePicker, $filter, $timeout, $stateParams, $http, $firebaseArray, $firebaseObject, $ionicHistory, $rootScope, Auth, userService) {
     // Future work - Add child's current teacher to their parent's profile
+
+    // fbUser saved to persist user after location.reload(true)
+    // used for updating the email validation boolean  
+    if($rootScope.fbUser){
+      $rootScope.fbUser = null;
+    }
+
     var ref = firebase.database().ref(),
         userId = firebase.auth().currentUser.uid,
         userRef = ref.child('users').child(userId),
