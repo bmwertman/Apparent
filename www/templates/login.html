@@ -25,13 +25,19 @@
         <div class="form-group" ng-class="{'has-error': form.password.$invalid && submitted}">
           <label for="password" class="control-label">Password
             <input
-              type="password"
+              type="{{inputType}}"
               class="form-control"
               id="password"
               name="password"
               placeholder="Password"
               ng-model="credentials.password"
               required>
+              <div class="visibility" type="button" on-touch="hideShowPassword()" ng-hide="isShown">
+                <i class="fa fa-fw fa-eye eye-icon"></i>
+              </div>
+              <div class="visibility" type="button" on-touch="hideShowPassword()" ng-show="isShown">
+                <i class="fa fa-fw fa-eye-slash eye-icon"></i>
+              </div>
           </label>
           <a class="forgot-password" ng-click="confirmReset()">Forgot password?</a>
         </div>

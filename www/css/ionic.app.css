@@ -10607,6 +10607,18 @@ ion-content.has-tall-header {
             margin-bottom: 7px;
             width: 84%;
             margin-left: 8%; }
+          .login ion-content .card .form-group label .visibility {
+            float: right;
+            margin-right: 30px;
+            margin-top: -40px;
+            position: relative;
+            z-index: 2;
+            background-color: white;
+            border: none;
+            color: darkgrey;
+            font-size: 22px;
+            width: 25px;
+            padding: 0; }
       .login ion-content .card .forgot-password {
         margin: 5px 8%;
         color: snow; }

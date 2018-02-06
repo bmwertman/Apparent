@@ -7,27 +7,33 @@ Pta.controller('LoginCtrl', [
   'Auth',
   function($scope, $ionicModal, $ionicPopup, $timeout, $ionicLoading, Auth) {
 
-    // var emailRegex = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
-    
-    // Form data for the login view
     $scope.credentials = {};
-
     $scope.errorMessage = null;
-
-    // hide error messages until 'submit' event
+    $scope.inputType = 'password';
     $scope.submitted = false;
-    // hide success message
     $scope.showMessage = false;
-    // method called from shakeThat directive
+    $scope.invalidEmail = false;
+    $scope.isShown = false;
+
     $scope.submit = function() {
       $ionicLoading.show({ template: '<ion-spinner></ion-spinner>'});
       Auth.login($scope.credentials);
       $scope.credentials = {};
       $ionicLoading.hide();
     };
+  
+    $scope.hideShowPassword = function(){
+      if ($scope.inputType == 'password'){
+        $scope.inputType = 'text';
+        $scope.isShown = true;
+      } else {
+        $scope.inputType = 'password';
+        $scope.isShown = false;
+      }
+    };
 
     $scope.resetError = function(){ $scope.emailBlank = false; }
-    $scope.invalidEmail = false;
+    
     $scope.confirmReset = function(){
       $scope.data= {};
       var confirmResetPopup = $ionicPopup.show({
