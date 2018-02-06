@@ -20,6 +20,7 @@ var Pta = angular.module('pta', [
   'ui.router.stateHelper',
   'ionicLazyLoad',
   'monospaced.elastic',
+  'ngAnimate',
   // 'ngCordovaOauth',
   angularDragula(angular)
   ])

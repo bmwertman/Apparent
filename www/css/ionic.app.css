@@ -10564,6 +10564,19 @@ ion-content.has-tall-header {
   .login ion-content {
     padding: 0;
     top: 100px; }
+    .login ion-content .error {
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: snow;
+      background-color: red;
+      margin-left: 6%;
+      border-radius: 5px;
+      padding: 5px 0;
+      text-shadow: 1px 1px 1px black;
+      position: absolute;
+      top: 0;
+      width: 88%; }
     .login ion-content .current-user {
       color: #1102FF;
       width: 100%;
@@ -10597,13 +10610,14 @@ ion-content.has-tall-header {
       .login ion-content .card .forgot-password {
         margin: 5px 8%;
         color: snow; }
-      .login ion-content .card a.button {
-        margin: 35px auto 15px;
+      .login ion-content .card button.button {
         background-color: #FF8F02;
         color: snow;
+        width: 84%;
+        margin-left: 8%;
+        margin-top: 35px;
         font-size: 22px;
         font-weight: bold;
-        width: 140px;
         box-shadow: 2px 2px 2px black;
         text-shadow: 1px 1px 1px black; }
       .login ion-content .card .prompt {
