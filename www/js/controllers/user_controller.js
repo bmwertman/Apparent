@@ -14,7 +14,8 @@ Pta.controller('UserCtrl', [
   '$rootScope',
   'Auth',
   'userService',
-  function($scope, $ionicSideMenuDelegate, $ionicModal, $ionicPopup, $cordovaImagePicker, $filter, $timeout, $stateParams, $http, $firebaseArray, $firebaseObject, $ionicHistory, $rootScope, Auth, userService) {
+  '$localstorage',
+  function($scope, $ionicSideMenuDelegate, $ionicModal, $ionicPopup, $cordovaImagePicker, $filter, $timeout, $stateParams, $http, $firebaseArray, $firebaseObject, $ionicHistory, $rootScope, Auth, userService, $localstorage) {
     // Future work - Add child's current teacher to their parent's profile
 
     // fbUser saved to persist user after location.reload(true)
@@ -156,6 +157,7 @@ Pta.controller('UserCtrl', [
           .then(function(){
             userService.setUser(user);
             setSchoolName(modelValue['NCESSCH']);
+            $localstorage.set('emailVerified', true);
           })
           .catch(function(error){
             if(error.code === "PERMISSION_DENIED"){

@@ -54,10 +54,17 @@ var Pta = angular.module('pta', [
           password: $localstorage.get('password')
         },
         platform,
-        fbUser = JSON.parse($localstorage.get('firebase:authUser:AIzaSyCqFHdSGIab4VtdYra_H-EiDo4ovMTwlTk:[DEFAULT]'));
-    
+        fbUser;
+    if($localstorage.get('firebase:authUser:AIzaSyCqFHdSGIab4VtdYra_H-EiDo4ovMTwlTk:[DEFAULT]')){
+      fbUser = JSON.parse($localstorage.get('firebase:authUser:AIzaSyCqFHdSGIab4VtdYra_H-EiDo4ovMTwlTk:[DEFAULT]'));
+    } else {
+      fbUser = userService.getUser();
+    }
+  
     // Only log the user in if they have verified their email
-    if(fbUser.emailVerified && !$rootScope.notificationLaunch && credentials.email && credentials.password){
+    if($localstorage.get('loggedOut')){
+      $state.go('login');
+    } else if(fbUser.emailVerified && !$rootScope.notificationLaunch && credentials.email && credentials.password){
       Auth.login(credentials);
     } else if(!fbUser.emailVerified){
       $state.go('verify');

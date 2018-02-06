@@ -23,6 +23,11 @@ Pta.factory('Auth', [
         }
         $localstorage.set('email', credentials.email);
         $localstorage.set('password', credentials.password);
+        if($localstorage.get('loggedOut')){
+          $localstorage.set('loggedOut', false);
+          $state.go('app.home');
+        }
+        Answers.sendLogin('Email', true);
       }).catch(function(error){
         Answers.sendLogin('Email', false, error);
         $ionicLoading.hide();
@@ -32,6 +37,7 @@ Pta.factory('Auth', [
     logout: function() {
       $localstorage.remove('email');
       $localstorage.remove('password');
+      $localstorage.set('loggedOut', true);
       authObj.$signOut();
     },
     onAuth: function() {
@@ -61,19 +67,18 @@ Pta.factory('Auth', [
 
             if (!profile.val().school) {
               $state.go('app.profile');
-            } else if (!$localstorage.get('password')) {
-              $state.go('login');
             } else {
               $state.go('app.home');
             }
 
             Answers.sendLogin('Email', true);
-
           });
+        } else if ($localstorage.get('loggedOut')) {
+          $state.go('login');
         } else if ($localstorage.get('emailSent')) {
           $state.go('verify');
           authObj.$onAuthStateChanged(function(authData) {
-            var user = firebase.auth().currentUser
+            var user = firebase.auth().currentUser;
             if (user && user.emailVerified) {
               // $localstorage.remove('emailSent');
               $state.go('app.profile');
