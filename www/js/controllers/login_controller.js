@@ -5,7 +5,9 @@ Pta.controller('LoginCtrl', [
   '$timeout',
   '$ionicLoading',
   'Auth',
-  function($scope, $ionicModal, $ionicPopup, $timeout, $ionicLoading, Auth) {
+  '$animate',
+  'Answers',
+  function($scope, $ionicModal, $ionicPopup, $timeout, $ionicLoading, Auth, $animate, Answers) {
 
     $scope.credentials = {};
     $scope.errorMessage = null;
@@ -15,11 +17,30 @@ Pta.controller('LoginCtrl', [
     $scope.invalidEmail = false;
     $scope.isShown = false;
 
-    $scope.submit = function() {
-      $ionicLoading.show({ template: '<ion-spinner></ion-spinner>'});
-      Auth.login($scope.credentials);
-      $scope.credentials = {};
-      $ionicLoading.hide();
+    document.getElementById('loginSubmitBtn').onclick = function() {
+      $ionicLoading.show({ template: '<ion-spinner></ion-spinner>', hideOnStateChange: true});
+      $scope.userEmail = $scope.credentials.email
+      Auth.login($scope.credentials)
+      .then(function(res){
+        if(res && res.code === "auth/wrong-password"){
+          $scope.errorMessage = "Invalid password";
+          $scope.showMessage = true;
+          var el = document.getElementById('password');
+          $ionicLoading.hide().then(function(){
+            $scope.credentials = {email: $scope.userEmail};
+          });
+          $animate.addClass(el, 'shake', function() {
+            $animate.removeClass(el, 'shake');
+          });
+        } else if (res && res.code === "Sign in success"){
+          $scope.credentials = {};
+          $scope.showMessage = false;
+          $scope.errorMessage = null;
+        } else {
+          Answers.sendCustomEvent("UncaughtLoginRes", res);
+          console.log('UncaughtLoginRes res.code: ' + res.code);
+        }
+      });
     };
   
     $scope.hideShowPassword = function(){

@@ -19,7 +19,7 @@ Pta.controller('HomeCtrl', [
     if(userService.getUser()){
       $scope.user = userService.getUser();
     } else {
-      $firebaseObject(firebase.database().ref('users').child(JSON.parse($localstorage.get('firebase:authUser:AIzaSyCqFHdSGIab4VtdYra_H-EiDo4ovMTwlTk:[DEFAULT]').uid))).$loaded()
+      $firebaseObject(firebase.database().ref('users').child(JSON.parse($localstorage.get('firebase:authUser:AIzaSyCqFHdSGIab4VtdYra_H-EiDo4ovMTwlTk:[DEFAULT]')).uid)).$loaded()
       .then(function(user){
         $scope.user = user;
       });

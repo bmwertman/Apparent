@@ -9,14 +9,16 @@ Pta.factory('Auth', [
    '$timeout',
    '$ionicLoading',
    'Answers',
-  function($firebaseAuth, $firebaseObject, $state, userService, $localstorage, $rootScope, $timeout, $ionicLoading, Answers){
+   '$q',
+  function($firebaseAuth, $firebaseObject, $state, userService, $localstorage, $rootScope, $timeout, $ionicLoading, Answers, $q){
   var authObj = $firebaseAuth();
 
   return {
     login: function(credentials, state, roomId) {
       var self = this;
+      var defer = $q.defer();
       self.onAuth();
-      authObj.$signInWithEmailAndPassword(credentials.email, credentials.password)
+      defer.resolve(authObj.$signInWithEmailAndPassword(credentials.email, credentials.password)
       .then(function(authData){
         if (!firebase.auth().currentUser.emailVerified) {
           self.logout();
@@ -28,11 +30,15 @@ Pta.factory('Auth', [
           $state.go('app.home');
         }
         Answers.sendLogin('Email', true);
+        return {code: 'Sign in success'}
       }).catch(function(error){
-        Answers.sendLogin('Email', false, error);
+        if(!error.code === "auth/wrong-password"){
+          Answers.sendLogin('Email', false, error);
+        }
         $ionicLoading.hide();
-        return error.message;
-      });
+        return error;
+      }));
+      return defer.promise;
     },
     logout: function() {
       $localstorage.remove('email');
