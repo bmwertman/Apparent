@@ -6,7 +6,6 @@ var Pta = angular.module('pta', [
   'ngMaterial', 
   'ngMaterialDatePicker',
   'firebase',
-  'validation.match',
   'offClick',
   'xeditable',
   'ngImgCrop',
