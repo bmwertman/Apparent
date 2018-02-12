@@ -21,6 +21,7 @@ var Pta = angular.module('pta', [
   'ionicLazyLoad',
   'monospaced.elastic',
   'ngAnimate',
+  'focus-if',
   // 'ngCordovaOauth',
   angularDragula(angular)
   ])

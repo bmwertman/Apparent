@@ -10677,7 +10677,7 @@ ion-content.has-tall-header {
       border: none;
       background-color: #1102FF;
       border-radius: 5px;
-      padding: 10px 0;
+      padding: 5px 0;
       width: 80%;
       margin-left: 10%; }
       .signup-modal .signup form p {
@@ -10688,38 +10688,45 @@ ion-content.has-tall-header {
         display: block; }
       .signup-modal .signup form label {
         font-weight: bold;
+        font-size: 12px;
         color: white;
+        width: 100%;
         margin-left: 8%; }
         .signup-modal .signup form label input {
           padding-left: 5px;
-          border-radius: 8px;
-          margin-bottom: 7px;
+          border-radius: 5px;
           width: 84%;
-          margin-left: 8%; }
-      .signup-modal .signup form label:nth-child(3) {
-        display: inline-block;
-        float: left;
-        width: 40%; }
-        .signup-modal .signup form label:nth-child(3) input {
-          margin: 0;
-          width: 100%; }
-      .signup-modal .signup form label:nth-child(4) {
-        display: inline-block;
-        float: left;
-        width: 42%;
-        margin: 0 0 7px 2%; }
-        .signup-modal .signup form label:nth-child(4) input {
-          margin: 0;
-          width: 100%; }
+          margin-left: 8%;
+          height: 24px; }
+        .signup-modal .signup form label .visibility {
+          float: right;
+          margin-right: 30px;
+          margin-top: -24px;
+          position: relative;
+          z-index: 2;
+          background-color: white;
+          border: none;
+          color: darkgrey;
+          font-size: 18px;
+          width: 25px;
+          padding: 0;
+          height: 18px; }
       .signup-modal .signup form input.submit {
-        margin: 30px auto 15px;
+        margin: 10px auto;
         background-color: #FF8F02;
         color: snow;
         font-size: 22px;
         font-weight: bold;
-        width: 140px;
+        width: 84%;
         box-shadow: 2px 2px 2px black;
         text-shadow: 1px 1px 1px black; }
+      .signup-modal .signup form input.signupErr {
+        margin: 10px auto;
+        color: snow;
+        background-color: darkgray;
+        font-size: 18px;
+        font-weight: bold;
+        width: 84%; }
     .signup-modal .signup form:nth-child(4) input {
       margin-bottom: 0; }
   .signup-modal ion-footer-bar {
@@ -11987,29 +11994,5 @@ md-dialog-actions.dtp-buttons button.md-button {
       text-align: center;
       line-height: 18px;
       display: inline-block; }
-  .signup-modal .signup form {
-    padding: 5px 0; }
-    .signup-modal .signup form label {
-      font-size: 11px; }
-      .signup-modal .signup form label:nth-child(3) {
-        width: 38%; }
-      .signup-modal .signup form label:nth-child(4) {
-        width: 44%;
-        margin-bottom: 15px; }
-      .signup-modal .signup form label input {
-        padding: 0px 5px;
-        border-radius: 5px;
-        margin-bottom: 5px;
-        height: 25px; }
-        .signup-modal .signup form label input::-webkit-input-placeholder {
-          font-size: 11px;
-          margin-bottom: 3px;
-          width: 88%;
-          margin-left: 6%; }
-    .signup-modal .signup form input[type=submit] {
-      margin: 0 auto 5px;
-      min-height: 35px;
-      height: 35px;
-      line-height: 35px; }
   .verify .email-verify h3 {
     margin-top: 0; } }

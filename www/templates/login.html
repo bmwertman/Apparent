@@ -8,8 +8,8 @@
       <a ui-sref="signup"> Create an account</a>
     </p>
     <p class="error" ng-if="showMessage">{{ errorMessage }}</p>
-    <form name="form" shake-that submitted="submitted" class="card">
-        <div class="form-group" ng-class="{'has-error': form.email.$invalid && submitted}">
+    <form name="loginForm" class="card">
+        <div class="form-group">
           <label for="email" class="control-label">Email
             <input
               type="email"
@@ -22,7 +22,7 @@
               required>
           </label>
         </div>
-        <div class="form-group" ng-class="{'has-error': form.password.$invalid && submitted}">
+        <div class="form-group">
           <label for="password" class="control-label">Password
             <input
               type="{{inputType}}"
@@ -41,7 +41,7 @@
           </label>
           <a class="forgot-password" ng-click="confirmReset()">Forgot password?</a>
         </div>
-        <button id="loginSubmitBtn" class="button button-block button-small" type="button">Login</button>
+        <button ng-click="loginSubmit(loginForm)" class="button button-block button-small" type="button">Login</button>
     </form>
   </ion-content>
   <ion-footer-bar>

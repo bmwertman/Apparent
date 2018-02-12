@@ -12,35 +12,47 @@ Pta.controller('LoginCtrl', [
     $scope.credentials = {};
     $scope.errorMessage = null;
     $scope.inputType = 'password';
-    $scope.submitted = false;
     $scope.showMessage = false;
     $scope.invalidEmail = false;
     $scope.isShown = false;
 
-    document.getElementById('loginSubmitBtn').onclick = function() {
-      $ionicLoading.show({ template: '<ion-spinner></ion-spinner>', hideOnStateChange: true});
-      $scope.userEmail = $scope.credentials.email
-      Auth.login($scope.credentials)
-      .then(function(res){
-        if(res && res.code === "auth/wrong-password"){
-          $scope.errorMessage = "Invalid password";
-          $scope.showMessage = true;
-          var el = document.getElementById('password');
-          $ionicLoading.hide().then(function(){
-            $scope.credentials = {email: $scope.userEmail};
-          });
+    $scope.loginSubmit = function(loginForm){
+      if(loginForm.$invalid){
+        angular.forEach(loginForm.$error, function(value, key){
+          var el = document.getElementById(key)
+          $scope.errorMessage = "Invalid " + key;
           $animate.addClass(el, 'shake', function() {
             $animate.removeClass(el, 'shake');
           });
-        } else if (res && res.code === "Sign in success"){
-          $scope.credentials = {};
-          $scope.showMessage = false;
-          $scope.errorMessage = null;
-        } else {
-          Answers.sendCustomEvent("UncaughtLoginRes", res);
-          console.log('UncaughtLoginRes res.code: ' + res.code);
-        }
-      });
+        });
+        $scope.showMessage = true;
+      } else {
+        $ionicLoading.show({ template: '<ion-spinner></ion-spinner>', hideOnStateChange: true});
+        $scope.userEmail = $scope.credentials.email
+        Auth.login($scope.credentials)
+        .then(function(res){
+          if(res && res.code === "auth/wrong-password"){
+            $scope.errorMessage = "Invalid password";
+            $scope.showMessage = true;
+            var el = document.getElementById('password');
+            $ionicLoading.hide().then(function(){
+              $scope.credentials = {email: $scope.userEmail};
+            });
+            $animate.addClass(el, 'shake', function() {
+              $animate.removeClass(el, 'shake');
+            });
+          } else if (res && res.code === 'Sign in success'){
+            $scope.credentials = {};
+            $scope.showMessage = false;
+            $scope.errorMessage = null;
+          } else if(res & res.code === 'auth/user-not-found'){
+            debugger;
+          } else {
+            Answers.sendCustomEvent("UncaughtLoginRes", res);
+            console.log('UncaughtLoginRes res.code: ' + res.code);
+          }
+        });
+      }
     };
   
     $scope.hideShowPassword = function(){

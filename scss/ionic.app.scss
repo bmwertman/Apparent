@@ -1168,7 +1168,7 @@ ion-content.has-tall-header{
       border: none;
       background-color: $apparentBlue;
       border-radius: 5px;
-      padding: 10px 0;
+      padding: 5px 0;
       width: 80%;
       margin-left: 10%;
       p{
@@ -1180,44 +1180,49 @@ ion-content.has-tall-header{
       }
       label{
         font-weight: bold;
+        font-size: 12px;
         color: white;
+        width: 100%;
         margin-left: 8%;
         input{
           padding-left: 5px;
-          border-radius: 8px;
-          margin-bottom: 7px;
+          border-radius: 5px;
           width: 84%;
           margin-left: 8%;
+          height: 24px;
         }
-      }
-      label:nth-child(3){
-        display: inline-block;
-        float: left;
-        width: 40%;
-        input{
-          margin: 0;
-          width: 100%;
-        }
-      }
-      label:nth-child(4){
-        display: inline-block;
-        float: left;
-        width: 42%;
-        margin: 0 0 7px 2%;
-        input{
-          margin: 0;
-          width: 100%;
+        .visibility{
+          float: right;
+          margin-right: 30px;
+          margin-top: -24px;
+          position: relative;
+          z-index: 2;
+          background-color: white;
+          border: none;
+          color: darkgrey;
+          font-size: 18px;
+          width: 25px;
+          padding: 0;
+          height: 18px;
         }
       }
       input.submit{
-        margin: 30px auto 15px;
-        background-color: #FF8F02;
+        margin: 10px auto;
+        background-color: $apparentOrange;
         color: $fontColor;
         font-size: 22px;
         font-weight: bold;
-        width: 140px;
+        width: 84%;
         box-shadow: 2px 2px 2px black;
         text-shadow: 1px 1px 1px black;
+      }
+      input.signupErr{
+        margin: 10px auto;
+        color: $fontColor;
+        background-color: darkgray;
+        font-size: 18px;
+        font-weight: bold;
+        width: 84%;
       }
     }
     form:nth-child(4) input{
@@ -1932,7 +1937,7 @@ div#queue{
 #remove-notification{
   width: 100%;
   height: 80px;
-  color: #FF8F02;
+  color: $apparentOrange;
   position: absolute;
   bottom: -80px;
   z-index: 999999999;
@@ -2795,37 +2800,37 @@ md-dialog-actions.dtp-buttons{
       display: inline-block;
     }
   }
-  .signup-modal .signup form{
-    padding: 5px 0;
-    label{
-      font-size: 11px;
-      &:nth-child(3){
-        width: 38%;
-      }
-      &:nth-child(4){
-        width: 44%;
-        margin-bottom: 15px;
-      }
-      input{
-        padding: 0px 5px;
-        border-radius: 5px;
-        margin-bottom: 5px;
-        height: 25px;
-        &::-webkit-input-placeholder{
-          font-size: 11px;
-          margin-bottom: 3px;
-          width: 88%;
-          margin-left: 6%;
-        }
-      }
-    }
-    input[type=submit]{
-      margin: 0 auto 5px;
-      min-height: 35px;
-      height:35px;
-      line-height:35px;
-    }
-  }
+  // .signup-modal .signup form{
+  //   padding: 5px 0;
+  //   label{
+  //     font-size: 11px;
+  //     &:nth-child(3){
+  //       width: 38%;
+  //     }
+  //     &:nth-child(4){
+  //       width: 44%;
+  //       margin-bottom: 15px;
+  //     }
+  //     input{
+  //       padding: 0px 5px;
+  //       border-radius: 5px;
+  //       margin-bottom: 5px;
+  //       height: 25px;
+  //       &::-webkit-input-placeholder{
+  //         font-size: 11px;
+  //         margin-bottom: 3px;
+  //         width: 88%;
+  //         margin-left: 6%;
+  //       }
+  //     }
+  //   }
+  //   input[type=submit]{
+  //     margin: 0 auto 5px;
+  //     min-height: 35px;
+  //     height:35px;
+  //     line-height:35px;
+  //   }
+  // }
   .verify .email-verify h3{
     margin-top: 0;
   }

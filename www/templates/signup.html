@@ -9,23 +9,57 @@
       Already have an account?
       <a ui-sref="login"> Login</a>
     </p>
-    <form name="signupForm" ng-submit="signupSubmit()">
-      <label for="full-name">Full name
-        <input type="text" name="full-name" ng-model="newUser.name" placeholder="First and last name" required="true">
+    <form id="signupForm" name="signupForm" shake-that ng-submit="signupSubmit(signupForm)">
+      <label for="full-name" ng-init="getForm(signupForm)">Full name
+        <input type="text"
+               id="username"
+               name="full-name"
+               ng-model="newUser.name"
+               placeholder="First and last name"
+               required
+               focus-if>
       </label>
       <label for="email">Email
-        <input type="email" name="email" ng-model="newUser.email" placeholder="Email" required="true">
+        <input type="email"
+               id="email"
+               name="email"
+               ng-model="newUser.email"
+               placeholder="Email"
+               focus-if="errorMessage === 'Invalid email'"
+               ignore-composition-event=""
+               required>
       </label>
       <label for="password">Password
-        <input type="password" name="password" ng-model="newUser.password" placeholder="Password" required="true">
+        <input type="{{inputType}}"
+               id="password"
+               name="password"
+               ng-model="newUser.password"
+               placeholder="Password"
+               focus-if="btnVal === 'Unmatched passwords'"
+               required>
+        <div class="visibility" type="button" on-touch="hideShowPassword()" ng-hide="isShown">
+          <i class="fa fa-fw fa-eye eye-icon"></i>
+        </div>
+        <div class="visibility" type="button" on-touch="hideShowPassword()" ng-show="isShown">
+          <i class="fa fa-fw fa-eye-slash eye-icon"></i>
+        </div>
       </label>
       <label for="confirm">Confirm password
-        <input type="password" name="confirm" ng-model="newUser.confirm_password" placeholder="Confirm password" name"confirmField" match="newUser.password" match-ignore-empty="true" required="true">
+        <input type="{{inputType}}"
+               id="confirm"
+               name="confirm"
+               ng-model="newUser.confirm_password"
+               placeholder="Confirm password"
+               name="confirmField"
+               required>
+        <div class="visibility" type="button" on-touch="hideShowPassword()" ng-hide="isShown">
+          <i class="fa fa-fw fa-eye eye-icon"></i>
+        </div>
+        <div class="visibility" type="button" on-touch="hideShowPassword()" ng-show="isShown">
+          <i class="fa fa-fw fa-eye-slash eye-icon"></i>
+        </div>
       </label>
-      <!-- This displays user error messages (automatically generated from firebase) for login (like "The specified password is incorrect") -->
-      <p ng-if="errorMessage && !signupForm.confirmField.$error.match">{{ errorMessage }}</p>  
-      <p ng-show="signupForm.confirmField.$error.match">Password does not match confirm password. Please try again.</p>
-      <input type="submit" class="button button-block button-balanced submit">
+      <input id="signupBtn" type="submit" class="button button-block button-small submit" value="{{btnVal}}">
     </form>
   <!-- </ion-content> -->
   </ion-scroll>
