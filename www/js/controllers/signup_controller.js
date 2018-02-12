@@ -82,6 +82,7 @@ Pta.controller('SignupCtrl', [
                 usersRef = ref.child('users').child(authData.uid);
             usersRef.update(userProfile);
             userService.setUser(userProfile);
+            Answers.sendSignup('email', true, userProfile);
             $scope.newUser = {};
             $state.go('verify');
           })
