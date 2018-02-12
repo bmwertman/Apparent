@@ -71,25 +71,6 @@ var Pta = angular.module('pta', [
     } else if(!fbUser.emailVerified){
       $state.go('verify');
     }
-    // codePush.sync();
-
-    // function syncStatus(status){
-    //   var pushRegId = $localstorage.get('registrationId');
-    //   if(syncStatus.UPDATE_INSTALLED){
-    //     $http({
-    //        method: 'POST',
-    //        url:'https://murmuring-fjord-75421.herokuapp.com/updates',
-    //        data:{
-    //            reg_id: pushRegId,
-    //            topic: '/topics/' + platform,
-    //            platform:  platform
-    //        }
-    //     })
-    //     .catch(function(err){
-    //         console.log("Node server POST error: " + err);
-    //     });
-    //   }
-    // }
     
     $cordovaPushV5.initialize({
       "android": {
@@ -116,37 +97,6 @@ var Pta = angular.module('pta', [
           $localstorage.set('registrationId', regId);
           // Post registrationId to your app server as the value has changed
         }
-
-        // function updatesSubcribe(platform){
-        //   $cordovaPushV5.Push.subscribe(platform, 
-        //     function(success){
-        //       console.log('success: ', success);
-        //   },
-        //   function(err){
-        //     console.log('Error: ', err);
-        //   });
-        // }
-        
-        // if(ionic.Platform.isAndroid() && firebase.app().options.authDomain === "apparent-2a054.firebaseapp.com"){
-        //   platform = "android";
-        //   // updatesSubcribe(platform);
-        //   $ionicPlatform.on('resume', function(){
-        //     codePush.sync(syncStatus, {installMode: InstallMode.IMMEDIATE}); // check for updates
-        //     if(firebase.auth().currentUser && !firebase.auth().currentUser.emailVerified){
-        //       navigator.app.loadUrl("file:///android_asset/www/index.html");
-        //     }
-        //   });
-        // } else if(firebase.app().options.authDomain === "apparent-2a054.firebaseapp.com"){
-        //   platform = "ios";
-        //   // updatesSubcribe(platform);
-        //   document.addEventListener('active', function(){
-        //     codePush.sync(syncStatus, {installMode: InstallMode.IMMEDIATE}); // check for updates
-        //     if(firebase.auth().currentUser && !firebase.auth().currentUser.emailVerified){
-        //       navigator.splashscreen.show();
-        //       window.location.reload();
-        //     }
-        //   });
-        // }
       });
     });
 
