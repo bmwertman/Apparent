@@ -61,10 +61,8 @@ GEM
       xcpretty-travis-formatter (>= 0.0.3)
     fastlane-plugin-branding (0.1.3)
       branding (~> 0.1.0)
-    fastlane-plugin-changelog (0.9.0)
-    fastlane-plugin-cordova (1.0.0)
+    fastlane-plugin-cordova (1.0.1)
     fastlane-plugin-ftp (0.1.3)
-    fastlane-plugin-increment_version_code (0.4.3)
     gh_inspector (1.0.3)
     google-api-client (0.13.6)
       addressable (~> 2.5, >= 2.5.1)
@@ -146,10 +144,8 @@ PLATFORMS
 DEPENDENCIES
   fastlane
   fastlane-plugin-branding
-  fastlane-plugin-changelog
   fastlane-plugin-cordova
   fastlane-plugin-ftp
-  fastlane-plugin-increment_version_code
 
 BUNDLED WITH
    1.16.0
