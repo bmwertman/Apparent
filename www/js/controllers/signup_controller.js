@@ -34,19 +34,6 @@ Pta.controller('SignupCtrl', [
     $scope.signupForm = signupForm;
   }
 
-  function setErrorMessage(){
-    angular.forEach(signupForm.$error, function(value, key){
-      var el = document.getElementById(key)
-      signupBtn.removeClass('submit');
-      signupBtn.addClass('signupErr');
-      $scope.errorMessage = "Invalid " + key;
-      $scope.btnVal = "Invalid " + key;
-      $animate.addClass(el, 'shake', function() {
-        $animate.removeClass(el, 'shake');
-      });
-    });
-  }
-
   $scope.signupSubmit = function(signupForm) {
     $scope.errorMessage = null;
     if($scope.newUser.password === $scope.newUser.confirm_password){
@@ -61,7 +48,16 @@ Pta.controller('SignupCtrl', [
             unbindWatcher();
           }
         });
-        setErrorMessage()
+        angular.forEach(signupForm.$error, function(value, key){
+          var el = document.getElementById(key)
+          signupBtn.removeClass('submit');
+          signupBtn.addClass('signupErr');
+          $scope.errorMessage = "Invalid " + key;
+          $scope.btnVal = "Invalid " + key;
+          $animate.addClass(el, 'shake', function() {
+            $animate.removeClass(el, 'shake');
+          });
+        });
       } else {
         Auth.createUser($scope.newUser.email, $scope.newUser.password)
         .then(function(authData) {
