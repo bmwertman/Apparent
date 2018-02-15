@@ -2,7 +2,7 @@
   <ion-nav-bar class="header">
     <img class="apparent" src="img/apparent_v2.svg">
   </ion-nav-bar>
-  <ion-content class="padding" scroll="false">
+  <ion-content class="padding login-content" scroll="false">
     <p class="current-user">
       Not registered?
       <a ui-sref="signup"> Create an account</a>
@@ -43,6 +43,9 @@
         </div>
         <button ng-click="loginSubmit(loginForm)" class="button button-block button-small" type="button">Login</button>
     </form>
+    <div class="policy-wrapper">
+      <a ng-click="openPP()">Privacy Policy</a>
+    </div>
   </ion-content>
   <ion-footer-bar>
     <img src="img/students.jpg">

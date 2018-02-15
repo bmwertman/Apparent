@@ -93,4 +93,23 @@ Pta.controller('LoginCtrl', [
         ]
       });
     }
+
+    $ionicModal.fromTemplateUrl('templates/privacy-policy.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal){
+      $scope.modal = modal;
+    });
+
+    $scope.openPP = function(){
+      $scope.modal.show();
+    }
+
+    $scope.closePP = function(){
+      $scope.modal.hide();
+    }
+
+    $scope.$on('$destroy', function(){
+      $scope.modal.$remove();
+    });
 }]);

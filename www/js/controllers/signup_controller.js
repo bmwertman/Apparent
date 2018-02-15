@@ -12,7 +12,8 @@ Pta.controller('SignupCtrl', [
   '$timeout',
   'Answers',
   '$animate',
-  function($scope, $ionicSideMenuDelegate, Auth, $ionicLoading, $firebaseArray, $state, userService, $localstorage, $cordovaDevice, $firebaseObject, $timeout, Answers, $animate) {
+  '$ionicModal',
+  function($scope, $ionicSideMenuDelegate, Auth, $ionicLoading, $firebaseArray, $state, userService, $localstorage, $cordovaDevice, $firebaseObject, $timeout, Answers, $animate, $ionicModal) {
 
   $ionicSideMenuDelegate.canDragContent(true);
   $scope.newUser = {};
@@ -21,7 +22,6 @@ Pta.controller('SignupCtrl', [
   var email = $localstorage.get('email');
   var signupBtn = angular.element(document.getElementById('signupBtn'));
 
-  
   if(navigator.splashscreen){
     $timeout(function(){
       navigator.splashscreen.hide(); 
@@ -59,36 +59,56 @@ Pta.controller('SignupCtrl', [
           });
         });
       } else {
-        Auth.createUser($scope.newUser.email, $scope.newUser.password)
-        .then(function(authData) {
-          var newUser = firebase.auth().currentUser;
-          newUser.sendEmailVerification()
-          .then(function(){
-            $localstorage.set('emailSent', true);
-            if(ionic.Platform.isAndroid() || ionic.Platform.isIOS()){
-              $localstorage.set('email', $scope.newUser.email);
-              $localstorage.set('password', $scope.newUser.password);
-            }
-            var userProfile = { name: $scope.newUser.name,
-                                email: $scope.newUser.email,
-                                user_id: authData.uid,
-                                isAdmin: false 
-                              },
-                ref = firebase.database().ref(),
-                usersRef = ref.child('users').child(authData.uid);
-            usersRef.update(userProfile);
-            userService.setUser(userProfile);
-            Answers.sendSignup('email', true, userProfile);
-            $scope.newUser = {};
-            $state.go('verify');
-          })
-          .catch(function(error){
-            Answers.sendCustomEvent('Failed to send new user email confirmation.', error);
-            console.log("Failed to send new user email confirmation. Error: " + error.code + " " + error.message);
+        if($scope.newUser.agreed){
+          Auth.createUser($scope.newUser.email, $scope.newUser.password)
+          .then(function(authData) {
+            var newUser = firebase.auth().currentUser;
+            newUser.sendEmailVerification()
+            .then(function(){
+              $localstorage.set('emailSent', true);
+              if(ionic.Platform.isAndroid() || ionic.Platform.isIOS()){
+                $localstorage.set('email', $scope.newUser.email);
+                $localstorage.set('password', $scope.newUser.password);
+              }
+              var userProfile = { name: $scope.newUser.name,
+                                  email: $scope.newUser.email,
+                                  user_id: authData.uid,
+                                  agreed_tos: true,
+                                  isAdmin: false 
+                                },
+                  ref = firebase.database().ref(),
+                  usersRef = ref.child('users').child(authData.uid);
+              usersRef.update(userProfile);
+              userService.setUser(userProfile);
+              Answers.sendSignup('email', true, userProfile);
+              $scope.newUser = {};
+              $state.go('verify');
+            })
+            .catch(function(error){
+              Answers.sendCustomEvent('Failed to send new user email confirmation.', error);
+              console.log("Failed to send new user email confirmation. Error: " + error.code + " " + error.message);
+            });
+          }).catch(function(error) {
+            
           });
-        }).catch(function(error) {
-          
-        });
+        } else {
+          var agreed = document.getElementById('agreed');
+          var agreedWrapper = document.getElementById('agreed-wrapper');
+          var unbindagreedWatcher = $scope.$watch('newUser.agreed', function(newValues){
+            if(newValues){
+              signupBtn.removeClass('signupErr');
+              signupBtn.addClass('submit');
+              $scope.btnVal = 'Signup';
+              unbindagreedWatcher();
+            }
+          });
+          signupBtn.removeClass('submit');
+          signupBtn.addClass('signupErr');
+          $scope.btnVal = 'Agree with Terms';
+          $animate.addClass(agreedWrapper, 'shake', function() {
+            $animate.removeClass(agreedWrapper, 'shake');
+          });
+        }
       } 
     } else {
       var password = document.getElementById('password');
@@ -122,6 +142,25 @@ Pta.controller('SignupCtrl', [
       $scope.isShown = false;
     }
   };
+
+  $ionicModal.fromTemplateUrl('templates/tos.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal){
+    $scope.modal = modal;
+  });
+
+  $scope.openTos = function(){
+    $scope.modal.show();
+  }
+
+  $scope.closeTos = function(){
+    $scope.modal.hide();
+  }
+
+  $scope.$on('$destroy', function(){
+    $scope.modal.$remove();
+  });
 }]);
 
 

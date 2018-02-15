@@ -10561,10 +10561,10 @@ ion-content.has-tall-header {
       margin: 0 auto;
       padding: 10px;
       position: relative; }
-  .login ion-content {
+  .login .login-content {
     padding: 0;
-    top: 100px; }
-    .login ion-content .error {
+    margin-top: 35px; }
+    .login .login-content .error {
       text-align: center;
       font-size: 18px;
       font-weight: bold;
@@ -10577,15 +10577,15 @@ ion-content.has-tall-header {
       position: absolute;
       top: 0;
       width: 88%; }
-    .login ion-content .current-user {
+    .login .login-content .current-user {
       color: #1102FF;
       width: 100%;
       text-align: center; }
-      .login ion-content .current-user a {
+      .login .login-content .current-user a {
         text-decoration: none;
         color: #FF8F02;
         font-weight: bold; }
-    .login ion-content .card {
+    .login .login-content .card {
       width: 280px;
       margin: 15px auto;
       background-color: #1102FF;
@@ -10593,21 +10593,21 @@ ion-content.has-tall-header {
       border: none;
       border-radius: 5px;
       box-shadow: 2px 2px 4px black; }
-      .login ion-content .card .form-group {
+      .login .login-content .card .form-group {
         margin-top: 10px;
         height: 56px; }
-        .login ion-content .card .form-group label {
+        .login .login-content .card .form-group label {
           font-weight: bold;
           font-size: 11px;
           color: white;
           margin-left: 8%; }
-          .login ion-content .card .form-group label input {
+          .login .login-content .card .form-group label input {
             padding-left: 5px;
             border-radius: 8px;
             margin-bottom: 7px;
             width: 84%;
             margin-left: 8%; }
-          .login ion-content .card .form-group label .visibility {
+          .login .login-content .card .form-group label .visibility {
             float: right;
             margin-right: 30px;
             margin-top: -40px;
@@ -10619,10 +10619,10 @@ ion-content.has-tall-header {
             font-size: 22px;
             width: 25px;
             padding: 0; }
-      .login ion-content .card .forgot-password {
+      .login .login-content .card .forgot-password {
         margin: 5px 8%;
         color: snow; }
-      .login ion-content .card button.button {
+      .login .login-content .card button.button {
         background-color: #FF8F02;
         color: snow;
         width: 84%;
@@ -10632,17 +10632,24 @@ ion-content.has-tall-header {
         font-weight: bold;
         box-shadow: 2px 2px 2px black;
         text-shadow: 1px 1px 1px black; }
-      .login ion-content .card .prompt {
+      .login .login-content .card .prompt {
         display: inline-block;
         color: snow;
         width: 97px;
         float: left;
         margin-right: 2px; }
-      .login ion-content .card .create-acct {
+      .login .login-content .card .create-acct {
         display: inline-block;
         color: #FF8F02;
         font-weight: bold;
         text-shadow: 1px 1px 1px black; }
+    .login .login-content .policy-wrapper {
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 25px; }
+      .login .login-content .policy-wrapper a {
+        color: #1102FF; }
   .login ion-footer-bar {
     padding: 0; }
     .login ion-footer-bar img {
@@ -10650,6 +10657,11 @@ ion-content.has-tall-header {
       width: 100%;
       position: fixed;
       bottom: 0; }
+
+#tos, #pp {
+  width: 86%;
+  margin-left: 7%;
+  padding-top: 30px; }
 
 .signup-modal {
   background-color: #f4f5ed; }
@@ -10681,22 +10693,29 @@ ion-content.has-tall-header {
       width: 80%;
       margin-left: 10%; }
       .signup-modal .signup form p {
-        margin: 0 0 10px 9%;
-        width: 83%;
+        margin: 15px 0 15px 7%;
+        width: 86%;
         color: snow;
         clear: both;
-        display: block; }
+        display: block;
+        font-size: 12px; }
+        .signup-modal .signup form p input {
+          background-color: white; }
+        .signup-modal .signup form p a {
+          color: white;
+          font-weight: bold;
+          text-decoration: underline; }
       .signup-modal .signup form label {
         font-weight: bold;
         font-size: 12px;
         color: white;
-        width: 100%;
-        margin-left: 8%; }
+        width: 86%;
+        margin-left: 7%; }
         .signup-modal .signup form label input {
           padding-left: 5px;
           border-radius: 5px;
-          width: 84%;
-          margin-left: 8%;
+          width: 86%;
+          margin-left: 7%;
           height: 24px; }
         .signup-modal .signup form label .visibility {
           float: right;
@@ -10735,7 +10754,7 @@ ion-content.has-tall-header {
       display: block;
       width: 100%;
       position: fixed;
-      bottom: 0; }
+      bottom: -20px; }
 
 .crop_img button, .crop_img a {
   margin: 20px auto;

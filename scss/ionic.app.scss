@@ -1032,9 +1032,9 @@ ion-content.has-tall-header{
       position: relative;
     }
   }
-  ion-content{
+  .login-content{
     padding: 0;
-    top: 100px;
+    margin-top: 35px;
     .error{
       text-align: center;
       font-size: 18px;
@@ -1126,6 +1126,15 @@ ion-content.has-tall-header{
         text-shadow: 1px 1px 1px black;
       }
     }
+    .policy-wrapper{
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 25px;
+      a{
+        color: $apparentBlue;
+      }
+    }
   }
   ion-footer-bar{
     padding: 0;
@@ -1136,6 +1145,12 @@ ion-content.has-tall-header{
       bottom: 0;
     }
   }
+}
+
+#tos, #pp{
+  width: 86%;
+  margin-left: 7%;
+  padding-top: 30px;
 }
 
 .signup-modal{
@@ -1172,23 +1187,32 @@ ion-content.has-tall-header{
       width: 80%;
       margin-left: 10%;
       p{
-        margin: 0 0 10px 9%;
-        width: 83%;
+        margin: 15px 0 15px 7%;
+        width: 86%;
         color: $fontColor;
         clear: both;
-        display: block
+        display: block;
+        font-size: 12px;
+        input{
+          background-color: white;
+        }
+        a{
+          color: white;
+          font-weight: bold;
+          text-decoration: underline;
+        }
       }
       label{
         font-weight: bold;
         font-size: 12px;
         color: white;
-        width: 100%;
-        margin-left: 8%;
+        width: 86%;
+        margin-left: 7%;
         input{
           padding-left: 5px;
           border-radius: 5px;
-          width: 84%;
-          margin-left: 8%;
+          width: 86%;
+          margin-left: 7%;
           height: 24px;
         }
         .visibility{
@@ -1235,7 +1259,7 @@ ion-content.has-tall-header{
       display: block;
       width: 100%;
       position: fixed;
-      bottom: 0;
+      bottom: -20px;
     }
   }
 }

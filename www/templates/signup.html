@@ -59,6 +59,10 @@
           <i class="fa fa-fw fa-eye-slash eye-icon"></i>
         </div>
       </label>
+      <p id="agreed-wrapper">
+        <input id="agreed" type="checkbox" name="tos" ng-model="newUser.agreed" value="agreed">
+        I agree to the <a ng-click="openTos()">Terms of Service</a>
+      </p>
       <input id="signupBtn" type="submit" class="button button-block button-small submit" value="{{btnVal}}">
     </form>
   <!-- </ion-content> -->
