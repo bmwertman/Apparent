@@ -186,9 +186,6 @@ platform :ios do
       scheme: app_name_sanitized
     )
 
-    #Push new release to existing iOS Beta testers
-    sh(" cd .. code-push release-cordova Apparent-iOS ios --deploymentName Beta")
-
     #Make new iOS release available for new Beta testers to install
     crashlytics(
       api_token: "b0510b6b26fe11d43115f7fb04d744bacc44a0f9",
