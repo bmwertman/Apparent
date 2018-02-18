@@ -30,12 +30,7 @@
       <i class="icon ion-edit"><span>EDIT</span></i>
     </div>
   </div>
-  <a id="add-child" class="add-button" ng-click="addChild()">
-    <i class="icon ion-android-person-add"></i>
-    <div id="childwarp">Child</div>
-  </a> 
-  <ion-content class="content-body has-tall-header has-footer padding"
-               overflow-scroll="false">
+  <div class="bar bar-subheader tall-subheader">
     <div class="school-wrapper">
       <div id="school-display-name"
            ng-if="!hideDisplayName"
@@ -60,6 +55,12 @@
         <md-not-found>No matches found.</md-not-found>
       </md-autocomplete>
     </div>
+  </div>
+  <a id="add-child" class="add-button" ng-click="addChild()">
+    <i class="icon ion-android-person-add"></i>
+    <div id="childwarp">Child</div>
+  </a> 
+  <ion-content class="user-profile-content content-body has-tall-header has-footer padding" overflow-scroll="false">
     <div class="children">
       <div ng-repeat="(key, child) in user.children track by key" class="child">
         <div class="child-header cf">
@@ -124,8 +125,7 @@
       </div>
     </div>
   </ion-content>
-  <div id="profile-footer"
-       class="contact-info footer-bar"
+  <div id="profile-footer" class="contact-info footer-bar"
        keyboard-attach>
     <div class="footer-label bar-subfooter"
                     ng-if="showFooter">

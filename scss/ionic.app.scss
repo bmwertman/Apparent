@@ -348,9 +348,52 @@ body.md-dialog-is-showing{
   color: #FFF;
 }
 
+// .platform-ios.platform-cordova:not(.fullscreen){ 
+//   .has-header.has-tall-header{
+//     top: 176px
+//   }
+//   .bar-header:not(.bar-subheader){
+//     height: 175px;
+//     * {
+//       margin-top: 0px;
+//     }
+//   }
+// }
+
 .tall{
-  height: 175px;
+  height: 175px !important;
 }
+
+.tall-subheader{
+  top: 175px !important;
+}
+
+div.nav-bar-block{
+  margin-top: 0px !important;
+  ion-header-bar.white-font.bar-header.bar-positive.bar {
+    height: 44px !important;
+    button.button.back-button.buttons.button-clear.header-item,
+    div.buttons.buttons-left,
+    div.buttons.buttons-right {
+      margin-top: 0px !important;
+    }
+    div.title.title-center.header-item{
+      margin-top: 0px !important;
+    }
+  }
+}
+div.tall.white-font.bar.bar-header.bar-positive{
+  div.profile-pic.user-initial{
+    margin-top: 0px !important;
+  }
+  i.icon{
+   margin-top: 0px !important; 
+  }  
+}
+ion-content.content-body.has-tall-header.has-footer.padding.scroll-content.ionic-scroll.has-header.user-profile-content{
+  top: 190px !important;
+}
+
 
 ion-content.has-tall-header{
   top: 180px;
@@ -1323,7 +1366,7 @@ ion-content.has-tall-header{
   }
   .bar-header{
     .profile-pic{
-      top: 44px;
+      top: 55px;
       width: 100px;
       height: 100px;
       border-radius: 50%;
@@ -1344,7 +1387,7 @@ ion-content.has-tall-header{
       position: absolute;
       top: 130px;
       color: $edit;
-      right: calc(50% - 46px);
+      right: calc(50% - 60px);
       &.ion-edit{
         position: relative;
         font-size: 12px;
@@ -1364,7 +1407,7 @@ ion-content.has-tall-header{
     }
     #name-wrap{
       height: 30px;
-      margin: 138px auto 0;
+      margin: 140px auto 0;
       display: block;
       #name{
         margin: 0 auto;
@@ -1429,6 +1472,7 @@ ion-content.has-tall-header{
   .content-body{
     bottom: 100px;
     .school-wrapper{
+      margin: 0 auto;
       #school-display-name{
         text-align: center;
         font-size: 20px;
@@ -1441,7 +1485,7 @@ ion-content.has-tall-header{
         }
       }
       #school-name{
-        background: transparent;
+        background: white;
         display: block;
         width: 210px;
         margin: -14px auto -10px;
@@ -2226,7 +2270,7 @@ div#queue{
 .parent-directory{
   .bar.bar-subheader {
     height: 49px;
-    margin-top: -5px;
+    margin-top: -20px;
     .search{
       width: 90%;
       min-width: 300px;
@@ -2236,103 +2280,106 @@ div#queue{
       padding-left: 5px;
     }
   }
-  .parent-list{
-    .parent{
-      padding: 5px 10px;
-      .parent-wrapper{
-        float: left;
-        width: 50%;
-        .parent-name{
-          text-align: center;
-          font-size: 20px;
-        }
-        .parent-pic{
-          border-radius: 50%;
-          width: 100px;
-          margin-left: calc((100% - 100px)/2)
-        }
-        .user-initial{
-          color: $fontColor;
-          background-color: $positive;
-          font-weight: bold;
-          text-align: center;
-          padding-left: 2px;
-          line-height: 80px;
-          height: 80px;
-          width: 80px;
-          font-size: 60px;
-          margin: 6px auto;
-        }
-      }
-      .children{
-        float: left;
-        width: 50%;
-        .list{
-          overflow-x: auto;
-          &::-webkit-scrollbar{
-            -webkit-appearance: none;
-          }
-          &::-webkit-scrollbar:horizontal{
-            height: 5px;
-          }
-          &::-webkit-scrollbar-thumb {
-              border-radius: 3px;
-              border: 4px solid $apparentLtBlue;
-              background-color: rgba(0, 0, 0, .5);
-          }
-          &::-webkit-scrollbar-track { 
-              background-color: $apparentBlue; 
-              border-radius: 3px; 
-          } 
-          .child{
-            border: none;
-            display: inline-block;
-            padding: 0;
-            margin: 27px 0 0 8px;
-            width: 75px;
-            .child-pic{
-              border-radius: 50%;
-              width: 100%;
-              margin: 0 auto
-            }
-            .user-initial{
-              color: $fontColor;
-              background-color: $positive;
-              font-weight: bold;
-              text-align: center;
-              font-size: 48px;
-              line-height: 75px;
-              margin-bottom: 5px;
-            }
-            .child-name{
-              text-align: center;
-              white-space: initial;
-              line-height: 12px;
-              margin-top: -4px;
-            }
-          }
-        }
-      }
-      .contact{
-        clear: both;
-        width: 50%;
-        .contact-btn{
-          border-radius: 50%;
-          border: 2px solid $apparentLtBlue;
-          background-color: $apparentBlue;
-          line-height: 36px;
-          font-size: 27px;
-          color: $apparentFontColor;
-          width: 40px;
-          display: inline-block;
-          text-align: center;
+  ion-content.has-subheader.scroll-content.ionic-scroll.overflow-scroll.has-header {
+    top: 93px;
+    .parent-list{
+      .parent{
+        padding: 5px 10px;
+        .parent-wrapper{
           float: left;
-          margin-left: calc((100% - 120px)/4);
+          width: 50%;
+          .parent-name{
+            text-align: center;
+            font-size: 20px;
+          }
+          .parent-pic{
+            border-radius: 50%;
+            width: 100px;
+            margin-left: calc((100% - 100px)/2)
+          }
+          .user-initial{
+            color: $fontColor;
+            background-color: $positive;
+            font-weight: bold;
+            text-align: center;
+            padding-left: 2px;
+            line-height: 80px;
+            height: 80px;
+            width: 80px;
+            font-size: 60px;
+            margin: 6px auto;
+          }
         }
-        .not-provided{
-          border: 2px solid darkgrey;
-          background-color: lightgrey;
-          color: darkgrey;
+        .children{
+          float: left;
+          width: 50%;
+          .list{
+            overflow-x: auto;
+            &::-webkit-scrollbar{
+              -webkit-appearance: none;
+            }
+            &::-webkit-scrollbar:horizontal{
+              height: 5px;
+            }
+            &::-webkit-scrollbar-thumb {
+                border-radius: 3px;
+                border: 4px solid $apparentLtBlue;
+                background-color: rgba(0, 0, 0, .5);
+            }
+            &::-webkit-scrollbar-track { 
+                background-color: $apparentBlue; 
+                border-radius: 3px; 
+            } 
+            .child{
+              border: none;
+              display: inline-block;
+              padding: 0;
+              margin: 27px 0 0 8px;
+              width: 75px;
+              .child-pic{
+                border-radius: 50%;
+                width: 100%;
+                margin: 0 auto
+              }
+              .user-initial{
+                color: $fontColor;
+                background-color: $positive;
+                font-weight: bold;
+                text-align: center;
+                font-size: 48px;
+                line-height: 75px;
+                margin-bottom: 5px;
+              }
+              .child-name{
+                text-align: center;
+                white-space: initial;
+                line-height: 12px;
+                margin-top: -4px;
+              }
+            }
+          }
+        }
+        .contact{
+          clear: both;
+          width: 50%;
+          .contact-btn{
+            border-radius: 50%;
+            border: 2px solid $apparentLtBlue;
+            background-color: $apparentBlue;
+            line-height: 36px;
+            font-size: 27px;
+            color: $apparentFontColor;
+            width: 40px;
+            display: inline-block;
+            text-align: center;
+            float: left;
+            margin-left: calc((100% - 120px)/4);
+          }
+          .not-provided{
+            border: 2px solid darkgrey;
+            background-color: lightgrey;
+            color: darkgrey;
+          }
         }
       }
     }
