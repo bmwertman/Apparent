@@ -36,8 +36,8 @@ platform :android do
 
     crashlytics(
       apk_path: './platforms/android/build/outputs/apk/android-debug.apk',
-      api_token: "b0510b6b26fe11d43115f7fb04d744bacc44a0f9",
-      build_secret: "942d313429ea10c092669c1e842932e401f7d21448acc7fec67975475a9c1df1",
+      api_token: CRASHLYTICS_API_TOKEN,
+      build_secret: CRASHLYTICS_BUILD_SECRET,
       notifications: true,
       groups: "android-local-development",
       debug: true
@@ -74,8 +74,8 @@ platform :android do
     #Push new release for initial install to new Android Developer devices
     crashlytics(
       apk_path: './platforms/android/build/outputs/apk/android-debug.apk',
-      api_token: "b0510b6b26fe11d43115f7fb04d744bacc44a0f9",
-      build_secret: "942d313429ea10c092669c1e842932e401f7d21448acc7fec67975475a9c1df1",
+      api_token: CRASHLYTICS_API_TOKEN,
+      build_secret: CRASHLYTICS_BUILD_SECRET,
       notifications: true,
       groups: "android-beta",
       debug: true
@@ -102,14 +102,14 @@ platform :ios do
     app_name_sanitized = 'Apparent'
 
     match(
-      git_url: "https://github.com/bmwertman/certificates",
+      git_url: CERTS_GIT_URL,
       git_branch: "development",
       type: "development",
-      app_identifier: "com.apparenttechnologies.apparent",
+      app_identifier: APP_ID,
       verbose: true,
-      username: 'bwertman1223@gmail.com',
-      team_id: 'LEEF3YHU35',
-      team_name: 'Apparent Technologies LLC',
+      username: APPLE_USERNAME,
+      team_id: TEAM_ID,
+      team_name: APPLE_TEAM_NAME,
       force_for_new_devices: true,
       platform: "ios"
     )
@@ -126,8 +126,8 @@ platform :ios do
 
     #Push new release for initial install to new iOS Developer devices
     crashlytics(
-      api_token: "b0510b6b26fe11d43115f7fb04d744bacc44a0f9",
-      build_secret: "942d313429ea10c092669c1e842932e401f7d21448acc7fec67975475a9c1df1",
+      api_token: CRASHLYTICS_API_TOKEN,
+      build_secret: CRASHLYTICS_BUILD_SECRET,
       notifications: true,
       groups: "ios-local-development",
       debug: true
@@ -162,23 +162,23 @@ platform :ios do
     end
 
     match(
-      git_url: "https://github.com/bmwertman/certificates",
+      git_url: CERTS_GIT_URL,
       git_branch: "master",
       type: "adhoc",
-      app_identifier: "com.apparenttechnologies.apparent",
+      app_identifier: APP_ID,
       verbose: true,
-      username: 'bwertman1223@gmail.com',
-      team_id: 'LEEF3YHU35',
-      team_name: 'Apparent Technologies LLC',
+      username: APPLE_USERNAME,
+      team_id: TEAM_ID,
+      team_name: APPLE_TEAM_NAME,
       force_for_new_devices: true,
       platform: "ios"
     )
 
     pem(
       generate_p12: true,
-      app_identifier: 'com.apparenttechnologies.apparent',
-      username: 'bwertman1223@gmail.com',
-      p12_password: 'apparent',
+      app_identifier: APP_ID,
+      username: APPLE_USERNAME,
+      p12_password: P12_PASSWORD,
       pem_name: 'certificate',
       output_path: 'apparent/pem'
     )
@@ -192,8 +192,8 @@ platform :ios do
 
     #Make new iOS release available for new Beta testers to install
     crashlytics(
-      api_token: "b0510b6b26fe11d43115f7fb04d744bacc44a0f9",
-      build_secret: "942d313429ea10c092669c1e842932e401f7d21448acc7fec67975475a9c1df1",
+      api_token: CRASHLYTICS_API_TOKEN,
+      build_secret: CRASHLYTICS_BUILD_SECRET,
       notifications: true,
       groups: "ios-beta-1",
       debug: true
