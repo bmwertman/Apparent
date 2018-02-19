@@ -10062,14 +10062,6 @@ body.md-dialog-is-showing {
 
 div.nav-bar-block {
   margin-top: 0px !important; }
-  div.nav-bar-block ion-header-bar.white-font.bar-header.bar-positive.bar {
-    height: 44px !important; }
-    div.nav-bar-block ion-header-bar.white-font.bar-header.bar-positive.bar button.button.back-button.buttons.button-clear.header-item,
-    div.nav-bar-block ion-header-bar.white-font.bar-header.bar-positive.bar div.buttons.buttons-left,
-    div.nav-bar-block ion-header-bar.white-font.bar-header.bar-positive.bar div.buttons.buttons-right {
-      margin-top: 0px !important; }
-    div.nav-bar-block ion-header-bar.white-font.bar-header.bar-positive.bar div.title.title-center.header-item {
-      margin-top: 0px !important; }
 
 div.tall.white-font.bar.bar-header.bar-positive div.profile-pic.user-initial {
   margin-top: 0px !important; }
@@ -10824,9 +10816,9 @@ ion-content.has-tall-header {
   border-bottom: none; }
 
 .profile .bar-header .profile-pic {
-  top: 55px;
-  width: 100px;
-  height: 100px;
+  top: 65px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   position: absolute;
   right: calc((100% - 100px)/2); }
@@ -10837,8 +10829,8 @@ ion-content.has-tall-header {
   font-weight: bold;
   text-align: center;
   padding: 4px;
-  font-size: 70px;
-  line-height: 100px; }
+  font-size: 60px;
+  line-height: 85px; }
 
 .profile .bar-header i.icon {
   font-size: 19px;
@@ -11561,8 +11553,7 @@ div#queue {
     max-width: 240px !important; }
 
 .parent-directory .bar.bar-subheader {
-  height: 49px;
-  margin-top: -20px; }
+  height: 49px; }
   .parent-directory .bar.bar-subheader .search {
     width: 90%;
     min-width: 300px;
