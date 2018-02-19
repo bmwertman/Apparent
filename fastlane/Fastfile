@@ -36,8 +36,8 @@ platform :android do
 
     crashlytics(
       apk_path: './platforms/android/build/outputs/apk/android-debug.apk',
-      api_token: CRASHLYTICS_API_TOKEN,
-      build_secret: CRASHLYTICS_BUILD_SECRET,
+      api_token: "CRASHLYTICS_API_TOKEN",
+      build_secret: "CRASHLYTICS_BUILD_SECRET",
       notifications: true,
       groups: "android-local-development",
       debug: true
@@ -74,8 +74,8 @@ platform :android do
     #Push new release for initial install to new Android Developer devices
     crashlytics(
       apk_path: './platforms/android/build/outputs/apk/android-debug.apk',
-      api_token: CRASHLYTICS_API_TOKEN,
-      build_secret: CRASHLYTICS_BUILD_SECRET,
+      api_token: "CRASHLYTICS_API_TOKEN",
+      build_secret: "CRASHLYTICS_BUILD_SECRET",
       notifications: true,
       groups: "android-beta",
       debug: true
@@ -162,23 +162,23 @@ platform :ios do
     end
 
     match(
-      git_url: CERTS_GIT_URL,
+      git_url: "CERTS_GIT_URL",
       git_branch: "master",
       type: "adhoc",
-      app_identifier: APP_ID,
+      app_identifier: "APP_ID",
       verbose: true,
-      username: APPLE_USERNAME,
-      team_id: TEAM_ID,
-      team_name: APPLE_TEAM_NAME,
+      username: "APPLE_USERNAME",
+      team_id: "TEAM_ID",
+      team_name: "APPLE_TEAM_NAME",
       force_for_new_devices: true,
       platform: "ios"
     )
 
     pem(
       generate_p12: true,
-      app_identifier: APP_ID,
-      username: APPLE_USERNAME,
-      p12_password: P12_PASSWORD,
+      app_identifier: "APP_ID",
+      username: "APPLE_USERNAME",
+      p12_password: "P12_PASSWORD",
       pem_name: 'certificate',
       output_path: 'apparent/pem'
     )
@@ -192,8 +192,8 @@ platform :ios do
 
     #Make new iOS release available for new Beta testers to install
     crashlytics(
-      api_token: CRASHLYTICS_API_TOKEN,
-      build_secret: CRASHLYTICS_BUILD_SECRET,
+      api_token: "CRASHLYTICS_API_TOKEN",
+      build_secret: "CRASHLYTICS_BUILD_SECRET",
       notifications: true,
       groups: "ios-beta-1",
       debug: true
