@@ -140,8 +140,12 @@ platform :ios do
 
     if options[:bump_type]
       increment_version_number(
-        version_number: options[:version_number],
         bump_type: options[:bump_type],
+        xcodeproj: ios_project_path
+      )
+    elsif options[:version_number]
+      increment_version_number(
+        version_number: options[:version_number],
         xcodeproj: ios_project_path
       )
     end
