@@ -136,7 +136,7 @@ platform :ios do
 
   lane :beta do |options|
     app_name_sanitized = 'Apparent'
-    ios_project_path = "platforms/ios/#{app_name_sanitized}.xcodeproj"
+    ios_project_path = "platforms/ios/Apparent.xcodeproj"
 
     if options[:bump_type]
       increment_version_number(
