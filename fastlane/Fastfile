@@ -138,25 +138,6 @@ platform :ios do
     app_name_sanitized = 'Apparent'
     ios_project_path = "platforms/ios/Apparent.xcodeproj"
 
-    if options[:bump_type]
-      increment_version_number(
-        version_number: options[:version_number],
-        bump_type: options[:bump_type],
-        xcodeproj: ios_project_path
-      )
-    end
-
-    if options[:build_number]
-      increment_build_number(
-        build_number: options[:build_number],
-        xcodeproj: ios_project_path
-      )
-    else
-      increment_build_number(
-        xcodeproj: ios_project_path
-      )
-    end
-
     match(
       git_url: "https://github.com/bmwertman/certificates",
       git_branch: "master",
@@ -185,6 +166,25 @@ platform :ios do
       export_method: "ad-hoc",
       scheme: app_name_sanitized
     )
+
+    if options[:bump_type]
+      increment_version_number(
+        version_number: options[:version_number],
+        bump_type: options[:bump_type],
+        xcodeproj: ios_project_path
+      )
+    end
+
+    if options[:build_number]
+      increment_build_number(
+        build_number: options[:build_number],
+        xcodeproj: ios_project_path
+      )
+    else
+      increment_build_number(
+        xcodeproj: ios_project_path
+      )
+    end
 
     #Make new iOS release available for new Beta testers to install
     crashlytics(
