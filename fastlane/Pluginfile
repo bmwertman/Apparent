@@ -9,3 +9,4 @@ gem 'fastlane-plugin-ftp'
 # Current issue with the Fabric Desktop app https://github.com/fastlane/fastlane/issues/11620
 # Unknown fastlane error: invalid option: --crashlytics_path
 
+gem 'fastlane-plugin-patch'

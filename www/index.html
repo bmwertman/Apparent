@@ -100,24 +100,8 @@
     <script src="js/filters/format-date_filter.js"></script>
 
     <script>
-      // Production  
-      var config = {
-        apiKey: "AIzaSyCqFHdSGIab4VtdYra_H-EiDo4ovMTwlTk",
-        authDomain: "apparent-2a054.firebaseapp.com",
-        databaseURL: "https://apparent-2a054.firebaseio.com/",
-        storageBucket: "apparent-2a054.appspot.com",
-      };
-
-      // Development
-      // var config = {
-      //   apiKey: "AIzaSyBTRBebgofs-WQOLdlUe8sKxRpPRnR0Gik",
-      //   authDomain: "sizzling-fire-7440.firebaseapp.com",
-      //   databaseURL: "https://sizzling-fire-7440.firebaseio.com/",
-      //   storageBucket: "sizzling-fire-7440.appspot.com",
-      // };
-
       // Initialize Firebase
-      firebase.initializeApp(config);
+      firebase.initializeApp(JSON.parse(config));
       var rootRef = firebase.database().ref();
     </script>
     <!-- AngularFire -->
