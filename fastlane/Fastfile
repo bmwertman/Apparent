@@ -102,7 +102,7 @@ platform :ios do
     app_name_sanitized = 'Apparent'
 
     patch(
-      files:'../www/index.html',
+      files:'www/index.html',
       regexp:/[c][o][n][f][i]\w+/,
       text: ENV['DEVELOPMENT'],
       mode: :replace
