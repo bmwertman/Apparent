@@ -166,6 +166,14 @@ platform :ios do
       )
     end
 
+    patch(
+      files:'www/index.html',
+      regexp:/(initializeAp)\w/,
+      text: ENV['PRODUCTION'],
+      mode: :append,
+      revert: true
+    )
+
     match(
       git_url: ENV['CERTS_GIT_URL'],
       git_branch: "master",
