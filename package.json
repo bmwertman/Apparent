@@ -3,12 +3,13 @@
   "version": "1.1.1",
   "description": "apparentApp: An Ionic project",
   "dependencies": {
+    "cordova-android": "latest",
+    "cordova-fabric-plugin": "^1.1.13-dev",
     "gulp": "^3.5.6",
-    "gulp-sass": "^2.0.4",
     "gulp-concat": "^2.2.0",
     "gulp-minify-css": "^0.3.0",
     "gulp-rename": "^1.2.0",
-    "cordova-android": "latest"
+    "gulp-sass": "^2.0.4"
   },
   "devDependencies": {
     "bower": "^1.3.3",
@@ -33,7 +34,8 @@
     "https://github.com/crosswalk-project/cordova-plugin-crosswalk-webview",
     "https://github.com/bmwertman/phonegap-plugin-push/",
     "https://github.com/bmwertman/cordova-imagePicker/",
-    "cordova-plugin-code-push@latest"
+    "cordova-plugin-code-push@latest",
+    "cordova-fabric-plugin"
   ],
   "cordovaPlatforms": [
     "ios",
@@ -46,6 +48,12 @@
   "cordova": {
     "platforms": [
       "android"
-    ]
+    ],
+    "plugins": {
+      "cordova-fabric-plugin": {
+        "FABRIC_API_KEY": "b0510b6b26fe11d43115f7fb04d744bacc44a0f9",
+        "FABRIC_API_SECRET": "942d313429ea10c092669c1e842932e401f7d21448acc7fec67975475a9c1df1"
+      }
+    }
   }
 }

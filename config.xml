@@ -96,4 +96,8 @@
     </platform>
     <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
     <engine name="android" spec="latest" />
+    <plugin name="cordova-fabric-plugin" spec="^1.1.13-dev">
+        <variable name="FABRIC_API_KEY" value="b0510b6b26fe11d43115f7fb04d744bacc44a0f9" />
+        <variable name="FABRIC_API_SECRET" value="942d313429ea10c092669c1e842932e401f7d21448acc7fec67975475a9c1df1" />
+    </plugin>
 </widget>
