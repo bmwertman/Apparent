@@ -26,13 +26,18 @@ platform :android do
 
   lane :testLocal do
 
+    patch(
+      files:'www/index.html',
+      regexp:/(initializeAp)\w/,
+      text: ENV['DEVELOPMENT'],
+      mode: :append,
+      revert: true
+    )
+
     cordova(
       platform: 'android',
       release: false
     )
-
-    #Push changes to dev team
-    sh(" cd .. code-push release-cordova Apparent-Android android --deploymentName Staging")
 
     crashlytics(
       apk_path: './platforms/android/build/outputs/apk/android-debug.apk',
@@ -45,16 +50,16 @@ platform :android do
   end
 
   lane :beta do |options|
-    if options[:m]
-      commit(options)
-      # changelog_from_git_commits(
-      #   # pretty: "- (%ae) %s", # Optional, lets you provide a custom format to apply to each commit when generating the changelog text
-      #   match_lightweight_tag: false, # Optional, lets you ignore lightweight (non-annotated) tags when searching for the last tag
-      #   include_merges: false # Optional, lets you filter out merge commits
-      # )
+    # if options[:m]
+    #   commit(options)
+    #   changelog_from_git_commits(
+    #     # pretty: "- (%ae) %s", # Optional, lets you provide a custom format to apply to each commit when generating the changelog text
+    #     match_lightweight_tag: false, # Optional, lets you ignore lightweight (non-annotated) tags when searching for the last tag
+    #     include_merges: false # Optional, lets you filter out merge commits
+    #   )
 
-      # stamp_changelog( section_identifier: this_commit[:abbreviated_commit_hash] )
-    end
+    #   stamp_changelog( section_identifier: this_commit[:abbreviated_commit_hash] )
+    # end
 
     # commit = last_git_commit
     # crashlytics(notes: commit[:message]) # message of commit
@@ -63,13 +68,18 @@ platform :android do
     # short_hash = commit[:abbreviated_commit_hash] # short sha of commit
     # increment_version_code()
 
+    patch(
+      files:'www/index.html',
+      regexp:/(initializeAp)\w/,
+      text: ENV['PRODUCTION'],
+      mode: :append,
+      revert: true
+    )
+
     cordova(
       platform: 'android',
       release: false
     )
-
-    #Push new release to existing Beta testers
-    sh("cd .. code-push release-cordova Apparent-Android android --deploymentName Beta")
 
     #Push new release for initial install to new Android Developer devices
     crashlytics(
