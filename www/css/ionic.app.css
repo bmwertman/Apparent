@@ -11912,7 +11912,7 @@ md-dialog-actions.dtp-buttons button.md-button {
     .add-event-view .add-event-form div.volunteers label {
       margin-left: 36px; }
     .add-event-view .add-event-form div.volunteers .event_dates {
-      width: 230px; }
+      width: 100%; }
       .add-event-view .add-event-form div.volunteers .event_dates label {
         margin-left: 0; }
       .add-event-view .add-event-form div.volunteers .event_dates i.volunteer {
