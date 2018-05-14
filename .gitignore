@@ -14,10 +14,10 @@ platforms/android/bin
 platforms/android/gen
 platforms/ios/build/
 platforms/ios/www/
-platforms/ios/*.zip
-platforms/ios/*.ipa
-*.zip
-*.ipa
+platforms/ios/Apparent.app.dSYM.zip
+platforms/ios/Apparent.ipa
+Apparent.app.dSYM.zip
+Apparent.ipa
 plugins/
 css/
 
