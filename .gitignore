@@ -5,7 +5,8 @@ node_modules/
 platforms/
 plugins/
 css/
-Apparent*
+*.ipa
+*.dSYM.zip
 
 # fastlane specific
 fastlane/report.xml
