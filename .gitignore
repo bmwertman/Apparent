@@ -3,21 +3,21 @@
 
 node_modules/
 platforms/
+platforms/android/CordovaLib/ant-build
+platforms/android/CordovaLib/ant-gen
+platforms/android/CordovaLib/bin
+platforms/android/CordovaLib/gen
+platforms/android/ant-build
+platforms/android/ant-gen
+platforms/android/assets/www
+platforms/android/bin
+platforms/android/gen
+platforms/ios/build/
+platforms/ios/www/
+platforms/ios/*.zip
+platforms/ios/*.ipa
 plugins/
 css/
-**/platforms/android/CordovaLib/ant-build
-**/platforms/android/CordovaLib/ant-gen
-**/platforms/android/CordovaLib/bin
-**/platforms/android/CordovaLib/gen
-**/platforms/android/ant-build
-**/platforms/android/ant-gen
-**/platforms/android/assets/www
-**/platforms/android/bin
-**/platforms/android/gen
-**/platforms/ios/build/
-**/platforms/ios/www/
-**/platforms/ios/*.zip
-**/platforms/ios/*.ipa
 
 # fastlane specific
 fastlane/report.xml
