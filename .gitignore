@@ -16,6 +16,8 @@ css/
 **/platforms/android/gen
 **/platforms/ios/build/
 **/platforms/ios/www/
+**/platforms/ios/*.zip
+**/platforms/ios/*.ipa
 
 # fastlane specific
 fastlane/report.xml
