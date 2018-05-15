@@ -21,7 +21,10 @@ Apparent.ipa
 plugins/
 css/
 *.app.dSYM.zip
+*.dSYM.zip
+*.dSYM
 *.ipa
+
 
 
 
