@@ -16,8 +16,8 @@ platforms/ios/build/
 platforms/ios/www/
 platforms/ios/Apparent.app.dSYM.zip
 platforms/ios/Apparent.ipa
-Apparent.app.dSYM.zip
-Apparent.ipa
+/Apparent.app.dSYM.zip
+/Apparent.ipa
 plugins/
 css/
 *.app.dSYM.zip
