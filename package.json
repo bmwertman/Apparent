@@ -5,6 +5,16 @@
   "dependencies": {
     "cordova-android": "latest",
     "cordova-fabric-plugin": "^1.1.13-dev",
+    "cordova-plugin-calendar": "^5.0.0",
+    "cordova-plugin-console": "^1.1.0",
+    "cordova-plugin-contacts": "^2.3.1",
+    "cordova-plugin-crosswalk-webview": "git+https://github.com/crosswalk-project/cordova-plugin-crosswalk-webview.git",
+    "cordova-plugin-device": "^2.0.2",
+    "cordova-plugin-file": "^4.3.3",
+    "cordova-plugin-file-transfer": "^1.7.1",
+    "cordova-plugin-screen-orientation": "^3.0.1",
+    "cordova-plugin-statusbar": "git+https://github.com/apache/cordova-plugin-statusbar.git",
+    "es6-promise-plugin": "^4.2.2",
     "gulp": "^3.5.6",
     "gulp-concat": "^2.2.0",
     "gulp-minify-css": "^0.3.0",
@@ -17,25 +27,24 @@
     "shelljs": "^0.3.0"
   },
   "cordovaPlugins": [
-    "cordova-plugin-console",
     "cordova-plugin-whitelist",
     "cordova-plugin-splashscreen",
-    "cordova-plugin-statusbar",
     "ionic-plugin-keyboard",
-    "cordova-plugin-contacts",
-    "cordova-plugin-file",
-    "cordova-plugin-file-transfer",
     "cordova-plugin-inappbrowser",
-    "cordova-plugin-screen-orientation",
-    "cordova-plugin-calendar",
     "cordova-plugin-compat",
-    "cordova-plugin-device",
     "https://github.com/whiteoctober/cordova-plugin-app-version.git",
     "https://github.com/crosswalk-project/cordova-plugin-crosswalk-webview",
     "https://github.com/bmwertman/phonegap-plugin-push/",
     "https://github.com/bmwertman/cordova-imagePicker/",
     "cordova-plugin-code-push@latest",
-    "cordova-fabric-plugin"
+    "cordova-fabric-plugin",
+    "cordova-plugin-device",
+    "cordova-plugin-file",
+    "cordova-plugin-contacts",
+    "cordova-plugin-calendar",
+    "cordova-plugin-screen-orientation",
+    "cordova-plugin-console",
+    "cordova-plugin-compat@1.2.0"
   ],
   "cordovaPlatforms": [
     "ios",
@@ -53,6 +62,25 @@
       "cordova-fabric-plugin": {
         "FABRIC_API_KEY": "b0510b6b26fe11d43115f7fb04d744bacc44a0f9",
         "FABRIC_API_SECRET": "942d313429ea10c092669c1e842932e401f7d21448acc7fec67975475a9c1df1"
+      },
+      "cordova-plugin-device": {},
+      "cordova-plugin-file": {},
+      "cordova-plugin-contacts": {
+        "CONTACTS_USAGE_DESCRIPTION": " "
+      },
+      "cordova-plugin-calendar": {
+        "CALENDAR_USAGE_DESCRIPTION": " "
+      },
+      "cordova-plugin-screen-orientation": {},
+      "cordova-plugin-console": {},
+      "cordova-plugin-compat": {},
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-crosswalk-webview": {
+        "XWALK_VERSION": "23+",
+        "XWALK_LITEVERSION": "xwalk_core_library_canary:17+",
+        "XWALK_COMMANDLINE": "--disable-pull-to-refresh-effect",
+        "XWALK_MODE": "embedded",
+        "XWALK_MULTIPLEAPK": "true"
       }
     }
   }

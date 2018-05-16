@@ -3,7 +3,7 @@
     <name>Apparent</name>
     <description>
       Clearly connected parents. Visualy better schools.
-  </description>
+    </description>
     <author email="brad.wertman@leanmeanz.com" href="http://beapparent.com/">
       Brad Wertman
     </author>
@@ -15,9 +15,6 @@
     <access origin="https://apparent-2a054.firebaseio.com" subdomains="true" />
     <access origin="https://apparent-2a054.appspot.com" subdomains="true" />
     <access origin="https://github.com" />
-    <access origin="https://codepush.azurewebsites.net" />
-    <access origin="https://codepush.blob.core.windows.net" />
-    <access origin="https://codepushupdates.azureedge.net" />
     <allow-intent href="*" />
     <allow-navigation href="*" />
     <preference name="KeyboardDisplayRequiresUserAction" value="false" />
@@ -100,4 +97,23 @@
         <variable name="FABRIC_API_SECRET" value="942d313429ea10c092669c1e842932e401f7d21448acc7fec67975475a9c1df1" />
     </plugin>
     <engine name="android" spec="latest" />
+    <plugin name="cordova-plugin-device" spec="^2.0.2" />
+    <plugin name="cordova-plugin-file" spec="^4.3.3" />
+    <plugin name="cordova-plugin-contacts" spec="^2.3.1">
+        <variable name="CONTACTS_USAGE_DESCRIPTION" value=" " />
+    </plugin>
+    <plugin name="cordova-plugin-calendar" spec="^5.0.0">
+        <variable name="CALENDAR_USAGE_DESCRIPTION" value=" " />
+    </plugin>
+    <plugin name="cordova-plugin-screen-orientation" spec="^3.0.1" />
+    <plugin name="cordova-plugin-console" spec="^1.1.0" />
+    <plugin name="cordova-plugin-statusbar" spec="https://github.com/apache/cordova-plugin-statusbar" />
+    <plugin name="cordova-plugin-crosswalk-webview" spec="https://github.com/crosswalk-project/cordova-plugin-crosswalk-webview">
+        <variable name="XWALK_VERSION" value="23+" />
+        <variable name="XWALK_LITEVERSION" value="xwalk_core_library_canary:17+" />
+        <variable name="XWALK_COMMANDLINE" value="--disable-pull-to-refresh-effect" />
+        <variable name="XWALK_MODE" value="embedded" />
+        <variable name="XWALK_MULTIPLEAPK" value="true" />
+    </plugin>
+    <plugin name="cordova-plugin-compat" spec="~1.1.0" />
 </widget>
