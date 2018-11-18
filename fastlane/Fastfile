@@ -17,7 +17,7 @@ end
 platform :android do
 
   before_all do
-    # Make sure no debugger statements were left in our code 
+    # Make sure no debugger statements were left in our code
     # ensure_no_debug_code
     # Make sure there are not uncommitted changes
     ensure_git_status_clean
@@ -90,18 +90,18 @@ platform :android do
       groups: "android-beta",
       debug: true
     )
-      
+
     say "Brad you rocked another android deployment"
   end
 end
 
 platform :ios do
   before_all do
-    # Make sure no debugger statements were left in our code 
+    # Make sure no debugger statements were left in our code
     # ensure_no_debug_code
     # Make sure there are not uncommitted changes
     ensure_git_status_clean
-    # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."  
+    # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."
     cocoapods(
       use_bundle_exec: false,
       podfile: "./platforms/ios/Podfile"
@@ -141,6 +141,7 @@ platform :ios do
 
     #Push new release for initial install to new iOS Developer devices
     crashlytics(
+      crashlytics_path: "./Pods/Crashlytics/submit"
       api_token: ENV['CRASHLYTICS_API_TOKEN'],
       build_secret: ENV['CRASHLYTICS_BUILD_SECRET'],
       notifications: true,
@@ -215,6 +216,7 @@ platform :ios do
 
     #Make new iOS release available for new Beta testers to install
     crashlytics(
+      crashlytics_path: "./Pods/Crashlytics/submit"
       api_token: ENV['CRASHLYTICS_API_TOKEN'],
       build_secret: ENV['CRASHLYTICS_BUILD_SECRET'],
       notifications: true,
