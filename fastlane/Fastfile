@@ -141,7 +141,7 @@ platform :ios do
 
     #Push new release for initial install to new iOS Developer devices
     crashlytics(
-      crashlytics_path: "./Pods/Crashlytics/submit"
+      crashlytics_path: "./Pods/Crashlytics/submit",
       api_token: ENV['CRASHLYTICS_API_TOKEN'],
       build_secret: ENV['CRASHLYTICS_BUILD_SECRET'],
       notifications: true,
@@ -216,7 +216,7 @@ platform :ios do
 
     #Make new iOS release available for new Beta testers to install
     crashlytics(
-      crashlytics_path: "./Pods/Crashlytics/submit"
+      crashlytics_path: "./Pods/Crashlytics/submit",
       api_token: ENV['CRASHLYTICS_API_TOKEN'],
       build_secret: ENV['CRASHLYTICS_BUILD_SECRET'],
       notifications: true,
