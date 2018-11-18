@@ -218,6 +218,7 @@ platform :ios do
       api_token: ENV['CRASHLYTICS_API_TOKEN'],
       build_secret: ENV['CRASHLYTICS_BUILD_SECRET'],
       notifications: true,
+      # groups: "ios-beta-1",
       groups: "ios-beta-1",
       debug: true
     )
