@@ -96,7 +96,6 @@
         <variable name="FABRIC_API_KEY" value="b0510b6b26fe11d43115f7fb04d744bacc44a0f9" />
         <variable name="FABRIC_API_SECRET" value="942d313429ea10c092669c1e842932e401f7d21448acc7fec67975475a9c1df1" />
     </plugin>
-    <engine name="android" spec="latest" />
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <plugin name="cordova-plugin-file" spec="^4.3.3" />
     <plugin name="cordova-plugin-contacts" spec="^2.3.1">
@@ -116,4 +115,5 @@
         <variable name="XWALK_MULTIPLEAPK" value="true" />
     </plugin>
     <plugin name="cordova-plugin-compat" spec="~1.1.0" />
+    <engine name="android" spec="latest" />
 </widget>
